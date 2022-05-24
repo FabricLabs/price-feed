@@ -1,0 +1,31 @@
+{
+  "name": "@portal/feed",
+  "version": "0.1.0",
+  "description": "digital asset pricefeed",
+  "main": "services/feed.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabricLabs/portal-feed.git"
+  },
+  "keywords": [
+    "portal",
+    "bitcoin",
+    "ethereum"
+  ],
+  "author": "Fabric Labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FabricLabs/portal-feed/issues"
+  },
+  "homepage": "https://github.com/FabricLabs/portal-feed#readme",
+  "dependencies": {
+    "@fabric/core": "github:FabricLabs/fabric#security/dependencies"
+  },
+  "devDependencies": {
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0"
+  }
+}
