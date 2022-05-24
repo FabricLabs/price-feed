@@ -25,12 +25,17 @@ class CoinMarketCap extends Service {
     return this.settings.currency;
   }
 
-  async getQuoteForSymbol (symbol) {
-    const asset = await this.getAssetBySymbol(symbol);
-    return asset.quote[this.currency].price;
+  async getPriceForSymbol (symbol) {
+    const asset = await this.getQuoteForSymbol(symbol);
+    return asset.price;
   }
 
-  async getAssetBySymbol (symbol) {
+  async getQuoteForSymbol (symbol) {
+    const asset = await this.getAssetForSymbol(symbol);
+    return asset.quote;
+  }
+
+  async getAssetForSymbol (symbol) {
     const result = await this.remote._GET('/' + [
       'v1',
       'cryptocurrency',
@@ -38,7 +43,21 @@ class CoinMarketCap extends Service {
       'latest'
     ].join('/') + `?symbol=${symbol}&convert=${this.currency}&CMC_PRO_API_KEY=${this.settings.key}`);
 
-    return result.data[symbol];
+    const asset = result.data[symbol];
+    const created = Date.parse(asset.last_updated);
+    const ageInMS = Date.now() - created;
+    const age = Math.log(ageInMS);
+
+    return {
+      quote: {
+        age: age,
+        ageInMS: ageInMS,
+        created: asset.last_updated,
+        currency: this.currency,
+        price: asset.quote[this.currency].price
+      },
+      original: asset
+    };
   }
 }
 

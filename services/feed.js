@@ -23,11 +23,16 @@ class Feed extends Service {
     }, this.settings, settings);
 
     // Internals
-    this.peer = new Peer(this.fabric);
+    this.peer = new Peer(this.settings.fabric);
     this.signer = new Signer(this.settings.identity);
 
     // Sources (internal)
-    this.cmc = new CoinMarketCap(this.settings.sources.coinmarketcap);
+    this.cmc = new CoinMarketCap({
+      ...this.settings.sources.coinmarketcap,
+      currency: this.settings.currency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
 
     // Timer
     this._syncService = null;
@@ -48,7 +53,15 @@ class Feed extends Service {
   }
 
   get values () {
-    return this.state.content.values;
+    return this.state.values;
+  }
+
+  estimateFromQuotes (quotes) {
+    const average = quotes
+      .map(quote => quote.price)
+      .reduce((sum, value) => sum + value) / quotes.length;
+
+    return average;
   }
 
   async generateReport () {
@@ -62,7 +75,8 @@ class Feed extends Service {
     const valid = this.signer.verify(this.signer.pubkey, preimage, signature);
 
     // Construct the report
-    return Object.assign(report, {
+    return {
+      ...report,
       attestation: {
         content: buffer,
         preimage: preimage,
@@ -70,15 +84,23 @@ class Feed extends Service {
         signature: signature,
         valid: valid
       }
-    });
+    };
+  }
+
+  async getAssetForSymbol (symbol) {
+    return this.cmc.getAssetForSymbol(symbol);
   }
 
   async getQuoteForSymbol (symbol) {
-    const values = [
-      await this.cmc.getQuoteForSymbol(symbol)
-    ];
+    const sources = await Promise.all([
+      this.cmc.getAssetForSymbol(symbol)
+    ]);
 
-    return values.reduce((sum, value) => sum + value) / values.length;
+    const quotes = sources.map(source => source.quote);
+
+    return {
+      price: this.estimateFromQuotes(quotes)
+    };
   }
 
   async syncAllPrices () {
