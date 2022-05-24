@@ -4,6 +4,9 @@
   "description": "digital asset pricefeed",
   "main": "services/feed.js",
   "scripts": {
+    "coverage": "nyc npm test",
+    "quote": "node scripts/report.js",
+    "start": "node scripts/node.js",
     "test": "mocha tests"
   },
   "repository": {

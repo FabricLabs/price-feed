@@ -1,5 +1,6 @@
 'use strict';
 
+const Peer = require('@fabric/core/types/peer');
 const Service = require('@fabric/core/types/service');
 const Hash256 = require('@fabric/core/types/hash256');
 const Signer = require('@fabric/core/types/signer');
@@ -11,19 +12,27 @@ class Feed extends Service {
 
     this.settings = Object.assign({
       currency: 'BTC',
-      frequency: 10 * 60 * 1000,
-      key: '',
+      interval: 10 * 60 * 1000,
+      fabric: null,
       symbols: [
         'BTC',
         'LTC',
         'NMC'
-      ]
+      ],
+      sync: true
     }, this.settings, settings);
 
+    // Internals
+    this.peer = new Peer(this.fabric);
     this.signer = new Signer(this.settings.identity);
-    this.cmc = new CoinMarketCap(this.settings.coinmarketcap);
+
+    // Sources (internal)
+    this.cmc = new CoinMarketCap(this.settings.sources.coinmarketcap);
+
+    // Timer
     this._syncService = null;
 
+    // Internal State
     this._state = {
       content: {
         values: {}
@@ -85,8 +94,16 @@ class Feed extends Service {
   async start () {
     if (this.status === 'STARTED') return this;
     this._state.status = 'STARTING';
-    await this._sync();
-    if (this.settings.interval) this._syncService = setInterval(this._sync.bind(this), this.settings.interval);
+
+    if (this.settings.sync) {
+      await this._sync();
+      this._syncService = setInterval(this._sync.bind(this), this.settings.interval);
+    }
+
+    if (this.settings.fabric) {
+      await this.peer.start();
+    }
+
     this._state.status = 'STARTED';
     this.commit();
     return this;
@@ -119,6 +136,7 @@ class Feed extends Service {
     ]);
 
     this.commit();
+
     return this;
   }
 }
