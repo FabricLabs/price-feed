@@ -6,6 +6,7 @@ const Hash256 = require('@fabric/core/types/hash256');
 const Signer = require('@fabric/core/types/signer');
 const HTTPServer = require('@fabric/http/types/server');
 
+const BitPay = require('./bitpay');
 const CoinMarketCap = require('./coinmarketcap');
 
 class Feed extends Service {
@@ -22,6 +23,9 @@ class Feed extends Service {
       },
       interval: 10 * 60 * 1000,
       fabric: null,
+      sources: {
+        bitpay: {}
+      },
       symbols: [
         'BTC',
         'LTC',
@@ -36,6 +40,14 @@ class Feed extends Service {
     this.signer = new Signer(this.settings.identity);
 
     // Sources (internal)
+    // TODO: use subservices architecture
+    this.bitpay = new BitPay({
+      ...this.settings.sources.bitpay,
+      currency: this.settings.currency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
     this.cmc = new CoinMarketCap({
       ...this.settings.sources.coinmarketcap,
       currency: this.settings.currency,
@@ -101,11 +113,10 @@ class Feed extends Service {
   }
 
   async getQuoteForSymbol (symbol) {
-    const sources = await Promise.all([
-      this.cmc.getAssetForSymbol(symbol)
+    const quotes = await Promise.all([
+      this.bitpay.getQuoteForSymbol(symbol),
+      this.cmc.getQuoteForSymbol(symbol)
     ]);
-
-    const quotes = sources.map(source => source.quote);
 
     return {
       price: this.estimateFromQuotes(quotes)
@@ -113,6 +124,8 @@ class Feed extends Service {
   }
 
   async syncAllPrices () {
+    if (this.currency === 'BTC') await this.bitpay.getAllQuotesForSymbol('BTC');
+
     for (let i = 0; i < this.settings.symbols.length; i++) {
       const symbol = this.settings.symbols[i];
       const quote = await this.getQuoteForSymbol(symbol);

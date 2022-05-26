@@ -31,11 +31,6 @@ class CoinMarketCap extends Service {
   }
 
   async getQuoteForSymbol (symbol) {
-    const asset = await this.getAssetForSymbol(symbol);
-    return asset.quote;
-  }
-
-  async getAssetForSymbol (symbol) {
     const result = await this.remote._GET('/' + [
       'v1',
       'cryptocurrency',
@@ -49,12 +44,18 @@ class CoinMarketCap extends Service {
     const age = Math.log(ageInMS);
 
     return {
-      quote: {
-        age: age,
-        created: asset.last_updated,
-        currency: this.currency,
-        price: asset.quote[this.currency].price
-      },
+      age: age,
+      created: asset.last_updated,
+      currency: this.currency,
+      price: asset.quote[this.currency].price
+    };
+  }
+
+  async getAssetForSymbol (symbol) {
+    const quote = await this.getQuoteForSymbol(symbol);
+
+    return {
+      quote: quote,
       original: asset
     };
   }
