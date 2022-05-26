@@ -51,7 +51,6 @@ class CoinMarketCap extends Service {
     return {
       quote: {
         age: age,
-        ageInMS: ageInMS,
         created: asset.last_updated,
         currency: this.currency,
         price: asset.quote[this.currency].price

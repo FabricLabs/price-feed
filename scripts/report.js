@@ -6,6 +6,7 @@ const settings = require('../settings/local');
 
 async function main (input = {}) {
   const feed = new Feed(input);
+  feed.on('debug', (msg) => console.log(msg));
   const report = await feed.generateReport();
   console.log('Feed Report:', report);
   return 1;

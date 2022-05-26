@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#security/dependencies"
+    "@fabric/core": "FabricLabs/fabric#security/dependencies",
+    "@fabric/http": "github:FabricLabs/fabric-http#feature/rollup"
   },
   "devDependencies": {
     "mocha": "^10.0.0",

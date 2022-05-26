@@ -4,6 +4,8 @@ const Peer = require('@fabric/core/types/peer');
 const Service = require('@fabric/core/types/service');
 const Hash256 = require('@fabric/core/types/hash256');
 const Signer = require('@fabric/core/types/signer');
+const HTTPServer = require('@fabric/http/types/server');
+
 const CoinMarketCap = require('./coinmarketcap');
 
 class Feed extends Service {
@@ -12,6 +14,12 @@ class Feed extends Service {
 
     this.settings = Object.assign({
       currency: 'BTC',
+      http: {
+        bind: '0.0.0.0',
+        host: 'localhost.localdomain',
+        port: 3000,
+        secure: false
+      },
       interval: 10 * 60 * 1000,
       fabric: null,
       symbols: [
@@ -23,6 +31,7 @@ class Feed extends Service {
     }, this.settings, settings);
 
     // Internals
+    this.http = new HTTPServer(this.settings.http);
     this.peer = new Peer(this.settings.fabric);
     this.signer = new Signer(this.settings.identity);
 
