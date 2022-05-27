@@ -4,8 +4,10 @@
   "description": "digital asset pricefeed",
   "main": "services/feed.js",
   "scripts": {
+    "build": "rollup -c",
     "coverage": "nyc npm test",
     "quote": "node scripts/report.js",
+    "serve": "http-server assets",
     "start": "node scripts/node.js",
     "test": "mocha tests"
   },
@@ -26,10 +28,24 @@
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#security/dependencies",
-    "@fabric/http": "github:FabricLabs/fabric-http#feature/rollup"
+    "@fabric/http": "FabricLabs/fabric-http#feature/rollup"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.17.12",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-replace": "^4.0.0",
+    "fomantic-ui-css": "^2.8.8",
+    "http-server": "^14.1.0",
     "mocha": "^10.0.0",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "rollup": "^2.74.1",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^1.1.0",
+    "semantic-ui-react": "^2.1.2"
   }
 }

@@ -1,0 +1,41 @@
+/**
+ * # Sample Rollup for Fabric
+ */
+import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
+import serve from 'rollup-plugin-serve';
+import livereload from 'rollup-plugin-livereload';
+
+export default [
+  {
+    input: 'components/Feed.js',
+    output: [
+      {
+        file: 'assets/feed.js',
+        format: 'iife',
+        name: 'PortalFeed'
+      }
+    ],
+    plugins: [
+      resolve({
+        extensions: ['.js']
+      }),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      }),
+      babel({
+        presets: ["@babel/preset-react"],
+      }),
+      commonjs(),
+      serve({
+        open: true,
+        contentBase: ['', 'assets'],
+        host: 'localhost',
+        port: 3000
+      }),
+      livereload({ watch: 'assets' })
+    ]
+  }
+];

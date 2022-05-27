@@ -18,6 +18,12 @@ class BitPay extends Service {
       authority: 'bitpay.com'
     });
 
+    this._state = {
+      content: {
+        prices: {}
+      }
+    }
+
     return this;
   }
 
@@ -40,6 +46,19 @@ class BitPay extends Service {
         price: price.rate
       }
     });
+  }
+
+  async syncAllQuotesForSymbol (symbol) {
+    const quotes = await this.getAllQuotesForSymbol(symbol);
+
+    for (let i = 0; i < quotes.length; i++) {
+      const quote = quotes[i];
+      this._state.content.prices[quote.currency] = quote.price;
+    }
+
+    this.commit();
+
+    return this;
   }
 
   async getPriceForSymbol (symbol) {
