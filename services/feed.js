@@ -113,10 +113,18 @@ class Feed extends Service {
   }
 
   async getQuoteForSymbol (symbol) {
-    const quotes = await Promise.all([
-      this.bitpay.getQuoteForSymbol(symbol),
-      this.cmc.getQuoteForSymbol(symbol)
-    ]);
+    const retrievers = [
+      this.bitpay.getQuoteForSymbol(symbol)
+    ];
+
+    if (this.settings.sources.coinmarketcap.key) {
+      retrievers.push(this.cmc.getQuoteForSymbol(symbol));
+    }
+
+    const results = await Promise.allSettled(retrievers);
+    const quotes = results
+      .filter(result => (result.status === 'fulfilled'))
+      .map(result => result.value);
 
     console.log('quotes:', quotes);
 
