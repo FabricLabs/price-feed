@@ -5,8 +5,11 @@ import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
-import serve from 'rollup-plugin-serve';
-import livereload from 'rollup-plugin-livereload';
+import css from 'rollup-plugin-import-css';
+import json from '@rollup/plugin-json';
+import url from '@rollup/plugin-url';
+// import serve from 'rollup-plugin-serve';
+// import livereload from 'rollup-plugin-livereload';
 
 export default [
   {
@@ -25,17 +28,20 @@ export default [
       replace({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }),
+      css(),
+      json(),
+      url(),
       babel({
         presets: ["@babel/preset-react"],
       }),
       commonjs(),
-      serve({
+      /* serve({
         open: true,
         contentBase: ['', 'assets'],
         host: 'localhost',
         port: 3000
-      }),
-      livereload({ watch: 'assets' })
+      }) */,
+      // livereload({ watch: 'components' })
     ]
   }
 ];

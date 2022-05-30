@@ -91,7 +91,7 @@ class Feed extends Service {
     // TODO: consider reverting to raw buffer
     const buffer = string || Buffer.from(string, 'utf8');
     const preimage = Hash256.digest(buffer);
-    const signature = this.signer.sign(preimage);
+    const signature = this.signer.sign(Buffer.from(preimage, 'hex'));
     // TODO: fix-up Fabric Signer
     const valid = this.signer.verify(this.signer.pubkey, preimage, signature);
 
@@ -118,13 +118,15 @@ class Feed extends Service {
       this.cmc.getQuoteForSymbol(symbol)
     ]);
 
+    console.log('quotes:', quotes);
+
     return {
       price: this.estimateFromQuotes(quotes)
     };
   }
 
   async syncAllPrices () {
-    if (this.currency === 'BTC') await this.bitpay.getAllQuotesForSymbol('BTC');
+    if (this.currency === 'BTC') await this.bitpay.syncAllQuotesForSymbol('BTC');
 
     for (let i = 0; i < this.settings.symbols.length; i++) {
       const symbol = this.settings.symbols[i];

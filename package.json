@@ -5,11 +5,13 @@
   "main": "services/feed.js",
   "scripts": {
     "build": "rollup -c",
+    "build:semantic": "cd libraries/fomantic && npx gulp build && cd ../..",
     "coverage": "nyc npm test",
     "quote": "node scripts/report.js",
-    "serve": "http-server assets",
+    "serve": "npm run watch",
     "start": "node scripts/node.js",
-    "test": "mocha tests"
+    "test": "mocha tests",
+    "watch": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,8 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-url": "^7.0.0",
+    "fomantic-ui": "^2.8.8",
     "fomantic-ui-css": "^2.8.8",
     "http-server": "^14.1.0",
     "mocha": "^10.0.0",
@@ -44,6 +48,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "rollup": "^2.74.1",
+    "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-serve": "^1.1.0",
     "semantic-ui-react": "^2.1.2"

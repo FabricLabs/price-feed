@@ -1,5 +1,3 @@
-
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 (function () {
 	'use strict';
 
@@ -2693,7 +2691,7 @@
 		}
 	} (react));
 
-	var React = /*@__PURE__*/getDefaultExportFromCjs(react.exports);
+	var React$1 = /*@__PURE__*/getDefaultExportFromCjs(react.exports);
 
 	var reactDom = {exports: {}};
 
@@ -8259,6 +8257,24445 @@
 
 	var ReactDOM = /*@__PURE__*/getDefaultExportFromCjs(reactDom.exports);
 
+	function _objectWithoutPropertiesLoose(source, excluded) {
+	  if (source == null) return {};
+	  var target = {};
+	  var sourceKeys = Object.keys(source);
+	  var key, i;
+
+	  for (i = 0; i < sourceKeys.length; i++) {
+	    key = sourceKeys[i];
+	    if (excluded.indexOf(key) >= 0) continue;
+	    target[key] = source[key];
+	  }
+
+	  return target;
+	}
+
+	var reactIs$2 = {exports: {}};
+
+	var reactIs_development$2 = {};
+
+	/** @license React v16.13.1
+	 * react-is.development.js
+	 *
+	 * Copyright (c) Facebook, Inc. and its affiliates.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	{
+	  (function () {
+	    // nor polyfill, then a plain number is used for performance.
+
+	    var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+	    var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+	    var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+	    var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+	    var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+	    var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+	    var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+	    var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+	    // (unstable) APIs that have been removed. Can we remove the symbols?
+
+	    var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+	    var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+	    var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+	    var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+	    var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+	    var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+	    var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+	    var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+	    var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+	    var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+	    var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+	    function isValidElementType(type) {
+	      return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+	      type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+	    }
+
+	    function typeOf(object) {
+	      if (typeof object === 'object' && object !== null) {
+	        var $$typeof = object.$$typeof;
+
+	        switch ($$typeof) {
+	          case REACT_ELEMENT_TYPE:
+	            var type = object.type;
+
+	            switch (type) {
+	              case REACT_ASYNC_MODE_TYPE:
+	              case REACT_CONCURRENT_MODE_TYPE:
+	              case REACT_FRAGMENT_TYPE:
+	              case REACT_PROFILER_TYPE:
+	              case REACT_STRICT_MODE_TYPE:
+	              case REACT_SUSPENSE_TYPE:
+	                return type;
+
+	              default:
+	                var $$typeofType = type && type.$$typeof;
+
+	                switch ($$typeofType) {
+	                  case REACT_CONTEXT_TYPE:
+	                  case REACT_FORWARD_REF_TYPE:
+	                  case REACT_LAZY_TYPE:
+	                  case REACT_MEMO_TYPE:
+	                  case REACT_PROVIDER_TYPE:
+	                    return $$typeofType;
+
+	                  default:
+	                    return $$typeof;
+	                }
+
+	            }
+
+	          case REACT_PORTAL_TYPE:
+	            return $$typeof;
+	        }
+	      }
+
+	      return undefined;
+	    } // AsyncMode is deprecated along with isAsyncMode
+
+
+	    var AsyncMode = REACT_ASYNC_MODE_TYPE;
+	    var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+	    var ContextConsumer = REACT_CONTEXT_TYPE;
+	    var ContextProvider = REACT_PROVIDER_TYPE;
+	    var Element = REACT_ELEMENT_TYPE;
+	    var ForwardRef = REACT_FORWARD_REF_TYPE;
+	    var Fragment = REACT_FRAGMENT_TYPE;
+	    var Lazy = REACT_LAZY_TYPE;
+	    var Memo = REACT_MEMO_TYPE;
+	    var Portal = REACT_PORTAL_TYPE;
+	    var Profiler = REACT_PROFILER_TYPE;
+	    var StrictMode = REACT_STRICT_MODE_TYPE;
+	    var Suspense = REACT_SUSPENSE_TYPE;
+	    var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+	    function isAsyncMode(object) {
+	      {
+	        if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+	          hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+	          console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+	        }
+	      }
+	      return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+	    }
+
+	    function isConcurrentMode(object) {
+	      return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+	    }
+
+	    function isContextConsumer(object) {
+	      return typeOf(object) === REACT_CONTEXT_TYPE;
+	    }
+
+	    function isContextProvider(object) {
+	      return typeOf(object) === REACT_PROVIDER_TYPE;
+	    }
+
+	    function isElement(object) {
+	      return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+	    }
+
+	    function isForwardRef(object) {
+	      return typeOf(object) === REACT_FORWARD_REF_TYPE;
+	    }
+
+	    function isFragment(object) {
+	      return typeOf(object) === REACT_FRAGMENT_TYPE;
+	    }
+
+	    function isLazy(object) {
+	      return typeOf(object) === REACT_LAZY_TYPE;
+	    }
+
+	    function isMemo(object) {
+	      return typeOf(object) === REACT_MEMO_TYPE;
+	    }
+
+	    function isPortal(object) {
+	      return typeOf(object) === REACT_PORTAL_TYPE;
+	    }
+
+	    function isProfiler(object) {
+	      return typeOf(object) === REACT_PROFILER_TYPE;
+	    }
+
+	    function isStrictMode(object) {
+	      return typeOf(object) === REACT_STRICT_MODE_TYPE;
+	    }
+
+	    function isSuspense(object) {
+	      return typeOf(object) === REACT_SUSPENSE_TYPE;
+	    }
+
+	    reactIs_development$2.AsyncMode = AsyncMode;
+	    reactIs_development$2.ConcurrentMode = ConcurrentMode;
+	    reactIs_development$2.ContextConsumer = ContextConsumer;
+	    reactIs_development$2.ContextProvider = ContextProvider;
+	    reactIs_development$2.Element = Element;
+	    reactIs_development$2.ForwardRef = ForwardRef;
+	    reactIs_development$2.Fragment = Fragment;
+	    reactIs_development$2.Lazy = Lazy;
+	    reactIs_development$2.Memo = Memo;
+	    reactIs_development$2.Portal = Portal;
+	    reactIs_development$2.Profiler = Profiler;
+	    reactIs_development$2.StrictMode = StrictMode;
+	    reactIs_development$2.Suspense = Suspense;
+	    reactIs_development$2.isAsyncMode = isAsyncMode;
+	    reactIs_development$2.isConcurrentMode = isConcurrentMode;
+	    reactIs_development$2.isContextConsumer = isContextConsumer;
+	    reactIs_development$2.isContextProvider = isContextProvider;
+	    reactIs_development$2.isElement = isElement;
+	    reactIs_development$2.isForwardRef = isForwardRef;
+	    reactIs_development$2.isFragment = isFragment;
+	    reactIs_development$2.isLazy = isLazy;
+	    reactIs_development$2.isMemo = isMemo;
+	    reactIs_development$2.isPortal = isPortal;
+	    reactIs_development$2.isProfiler = isProfiler;
+	    reactIs_development$2.isStrictMode = isStrictMode;
+	    reactIs_development$2.isSuspense = isSuspense;
+	    reactIs_development$2.isValidElementType = isValidElementType;
+	    reactIs_development$2.typeOf = typeOf;
+	  })();
+	}
+
+	(function (module) {
+
+		{
+		  module.exports = reactIs_development$2;
+		}
+	} (reactIs$2));
+
+	function _setPrototypeOf$1(o, p) {
+	  _setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+	    o.__proto__ = p;
+	    return o;
+	  };
+	  return _setPrototypeOf$1(o, p);
+	}
+
+	function _inheritsLoose(subClass, superClass) {
+	  subClass.prototype = Object.create(superClass.prototype);
+	  subClass.prototype.constructor = subClass;
+	  _setPrototypeOf$1(subClass, superClass);
+	}
+
+	/**
+	 * The function that correctly handles passing refs.
+	 *
+	 * @param ref - An ref object or function
+	 * @param node - A node that should be passed by ref
+	 */
+	var handleRef = function handleRef(ref, node) {
+	  {
+	    if (typeof ref === 'string') {
+	      throw new Error('We do not support refs as string, this is a legacy API and will be likely to be removed in one of the future releases of React.');
+	    }
+	  }
+
+	  if (typeof ref === 'function') {
+	    ref(node);
+	    return;
+	  }
+
+	  if (ref !== null && typeof ref === 'object') {
+	    // The `current` property is defined as readonly, however it's a valid way because
+	    // `ref` is a mutable object
+	    ref.current = node;
+	  }
+	};
+	/** Checks that the passed object is a valid React ref object. */
+
+	var isRefObject$1 = function isRefObject(ref) {
+	  return (// https://github.com/facebook/react/blob/v16.8.2/packages/react-reconciler/src/ReactFiberCommitWork.js#L665
+	    ref !== null && typeof ref === 'object' && ref.hasOwnProperty('current')
+	  );
+	};
+
+	// react/packages/react-reconciler/src/ReactFiber.js
+	// ========================================================
+
+	/**
+	 * Detects if a passed element is a Fiber object instead of an element. Is needed as `ReactDOM.findDOMNode()` returns
+	 * a Fiber in `react-test-renderer` that can cause issues with tests. Is used only in non-production env.
+	 *
+	 * @see https://github.com/facebook/react/issues/7371#issuecomment-317396864
+	 * @see https://github.com/Semantic-Org/Semantic-UI-React/issues/4061#issuecomment-694895617
+	 */
+
+	function isFiberRef(node) {
+	  if (node === null) {
+	    return false;
+	  }
+
+	  if (node instanceof Element || node instanceof Text) {
+	    return false;
+	  }
+
+	  return !!(node.type && node.tag);
+	}
+
+	var RefFindNode = /*#__PURE__*/function (_React$Component) {
+	  _inheritsLoose(RefFindNode, _React$Component);
+
+	  function RefFindNode() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+	    _this.prevNode = null;
+	    return _this;
+	  }
+
+	  var _proto = RefFindNode.prototype;
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    var currentNode = reactDom.exports.findDOMNode(this);
+
+	    {
+	      if (isFiberRef(currentNode)) {
+	        currentNode = null;
+	      }
+	    }
+
+	    this.prevNode = currentNode;
+	    handleRef(this.props.innerRef, currentNode);
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+	    var currentNode = reactDom.exports.findDOMNode(this);
+
+	    {
+	      if (isFiberRef(currentNode)) {
+	        currentNode = null;
+	      }
+	    }
+
+	    if (this.prevNode !== currentNode) {
+	      this.prevNode = currentNode;
+	      handleRef(this.props.innerRef, currentNode);
+	    }
+
+	    if (prevProps.innerRef !== this.props.innerRef) {
+	      handleRef(this.props.innerRef, currentNode);
+	    }
+	  };
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    handleRef(this.props.innerRef, null);
+	    delete this.prevNode;
+	  };
+
+	  _proto.render = function render() {
+	    var children = this.props.children;
+	    return children;
+	  };
+
+	  return RefFindNode;
+	}(react.exports.Component);
+
+	var RefForward = /*#__PURE__*/function (_React$Component) {
+	  _inheritsLoose(RefForward, _React$Component);
+
+	  function RefForward() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+	    _this.currentNode = null;
+
+	    _this.handleRefOverride = function (node) {
+	      var _this$props = _this.props,
+	          children = _this$props.children,
+	          innerRef = _this$props.innerRef;
+	      handleRef(children.ref, node);
+	      handleRef(innerRef, node);
+	      _this.currentNode = node;
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = RefForward.prototype;
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+	    if (prevProps.innerRef !== this.props.innerRef) {
+	      handleRef(this.props.innerRef, this.currentNode);
+	    }
+	  };
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    delete this.currentNode;
+	  };
+
+	  _proto.render = function render() {
+	    var children = this.props.children;
+	    return /*#__PURE__*/react.exports.cloneElement(children, {
+	      ref: this.handleRefOverride
+	    });
+	  };
+
+	  return RefForward;
+	}(react.exports.Component);
+
+	var Ref = function Ref(props) {
+	  var children = props.children,
+	      innerRef = props.innerRef,
+	      rest = _objectWithoutPropertiesLoose(props, ["children", "innerRef"]);
+
+	  var child = react.exports.Children.only(children);
+	  var ElementType = reactIs$2.exports.isForwardRef(child) ? RefForward : RefFindNode;
+	  var childWithProps = child && rest && Object.keys(rest).length > 0 ? /*#__PURE__*/react.exports.cloneElement(child, rest) : child;
+	  return /*#__PURE__*/react.exports.createElement(ElementType, {
+	    innerRef: innerRef
+	  }, childWithProps);
+	};
+
+	function _extends() {
+	  _extends = Object.assign ? Object.assign.bind() : function (target) {
+	    for (var i = 1; i < arguments.length; i++) {
+	      var source = arguments[i];
+
+	      for (var key in source) {
+	        if (Object.prototype.hasOwnProperty.call(source, key)) {
+	          target[key] = source[key];
+	        }
+	      }
+	    }
+
+	    return target;
+	  };
+	  return _extends.apply(this, arguments);
+	}
+
+	/** Used for built-in method references. */
+	var objectProto$j = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$g = objectProto$j.hasOwnProperty;
+	/**
+	 * The base implementation of `_.has` without support for deep paths.
+	 *
+	 * @private
+	 * @param {Object} [object] The object to query.
+	 * @param {Array|string} key The key to check.
+	 * @returns {boolean} Returns `true` if `key` exists, else `false`.
+	 */
+
+	function baseHas(object, key) {
+	  return object != null && hasOwnProperty$g.call(object, key);
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+	/** Detect free variable `self`. */
+
+	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+	/** Used as a reference to the global object. */
+
+	var root = freeGlobal || freeSelf || Function('return this')();
+
+	/** Built-in value references. */
+
+	var Symbol$1 = root.Symbol;
+
+	/** Used for built-in method references. */
+
+	var objectProto$i = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$f = objectProto$i.hasOwnProperty;
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+
+	var nativeObjectToString$2 = objectProto$i.toString;
+	/** Built-in value references. */
+
+	var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : undefined;
+	/**
+	 * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the raw `toStringTag`.
+	 */
+
+	function getRawTag(value) {
+	  var isOwn = hasOwnProperty$f.call(value, symToStringTag$1),
+	      tag = value[symToStringTag$1];
+
+	  try {
+	    value[symToStringTag$1] = undefined;
+	    var unmasked = true;
+	  } catch (e) {}
+
+	  var result = nativeObjectToString$2.call(value);
+
+	  if (unmasked) {
+	    if (isOwn) {
+	      value[symToStringTag$1] = tag;
+	    } else {
+	      delete value[symToStringTag$1];
+	    }
+	  }
+
+	  return result;
+	}
+
+	/** Used for built-in method references. */
+	var objectProto$h = Object.prototype;
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+
+	var nativeObjectToString$1 = objectProto$h.toString;
+	/**
+	 * Converts `value` to a string using `Object.prototype.toString`.
+	 *
+	 * @private
+	 * @param {*} value The value to convert.
+	 * @returns {string} Returns the converted string.
+	 */
+
+	function objectToString(value) {
+	  return nativeObjectToString$1.call(value);
+	}
+
+	/** `Object#toString` result references. */
+
+	var nullTag = '[object Null]',
+	    undefinedTag = '[object Undefined]';
+	/** Built-in value references. */
+
+	var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : undefined;
+	/**
+	 * The base implementation of `getTag` without fallbacks for buggy environments.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the `toStringTag`.
+	 */
+
+	function baseGetTag(value) {
+	  if (value == null) {
+	    return value === undefined ? undefinedTag : nullTag;
+	  }
+
+	  return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return value != null && typeof value == 'object';
+	}
+
+	/** `Object#toString` result references. */
+
+	var symbolTag$1 = '[object Symbol]';
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+
+	function isSymbol(value) {
+	  return typeof value == 'symbol' || isObjectLike(value) && baseGetTag(value) == symbolTag$1;
+	}
+
+	/** Used to match property names within property paths. */
+
+	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+	    reIsPlainProp = /^\w*$/;
+	/**
+	 * Checks if `value` is a property name and not a property path.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	 */
+
+	function isKey(value, object) {
+	  if (isArray(value)) {
+	    return false;
+	  }
+
+	  var type = typeof value;
+
+	  if (type == 'number' || type == 'symbol' || type == 'boolean' || value == null || isSymbol(value)) {
+	    return true;
+	  }
+
+	  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+	}
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject$1(value) {
+	  var type = typeof value;
+	  return value != null && (type == 'object' || type == 'function');
+	}
+
+	/** `Object#toString` result references. */
+
+	var asyncTag = '[object AsyncFunction]',
+	    funcTag$1 = '[object Function]',
+	    genTag = '[object GeneratorFunction]',
+	    proxyTag = '[object Proxy]';
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+
+	function isFunction(value) {
+	  if (!isObject$1(value)) {
+	    return false;
+	  } // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+
+
+	  var tag = baseGetTag(value);
+	  return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
+	}
+
+	/** Used to detect overreaching core-js shims. */
+
+	var coreJsData = root['__core-js_shared__'];
+
+	/** Used to detect methods masquerading as native. */
+
+	var maskSrcKey = function () {
+	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+	  return uid ? 'Symbol(src)_1.' + uid : '';
+	}();
+	/**
+	 * Checks if `func` has its source masked.
+	 *
+	 * @private
+	 * @param {Function} func The function to check.
+	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+	 */
+
+
+	function isMasked(func) {
+	  return !!maskSrcKey && maskSrcKey in func;
+	}
+
+	/** Used for built-in method references. */
+	var funcProto$2 = Function.prototype;
+	/** Used to resolve the decompiled source of functions. */
+
+	var funcToString$2 = funcProto$2.toString;
+	/**
+	 * Converts `func` to its source code.
+	 *
+	 * @private
+	 * @param {Function} func The function to convert.
+	 * @returns {string} Returns the source code.
+	 */
+
+	function toSource(func) {
+	  if (func != null) {
+	    try {
+	      return funcToString$2.call(func);
+	    } catch (e) {}
+
+	    try {
+	      return func + '';
+	    } catch (e) {}
+	  }
+
+	  return '';
+	}
+
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+	 */
+
+	var reRegExpChar$1 = /[\\^$.*+?()[\]{}|]/g;
+	/** Used to detect host constructors (Safari). */
+
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	/** Used for built-in method references. */
+
+	var funcProto$1 = Function.prototype,
+	    objectProto$g = Object.prototype;
+	/** Used to resolve the decompiled source of functions. */
+
+	var funcToString$1 = funcProto$1.toString;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$e = objectProto$g.hasOwnProperty;
+	/** Used to detect if a method is native. */
+
+	var reIsNative = RegExp('^' + funcToString$1.call(hasOwnProperty$e).replace(reRegExpChar$1, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+	/**
+	 * The base implementation of `_.isNative` without bad shim checks.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
+	 */
+
+	function baseIsNative(value) {
+	  if (!isObject$1(value) || isMasked(value)) {
+	    return false;
+	  }
+
+	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
+	}
+
+	/**
+	 * Gets the value at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} [object] The object to query.
+	 * @param {string} key The key of the property to get.
+	 * @returns {*} Returns the property value.
+	 */
+	function getValue$1(object, key) {
+	  return object == null ? undefined : object[key];
+	}
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+
+	function getNative(object, key) {
+	  var value = getValue$1(object, key);
+	  return baseIsNative(value) ? value : undefined;
+	}
+
+	/* Built-in method references that are verified to be native. */
+
+	var nativeCreate = getNative(Object, 'create');
+
+	/**
+	 * Removes all key-value entries from the hash.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Hash
+	 */
+
+	function hashClear() {
+	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+	  this.size = 0;
+	}
+
+	/**
+	 * Removes `key` and its value from the hash.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Hash
+	 * @param {Object} hash The hash to modify.
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function hashDelete(key) {
+	  var result = this.has(key) && delete this.__data__[key];
+	  this.size -= result ? 1 : 0;
+	  return result;
+	}
+
+	/** Used to stand-in for `undefined` hash values. */
+
+	var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
+	/** Used for built-in method references. */
+
+	var objectProto$f = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$d = objectProto$f.hasOwnProperty;
+	/**
+	 * Gets the hash value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+
+	function hashGet(key) {
+	  var data = this.__data__;
+
+	  if (nativeCreate) {
+	    var result = data[key];
+	    return result === HASH_UNDEFINED$2 ? undefined : result;
+	  }
+
+	  return hasOwnProperty$d.call(data, key) ? data[key] : undefined;
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto$e = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$c = objectProto$e.hasOwnProperty;
+	/**
+	 * Checks if a hash value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Hash
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+
+	function hashHas(key) {
+	  var data = this.__data__;
+	  return nativeCreate ? data[key] !== undefined : hasOwnProperty$c.call(data, key);
+	}
+
+	/** Used to stand-in for `undefined` hash values. */
+
+	var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
+	/**
+	 * Sets the hash `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the hash instance.
+	 */
+
+	function hashSet(key, value) {
+	  var data = this.__data__;
+	  this.size += this.has(key) ? 0 : 1;
+	  data[key] = nativeCreate && value === undefined ? HASH_UNDEFINED$1 : value;
+	  return this;
+	}
+
+	/**
+	 * Creates a hash object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+
+	function Hash(entries) {
+	  var index = -1,
+	      length = entries == null ? 0 : entries.length;
+	  this.clear();
+
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	} // Add methods to `Hash`.
+
+
+	Hash.prototype.clear = hashClear;
+	Hash.prototype['delete'] = hashDelete;
+	Hash.prototype.get = hashGet;
+	Hash.prototype.has = hashHas;
+	Hash.prototype.set = hashSet;
+
+	/**
+	 * Removes all key-value entries from the list cache.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf ListCache
+	 */
+	function listCacheClear() {
+	  this.__data__ = [];
+	  this.size = 0;
+	}
+
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 * var other = { 'a': 1 };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || value !== value && other !== other;
+	}
+
+	/**
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} key The key to search for.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+
+	function assocIndexOf(array, key) {
+	  var length = array.length;
+
+	  while (length--) {
+	    if (eq(array[length][0], key)) {
+	      return length;
+	    }
+	  }
+
+	  return -1;
+	}
+
+	/** Used for built-in method references. */
+
+	var arrayProto = Array.prototype;
+	/** Built-in value references. */
+
+	var splice = arrayProto.splice;
+	/**
+	 * Removes `key` and its value from the list cache.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+
+	function listCacheDelete(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+
+	  if (index < 0) {
+	    return false;
+	  }
+
+	  var lastIndex = data.length - 1;
+
+	  if (index == lastIndex) {
+	    data.pop();
+	  } else {
+	    splice.call(data, index, 1);
+	  }
+
+	  --this.size;
+	  return true;
+	}
+
+	/**
+	 * Gets the list cache value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+
+	function listCacheGet(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	  return index < 0 ? undefined : data[index][1];
+	}
+
+	/**
+	 * Checks if a list cache value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf ListCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+
+	function listCacheHas(key) {
+	  return assocIndexOf(this.__data__, key) > -1;
+	}
+
+	/**
+	 * Sets the list cache `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the list cache instance.
+	 */
+
+	function listCacheSet(key, value) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+
+	  if (index < 0) {
+	    ++this.size;
+	    data.push([key, value]);
+	  } else {
+	    data[index][1] = value;
+	  }
+
+	  return this;
+	}
+
+	/**
+	 * Creates an list cache object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+
+	function ListCache(entries) {
+	  var index = -1,
+	      length = entries == null ? 0 : entries.length;
+	  this.clear();
+
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	} // Add methods to `ListCache`.
+
+
+	ListCache.prototype.clear = listCacheClear;
+	ListCache.prototype['delete'] = listCacheDelete;
+	ListCache.prototype.get = listCacheGet;
+	ListCache.prototype.has = listCacheHas;
+	ListCache.prototype.set = listCacheSet;
+
+	/* Built-in method references that are verified to be native. */
+
+	var Map$1 = getNative(root, 'Map');
+
+	/**
+	 * Removes all key-value entries from the map.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf MapCache
+	 */
+
+	function mapCacheClear() {
+	  this.size = 0;
+	  this.__data__ = {
+	    'hash': new Hash(),
+	    'map': new (Map$1 || ListCache)(),
+	    'string': new Hash()
+	  };
+	}
+
+	/**
+	 * Checks if `value` is suitable for use as unique object key.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+	 */
+	function isKeyable(value) {
+	  var type = typeof value;
+	  return type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean' ? value !== '__proto__' : value === null;
+	}
+
+	/**
+	 * Gets the data for `map`.
+	 *
+	 * @private
+	 * @param {Object} map The map to query.
+	 * @param {string} key The reference key.
+	 * @returns {*} Returns the map data.
+	 */
+
+	function getMapData(map, key) {
+	  var data = map.__data__;
+	  return isKeyable(key) ? data[typeof key == 'string' ? 'string' : 'hash'] : data.map;
+	}
+
+	/**
+	 * Removes `key` and its value from the map.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+
+	function mapCacheDelete(key) {
+	  var result = getMapData(this, key)['delete'](key);
+	  this.size -= result ? 1 : 0;
+	  return result;
+	}
+
+	/**
+	 * Gets the map value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+
+	function mapCacheGet(key) {
+	  return getMapData(this, key).get(key);
+	}
+
+	/**
+	 * Checks if a map value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf MapCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+
+	function mapCacheHas(key) {
+	  return getMapData(this, key).has(key);
+	}
+
+	/**
+	 * Sets the map `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the map cache instance.
+	 */
+
+	function mapCacheSet(key, value) {
+	  var data = getMapData(this, key),
+	      size = data.size;
+	  data.set(key, value);
+	  this.size += data.size == size ? 0 : 1;
+	  return this;
+	}
+
+	/**
+	 * Creates a map cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+
+	function MapCache(entries) {
+	  var index = -1,
+	      length = entries == null ? 0 : entries.length;
+	  this.clear();
+
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	} // Add methods to `MapCache`.
+
+
+	MapCache.prototype.clear = mapCacheClear;
+	MapCache.prototype['delete'] = mapCacheDelete;
+	MapCache.prototype.get = mapCacheGet;
+	MapCache.prototype.has = mapCacheHas;
+	MapCache.prototype.set = mapCacheSet;
+
+	/** Error message constants. */
+
+	var FUNC_ERROR_TEXT$1 = 'Expected a function';
+	/**
+	 * Creates a function that memoizes the result of `func`. If `resolver` is
+	 * provided, it determines the cache key for storing the result based on the
+	 * arguments provided to the memoized function. By default, the first argument
+	 * provided to the memoized function is used as the map cache key. The `func`
+	 * is invoked with the `this` binding of the memoized function.
+	 *
+	 * **Note:** The cache is exposed as the `cache` property on the memoized
+	 * function. Its creation may be customized by replacing the `_.memoize.Cache`
+	 * constructor with one whose instances implement the
+	 * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
+	 * method interface of `clear`, `delete`, `get`, `has`, and `set`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Function
+	 * @param {Function} func The function to have its output memoized.
+	 * @param {Function} [resolver] The function to resolve the cache key.
+	 * @returns {Function} Returns the new memoized function.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': 2 };
+	 * var other = { 'c': 3, 'd': 4 };
+	 *
+	 * var values = _.memoize(_.values);
+	 * values(object);
+	 * // => [1, 2]
+	 *
+	 * values(other);
+	 * // => [3, 4]
+	 *
+	 * object.a = 2;
+	 * values(object);
+	 * // => [1, 2]
+	 *
+	 * // Modify the result cache.
+	 * values.cache.set(object, ['a', 'b']);
+	 * values(object);
+	 * // => ['a', 'b']
+	 *
+	 * // Replace `_.memoize.Cache`.
+	 * _.memoize.Cache = WeakMap;
+	 */
+
+	function memoize(func, resolver) {
+	  if (typeof func != 'function' || resolver != null && typeof resolver != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT$1);
+	  }
+
+	  var memoized = function () {
+	    var args = arguments,
+	        key = resolver ? resolver.apply(this, args) : args[0],
+	        cache = memoized.cache;
+
+	    if (cache.has(key)) {
+	      return cache.get(key);
+	    }
+
+	    var result = func.apply(this, args);
+	    memoized.cache = cache.set(key, result) || cache;
+	    return result;
+	  };
+
+	  memoized.cache = new (memoize.Cache || MapCache)();
+	  return memoized;
+	} // Expose `MapCache`.
+
+
+	memoize.Cache = MapCache;
+
+	/** Used as the maximum memoize cache size. */
+
+	var MAX_MEMOIZE_SIZE = 500;
+	/**
+	 * A specialized version of `_.memoize` which clears the memoized function's
+	 * cache when it exceeds `MAX_MEMOIZE_SIZE`.
+	 *
+	 * @private
+	 * @param {Function} func The function to have its output memoized.
+	 * @returns {Function} Returns the new memoized function.
+	 */
+
+	function memoizeCapped(func) {
+	  var result = memoize(func, function (key) {
+	    if (cache.size === MAX_MEMOIZE_SIZE) {
+	      cache.clear();
+	    }
+
+	    return key;
+	  });
+	  var cache = result.cache;
+	  return result;
+	}
+
+	/** Used to match property names within property paths. */
+
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+	/** Used to match backslashes in property paths. */
+
+	var reEscapeChar = /\\(\\)?/g;
+	/**
+	 * Converts `string` to a property path array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the property path array.
+	 */
+
+	var stringToPath = memoizeCapped(function (string) {
+	  var result = [];
+
+	  if (string.charCodeAt(0) === 46
+	  /* . */
+	  ) {
+	    result.push('');
+	  }
+
+	  string.replace(rePropName, function (match, number, quote, subString) {
+	    result.push(quote ? subString.replace(reEscapeChar, '$1') : number || match);
+	  });
+	  return result;
+	});
+
+	/**
+	 * A specialized version of `_.map` for arrays without support for iteratee
+	 * shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 */
+	function arrayMap(array, iteratee) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length,
+	      result = Array(length);
+
+	  while (++index < length) {
+	    result[index] = iteratee(array[index], index, array);
+	  }
+
+	  return result;
+	}
+
+	/** Used as references for various `Number` constants. */
+
+	var INFINITY$3 = 1 / 0;
+	/** Used to convert symbols to primitives and strings. */
+
+	var symbolProto$1 = Symbol$1 ? Symbol$1.prototype : undefined,
+	    symbolToString = symbolProto$1 ? symbolProto$1.toString : undefined;
+	/**
+	 * The base implementation of `_.toString` which doesn't convert nullish
+	 * values to empty strings.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+
+	function baseToString(value) {
+	  // Exit early for strings to avoid a performance hit in some environments.
+	  if (typeof value == 'string') {
+	    return value;
+	  }
+
+	  if (isArray(value)) {
+	    // Recursively convert values (susceptible to call stack limits).
+	    return arrayMap(value, baseToString) + '';
+	  }
+
+	  if (isSymbol(value)) {
+	    return symbolToString ? symbolToString.call(value) : '';
+	  }
+
+	  var result = value + '';
+	  return result == '0' && 1 / value == -INFINITY$3 ? '-0' : result;
+	}
+
+	/**
+	 * Converts `value` to a string. An empty string is returned for `null`
+	 * and `undefined` values. The sign of `-0` is preserved.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {string} Returns the converted string.
+	 * @example
+	 *
+	 * _.toString(null);
+	 * // => ''
+	 *
+	 * _.toString(-0);
+	 * // => '-0'
+	 *
+	 * _.toString([1, 2, 3]);
+	 * // => '1,2,3'
+	 */
+
+	function toString(value) {
+	  return value == null ? '' : baseToString(value);
+	}
+
+	/**
+	 * Casts `value` to a path array if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {Array} Returns the cast property path array.
+	 */
+
+	function castPath(value, object) {
+	  if (isArray(value)) {
+	    return value;
+	  }
+
+	  return isKey(value, object) ? [value] : stringToPath(toString(value));
+	}
+
+	/** `Object#toString` result references. */
+
+	var argsTag$2 = '[object Arguments]';
+	/**
+	 * The base implementation of `_.isArguments`.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 */
+
+	function baseIsArguments(value) {
+	  return isObjectLike(value) && baseGetTag(value) == argsTag$2;
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto$d = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$b = objectProto$d.hasOwnProperty;
+	/** Built-in value references. */
+
+	var propertyIsEnumerable$1 = objectProto$d.propertyIsEnumerable;
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+
+	var isArguments = baseIsArguments(function () {
+	  return arguments;
+	}()) ? baseIsArguments : function (value) {
+	  return isObjectLike(value) && hasOwnProperty$b.call(value, 'callee') && !propertyIsEnumerable$1.call(value, 'callee');
+	};
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER$1 = 9007199254740991;
+	/** Used to detect unsigned integer values. */
+
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+
+	function isIndex(value, length) {
+	  var type = typeof value;
+	  length = length == null ? MAX_SAFE_INTEGER$1 : length;
+	  return !!length && (type == 'number' || type != 'symbol' && reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/** Used as references for various `Number` constants. */
+
+	var INFINITY$2 = 1 / 0;
+	/**
+	 * Converts `value` to a string key if it's not a string or symbol.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {string|symbol} Returns the key.
+	 */
+
+	function toKey(value) {
+	  if (typeof value == 'string' || isSymbol(value)) {
+	    return value;
+	  }
+
+	  var result = value + '';
+	  return result == '0' && 1 / value == -INFINITY$2 ? '-0' : result;
+	}
+
+	/**
+	 * Checks if `path` exists on `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path to check.
+	 * @param {Function} hasFunc The function to check properties.
+	 * @returns {boolean} Returns `true` if `path` exists, else `false`.
+	 */
+
+	function hasPath(object, path, hasFunc) {
+	  path = castPath(path, object);
+	  var index = -1,
+	      length = path.length,
+	      result = false;
+
+	  while (++index < length) {
+	    var key = toKey(path[index]);
+
+	    if (!(result = object != null && hasFunc(object, key))) {
+	      break;
+	    }
+
+	    object = object[key];
+	  }
+
+	  if (result || ++index != length) {
+	    return result;
+	  }
+
+	  length = object == null ? 0 : object.length;
+	  return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
+	}
+
+	/**
+	 * Checks if `path` is a direct property of `object`.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path to check.
+	 * @returns {boolean} Returns `true` if `path` exists, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': { 'b': 2 } };
+	 * var other = _.create({ 'a': _.create({ 'b': 2 }) });
+	 *
+	 * _.has(object, 'a');
+	 * // => true
+	 *
+	 * _.has(object, 'a.b');
+	 * // => true
+	 *
+	 * _.has(object, ['a', 'b']);
+	 * // => true
+	 *
+	 * _.has(other, 'a');
+	 * // => false
+	 */
+
+	function has$3(object, path) {
+	  return object != null && hasPath(object, path, baseHas);
+	}
+
+	/**
+	 * A faster alternative to `Function#apply`, this function invokes `func`
+	 * with the `this` binding of `thisArg` and the arguments of `args`.
+	 *
+	 * @private
+	 * @param {Function} func The function to invoke.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {Array} args The arguments to invoke `func` with.
+	 * @returns {*} Returns the result of `func`.
+	 */
+	function apply(func, thisArg, args) {
+	  switch (args.length) {
+	    case 0:
+	      return func.call(thisArg);
+
+	    case 1:
+	      return func.call(thisArg, args[0]);
+
+	    case 2:
+	      return func.call(thisArg, args[0], args[1]);
+
+	    case 3:
+	      return func.call(thisArg, args[0], args[1], args[2]);
+	  }
+
+	  return func.apply(thisArg, args);
+	}
+
+	/**
+	 * Gets the last element of `array`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @returns {*} Returns the last element of `array`.
+	 * @example
+	 *
+	 * _.last([1, 2, 3]);
+	 * // => 3
+	 */
+	function last(array) {
+	  var length = array == null ? 0 : array.length;
+	  return length ? array[length - 1] : undefined;
+	}
+
+	/**
+	 * The base implementation of `_.get` without support for default values.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {*} Returns the resolved value.
+	 */
+
+	function baseGet(object, path) {
+	  path = castPath(path, object);
+	  var index = 0,
+	      length = path.length;
+
+	  while (object != null && index < length) {
+	    object = object[toKey(path[index++])];
+	  }
+
+	  return index && index == length ? object : undefined;
+	}
+
+	/**
+	 * The base implementation of `_.slice` without an iteratee call guard.
+	 *
+	 * @private
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function baseSlice(array, start, end) {
+	  var index = -1,
+	      length = array.length;
+
+	  if (start < 0) {
+	    start = -start > length ? 0 : length + start;
+	  }
+
+	  end = end > length ? length : end;
+
+	  if (end < 0) {
+	    end += length;
+	  }
+
+	  length = start > end ? 0 : end - start >>> 0;
+	  start >>>= 0;
+	  var result = Array(length);
+
+	  while (++index < length) {
+	    result[index] = array[index + start];
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Gets the parent value at `path` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} path The path to get the parent value of.
+	 * @returns {*} Returns the parent value.
+	 */
+
+	function parent(object, path) {
+	  return path.length < 2 ? object : baseGet(object, baseSlice(path, 0, -1));
+	}
+
+	/**
+	 * The base implementation of `_.invoke` without support for individual
+	 * method arguments.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the method to invoke.
+	 * @param {Array} args The arguments to invoke the method with.
+	 * @returns {*} Returns the result of the invoked method.
+	 */
+
+	function baseInvoke(object, path, args) {
+	  path = castPath(path, object);
+	  object = parent(object, path);
+	  var func = object == null ? object : object[toKey(last(path))];
+	  return func == null ? undefined : apply(func, object, args);
+	}
+
+	/**
+	 * This method returns the first argument it receives.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Util
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 *
+	 * console.log(_.identity(object) === object);
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMax$6 = Math.max;
+	/**
+	 * A specialized version of `baseRest` which transforms the rest array.
+	 *
+	 * @private
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @param {Function} transform The rest array transform.
+	 * @returns {Function} Returns the new function.
+	 */
+
+	function overRest(func, start, transform) {
+	  start = nativeMax$6(start === undefined ? func.length - 1 : start, 0);
+	  return function () {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax$6(args.length - start, 0),
+	        array = Array(length);
+
+	    while (++index < length) {
+	      array[index] = args[start + index];
+	    }
+
+	    index = -1;
+	    var otherArgs = Array(start + 1);
+
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+
+	    otherArgs[start] = transform(array);
+	    return apply(func, this, otherArgs);
+	  };
+	}
+
+	/**
+	 * Creates a function that returns `value`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 2.4.0
+	 * @category Util
+	 * @param {*} value The value to return from the new function.
+	 * @returns {Function} Returns the new constant function.
+	 * @example
+	 *
+	 * var objects = _.times(2, _.constant({ 'a': 1 }));
+	 *
+	 * console.log(objects);
+	 * // => [{ 'a': 1 }, { 'a': 1 }]
+	 *
+	 * console.log(objects[0] === objects[1]);
+	 * // => true
+	 */
+	function constant(value) {
+	  return function () {
+	    return value;
+	  };
+	}
+
+	var defineProperty = function () {
+	  try {
+	    var func = getNative(Object, 'defineProperty');
+	    func({}, '', {});
+	    return func;
+	  } catch (e) {}
+	}();
+
+	/**
+	 * The base implementation of `setToString` without support for hot loop shorting.
+	 *
+	 * @private
+	 * @param {Function} func The function to modify.
+	 * @param {Function} string The `toString` result.
+	 * @returns {Function} Returns `func`.
+	 */
+
+	var baseSetToString = !defineProperty ? identity : function (func, string) {
+	  return defineProperty(func, 'toString', {
+	    'configurable': true,
+	    'enumerable': false,
+	    'value': constant(string),
+	    'writable': true
+	  });
+	};
+
+	/** Used to detect hot functions by number of calls within a span of milliseconds. */
+	var HOT_COUNT = 800,
+	    HOT_SPAN = 16;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeNow = Date.now;
+	/**
+	 * Creates a function that'll short out and invoke `identity` instead
+	 * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+	 * milliseconds.
+	 *
+	 * @private
+	 * @param {Function} func The function to restrict.
+	 * @returns {Function} Returns the new shortable function.
+	 */
+
+	function shortOut(func) {
+	  var count = 0,
+	      lastCalled = 0;
+	  return function () {
+	    var stamp = nativeNow(),
+	        remaining = HOT_SPAN - (stamp - lastCalled);
+	    lastCalled = stamp;
+
+	    if (remaining > 0) {
+	      if (++count >= HOT_COUNT) {
+	        return arguments[0];
+	      }
+	    } else {
+	      count = 0;
+	    }
+
+	    return func.apply(undefined, arguments);
+	  };
+	}
+
+	/**
+	 * Sets the `toString` method of `func` to return `string`.
+	 *
+	 * @private
+	 * @param {Function} func The function to modify.
+	 * @param {Function} string The `toString` result.
+	 * @returns {Function} Returns `func`.
+	 */
+
+	var setToString = shortOut(baseSetToString);
+
+	/**
+	 * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+	 *
+	 * @private
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 */
+
+	function baseRest(func, start) {
+	  return setToString(overRest(func, start, identity), func + '');
+	}
+
+	/**
+	 * Invokes the method at `path` of `object`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the method to invoke.
+	 * @param {...*} [args] The arguments to invoke the method with.
+	 * @returns {*} Returns the result of the invoked method.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': [1, 2, 3, 4] } }] };
+	 *
+	 * _.invoke(object, 'a[0].b.c.slice', 1, 3);
+	 * // => [2, 3]
+	 */
+
+	var invoke = baseRest(baseInvoke);
+
+	var propTypes = {exports: {}};
+
+	var reactIs$1 = {exports: {}};
+
+	var reactIs_development$1 = {};
+
+	/** @license React v16.13.1
+	 * react-is.development.js
+	 *
+	 * Copyright (c) Facebook, Inc. and its affiliates.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	{
+	  (function () {
+	    // nor polyfill, then a plain number is used for performance.
+
+	    var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+	    var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+	    var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+	    var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+	    var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+	    var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+	    var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+	    var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+	    // (unstable) APIs that have been removed. Can we remove the symbols?
+
+	    var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+	    var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+	    var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+	    var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+	    var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+	    var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+	    var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+	    var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+	    var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+	    var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+	    var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+	    function isValidElementType(type) {
+	      return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+	      type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+	    }
+
+	    function typeOf(object) {
+	      if (typeof object === 'object' && object !== null) {
+	        var $$typeof = object.$$typeof;
+
+	        switch ($$typeof) {
+	          case REACT_ELEMENT_TYPE:
+	            var type = object.type;
+
+	            switch (type) {
+	              case REACT_ASYNC_MODE_TYPE:
+	              case REACT_CONCURRENT_MODE_TYPE:
+	              case REACT_FRAGMENT_TYPE:
+	              case REACT_PROFILER_TYPE:
+	              case REACT_STRICT_MODE_TYPE:
+	              case REACT_SUSPENSE_TYPE:
+	                return type;
+
+	              default:
+	                var $$typeofType = type && type.$$typeof;
+
+	                switch ($$typeofType) {
+	                  case REACT_CONTEXT_TYPE:
+	                  case REACT_FORWARD_REF_TYPE:
+	                  case REACT_LAZY_TYPE:
+	                  case REACT_MEMO_TYPE:
+	                  case REACT_PROVIDER_TYPE:
+	                    return $$typeofType;
+
+	                  default:
+	                    return $$typeof;
+	                }
+
+	            }
+
+	          case REACT_PORTAL_TYPE:
+	            return $$typeof;
+	        }
+	      }
+
+	      return undefined;
+	    } // AsyncMode is deprecated along with isAsyncMode
+
+
+	    var AsyncMode = REACT_ASYNC_MODE_TYPE;
+	    var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+	    var ContextConsumer = REACT_CONTEXT_TYPE;
+	    var ContextProvider = REACT_PROVIDER_TYPE;
+	    var Element = REACT_ELEMENT_TYPE;
+	    var ForwardRef = REACT_FORWARD_REF_TYPE;
+	    var Fragment = REACT_FRAGMENT_TYPE;
+	    var Lazy = REACT_LAZY_TYPE;
+	    var Memo = REACT_MEMO_TYPE;
+	    var Portal = REACT_PORTAL_TYPE;
+	    var Profiler = REACT_PROFILER_TYPE;
+	    var StrictMode = REACT_STRICT_MODE_TYPE;
+	    var Suspense = REACT_SUSPENSE_TYPE;
+	    var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+	    function isAsyncMode(object) {
+	      {
+	        if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+	          hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+	          console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+	        }
+	      }
+	      return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+	    }
+
+	    function isConcurrentMode(object) {
+	      return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+	    }
+
+	    function isContextConsumer(object) {
+	      return typeOf(object) === REACT_CONTEXT_TYPE;
+	    }
+
+	    function isContextProvider(object) {
+	      return typeOf(object) === REACT_PROVIDER_TYPE;
+	    }
+
+	    function isElement(object) {
+	      return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+	    }
+
+	    function isForwardRef(object) {
+	      return typeOf(object) === REACT_FORWARD_REF_TYPE;
+	    }
+
+	    function isFragment(object) {
+	      return typeOf(object) === REACT_FRAGMENT_TYPE;
+	    }
+
+	    function isLazy(object) {
+	      return typeOf(object) === REACT_LAZY_TYPE;
+	    }
+
+	    function isMemo(object) {
+	      return typeOf(object) === REACT_MEMO_TYPE;
+	    }
+
+	    function isPortal(object) {
+	      return typeOf(object) === REACT_PORTAL_TYPE;
+	    }
+
+	    function isProfiler(object) {
+	      return typeOf(object) === REACT_PROFILER_TYPE;
+	    }
+
+	    function isStrictMode(object) {
+	      return typeOf(object) === REACT_STRICT_MODE_TYPE;
+	    }
+
+	    function isSuspense(object) {
+	      return typeOf(object) === REACT_SUSPENSE_TYPE;
+	    }
+
+	    reactIs_development$1.AsyncMode = AsyncMode;
+	    reactIs_development$1.ConcurrentMode = ConcurrentMode;
+	    reactIs_development$1.ContextConsumer = ContextConsumer;
+	    reactIs_development$1.ContextProvider = ContextProvider;
+	    reactIs_development$1.Element = Element;
+	    reactIs_development$1.ForwardRef = ForwardRef;
+	    reactIs_development$1.Fragment = Fragment;
+	    reactIs_development$1.Lazy = Lazy;
+	    reactIs_development$1.Memo = Memo;
+	    reactIs_development$1.Portal = Portal;
+	    reactIs_development$1.Profiler = Profiler;
+	    reactIs_development$1.StrictMode = StrictMode;
+	    reactIs_development$1.Suspense = Suspense;
+	    reactIs_development$1.isAsyncMode = isAsyncMode;
+	    reactIs_development$1.isConcurrentMode = isConcurrentMode;
+	    reactIs_development$1.isContextConsumer = isContextConsumer;
+	    reactIs_development$1.isContextProvider = isContextProvider;
+	    reactIs_development$1.isElement = isElement;
+	    reactIs_development$1.isForwardRef = isForwardRef;
+	    reactIs_development$1.isFragment = isFragment;
+	    reactIs_development$1.isLazy = isLazy;
+	    reactIs_development$1.isMemo = isMemo;
+	    reactIs_development$1.isPortal = isPortal;
+	    reactIs_development$1.isProfiler = isProfiler;
+	    reactIs_development$1.isStrictMode = isStrictMode;
+	    reactIs_development$1.isSuspense = isSuspense;
+	    reactIs_development$1.isValidElementType = isValidElementType;
+	    reactIs_development$1.typeOf = typeOf;
+	  })();
+	}
+
+	(function (module) {
+
+		{
+		  module.exports = reactIs_development$1;
+		}
+	} (reactIs$1));
+
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+	/* eslint-disable no-unused-vars */
+
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+	var hasOwnProperty$a = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+	  if (val === null || val === undefined) {
+	    throw new TypeError('Object.assign cannot be called with null or undefined');
+	  }
+
+	  return Object(val);
+	}
+
+	function shouldUseNative() {
+	  try {
+	    if (!Object.assign) {
+	      return false;
+	    } // Detect buggy property enumeration order in older V8 versions.
+	    // https://bugs.chromium.org/p/v8/issues/detail?id=4118
+
+
+	    var test1 = new String('abc'); // eslint-disable-line no-new-wrappers
+
+	    test1[5] = 'de';
+
+	    if (Object.getOwnPropertyNames(test1)[0] === '5') {
+	      return false;
+	    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+
+
+	    var test2 = {};
+
+	    for (var i = 0; i < 10; i++) {
+	      test2['_' + String.fromCharCode(i)] = i;
+	    }
+
+	    var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+	      return test2[n];
+	    });
+
+	    if (order2.join('') !== '0123456789') {
+	      return false;
+	    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+
+
+	    var test3 = {};
+	    'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+	      test3[letter] = letter;
+	    });
+
+	    if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
+	      return false;
+	    }
+
+	    return true;
+	  } catch (err) {
+	    // We don't expect any of the above to throw, but better to be safe.
+	    return false;
+	  }
+	}
+
+	var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
+	  var from;
+	  var to = toObject(target);
+	  var symbols;
+
+	  for (var s = 1; s < arguments.length; s++) {
+	    from = Object(arguments[s]);
+
+	    for (var key in from) {
+	      if (hasOwnProperty$a.call(from, key)) {
+	        to[key] = from[key];
+	      }
+	    }
+
+	    if (getOwnPropertySymbols) {
+	      symbols = getOwnPropertySymbols(from);
+
+	      for (var i = 0; i < symbols.length; i++) {
+	        if (propIsEnumerable.call(from, symbols[i])) {
+	          to[symbols[i]] = from[symbols[i]];
+	        }
+	      }
+	    }
+	  }
+
+	  return to;
+	};
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	var ReactPropTypesSecret$2 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+	var ReactPropTypesSecret_1 = ReactPropTypesSecret$2;
+
+	var has$2 = Function.call.bind(Object.prototype.hasOwnProperty);
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	var printWarning$1 = function () {};
+
+	{
+	  var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
+
+	  var loggedTypeFailures = {};
+
+	  var has$1 = has$2;
+
+	  printWarning$1 = function (text) {
+	    var message = 'Warning: ' + text;
+
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {
+	      /**/
+	    }
+	  };
+	}
+	/**
+	 * Assert that the values match with the type specs.
+	 * Error messages are memorized and will only be shown once.
+	 *
+	 * @param {object} typeSpecs Map of name to a ReactPropType
+	 * @param {object} values Runtime values that need to be type-checked
+	 * @param {string} location e.g. "prop", "context", "child context"
+	 * @param {string} componentName Name of the component for error messages.
+	 * @param {?Function} getStack Returns the component stack.
+	 * @private
+	 */
+
+
+	function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
+	  {
+	    for (var typeSpecName in typeSpecs) {
+	      if (has$1(typeSpecs, typeSpecName)) {
+	        var error; // Prop type validation may throw. In case they do, we don't want to
+	        // fail the render phase where it didn't fail before. So we log it.
+	        // After these have been cleaned up, we'll let them throw.
+
+	        try {
+	          // This is intentionally an invariant that gets caught. It's the same
+	          // behavior as without this statement except with a better message.
+	          if (typeof typeSpecs[typeSpecName] !== 'function') {
+	            var err = Error((componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' + 'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' + 'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.');
+	            err.name = 'Invariant Violation';
+	            throw err;
+	          }
+
+	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$1);
+	        } catch (ex) {
+	          error = ex;
+	        }
+
+	        if (error && !(error instanceof Error)) {
+	          printWarning$1((componentName || 'React class') + ': type specification of ' + location + ' `' + typeSpecName + '` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a ' + typeof error + '. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).');
+	        }
+
+	        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+	          // Only monitor this failure once because there tends to be a lot of the
+	          // same error.
+	          loggedTypeFailures[error.message] = true;
+	          var stack = getStack ? getStack() : '';
+	          printWarning$1('Failed ' + location + ' type: ' + error.message + (stack != null ? stack : ''));
+	        }
+	      }
+	    }
+	  }
+	}
+	/**
+	 * Resets warning cache when testing.
+	 *
+	 * @private
+	 */
+
+
+	checkPropTypes$1.resetWarningCache = function () {
+	  {
+	    loggedTypeFailures = {};
+	  }
+	};
+
+	var checkPropTypes_1 = checkPropTypes$1;
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	var ReactIs$1 = reactIs$1.exports;
+
+	var assign = objectAssign;
+
+	var ReactPropTypesSecret = ReactPropTypesSecret_1;
+
+	var has = has$2;
+
+	var checkPropTypes = checkPropTypes_1;
+
+	var printWarning = function () {};
+
+	{
+	  printWarning = function (text) {
+	    var message = 'Warning: ' + text;
+
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+	}
+
+	function emptyFunctionThatReturnsNull() {
+	  return null;
+	}
+
+	var factoryWithTypeCheckers = function (isValidElement, throwOnDirectAccess) {
+	  /* global Symbol */
+	  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+	  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+	  /**
+	   * Returns the iterator method function contained on the iterable object.
+	   *
+	   * Be sure to invoke the function with the iterable as context:
+	   *
+	   *     var iteratorFn = getIteratorFn(myIterable);
+	   *     if (iteratorFn) {
+	   *       var iterator = iteratorFn.call(myIterable);
+	   *       ...
+	   *     }
+	   *
+	   * @param {?object} maybeIterable
+	   * @return {?function}
+	   */
+
+	  function getIteratorFn(maybeIterable) {
+	    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+
+	    if (typeof iteratorFn === 'function') {
+	      return iteratorFn;
+	    }
+	  }
+	  /**
+	   * Collection of methods that allow declaration and validation of props that are
+	   * supplied to React components. Example usage:
+	   *
+	   *   var Props = require('ReactPropTypes');
+	   *   var MyArticle = React.createClass({
+	   *     propTypes: {
+	   *       // An optional string prop named "description".
+	   *       description: Props.string,
+	   *
+	   *       // A required enum prop named "category".
+	   *       category: Props.oneOf(['News','Photos']).isRequired,
+	   *
+	   *       // A prop named "dialog" that requires an instance of Dialog.
+	   *       dialog: Props.instanceOf(Dialog).isRequired
+	   *     },
+	   *     render: function() { ... }
+	   *   });
+	   *
+	   * A more formal specification of how these methods are used:
+	   *
+	   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+	   *   decl := ReactPropTypes.{type}(.isRequired)?
+	   *
+	   * Each and every declaration produces a function with the same signature. This
+	   * allows the creation of custom validation functions. For example:
+	   *
+	   *  var MyLink = React.createClass({
+	   *    propTypes: {
+	   *      // An optional string or URI prop named "href".
+	   *      href: function(props, propName, componentName) {
+	   *        var propValue = props[propName];
+	   *        if (propValue != null && typeof propValue !== 'string' &&
+	   *            !(propValue instanceof URI)) {
+	   *          return new Error(
+	   *            'Expected a string or an URI for ' + propName + ' in ' +
+	   *            componentName
+	   *          );
+	   *        }
+	   *      }
+	   *    },
+	   *    render: function() {...}
+	   *  });
+	   *
+	   * @internal
+	   */
+
+
+	  var ANONYMOUS = '<<anonymous>>'; // Important!
+	  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+
+	  var ReactPropTypes = {
+	    array: createPrimitiveTypeChecker('array'),
+	    bigint: createPrimitiveTypeChecker('bigint'),
+	    bool: createPrimitiveTypeChecker('boolean'),
+	    func: createPrimitiveTypeChecker('function'),
+	    number: createPrimitiveTypeChecker('number'),
+	    object: createPrimitiveTypeChecker('object'),
+	    string: createPrimitiveTypeChecker('string'),
+	    symbol: createPrimitiveTypeChecker('symbol'),
+	    any: createAnyTypeChecker(),
+	    arrayOf: createArrayOfTypeChecker,
+	    element: createElementTypeChecker(),
+	    elementType: createElementTypeTypeChecker(),
+	    instanceOf: createInstanceTypeChecker,
+	    node: createNodeChecker(),
+	    objectOf: createObjectOfTypeChecker,
+	    oneOf: createEnumTypeChecker,
+	    oneOfType: createUnionTypeChecker,
+	    shape: createShapeTypeChecker,
+	    exact: createStrictShapeTypeChecker
+	  };
+	  /**
+	   * inlined Object.is polyfill to avoid requiring consumers ship their own
+	   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+	   */
+
+	  /*eslint-disable no-self-compare*/
+
+	  function is(x, y) {
+	    // SameValue algorithm
+	    if (x === y) {
+	      // Steps 1-5, 7-10
+	      // Steps 6.b-6.e: +0 != -0
+	      return x !== 0 || 1 / x === 1 / y;
+	    } else {
+	      // Step 6.a: NaN == NaN
+	      return x !== x && y !== y;
+	    }
+	  }
+	  /*eslint-enable no-self-compare*/
+
+	  /**
+	   * We use an Error-like object for backward compatibility as people may call
+	   * PropTypes directly and inspect their output. However, we don't use real
+	   * Errors anymore. We don't inspect their stack anyway, and creating them
+	   * is prohibitively expensive if they are created too often, such as what
+	   * happens in oneOfType() for any type before the one that matched.
+	   */
+
+
+	  function PropTypeError(message, data) {
+	    this.message = message;
+	    this.data = data && typeof data === 'object' ? data : {};
+	    this.stack = '';
+	  } // Make `instanceof Error` still work for returned errors.
+
+
+	  PropTypeError.prototype = Error.prototype;
+
+	  function createChainableTypeChecker(validate) {
+	    {
+	      var manualPropTypeCallCache = {};
+	      var manualPropTypeWarningCount = 0;
+	    }
+
+	    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+	      componentName = componentName || ANONYMOUS;
+	      propFullName = propFullName || propName;
+
+	      if (secret !== ReactPropTypesSecret) {
+	        if (throwOnDirectAccess) {
+	          // New behavior only for users of `prop-types` package
+	          var err = new Error('Calling PropTypes validators directly is not supported by the `prop-types` package. ' + 'Use `PropTypes.checkPropTypes()` to call them. ' + 'Read more at http://fb.me/use-check-prop-types');
+	          err.name = 'Invariant Violation';
+	          throw err;
+	        } else if (typeof console !== 'undefined') {
+	          // Old behavior for people using React.PropTypes
+	          var cacheKey = componentName + ':' + propName;
+
+	          if (!manualPropTypeCallCache[cacheKey] && // Avoid spamming the console because they are often not actionable except for lib authors
+	          manualPropTypeWarningCount < 3) {
+	            printWarning('You are manually calling a React.PropTypes validation ' + 'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' + 'and will throw in the standalone `prop-types` package. ' + 'You may be seeing this warning due to a third-party PropTypes ' + 'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.');
+	            manualPropTypeCallCache[cacheKey] = true;
+	            manualPropTypeWarningCount++;
+	          }
+	        }
+	      }
+
+	      if (props[propName] == null) {
+	        if (isRequired) {
+	          if (props[propName] === null) {
+	            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+	          }
+
+	          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+	        }
+
+	        return null;
+	      } else {
+	        return validate(props, propName, componentName, location, propFullName);
+	      }
+	    }
+
+	    var chainedCheckType = checkType.bind(null, false);
+	    chainedCheckType.isRequired = checkType.bind(null, true);
+	    return chainedCheckType;
+	  }
+
+	  function createPrimitiveTypeChecker(expectedType) {
+	    function validate(props, propName, componentName, location, propFullName, secret) {
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+
+	      if (propType !== expectedType) {
+	        // `propValue` being instance of, say, date/regexp, pass the 'object'
+	        // check, but we can offer a more precise error message here rather than
+	        // 'of type `object`'.
+	        var preciseType = getPreciseType(propValue);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'), {
+	          expectedType: expectedType
+	        });
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createAnyTypeChecker() {
+	    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+	  }
+
+	  function createArrayOfTypeChecker(typeChecker) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (typeof typeChecker !== 'function') {
+	        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+	      }
+
+	      var propValue = props[propName];
+
+	      if (!Array.isArray(propValue)) {
+	        var propType = getPropType(propValue);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+	      }
+
+	      for (var i = 0; i < propValue.length; i++) {
+	        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+
+	        if (error instanceof Error) {
+	          return error;
+	        }
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createElementTypeChecker() {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+
+	      if (!isValidElement(propValue)) {
+	        var propType = getPropType(propValue);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createElementTypeTypeChecker() {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+
+	      if (!ReactIs$1.isValidElementType(propValue)) {
+	        var propType = getPropType(propValue);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createInstanceTypeChecker(expectedClass) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (!(props[propName] instanceof expectedClass)) {
+	        var expectedClassName = expectedClass.name || ANONYMOUS;
+	        var actualClassName = getClassName(props[propName]);
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createEnumTypeChecker(expectedValues) {
+	    if (!Array.isArray(expectedValues)) {
+	      {
+	        if (arguments.length > 1) {
+	          printWarning('Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' + 'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).');
+	        } else {
+	          printWarning('Invalid argument supplied to oneOf, expected an array.');
+	        }
+	      }
+
+	      return emptyFunctionThatReturnsNull;
+	    }
+
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+
+	      for (var i = 0; i < expectedValues.length; i++) {
+	        if (is(propValue, expectedValues[i])) {
+	          return null;
+	        }
+	      }
+
+	      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+	        var type = getPreciseType(value);
+
+	        if (type === 'symbol') {
+	          return String(value);
+	        }
+
+	        return value;
+	      });
+	      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createObjectOfTypeChecker(typeChecker) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (typeof typeChecker !== 'function') {
+	        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+	      }
+
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+
+	      if (propType !== 'object') {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+	      }
+
+	      for (var key in propValue) {
+	        if (has(propValue, key)) {
+	          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+
+	          if (error instanceof Error) {
+	            return error;
+	          }
+	        }
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createUnionTypeChecker(arrayOfTypeCheckers) {
+	    if (!Array.isArray(arrayOfTypeCheckers)) {
+	      printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') ;
+	      return emptyFunctionThatReturnsNull;
+	    }
+
+	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+	      var checker = arrayOfTypeCheckers[i];
+
+	      if (typeof checker !== 'function') {
+	        printWarning('Invalid argument supplied to oneOfType. Expected an array of check functions, but ' + 'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.');
+	        return emptyFunctionThatReturnsNull;
+	      }
+	    }
+
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var expectedTypes = [];
+
+	      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+	        var checker = arrayOfTypeCheckers[i];
+	        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret);
+
+	        if (checkerResult == null) {
+	          return null;
+	        }
+
+	        if (checkerResult.data && has(checkerResult.data, 'expectedType')) {
+	          expectedTypes.push(checkerResult.data.expectedType);
+	        }
+	      }
+
+	      var expectedTypesMessage = expectedTypes.length > 0 ? ', expected one of type [' + expectedTypes.join(', ') + ']' : '';
+	      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createNodeChecker() {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      if (!isNode(props[propName])) {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function invalidValidatorError(componentName, location, propFullName, key, type) {
+	    return new PropTypeError((componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' + 'it must be a function, usually from the `prop-types` package, but received `' + type + '`.');
+	  }
+
+	  function createShapeTypeChecker(shapeTypes) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+
+	      if (propType !== 'object') {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+	      }
+
+	      for (var key in shapeTypes) {
+	        var checker = shapeTypes[key];
+
+	        if (typeof checker !== 'function') {
+	          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+	        }
+
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+
+	        if (error) {
+	          return error;
+	        }
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function createStrictShapeTypeChecker(shapeTypes) {
+	    function validate(props, propName, componentName, location, propFullName) {
+	      var propValue = props[propName];
+	      var propType = getPropType(propValue);
+
+	      if (propType !== 'object') {
+	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+	      } // We need to check all keys in case some are required but missing from props.
+
+
+	      var allKeys = assign({}, props[propName], shapeTypes);
+
+	      for (var key in allKeys) {
+	        var checker = shapeTypes[key];
+
+	        if (has(shapeTypes, key) && typeof checker !== 'function') {
+	          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+	        }
+
+	        if (!checker) {
+	          return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' + '\nBad object: ' + JSON.stringify(props[propName], null, '  ') + '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  '));
+	        }
+
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+
+	        if (error) {
+	          return error;
+	        }
+	      }
+
+	      return null;
+	    }
+
+	    return createChainableTypeChecker(validate);
+	  }
+
+	  function isNode(propValue) {
+	    switch (typeof propValue) {
+	      case 'number':
+	      case 'string':
+	      case 'undefined':
+	        return true;
+
+	      case 'boolean':
+	        return !propValue;
+
+	      case 'object':
+	        if (Array.isArray(propValue)) {
+	          return propValue.every(isNode);
+	        }
+
+	        if (propValue === null || isValidElement(propValue)) {
+	          return true;
+	        }
+
+	        var iteratorFn = getIteratorFn(propValue);
+
+	        if (iteratorFn) {
+	          var iterator = iteratorFn.call(propValue);
+	          var step;
+
+	          if (iteratorFn !== propValue.entries) {
+	            while (!(step = iterator.next()).done) {
+	              if (!isNode(step.value)) {
+	                return false;
+	              }
+	            }
+	          } else {
+	            // Iterator will provide entry [k,v] tuples rather than values.
+	            while (!(step = iterator.next()).done) {
+	              var entry = step.value;
+
+	              if (entry) {
+	                if (!isNode(entry[1])) {
+	                  return false;
+	                }
+	              }
+	            }
+	          }
+	        } else {
+	          return false;
+	        }
+
+	        return true;
+
+	      default:
+	        return false;
+	    }
+	  }
+
+	  function isSymbol(propType, propValue) {
+	    // Native Symbol.
+	    if (propType === 'symbol') {
+	      return true;
+	    } // falsy value can't be a Symbol
+
+
+	    if (!propValue) {
+	      return false;
+	    } // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+
+
+	    if (propValue['@@toStringTag'] === 'Symbol') {
+	      return true;
+	    } // Fallback for non-spec compliant Symbols which are polyfilled.
+
+
+	    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+	      return true;
+	    }
+
+	    return false;
+	  } // Equivalent of `typeof` but with special handling for array and regexp.
+
+
+	  function getPropType(propValue) {
+	    var propType = typeof propValue;
+
+	    if (Array.isArray(propValue)) {
+	      return 'array';
+	    }
+
+	    if (propValue instanceof RegExp) {
+	      // Old webkits (at least until Android 4.0) return 'function' rather than
+	      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+	      // passes PropTypes.object.
+	      return 'object';
+	    }
+
+	    if (isSymbol(propType, propValue)) {
+	      return 'symbol';
+	    }
+
+	    return propType;
+	  } // This handles more types than `getPropType`. Only used for error messages.
+	  // See `createPrimitiveTypeChecker`.
+
+
+	  function getPreciseType(propValue) {
+	    if (typeof propValue === 'undefined' || propValue === null) {
+	      return '' + propValue;
+	    }
+
+	    var propType = getPropType(propValue);
+
+	    if (propType === 'object') {
+	      if (propValue instanceof Date) {
+	        return 'date';
+	      } else if (propValue instanceof RegExp) {
+	        return 'regexp';
+	      }
+	    }
+
+	    return propType;
+	  } // Returns a string that is postfixed to a warning about an invalid type.
+	  // For example, "undefined" or "of type array"
+
+
+	  function getPostfixForTypeWarning(value) {
+	    var type = getPreciseType(value);
+
+	    switch (type) {
+	      case 'array':
+	      case 'object':
+	        return 'an ' + type;
+
+	      case 'boolean':
+	      case 'date':
+	      case 'regexp':
+	        return 'a ' + type;
+
+	      default:
+	        return type;
+	    }
+	  } // Returns class name of the object, if any.
+
+
+	  function getClassName(propValue) {
+	    if (!propValue.constructor || !propValue.constructor.name) {
+	      return ANONYMOUS;
+	    }
+
+	    return propValue.constructor.name;
+	  }
+
+	  ReactPropTypes.checkPropTypes = checkPropTypes;
+	  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
+	  ReactPropTypes.PropTypes = ReactPropTypes;
+	  return ReactPropTypes;
+	};
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	{
+	  var ReactIs = reactIs$1.exports; // By explicitly using `prop-types` you are opting into new development behavior.
+	  // http://fb.me/prop-types-in-prod
+
+
+	  var throwOnDirectAccess = true;
+	  propTypes.exports = factoryWithTypeCheckers(ReactIs.isElement, throwOnDirectAccess);
+	}
+
+	function _assertThisInitialized$1(self) {
+	  if (self === void 0) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return self;
+	}
+
+	/**
+	 * Checks if `value` is `undefined`.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
+	 * @example
+	 *
+	 * _.isUndefined(void 0);
+	 * // => true
+	 *
+	 * _.isUndefined(null);
+	 * // => false
+	 */
+	function isUndefined(value) {
+	  return value === undefined;
+	}
+
+	/**
+	 * The base implementation of `_.clamp` which doesn't coerce arguments.
+	 *
+	 * @private
+	 * @param {number} number The number to clamp.
+	 * @param {number} [lower] The lower bound.
+	 * @param {number} upper The upper bound.
+	 * @returns {number} Returns the clamped number.
+	 */
+	function baseClamp(number, lower, upper) {
+	  if (number === number) {
+	    if (upper !== undefined) {
+	      number = number <= upper ? number : upper;
+	    }
+
+	    if (lower !== undefined) {
+	      number = number >= lower ? number : lower;
+	    }
+	  }
+
+	  return number;
+	}
+
+	/** Used to match a single whitespace character. */
+	var reWhitespace = /\s/;
+	/**
+	 * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
+	 * character of `string`.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {number} Returns the index of the last non-whitespace character.
+	 */
+
+	function trimmedEndIndex(string) {
+	  var index = string.length;
+
+	  while (index-- && reWhitespace.test(string.charAt(index))) {}
+
+	  return index;
+	}
+
+	/** Used to match leading whitespace. */
+
+	var reTrimStart = /^\s+/;
+	/**
+	 * The base implementation of `_.trim`.
+	 *
+	 * @private
+	 * @param {string} string The string to trim.
+	 * @returns {string} Returns the trimmed string.
+	 */
+
+	function baseTrim(string) {
+	  return string ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '') : string;
+	}
+
+	/** Used as references for various `Number` constants. */
+
+	var NAN = 0 / 0;
+	/** Used to detect bad signed hexadecimal string values. */
+
+	var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+	/** Used to detect binary string values. */
+
+	var reIsBinary = /^0b[01]+$/i;
+	/** Used to detect octal string values. */
+
+	var reIsOctal = /^0o[0-7]+$/i;
+	/** Built-in method references without a dependency on `root`. */
+
+	var freeParseInt = parseInt;
+	/**
+	 * Converts `value` to a number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {number} Returns the number.
+	 * @example
+	 *
+	 * _.toNumber(3.2);
+	 * // => 3.2
+	 *
+	 * _.toNumber(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toNumber(Infinity);
+	 * // => Infinity
+	 *
+	 * _.toNumber('3.2');
+	 * // => 3.2
+	 */
+
+	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+
+	  if (isSymbol(value)) {
+	    return NAN;
+	  }
+
+	  if (isObject$1(value)) {
+	    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+	    value = isObject$1(other) ? other + '' : other;
+	  }
+
+	  if (typeof value != 'string') {
+	    return value === 0 ? value : +value;
+	  }
+
+	  value = baseTrim(value);
+	  var isBinary = reIsBinary.test(value);
+	  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+	}
+
+	/** Used as references for various `Number` constants. */
+
+	var INFINITY$1 = 1 / 0,
+	    MAX_INTEGER = 1.7976931348623157e+308;
+	/**
+	 * Converts `value` to a finite number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.12.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted number.
+	 * @example
+	 *
+	 * _.toFinite(3.2);
+	 * // => 3.2
+	 *
+	 * _.toFinite(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toFinite(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toFinite('3.2');
+	 * // => 3.2
+	 */
+
+	function toFinite(value) {
+	  if (!value) {
+	    return value === 0 ? value : 0;
+	  }
+
+	  value = toNumber(value);
+
+	  if (value === INFINITY$1 || value === -INFINITY$1) {
+	    var sign = value < 0 ? -1 : 1;
+	    return sign * MAX_INTEGER;
+	  }
+
+	  return value === value ? value : 0;
+	}
+
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted integer.
+	 * @example
+	 *
+	 * _.toInteger(3.2);
+	 * // => 3
+	 *
+	 * _.toInteger(Number.MIN_VALUE);
+	 * // => 0
+	 *
+	 * _.toInteger(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toInteger('3.2');
+	 * // => 3
+	 */
+
+	function toInteger(value) {
+	  var result = toFinite(value),
+	      remainder = result % 1;
+	  return result === result ? remainder ? result - remainder : result : 0;
+	}
+
+	/**
+	 * Checks if `string` starts with the given target string.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to inspect.
+	 * @param {string} [target] The string to search for.
+	 * @param {number} [position=0] The position to search from.
+	 * @returns {boolean} Returns `true` if `string` starts with `target`,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.startsWith('abc', 'a');
+	 * // => true
+	 *
+	 * _.startsWith('abc', 'b');
+	 * // => false
+	 *
+	 * _.startsWith('abc', 'b', 1);
+	 * // => true
+	 */
+
+	function startsWith(string, target, position) {
+	  string = toString(string);
+	  position = position == null ? 0 : baseClamp(toInteger(position), 0, string.length);
+	  target = baseToString(target);
+	  return string.slice(position, position + target.length) == target;
+	}
+
+	/**
+	 * A specialized version of `_.filter` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {Array} Returns the new filtered array.
+	 */
+	function arrayFilter(array, predicate) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length,
+	      resIndex = 0,
+	      result = [];
+
+	  while (++index < length) {
+	    var value = array[index];
+
+	    if (predicate(value, index, array)) {
+	      result[resIndex++] = value;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+	 *
+	 * @private
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+	function createBaseFor(fromRight) {
+	  return function (object, iteratee, keysFunc) {
+	    var index = -1,
+	        iterable = Object(object),
+	        props = keysFunc(object),
+	        length = props.length;
+
+	    while (length--) {
+	      var key = props[fromRight ? length : ++index];
+
+	      if (iteratee(iterable[key], key, iterable) === false) {
+	        break;
+	      }
+	    }
+
+	    return object;
+	  };
+	}
+
+	/**
+	 * The base implementation of `baseForOwn` which iterates over `object`
+	 * properties returned by `keysFunc` and invokes `iteratee` for each property.
+	 * Iteratee functions may exit iteration early by explicitly returning `false`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {Function} keysFunc The function to get the keys of `object`.
+	 * @returns {Object} Returns `object`.
+	 */
+
+	var baseFor = createBaseFor();
+
+	/**
+	 * The base implementation of `_.times` without support for iteratee shorthands
+	 * or max array length checks.
+	 *
+	 * @private
+	 * @param {number} n The number of times to invoke `iteratee`.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the array of results.
+	 */
+	function baseTimes(n, iteratee) {
+	  var index = -1,
+	      result = Array(n);
+
+	  while (++index < n) {
+	    result[index] = iteratee(index);
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * This method returns `false`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.13.0
+	 * @category Util
+	 * @returns {boolean} Returns `false`.
+	 * @example
+	 *
+	 * _.times(2, _.stubFalse);
+	 * // => [false, false]
+	 */
+	function stubFalse() {
+	  return false;
+	}
+
+	/** Detect free variable `exports`. */
+
+	var freeExports$1 = typeof exports == 'object' && exports && !exports.nodeType && exports;
+	/** Detect free variable `module`. */
+
+	var freeModule$1 = freeExports$1 && typeof module == 'object' && module && !module.nodeType && module;
+	/** Detect the popular CommonJS extension `module.exports`. */
+
+	var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
+	/** Built-in value references. */
+
+	var Buffer = moduleExports$1 ? root.Buffer : undefined;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+	/**
+	 * Checks if `value` is a buffer.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.3.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+	 * @example
+	 *
+	 * _.isBuffer(new Buffer(2));
+	 * // => true
+	 *
+	 * _.isBuffer(new Uint8Array(2));
+	 * // => false
+	 */
+
+	var isBuffer = nativeIsBuffer || stubFalse;
+
+	/** `Object#toString` result references. */
+
+	var argsTag$1 = '[object Arguments]',
+	    arrayTag$1 = '[object Array]',
+	    boolTag$2 = '[object Boolean]',
+	    dateTag$1 = '[object Date]',
+	    errorTag$1 = '[object Error]',
+	    funcTag = '[object Function]',
+	    mapTag$4 = '[object Map]',
+	    numberTag$2 = '[object Number]',
+	    objectTag$3 = '[object Object]',
+	    regexpTag$1 = '[object RegExp]',
+	    setTag$4 = '[object Set]',
+	    stringTag$2 = '[object String]',
+	    weakMapTag$1 = '[object WeakMap]';
+	var arrayBufferTag$1 = '[object ArrayBuffer]',
+	    dataViewTag$2 = '[object DataView]',
+	    float32Tag = '[object Float32Array]',
+	    float64Tag = '[object Float64Array]',
+	    int8Tag = '[object Int8Array]',
+	    int16Tag = '[object Int16Array]',
+	    int32Tag = '[object Int32Array]',
+	    uint8Tag = '[object Uint8Array]',
+	    uint8ClampedTag = '[object Uint8ClampedArray]',
+	    uint16Tag = '[object Uint16Array]',
+	    uint32Tag = '[object Uint32Array]';
+	/** Used to identify `toStringTag` values of typed arrays. */
+
+	var typedArrayTags = {};
+	typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+	typedArrayTags[argsTag$1] = typedArrayTags[arrayTag$1] = typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$2] = typedArrayTags[dataViewTag$2] = typedArrayTags[dateTag$1] = typedArrayTags[errorTag$1] = typedArrayTags[funcTag] = typedArrayTags[mapTag$4] = typedArrayTags[numberTag$2] = typedArrayTags[objectTag$3] = typedArrayTags[regexpTag$1] = typedArrayTags[setTag$4] = typedArrayTags[stringTag$2] = typedArrayTags[weakMapTag$1] = false;
+	/**
+	 * The base implementation of `_.isTypedArray` without Node.js optimizations.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+	 */
+
+	function baseIsTypedArray(value) {
+	  return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
+	}
+
+	/**
+	 * The base implementation of `_.unary` without support for storing metadata.
+	 *
+	 * @private
+	 * @param {Function} func The function to cap arguments for.
+	 * @returns {Function} Returns the new capped function.
+	 */
+	function baseUnary(func) {
+	  return function (value) {
+	    return func(value);
+	  };
+	}
+
+	/** Detect free variable `exports`. */
+
+	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+	/** Detect free variable `module`. */
+
+	var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+	/** Detect the popular CommonJS extension `module.exports`. */
+
+	var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect free variable `process` from Node.js. */
+
+	var freeProcess = moduleExports && freeGlobal.process;
+	/** Used to access faster Node.js helpers. */
+
+	var nodeUtil = function () {
+	  try {
+	    // Use `util.types` for Node.js 10+.
+	    var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+	    if (types) {
+	      return types;
+	    } // Legacy `process.binding('util')` for Node.js < 10.
+
+
+	    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+	  } catch (e) {}
+	}();
+
+	/* Node.js helper references. */
+
+	var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+	/**
+	 * Checks if `value` is classified as a typed array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+	 * @example
+	 *
+	 * _.isTypedArray(new Uint8Array);
+	 * // => true
+	 *
+	 * _.isTypedArray([]);
+	 * // => false
+	 */
+
+	var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+
+	/** Used for built-in method references. */
+
+	var objectProto$c = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$9 = objectProto$c.hasOwnProperty;
+	/**
+	 * Creates an array of the enumerable property names of the array-like `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @param {boolean} inherited Specify returning inherited property names.
+	 * @returns {Array} Returns the array of property names.
+	 */
+
+	function arrayLikeKeys(value, inherited) {
+	  var isArr = isArray(value),
+	      isArg = !isArr && isArguments(value),
+	      isBuff = !isArr && !isArg && isBuffer(value),
+	      isType = !isArr && !isArg && !isBuff && isTypedArray(value),
+	      skipIndexes = isArr || isArg || isBuff || isType,
+	      result = skipIndexes ? baseTimes(value.length, String) : [],
+	      length = result.length;
+
+	  for (var key in value) {
+	    if ((inherited || hasOwnProperty$9.call(value, key)) && !(skipIndexes && ( // Safari 9 has enumerable `arguments.length` in strict mode.
+	    key == 'length' || // Node.js 0.10 has enumerable non-index properties on buffers.
+	    isBuff && (key == 'offset' || key == 'parent') || // PhantomJS 2 has enumerable non-index properties on typed arrays.
+	    isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset') || // Skip index properties.
+	    isIndex(key, length)))) {
+	      result.push(key);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/** Used for built-in method references. */
+	var objectProto$b = Object.prototype;
+	/**
+	 * Checks if `value` is likely a prototype object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+	 */
+
+	function isPrototype(value) {
+	  var Ctor = value && value.constructor,
+	      proto = typeof Ctor == 'function' && Ctor.prototype || objectProto$b;
+	  return value === proto;
+	}
+
+	/**
+	 * Creates a unary function that invokes `func` with its argument transformed.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {Function} transform The argument transform.
+	 * @returns {Function} Returns the new function.
+	 */
+	function overArg(func, transform) {
+	  return function (arg) {
+	    return func(transform(arg));
+	  };
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeKeys = overArg(Object.keys, Object);
+
+	/** Used for built-in method references. */
+
+	var objectProto$a = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
+	/**
+	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+
+	function baseKeys(object) {
+	  if (!isPrototype(object)) {
+	    return nativeKeys(object);
+	  }
+
+	  var result = [];
+
+	  for (var key in Object(object)) {
+	    if (hasOwnProperty$8.call(object, key) && key != 'constructor') {
+	      result.push(key);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+
+	function isArrayLike(value) {
+	  return value != null && isLength(value.length) && !isFunction(value);
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+
+	function keys(object) {
+	  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+	}
+
+	/**
+	 * The base implementation of `_.forOwn` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Object} Returns `object`.
+	 */
+
+	function baseForOwn(object, iteratee) {
+	  return object && baseFor(object, iteratee, keys);
+	}
+
+	/**
+	 * Creates a `baseEach` or `baseEachRight` function.
+	 *
+	 * @private
+	 * @param {Function} eachFunc The function to iterate over a collection.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+
+	function createBaseEach(eachFunc, fromRight) {
+	  return function (collection, iteratee) {
+	    if (collection == null) {
+	      return collection;
+	    }
+
+	    if (!isArrayLike(collection)) {
+	      return eachFunc(collection, iteratee);
+	    }
+
+	    var length = collection.length,
+	        index = fromRight ? length : -1,
+	        iterable = Object(collection);
+
+	    while (fromRight ? index-- : ++index < length) {
+	      if (iteratee(iterable[index], index, iterable) === false) {
+	        break;
+	      }
+	    }
+
+	    return collection;
+	  };
+	}
+
+	/**
+	 * The base implementation of `_.forEach` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array|Object} Returns `collection`.
+	 */
+
+	var baseEach = createBaseEach(baseForOwn);
+
+	/**
+	 * The base implementation of `_.filter` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {Array} Returns the new filtered array.
+	 */
+
+	function baseFilter(collection, predicate) {
+	  var result = [];
+	  baseEach(collection, function (value, index, collection) {
+	    if (predicate(value, index, collection)) {
+	      result.push(value);
+	    }
+	  });
+	  return result;
+	}
+
+	/**
+	 * Removes all key-value entries from the stack.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Stack
+	 */
+
+	function stackClear() {
+	  this.__data__ = new ListCache();
+	  this.size = 0;
+	}
+
+	/**
+	 * Removes `key` and its value from the stack.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function stackDelete(key) {
+	  var data = this.__data__,
+	      result = data['delete'](key);
+	  this.size = data.size;
+	  return result;
+	}
+
+	/**
+	 * Gets the stack value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function stackGet(key) {
+	  return this.__data__.get(key);
+	}
+
+	/**
+	 * Checks if a stack value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Stack
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function stackHas(key) {
+	  return this.__data__.has(key);
+	}
+
+	/** Used as the size to enable large array optimizations. */
+
+	var LARGE_ARRAY_SIZE$2 = 200;
+	/**
+	 * Sets the stack `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the stack cache instance.
+	 */
+
+	function stackSet(key, value) {
+	  var data = this.__data__;
+
+	  if (data instanceof ListCache) {
+	    var pairs = data.__data__;
+
+	    if (!Map$1 || pairs.length < LARGE_ARRAY_SIZE$2 - 1) {
+	      pairs.push([key, value]);
+	      this.size = ++data.size;
+	      return this;
+	    }
+
+	    data = this.__data__ = new MapCache(pairs);
+	  }
+
+	  data.set(key, value);
+	  this.size = data.size;
+	  return this;
+	}
+
+	/**
+	 * Creates a stack cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+
+	function Stack(entries) {
+	  var data = this.__data__ = new ListCache(entries);
+	  this.size = data.size;
+	} // Add methods to `Stack`.
+
+
+	Stack.prototype.clear = stackClear;
+	Stack.prototype['delete'] = stackDelete;
+	Stack.prototype.get = stackGet;
+	Stack.prototype.has = stackHas;
+	Stack.prototype.set = stackSet;
+
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	/**
+	 * Adds `value` to the array cache.
+	 *
+	 * @private
+	 * @name add
+	 * @memberOf SetCache
+	 * @alias push
+	 * @param {*} value The value to cache.
+	 * @returns {Object} Returns the cache instance.
+	 */
+
+	function setCacheAdd(value) {
+	  this.__data__.set(value, HASH_UNDEFINED);
+
+	  return this;
+	}
+
+	/**
+	 * Checks if `value` is in the array cache.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf SetCache
+	 * @param {*} value The value to search for.
+	 * @returns {number} Returns `true` if `value` is found, else `false`.
+	 */
+	function setCacheHas(value) {
+	  return this.__data__.has(value);
+	}
+
+	/**
+	 *
+	 * Creates an array cache object to store unique values.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [values] The values to cache.
+	 */
+
+	function SetCache(values) {
+	  var index = -1,
+	      length = values == null ? 0 : values.length;
+	  this.__data__ = new MapCache();
+
+	  while (++index < length) {
+	    this.add(values[index]);
+	  }
+	} // Add methods to `SetCache`.
+
+
+	SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+	SetCache.prototype.has = setCacheHas;
+
+	/**
+	 * A specialized version of `_.some` for arrays without support for iteratee
+	 * shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function arraySome(array, predicate) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  while (++index < length) {
+	    if (predicate(array[index], index, array)) {
+	      return true;
+	    }
+	  }
+
+	  return false;
+	}
+
+	/**
+	 * Checks if a `cache` value for `key` exists.
+	 *
+	 * @private
+	 * @param {Object} cache The cache to query.
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function cacheHas(cache, key) {
+	  return cache.has(key);
+	}
+
+	/** Used to compose bitmasks for value comparisons. */
+
+	var COMPARE_PARTIAL_FLAG$5 = 1,
+	    COMPARE_UNORDERED_FLAG$3 = 2;
+	/**
+	 * A specialized version of `baseIsEqualDeep` for arrays with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Array} array The array to compare.
+	 * @param {Array} other The other array to compare.
+	 * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Object} stack Tracks traversed `array` and `other` objects.
+	 * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+	 */
+
+	function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
+	  var isPartial = bitmask & COMPARE_PARTIAL_FLAG$5,
+	      arrLength = array.length,
+	      othLength = other.length;
+
+	  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+	    return false;
+	  } // Check that cyclic values are equal.
+
+
+	  var arrStacked = stack.get(array);
+	  var othStacked = stack.get(other);
+
+	  if (arrStacked && othStacked) {
+	    return arrStacked == other && othStacked == array;
+	  }
+
+	  var index = -1,
+	      result = true,
+	      seen = bitmask & COMPARE_UNORDERED_FLAG$3 ? new SetCache() : undefined;
+	  stack.set(array, other);
+	  stack.set(other, array); // Ignore non-index properties.
+
+	  while (++index < arrLength) {
+	    var arrValue = array[index],
+	        othValue = other[index];
+
+	    if (customizer) {
+	      var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
+	    }
+
+	    if (compared !== undefined) {
+	      if (compared) {
+	        continue;
+	      }
+
+	      result = false;
+	      break;
+	    } // Recursively compare arrays (susceptible to call stack limits).
+
+
+	    if (seen) {
+	      if (!arraySome(other, function (othValue, othIndex) {
+	        if (!cacheHas(seen, othIndex) && (arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+	          return seen.push(othIndex);
+	        }
+	      })) {
+	        result = false;
+	        break;
+	      }
+	    } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+	      result = false;
+	      break;
+	    }
+	  }
+
+	  stack['delete'](array);
+	  stack['delete'](other);
+	  return result;
+	}
+
+	/** Built-in value references. */
+
+	var Uint8Array = root.Uint8Array;
+
+	/**
+	 * Converts `map` to its key-value pairs.
+	 *
+	 * @private
+	 * @param {Object} map The map to convert.
+	 * @returns {Array} Returns the key-value pairs.
+	 */
+	function mapToArray(map) {
+	  var index = -1,
+	      result = Array(map.size);
+	  map.forEach(function (value, key) {
+	    result[++index] = [key, value];
+	  });
+	  return result;
+	}
+
+	/**
+	 * Converts `set` to an array of its values.
+	 *
+	 * @private
+	 * @param {Object} set The set to convert.
+	 * @returns {Array} Returns the values.
+	 */
+	function setToArray(set) {
+	  var index = -1,
+	      result = Array(set.size);
+	  set.forEach(function (value) {
+	    result[++index] = value;
+	  });
+	  return result;
+	}
+
+	/** Used to compose bitmasks for value comparisons. */
+
+	var COMPARE_PARTIAL_FLAG$4 = 1,
+	    COMPARE_UNORDERED_FLAG$2 = 2;
+	/** `Object#toString` result references. */
+
+	var boolTag$1 = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    mapTag$3 = '[object Map]',
+	    numberTag$1 = '[object Number]',
+	    regexpTag = '[object RegExp]',
+	    setTag$3 = '[object Set]',
+	    stringTag$1 = '[object String]',
+	    symbolTag = '[object Symbol]';
+	var arrayBufferTag = '[object ArrayBuffer]',
+	    dataViewTag$1 = '[object DataView]';
+	/** Used to convert symbols to primitives and strings. */
+
+	var symbolProto = Symbol$1 ? Symbol$1.prototype : undefined,
+	    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+	/**
+	 * A specialized version of `baseIsEqualDeep` for comparing objects of
+	 * the same `toStringTag`.
+	 *
+	 * **Note:** This function only supports comparing values with tags of
+	 * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {string} tag The `toStringTag` of the objects to compare.
+	 * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Object} stack Tracks traversed `object` and `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+
+	function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
+	  switch (tag) {
+	    case dataViewTag$1:
+	      if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
+	        return false;
+	      }
+
+	      object = object.buffer;
+	      other = other.buffer;
+
+	    case arrayBufferTag:
+	      if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+	        return false;
+	      }
+
+	      return true;
+
+	    case boolTag$1:
+	    case dateTag:
+	    case numberTag$1:
+	      // Coerce booleans to `1` or `0` and dates to milliseconds.
+	      // Invalid dates are coerced to `NaN`.
+	      return eq(+object, +other);
+
+	    case errorTag:
+	      return object.name == other.name && object.message == other.message;
+
+	    case regexpTag:
+	    case stringTag$1:
+	      // Coerce regexes to strings and treat strings, primitives and objects,
+	      // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
+	      // for more details.
+	      return object == other + '';
+
+	    case mapTag$3:
+	      var convert = mapToArray;
+
+	    case setTag$3:
+	      var isPartial = bitmask & COMPARE_PARTIAL_FLAG$4;
+	      convert || (convert = setToArray);
+
+	      if (object.size != other.size && !isPartial) {
+	        return false;
+	      } // Assume cyclic values are equal.
+
+
+	      var stacked = stack.get(object);
+
+	      if (stacked) {
+	        return stacked == other;
+	      }
+
+	      bitmask |= COMPARE_UNORDERED_FLAG$2; // Recursively compare objects (susceptible to call stack limits).
+
+	      stack.set(object, other);
+	      var result = equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
+	      stack['delete'](object);
+	      return result;
+
+	    case symbolTag:
+	      if (symbolValueOf) {
+	        return symbolValueOf.call(object) == symbolValueOf.call(other);
+	      }
+
+	  }
+
+	  return false;
+	}
+
+	/**
+	 * Appends the elements of `values` to `array`.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {Array} values The values to append.
+	 * @returns {Array} Returns `array`.
+	 */
+	function arrayPush(array, values) {
+	  var index = -1,
+	      length = values.length,
+	      offset = array.length;
+
+	  while (++index < length) {
+	    array[offset + index] = values[index];
+	  }
+
+	  return array;
+	}
+
+	/**
+	 * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
+	 * `keysFunc` and `symbolsFunc` to get the enumerable property names and
+	 * symbols of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Function} keysFunc The function to get the keys of `object`.
+	 * @param {Function} symbolsFunc The function to get the symbols of `object`.
+	 * @returns {Array} Returns the array of property names and symbols.
+	 */
+
+	function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+	  var result = keysFunc(object);
+	  return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+	}
+
+	/**
+	 * This method returns a new empty array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.13.0
+	 * @category Util
+	 * @returns {Array} Returns the new empty array.
+	 * @example
+	 *
+	 * var arrays = _.times(2, _.stubArray);
+	 *
+	 * console.log(arrays);
+	 * // => [[], []]
+	 *
+	 * console.log(arrays[0] === arrays[1]);
+	 * // => false
+	 */
+	function stubArray() {
+	  return [];
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto$9 = Object.prototype;
+	/** Built-in value references. */
+
+	var propertyIsEnumerable = objectProto$9.propertyIsEnumerable;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeGetSymbols$1 = Object.getOwnPropertySymbols;
+	/**
+	 * Creates an array of the own enumerable symbols of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of symbols.
+	 */
+
+	var getSymbols = !nativeGetSymbols$1 ? stubArray : function (object) {
+	  if (object == null) {
+	    return [];
+	  }
+
+	  object = Object(object);
+	  return arrayFilter(nativeGetSymbols$1(object), function (symbol) {
+	    return propertyIsEnumerable.call(object, symbol);
+	  });
+	};
+
+	/**
+	 * Creates an array of own enumerable property names and symbols of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names and symbols.
+	 */
+
+	function getAllKeys(object) {
+	  return baseGetAllKeys(object, keys, getSymbols);
+	}
+
+	/** Used to compose bitmasks for value comparisons. */
+
+	var COMPARE_PARTIAL_FLAG$3 = 1;
+	/** Used for built-in method references. */
+
+	var objectProto$8 = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$7 = objectProto$8.hasOwnProperty;
+	/**
+	 * A specialized version of `baseIsEqualDeep` for objects with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Object} stack Tracks traversed `object` and `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+
+	function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
+	  var isPartial = bitmask & COMPARE_PARTIAL_FLAG$3,
+	      objProps = getAllKeys(object),
+	      objLength = objProps.length,
+	      othProps = getAllKeys(other),
+	      othLength = othProps.length;
+
+	  if (objLength != othLength && !isPartial) {
+	    return false;
+	  }
+
+	  var index = objLength;
+
+	  while (index--) {
+	    var key = objProps[index];
+
+	    if (!(isPartial ? key in other : hasOwnProperty$7.call(other, key))) {
+	      return false;
+	    }
+	  } // Check that cyclic values are equal.
+
+
+	  var objStacked = stack.get(object);
+	  var othStacked = stack.get(other);
+
+	  if (objStacked && othStacked) {
+	    return objStacked == other && othStacked == object;
+	  }
+
+	  var result = true;
+	  stack.set(object, other);
+	  stack.set(other, object);
+	  var skipCtor = isPartial;
+
+	  while (++index < objLength) {
+	    key = objProps[index];
+	    var objValue = object[key],
+	        othValue = other[key];
+
+	    if (customizer) {
+	      var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
+	    } // Recursively compare objects (susceptible to call stack limits).
+
+
+	    if (!(compared === undefined ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {
+	      result = false;
+	      break;
+	    }
+
+	    skipCtor || (skipCtor = key == 'constructor');
+	  }
+
+	  if (result && !skipCtor) {
+	    var objCtor = object.constructor,
+	        othCtor = other.constructor; // Non `Object` object instances with different constructors are not equal.
+
+	    if (objCtor != othCtor && 'constructor' in object && 'constructor' in other && !(typeof objCtor == 'function' && objCtor instanceof objCtor && typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+	      result = false;
+	    }
+	  }
+
+	  stack['delete'](object);
+	  stack['delete'](other);
+	  return result;
+	}
+
+	/* Built-in method references that are verified to be native. */
+
+	var DataView = getNative(root, 'DataView');
+
+	/* Built-in method references that are verified to be native. */
+
+	var Promise$1 = getNative(root, 'Promise');
+
+	/* Built-in method references that are verified to be native. */
+
+	var Set$1 = getNative(root, 'Set');
+
+	/* Built-in method references that are verified to be native. */
+
+	var WeakMap$1 = getNative(root, 'WeakMap');
+
+	/** `Object#toString` result references. */
+
+	var mapTag$2 = '[object Map]',
+	    objectTag$2 = '[object Object]',
+	    promiseTag = '[object Promise]',
+	    setTag$2 = '[object Set]',
+	    weakMapTag = '[object WeakMap]';
+	var dataViewTag = '[object DataView]';
+	/** Used to detect maps, sets, and weakmaps. */
+
+	var dataViewCtorString = toSource(DataView),
+	    mapCtorString = toSource(Map$1),
+	    promiseCtorString = toSource(Promise$1),
+	    setCtorString = toSource(Set$1),
+	    weakMapCtorString = toSource(WeakMap$1);
+	/**
+	 * Gets the `toStringTag` of `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the `toStringTag`.
+	 */
+
+	var getTag = baseGetTag; // Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
+
+	if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map$1 && getTag(new Map$1()) != mapTag$2 || Promise$1 && getTag(Promise$1.resolve()) != promiseTag || Set$1 && getTag(new Set$1()) != setTag$2 || WeakMap$1 && getTag(new WeakMap$1()) != weakMapTag) {
+	  getTag = function (value) {
+	    var result = baseGetTag(value),
+	        Ctor = result == objectTag$2 ? value.constructor : undefined,
+	        ctorString = Ctor ? toSource(Ctor) : '';
+
+	    if (ctorString) {
+	      switch (ctorString) {
+	        case dataViewCtorString:
+	          return dataViewTag;
+
+	        case mapCtorString:
+	          return mapTag$2;
+
+	        case promiseCtorString:
+	          return promiseTag;
+
+	        case setCtorString:
+	          return setTag$2;
+
+	        case weakMapCtorString:
+	          return weakMapTag;
+	      }
+	    }
+
+	    return result;
+	  };
+	}
+
+	var getTag$1 = getTag;
+
+	/** Used to compose bitmasks for value comparisons. */
+
+	var COMPARE_PARTIAL_FLAG$2 = 1;
+	/** `Object#toString` result references. */
+
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    objectTag$1 = '[object Object]';
+	/** Used for built-in method references. */
+
+	var objectProto$7 = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
+	/**
+	 * A specialized version of `baseIsEqual` for arrays and objects which performs
+	 * deep comparisons and tracks traversed objects enabling objects with circular
+	 * references to be compared.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+
+	function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
+	  var objIsArr = isArray(object),
+	      othIsArr = isArray(other),
+	      objTag = objIsArr ? arrayTag : getTag$1(object),
+	      othTag = othIsArr ? arrayTag : getTag$1(other);
+	  objTag = objTag == argsTag ? objectTag$1 : objTag;
+	  othTag = othTag == argsTag ? objectTag$1 : othTag;
+	  var objIsObj = objTag == objectTag$1,
+	      othIsObj = othTag == objectTag$1,
+	      isSameTag = objTag == othTag;
+
+	  if (isSameTag && isBuffer(object)) {
+	    if (!isBuffer(other)) {
+	      return false;
+	    }
+
+	    objIsArr = true;
+	    objIsObj = false;
+	  }
+
+	  if (isSameTag && !objIsObj) {
+	    stack || (stack = new Stack());
+	    return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+	  }
+
+	  if (!(bitmask & COMPARE_PARTIAL_FLAG$2)) {
+	    var objIsWrapped = objIsObj && hasOwnProperty$6.call(object, '__wrapped__'),
+	        othIsWrapped = othIsObj && hasOwnProperty$6.call(other, '__wrapped__');
+
+	    if (objIsWrapped || othIsWrapped) {
+	      var objUnwrapped = objIsWrapped ? object.value() : object,
+	          othUnwrapped = othIsWrapped ? other.value() : other;
+	      stack || (stack = new Stack());
+	      return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+	    }
+	  }
+
+	  if (!isSameTag) {
+	    return false;
+	  }
+
+	  stack || (stack = new Stack());
+	  return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
+	}
+
+	/**
+	 * The base implementation of `_.isEqual` which supports partial comparisons
+	 * and tracks traversed objects.
+	 *
+	 * @private
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @param {boolean} bitmask The bitmask flags.
+	 *  1 - Unordered comparison
+	 *  2 - Partial comparison
+	 * @param {Function} [customizer] The function to customize comparisons.
+	 * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 */
+
+	function baseIsEqual(value, other, bitmask, customizer, stack) {
+	  if (value === other) {
+	    return true;
+	  }
+
+	  if (value == null || other == null || !isObjectLike(value) && !isObjectLike(other)) {
+	    return value !== value && other !== other;
+	  }
+
+	  return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
+	}
+
+	/** Used to compose bitmasks for value comparisons. */
+
+	var COMPARE_PARTIAL_FLAG$1 = 1,
+	    COMPARE_UNORDERED_FLAG$1 = 2;
+	/**
+	 * The base implementation of `_.isMatch` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Object} object The object to inspect.
+	 * @param {Object} source The object of property values to match.
+	 * @param {Array} matchData The property names, values, and compare flags to match.
+	 * @param {Function} [customizer] The function to customize comparisons.
+	 * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+	 */
+
+	function baseIsMatch(object, source, matchData, customizer) {
+	  var index = matchData.length,
+	      length = index,
+	      noCustomizer = !customizer;
+
+	  if (object == null) {
+	    return !length;
+	  }
+
+	  object = Object(object);
+
+	  while (index--) {
+	    var data = matchData[index];
+
+	    if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+	      return false;
+	    }
+	  }
+
+	  while (++index < length) {
+	    data = matchData[index];
+	    var key = data[0],
+	        objValue = object[key],
+	        srcValue = data[1];
+
+	    if (noCustomizer && data[2]) {
+	      if (objValue === undefined && !(key in object)) {
+	        return false;
+	      }
+	    } else {
+	      var stack = new Stack();
+
+	      if (customizer) {
+	        var result = customizer(objValue, srcValue, key, object, source, stack);
+	      }
+
+	      if (!(result === undefined ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$1 | COMPARE_UNORDERED_FLAG$1, customizer, stack) : result)) {
+	        return false;
+	      }
+	    }
+	  }
+
+	  return true;
+	}
+
+	/**
+	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` if suitable for strict
+	 *  equality comparisons, else `false`.
+	 */
+
+	function isStrictComparable(value) {
+	  return value === value && !isObject$1(value);
+	}
+
+	/**
+	 * Gets the property names, values, and compare flags of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the match data of `object`.
+	 */
+
+	function getMatchData(object) {
+	  var result = keys(object),
+	      length = result.length;
+
+	  while (length--) {
+	    var key = result[length],
+	        value = object[key];
+	    result[length] = [key, value, isStrictComparable(value)];
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * A specialized version of `matchesProperty` for source values suitable
+	 * for strict equality comparisons, i.e. `===`.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @param {*} srcValue The value to match.
+	 * @returns {Function} Returns the new spec function.
+	 */
+	function matchesStrictComparable(key, srcValue) {
+	  return function (object) {
+	    if (object == null) {
+	      return false;
+	    }
+
+	    return object[key] === srcValue && (srcValue !== undefined || key in Object(object));
+	  };
+	}
+
+	/**
+	 * The base implementation of `_.matches` which doesn't clone `source`.
+	 *
+	 * @private
+	 * @param {Object} source The object of property values to match.
+	 * @returns {Function} Returns the new spec function.
+	 */
+
+	function baseMatches(source) {
+	  var matchData = getMatchData(source);
+
+	  if (matchData.length == 1 && matchData[0][2]) {
+	    return matchesStrictComparable(matchData[0][0], matchData[0][1]);
+	  }
+
+	  return function (object) {
+	    return object === source || baseIsMatch(object, source, matchData);
+	  };
+	}
+
+	/**
+	 * Gets the value at `path` of `object`. If the resolved value is
+	 * `undefined`, the `defaultValue` is returned in its place.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.7.0
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to get.
+	 * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+	 * @returns {*} Returns the resolved value.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+	 *
+	 * _.get(object, 'a[0].b.c');
+	 * // => 3
+	 *
+	 * _.get(object, ['a', '0', 'b', 'c']);
+	 * // => 3
+	 *
+	 * _.get(object, 'a.b.c', 'default');
+	 * // => 'default'
+	 */
+
+	function get(object, path, defaultValue) {
+	  var result = object == null ? undefined : baseGet(object, path);
+	  return result === undefined ? defaultValue : result;
+	}
+
+	/**
+	 * The base implementation of `_.hasIn` without support for deep paths.
+	 *
+	 * @private
+	 * @param {Object} [object] The object to query.
+	 * @param {Array|string} key The key to check.
+	 * @returns {boolean} Returns `true` if `key` exists, else `false`.
+	 */
+	function baseHasIn(object, key) {
+	  return object != null && key in Object(object);
+	}
+
+	/**
+	 * Checks if `path` is a direct or inherited property of `object`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path to check.
+	 * @returns {boolean} Returns `true` if `path` exists, else `false`.
+	 * @example
+	 *
+	 * var object = _.create({ 'a': _.create({ 'b': 2 }) });
+	 *
+	 * _.hasIn(object, 'a');
+	 * // => true
+	 *
+	 * _.hasIn(object, 'a.b');
+	 * // => true
+	 *
+	 * _.hasIn(object, ['a', 'b']);
+	 * // => true
+	 *
+	 * _.hasIn(object, 'b');
+	 * // => false
+	 */
+
+	function hasIn(object, path) {
+	  return object != null && hasPath(object, path, baseHasIn);
+	}
+
+	/** Used to compose bitmasks for value comparisons. */
+
+	var COMPARE_PARTIAL_FLAG = 1,
+	    COMPARE_UNORDERED_FLAG = 2;
+	/**
+	 * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
+	 *
+	 * @private
+	 * @param {string} path The path of the property to get.
+	 * @param {*} srcValue The value to match.
+	 * @returns {Function} Returns the new spec function.
+	 */
+
+	function baseMatchesProperty(path, srcValue) {
+	  if (isKey(path) && isStrictComparable(srcValue)) {
+	    return matchesStrictComparable(toKey(path), srcValue);
+	  }
+
+	  return function (object) {
+	    var objValue = get(object, path);
+	    return objValue === undefined && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG);
+	  };
+	}
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new accessor function.
+	 */
+	function baseProperty(key) {
+	  return function (object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * A specialized version of `baseProperty` which supports deep paths.
+	 *
+	 * @private
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new accessor function.
+	 */
+
+	function basePropertyDeep(path) {
+	  return function (object) {
+	    return baseGet(object, path);
+	  };
+	}
+
+	/**
+	 * Creates a function that returns the value at `path` of a given object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 2.4.0
+	 * @category Util
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new accessor function.
+	 * @example
+	 *
+	 * var objects = [
+	 *   { 'a': { 'b': 2 } },
+	 *   { 'a': { 'b': 1 } }
+	 * ];
+	 *
+	 * _.map(objects, _.property('a.b'));
+	 * // => [2, 1]
+	 *
+	 * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
+	 * // => [1, 2]
+	 */
+
+	function property(path) {
+	  return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
+	}
+
+	/**
+	 * The base implementation of `_.iteratee`.
+	 *
+	 * @private
+	 * @param {*} [value=_.identity] The value to convert to an iteratee.
+	 * @returns {Function} Returns the iteratee.
+	 */
+
+	function baseIteratee(value) {
+	  // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+	  // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+	  if (typeof value == 'function') {
+	    return value;
+	  }
+
+	  if (value == null) {
+	    return identity;
+	  }
+
+	  if (typeof value == 'object') {
+	    return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+	  }
+
+	  return property(value);
+	}
+
+	/**
+	 * Iterates over elements of `collection`, returning an array of all elements
+	 * `predicate` returns truthy for. The predicate is invoked with three
+	 * arguments: (value, index|key, collection).
+	 *
+	 * **Note:** Unlike `_.remove`, this method returns a new array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @returns {Array} Returns the new filtered array.
+	 * @see _.reject
+	 * @example
+	 *
+	 * var users = [
+	 *   { 'user': 'barney', 'age': 36, 'active': true },
+	 *   { 'user': 'fred',   'age': 40, 'active': false }
+	 * ];
+	 *
+	 * _.filter(users, function(o) { return !o.active; });
+	 * // => objects for ['fred']
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.filter(users, { 'age': 36, 'active': true });
+	 * // => objects for ['barney']
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.filter(users, ['active', false]);
+	 * // => objects for ['fred']
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.filter(users, 'active');
+	 * // => objects for ['barney']
+	 *
+	 * // Combining several predicates using `_.overEvery` or `_.overSome`.
+	 * _.filter(users, _.overSome([{ 'age': 36 }, ['age', 40]]));
+	 * // => objects for ['fred', 'barney']
+	 */
+
+	function filter(collection, predicate) {
+	  var func = isArray(collection) ? arrayFilter : baseFilter;
+	  return func(collection, baseIteratee(predicate));
+	}
+
+	/** `Object#toString` result references. */
+
+	var mapTag$1 = '[object Map]',
+	    setTag$1 = '[object Set]';
+	/** Used for built-in method references. */
+
+	var objectProto$6 = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+	/**
+	 * Checks if `value` is an empty object, collection, map, or set.
+	 *
+	 * Objects are considered empty if they have no own enumerable string keyed
+	 * properties.
+	 *
+	 * Array-like values such as `arguments` objects, arrays, buffers, strings, or
+	 * jQuery-like collections are considered empty if they have a `length` of `0`.
+	 * Similarly, maps and sets are considered empty if they have a `size` of `0`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is empty, else `false`.
+	 * @example
+	 *
+	 * _.isEmpty(null);
+	 * // => true
+	 *
+	 * _.isEmpty(true);
+	 * // => true
+	 *
+	 * _.isEmpty(1);
+	 * // => true
+	 *
+	 * _.isEmpty([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isEmpty({ 'a': 1 });
+	 * // => false
+	 */
+
+	function isEmpty(value) {
+	  if (value == null) {
+	    return true;
+	  }
+
+	  if (isArrayLike(value) && (isArray(value) || typeof value == 'string' || typeof value.splice == 'function' || isBuffer(value) || isTypedArray(value) || isArguments(value))) {
+	    return !value.length;
+	  }
+
+	  var tag = getTag$1(value);
+
+	  if (tag == mapTag$1 || tag == setTag$1) {
+	    return !value.size;
+	  }
+
+	  if (isPrototype(value)) {
+	    return !baseKeys(value).length;
+	  }
+
+	  for (var key in value) {
+	    if (hasOwnProperty$5.call(value, key)) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	}
+
+	/**
+	 * The base implementation of `_.findIndex` and `_.findLastIndex` without
+	 * support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @param {number} fromIndex The index to search from.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function baseFindIndex(array, predicate, fromIndex, fromRight) {
+	  var length = array.length,
+	      index = fromIndex + (fromRight ? 1 : -1);
+
+	  while (fromRight ? index-- : ++index < length) {
+	    if (predicate(array[index], index, array)) {
+	      return index;
+	    }
+	  }
+
+	  return -1;
+	}
+
+	/**
+	 * The base implementation of `_.isNaN` without support for number objects.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+	 */
+	function baseIsNaN(value) {
+	  return value !== value;
+	}
+
+	/**
+	 * A specialized version of `_.indexOf` which performs strict equality
+	 * comparisons of values, i.e. `===`.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function strictIndexOf(array, value, fromIndex) {
+	  var index = fromIndex - 1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    if (array[index] === value) {
+	      return index;
+	    }
+	  }
+
+	  return -1;
+	}
+
+	/**
+	 * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+
+	function baseIndexOf(array, value, fromIndex) {
+	  return value === value ? strictIndexOf(array, value, fromIndex) : baseFindIndex(array, baseIsNaN, fromIndex);
+	}
+
+	/**
+	 * A specialized version of `_.includes` for arrays without support for
+	 * specifying an index to search from.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to inspect.
+	 * @param {*} target The value to search for.
+	 * @returns {boolean} Returns `true` if `target` is found, else `false`.
+	 */
+
+	function arrayIncludes(array, value) {
+	  var length = array == null ? 0 : array.length;
+	  return !!length && baseIndexOf(array, value, 0) > -1;
+	}
+
+	/**
+	 * This function is like `arrayIncludes` except that it accepts a comparator.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to inspect.
+	 * @param {*} target The value to search for.
+	 * @param {Function} comparator The comparator invoked per element.
+	 * @returns {boolean} Returns `true` if `target` is found, else `false`.
+	 */
+	function arrayIncludesWith(array, value, comparator) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  while (++index < length) {
+	    if (comparator(value, array[index])) {
+	      return true;
+	    }
+	  }
+
+	  return false;
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMin$3 = Math.min;
+	/**
+	 * The base implementation of methods like `_.intersection`, without support
+	 * for iteratee shorthands, that accepts an array of arrays to inspect.
+	 *
+	 * @private
+	 * @param {Array} arrays The arrays to inspect.
+	 * @param {Function} [iteratee] The iteratee invoked per element.
+	 * @param {Function} [comparator] The comparator invoked per element.
+	 * @returns {Array} Returns the new array of shared values.
+	 */
+
+	function baseIntersection(arrays, iteratee, comparator) {
+	  var includes = comparator ? arrayIncludesWith : arrayIncludes,
+	      length = arrays[0].length,
+	      othLength = arrays.length,
+	      othIndex = othLength,
+	      caches = Array(othLength),
+	      maxLength = Infinity,
+	      result = [];
+
+	  while (othIndex--) {
+	    var array = arrays[othIndex];
+
+	    if (othIndex && iteratee) {
+	      array = arrayMap(array, baseUnary(iteratee));
+	    }
+
+	    maxLength = nativeMin$3(array.length, maxLength);
+	    caches[othIndex] = !comparator && (iteratee || length >= 120 && array.length >= 120) ? new SetCache(othIndex && array) : undefined;
+	  }
+
+	  array = arrays[0];
+	  var index = -1,
+	      seen = caches[0];
+
+	  outer: while (++index < length && result.length < maxLength) {
+	    var value = array[index],
+	        computed = iteratee ? iteratee(value) : value;
+	    value = comparator || value !== 0 ? value : 0;
+
+	    if (!(seen ? cacheHas(seen, computed) : includes(result, computed, comparator))) {
+	      othIndex = othLength;
+
+	      while (--othIndex) {
+	        var cache = caches[othIndex];
+
+	        if (!(cache ? cacheHas(cache, computed) : includes(arrays[othIndex], computed, comparator))) {
+	          continue outer;
+	        }
+	      }
+
+	      if (seen) {
+	        seen.push(computed);
+	      }
+
+	      result.push(value);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Casts `value` to an empty array if it's not an array like object.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {Array|Object} Returns the cast array-like object.
+	 */
+
+	function castArrayLikeObject(value) {
+	  return isArrayLikeObject(value) ? value : [];
+	}
+
+	/**
+	 * Creates an array of unique values that are included in all given arrays
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons. The order and references of result values are
+	 * determined by the first array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {...Array} [arrays] The arrays to inspect.
+	 * @returns {Array} Returns the new array of intersecting values.
+	 * @example
+	 *
+	 * _.intersection([2, 1], [2, 3]);
+	 * // => [2]
+	 */
+
+	var intersection = baseRest(function (arrays) {
+	  var mapped = arrayMap(arrays, castArrayLikeObject);
+	  return mapped.length && mapped[0] === arrays[0] ? baseIntersection(mapped) : [];
+	});
+
+	/**
+	 * A specialized version of `_.forEach` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns `array`.
+	 */
+	function arrayEach(array, iteratee) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  while (++index < length) {
+	    if (iteratee(array[index], index, array) === false) {
+	      break;
+	    }
+	  }
+
+	  return array;
+	}
+
+	/**
+	 * Casts `value` to `identity` if it's not a function.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {Function} Returns cast function.
+	 */
+
+	function castFunction(value) {
+	  return typeof value == 'function' ? value : identity;
+	}
+
+	/**
+	 * Iterates over elements of `collection` and invokes `iteratee` for each element.
+	 * The iteratee is invoked with three arguments: (value, index|key, collection).
+	 * Iteratee functions may exit iteration early by explicitly returning `false`.
+	 *
+	 * **Note:** As with other "Collections" methods, objects with a "length"
+	 * property are iterated like arrays. To avoid this behavior use `_.forIn`
+	 * or `_.forOwn` for object iteration.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @alias each
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+	 * @returns {Array|Object} Returns `collection`.
+	 * @see _.forEachRight
+	 * @example
+	 *
+	 * _.forEach([1, 2], function(value) {
+	 *   console.log(value);
+	 * });
+	 * // => Logs `1` then `2`.
+	 *
+	 * _.forEach({ 'a': 1, 'b': 2 }, function(value, key) {
+	 *   console.log(key);
+	 * });
+	 * // => Logs 'a' then 'b' (iteration order is not guaranteed).
+	 */
+
+	function forEach(collection, iteratee) {
+	  var func = isArray(collection) ? arrayEach : baseEach;
+	  return func(collection, castFunction(iteratee));
+	}
+
+	var getDefaultPropName = function getDefaultPropName(prop) {
+	  return "default" + (prop[0].toUpperCase() + prop.slice(1));
+	};
+	/**
+	 * Return the auto controlled state value for a give prop. The initial value is chosen in this order:
+	 *  - regular props
+	 *  - then, default props
+	 *  - then, initial state
+	 *  - then, `checked` defaults to false
+	 *  - then, `value` defaults to '' or [] if props.multiple
+	 *  - else, undefined
+	 *
+	 *  @param {string} propName A prop name
+	 *  @param {object} [props] A props object
+	 *  @param {object} [state] A state object
+	 *  @param {boolean} [includeDefaults=false] Whether or not to heed the default props or initial state
+	 */
+
+
+	var getAutoControlledStateValue = function getAutoControlledStateValue(propName, props, state, includeDefaults) {
+	  if (includeDefaults === void 0) {
+	    includeDefaults = false;
+	  } // regular props
+
+
+	  var propValue = props[propName];
+	  if (propValue !== undefined) return propValue;
+
+	  if (includeDefaults) {
+	    // defaultProps
+	    var defaultProp = props[getDefaultPropName(propName)];
+	    if (defaultProp !== undefined) return defaultProp; // initial state - state may be null or undefined
+
+	    if (state) {
+	      var initialState = state[propName];
+	      if (initialState !== undefined) return initialState;
+	    }
+	  } // React doesn't allow changing from uncontrolled to controlled components,
+	  // default checked/value if they were not present.
+
+
+	  if (propName === 'checked') return false;
+	  if (propName === 'value') return props.multiple ? [] : ''; // otherwise, undefined
+	};
+
+	var ModernAutoControlledComponent = /*#__PURE__*/function (_React$Component) {
+	  _inheritsLoose(ModernAutoControlledComponent, _React$Component);
+
+	  function ModernAutoControlledComponent() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+	    var _this$constructor = _this.constructor,
+	        autoControlledProps = _this$constructor.autoControlledProps,
+	        getAutoControlledStateFromProps = _this$constructor.getAutoControlledStateFromProps;
+	    var state = invoke(_assertThisInitialized$1(_this), 'getInitialAutoControlledState', _this.props) || {};
+
+	    {
+	      var _this$constructor2 = _this.constructor,
+	          defaultProps = _this$constructor2.defaultProps,
+	          name = _this$constructor2.name,
+	          propTypes = _this$constructor2.propTypes,
+	          getDerivedStateFromProps = _this$constructor2.getDerivedStateFromProps; // require usage of getAutoControlledStateFromProps()
+
+	      if (getDerivedStateFromProps !== ModernAutoControlledComponent.getDerivedStateFromProps) {
+	        /* eslint-disable-next-line no-console */
+	        console.error("Auto controlled " + name + " must specify a static getAutoControlledStateFromProps() instead of getDerivedStateFromProps().");
+	      } // require propTypes
+
+
+	      forEach(autoControlledProps, function (prop) {
+	        var defaultProp = getDefaultPropName(prop); // regular prop
+
+	        if (!has$3(propTypes, defaultProp)) {
+	          console.error(name + " is missing \"" + defaultProp + "\" propTypes validation for auto controlled prop \"" + prop + "\".");
+	        } // its default prop
+
+
+	        if (!has$3(propTypes, prop)) {
+	          console.error(name + " is missing propTypes validation for auto controlled prop \"" + prop + "\".");
+	        }
+	      }); // prevent autoControlledProps in defaultProps
+	      //
+	      // When setting state, auto controlled props values always win (so the parent can manage them).
+	      // It is not reasonable to decipher the difference between props from the parent and defaultProps.
+	      // Allowing defaultProps results in trySetState always deferring to the defaultProp value.
+	      // Auto controlled props also listed in defaultProps can never be updated.
+	      //
+	      // To set defaults for an AutoControlled prop, you can set the initial state in the
+	      // constructor or by using an ES7 property initializer:
+	      // https://babeljs.io/blog/2015/06/07/react-on-es6-plus#property-initializers
+
+
+	      var illegalDefaults = intersection(autoControlledProps, keys(defaultProps));
+
+	      if (!isEmpty(illegalDefaults)) {
+	        console.error(['Do not set defaultProps for autoControlledProps. You can set defaults by', 'setting state in the constructor or using an ES7 property initializer', '(https://babeljs.io/blog/2015/06/07/react-on-es6-plus#property-initializers)', "See " + name + " props: \"" + illegalDefaults + "\"."].join(' '));
+	      } // prevent listing defaultProps in autoControlledProps
+	      //
+	      // Default props are automatically handled.
+	      // Listing defaults in autoControlledProps would result in allowing defaultDefaultValue props.
+
+
+	      var illegalAutoControlled = filter(autoControlledProps, function (prop) {
+	        return startsWith(prop, 'default');
+	      });
+
+	      if (!isEmpty(illegalAutoControlled)) {
+	        console.error(['Do not add default props to autoControlledProps.', 'Default props are automatically handled.', "See " + name + " autoControlledProps: \"" + illegalAutoControlled + "\"."].join(' '));
+	      }
+	    } // Auto controlled props are copied to state.
+	    // Set initial state by copying auto controlled props to state.
+	    // Also look for the default prop for any auto controlled props (foo => defaultFoo)
+	    // so we can set initial values from defaults.
+
+
+	    var initialAutoControlledState = autoControlledProps.reduce(function (acc, prop) {
+	      acc[prop] = getAutoControlledStateValue(prop, _this.props, state, true);
+
+	      {
+	        var defaultPropName = getDefaultPropName(prop);
+	        var _name = _this.constructor.name; // prevent defaultFoo={} along side foo={}
+
+	        if (!isUndefined(_this.props[defaultPropName]) && !isUndefined(_this.props[prop])) {
+	          console.error(_name + " prop \"" + prop + "\" is auto controlled. Specify either " + defaultPropName + " or " + prop + ", but not both.");
+	        }
+	      }
+
+	      return acc;
+	    }, {});
+	    _this.state = _extends({}, state, initialAutoControlledState, {
+	      autoControlledProps: autoControlledProps,
+	      getAutoControlledStateFromProps: getAutoControlledStateFromProps
+	    });
+	    return _this;
+	  }
+
+	  ModernAutoControlledComponent.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
+	    var autoControlledProps = state.autoControlledProps,
+	        getAutoControlledStateFromProps = state.getAutoControlledStateFromProps; // Solve the next state for autoControlledProps
+
+	    var newStateFromProps = autoControlledProps.reduce(function (acc, prop) {
+	      var isNextDefined = !isUndefined(props[prop]); // if next is defined then use its value
+
+	      if (isNextDefined) acc[prop] = props[prop];
+	      return acc;
+	    }, {}); // Due to the inheritance of the AutoControlledComponent we should call its
+	    // getAutoControlledStateFromProps() and merge it with the existing state
+
+	    if (getAutoControlledStateFromProps) {
+	      var computedState = getAutoControlledStateFromProps(props, _extends({}, state, newStateFromProps), state); // We should follow the idea of getDerivedStateFromProps() and return only modified state
+
+	      return _extends({}, newStateFromProps, computedState);
+	    }
+
+	    return newStateFromProps;
+	  }
+	  /**
+	   * Override this method to use getDerivedStateFromProps() in child components.
+	   */
+	  ;
+
+	  ModernAutoControlledComponent.getAutoControlledStateFromProps = function getAutoControlledStateFromProps() {
+	    return null;
+	  };
+
+	  return ModernAutoControlledComponent;
+	}(React$1.Component);
+
+	/**
+	 * Creates a `_.find` or `_.findLast` function.
+	 *
+	 * @private
+	 * @param {Function} findIndexFunc The function to find the collection index.
+	 * @returns {Function} Returns the new find function.
+	 */
+
+	function createFind(findIndexFunc) {
+	  return function (collection, predicate, fromIndex) {
+	    var iterable = Object(collection);
+
+	    if (!isArrayLike(collection)) {
+	      var iteratee = baseIteratee(predicate);
+	      collection = keys(collection);
+
+	      predicate = function (key) {
+	        return iteratee(iterable[key], key, iterable);
+	      };
+	    }
+
+	    var index = findIndexFunc(collection, predicate, fromIndex);
+	    return index > -1 ? iterable[iteratee ? collection[index] : index] : undefined;
+	  };
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMax$5 = Math.max;
+	/**
+	 * This method is like `_.find` except that it returns the index of the first
+	 * element `predicate` returns truthy for instead of the element itself.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 1.1.0
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @returns {number} Returns the index of the found element, else `-1`.
+	 * @example
+	 *
+	 * var users = [
+	 *   { 'user': 'barney',  'active': false },
+	 *   { 'user': 'fred',    'active': false },
+	 *   { 'user': 'pebbles', 'active': true }
+	 * ];
+	 *
+	 * _.findIndex(users, function(o) { return o.user == 'barney'; });
+	 * // => 0
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.findIndex(users, { 'user': 'fred', 'active': false });
+	 * // => 1
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.findIndex(users, ['active', false]);
+	 * // => 0
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.findIndex(users, 'active');
+	 * // => 2
+	 */
+
+	function findIndex(array, predicate, fromIndex) {
+	  var length = array == null ? 0 : array.length;
+
+	  if (!length) {
+	    return -1;
+	  }
+
+	  var index = fromIndex == null ? 0 : toInteger(fromIndex);
+
+	  if (index < 0) {
+	    index = nativeMax$5(length + index, 0);
+	  }
+
+	  return baseFindIndex(array, baseIteratee(predicate), index);
+	}
+
+	/**
+	 * Iterates over elements of `collection`, returning the first element
+	 * `predicate` returns truthy for. The predicate is invoked with three
+	 * arguments: (value, index|key, collection).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to inspect.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @returns {*} Returns the matched element, else `undefined`.
+	 * @example
+	 *
+	 * var users = [
+	 *   { 'user': 'barney',  'age': 36, 'active': true },
+	 *   { 'user': 'fred',    'age': 40, 'active': false },
+	 *   { 'user': 'pebbles', 'age': 1,  'active': true }
+	 * ];
+	 *
+	 * _.find(users, function(o) { return o.age < 40; });
+	 * // => object for 'barney'
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.find(users, { 'age': 1, 'active': true });
+	 * // => object for 'pebbles'
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.find(users, ['active', false]);
+	 * // => object for 'fred'
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.find(users, 'active');
+	 * // => object for 'barney'
+	 */
+
+	var find = createFind(findIndex);
+
+	/**
+	 * The base implementation of `_.some` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+
+	function baseSome(collection, predicate) {
+	  var result;
+	  baseEach(collection, function (value, index, collection) {
+	    result = predicate(value, index, collection);
+	    return !result;
+	  });
+	  return !!result;
+	}
+
+	/**
+	 * Checks if the given arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+	 *  else `false`.
+	 */
+
+	function isIterateeCall(value, index, object) {
+	  if (!isObject$1(object)) {
+	    return false;
+	  }
+
+	  var type = typeof index;
+
+	  if (type == 'number' ? isArrayLike(object) && isIndex(index, object.length) : type == 'string' && index in object) {
+	    return eq(object[index], value);
+	  }
+
+	  return false;
+	}
+
+	/**
+	 * Checks if `predicate` returns truthy for **any** element of `collection`.
+	 * Iteration is stopped once `predicate` returns truthy. The predicate is
+	 * invoked with three arguments: (value, index|key, collection).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.some([null, 0, 'yes', false], Boolean);
+	 * // => true
+	 *
+	 * var users = [
+	 *   { 'user': 'barney', 'active': true },
+	 *   { 'user': 'fred',   'active': false }
+	 * ];
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.some(users, { 'user': 'barney', 'active': false });
+	 * // => false
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.some(users, ['active', false]);
+	 * // => true
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.some(users, 'active');
+	 * // => true
+	 */
+
+	function some(collection, predicate, guard) {
+	  var func = isArray(collection) ? arraySome : baseSome;
+
+	  if (guard && isIterateeCall(collection, predicate, guard)) {
+	    predicate = undefined;
+	  }
+
+	  return func(collection, baseIteratee(predicate));
+	}
+
+	/**
+	 * Determine if child by type exists in children.
+	 * @param {Object} children The children prop of a component.
+	 * @param {string|Function} type An html tag name string or React component.
+	 * @returns {Boolean}
+	 */
+
+	var someByType = function someByType(children, type) {
+	  return some(react.exports.Children.toArray(children), {
+	    type: type
+	  });
+	};
+	/**
+	 * Tests if children are nil in React and Preact.
+	 * @param {Object} children The children prop of a component.
+	 * @returns {Boolean}
+	 */
+
+	var isNil$1 = function isNil(children) {
+	  return children === null || children === undefined || Array.isArray(children) && children.length === 0;
+	};
+
+	var numberToWordMap = {
+	  1: 'one',
+	  2: 'two',
+	  3: 'three',
+	  4: 'four',
+	  5: 'five',
+	  6: 'six',
+	  7: 'seven',
+	  8: 'eight',
+	  9: 'nine',
+	  10: 'ten',
+	  11: 'eleven',
+	  12: 'twelve',
+	  13: 'thirteen',
+	  14: 'fourteen',
+	  15: 'fifteen',
+	  16: 'sixteen'
+	};
+	/**
+	 * Return the number word for numbers 1-16.
+	 * Returns strings or numbers as is if there is no corresponding word.
+	 * Returns an empty string if value is not a string or number.
+	 * @param {string|number} value The value to convert to a word.
+	 * @returns {string}
+	 */
+
+	function numberToWord(value) {
+	  var type = typeof value;
+
+	  if (type === 'string' || type === 'number') {
+	    return numberToWordMap[value] || value;
+	  }
+
+	  return '';
+	}
+
+	/*
+	 * There are 3 prop patterns used to build up the className for a component.
+	 * Each utility here is meant for use in a classnames() argument.
+	 *
+	 * There is no util for valueOnly() because it would simply return val.
+	 * Use the prop value inline instead.
+	 *   <Label size='big' />
+	 *   <div class="ui big label"></div>
+	 */
+
+	/**
+	 * Props where only the prop key is used in the className.
+	 * @param {*} val A props value
+	 * @param {string} key A props key
+	 *
+	 * @example
+	 * <Label tag />
+	 * <div class="ui tag label"></div>
+	 */
+
+	var useKeyOnly = function useKeyOnly(val, key) {
+	  return val && key;
+	};
+	/**
+	 * Props that require both a key and value to create a className.
+	 * @param {*} val A props value
+	 * @param {string} key A props key
+	 *
+	 * @example
+	 * <Label corner='left' />
+	 * <div class="ui left corner label"></div>
+	 */
+
+	var useValueAndKey = function useValueAndKey(val, key) {
+	  return val && val !== true && val + " " + key;
+	};
+	/**
+	 * Props whose key will be used in className, or value and key.
+	 * @param {*} val A props value
+	 * @param {string} key A props key
+	 *
+	 * @example Key Only
+	 * <Label pointing />
+	 * <div class="ui pointing label"></div>
+	 *
+	 * @example Key and Value
+	 * <Label pointing='left' />
+	 * <div class="ui left pointing label"></div>
+	 */
+
+	var useKeyOrValueAndKey = function useKeyOrValueAndKey(val, key) {
+	  return val && (val === true ? key : val + " " + key);
+	}; //
+	// Prop to className exceptions
+	//
+
+	/**
+	 * The "multiple" prop implements control of visibility and reserved classes for Grid subcomponents.
+	 *
+	 * @param {*} val The value of the "multiple" prop
+	 * @param {*} key A props key
+	 *
+	 * @example
+	 * <Grid.Row only='mobile' />
+	 * <Grid.Row only='mobile tablet' />
+	 * <div class="mobile only row"></div>
+	 * <div class="mobile only tablet only row"></div>
+	 */
+
+	var useMultipleProp = function useMultipleProp(val, key) {
+	  if (!val || val === true) return null;
+	  return val.replace('large screen', 'large-screen').replace(/ vertically/g, '-vertically').split(' ').map(function (prop) {
+	    return prop.replace('-', ' ') + " " + key;
+	  }).join(' ');
+	};
+	/**
+	 * The "textAlign" prop follows the useValueAndKey except when the value is "justified'.
+	 * In this case, only the class "justified" is used, ignoring the "aligned" class.
+	 * @param {*} val The value of the "textAlign" prop
+	 *
+	 * @example
+	 * <Container textAlign='justified' />
+	 * <div class="ui justified container"></div>
+	 *
+	 * @example
+	 * <Container textAlign='left' />
+	 * <div class="ui left aligned container"></div>
+	 */
+
+	var useTextAlignProp = function useTextAlignProp(val) {
+	  return val === 'justified' ? 'justified' : useValueAndKey(val, 'aligned');
+	};
+	/**
+	 * The "verticalAlign" prop follows the useValueAndKey.
+	 *
+	 * @param {*} val The value of the "verticalAlign" prop
+	 *
+	 * @example
+	 * <Grid verticalAlign='middle' />
+	 * <div class="ui middle aligned grid"></div>
+	 */
+
+	var useVerticalAlignProp = function useVerticalAlignProp(val) {
+	  return useValueAndKey(val, 'aligned');
+	};
+	/**
+	 * Create "X", "X wide" and "equal width" classNames.
+	 * "X" is a numberToWord value and "wide" is configurable.
+	 * @param {*} val The prop value
+	 * @param {string} [widthClass=''] The class
+	 * @param {boolean} [canEqual=false] Flag that indicates possibility of "equal" value
+	 *
+	 * @example
+	 * <Grid columns='equal' />
+	 * <div class="ui equal width grid"></div>
+	 *
+	 * <Form widths='equal' />
+	 * <div class="ui equal width form"></div>
+	 *
+	 * <FieldGroup widths='equal' />
+	 * <div class="equal width fields"></div>
+	 *
+	 * @example
+	 * <Grid columns={4} />
+	 * <div class="ui four column grid"></div>
+	 */
+
+	var useWidthProp = function useWidthProp(val, widthClass, canEqual) {
+	  if (widthClass === void 0) {
+	    widthClass = '';
+	  }
+
+	  if (canEqual === void 0) {
+	    canEqual = false;
+	  }
+
+	  if (canEqual && val === 'equal') {
+	    return 'equal width';
+	  }
+
+	  var valType = typeof val;
+
+	  if ((valType === 'string' || valType === 'number') && widthClass) {
+	    return numberToWord(val) + " " + widthClass;
+	  }
+
+	  return numberToWord(val);
+	};
+
+	/** Used as the size to enable large array optimizations. */
+
+	var LARGE_ARRAY_SIZE$1 = 200;
+	/**
+	 * The base implementation of methods like `_.difference` without support
+	 * for excluding multiple arrays or iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Array} values The values to exclude.
+	 * @param {Function} [iteratee] The iteratee invoked per element.
+	 * @param {Function} [comparator] The comparator invoked per element.
+	 * @returns {Array} Returns the new array of filtered values.
+	 */
+
+	function baseDifference(array, values, iteratee, comparator) {
+	  var index = -1,
+	      includes = arrayIncludes,
+	      isCommon = true,
+	      length = array.length,
+	      result = [],
+	      valuesLength = values.length;
+
+	  if (!length) {
+	    return result;
+	  }
+
+	  if (iteratee) {
+	    values = arrayMap(values, baseUnary(iteratee));
+	  }
+
+	  if (comparator) {
+	    includes = arrayIncludesWith;
+	    isCommon = false;
+	  } else if (values.length >= LARGE_ARRAY_SIZE$1) {
+	    includes = cacheHas;
+	    isCommon = false;
+	    values = new SetCache(values);
+	  }
+
+	  outer: while (++index < length) {
+	    var value = array[index],
+	        computed = iteratee == null ? value : iteratee(value);
+	    value = comparator || value !== 0 ? value : 0;
+
+	    if (isCommon && computed === computed) {
+	      var valuesIndex = valuesLength;
+
+	      while (valuesIndex--) {
+	        if (values[valuesIndex] === computed) {
+	          continue outer;
+	        }
+	      }
+
+	      result.push(value);
+	    } else if (!includes(values, computed, comparator)) {
+	      result.push(value);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/** Built-in value references. */
+
+	var spreadableSymbol = Symbol$1 ? Symbol$1.isConcatSpreadable : undefined;
+	/**
+	 * Checks if `value` is a flattenable `arguments` object or array.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+	 */
+
+	function isFlattenable(value) {
+	  return isArray(value) || isArguments(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+	}
+
+	/**
+	 * The base implementation of `_.flatten` with support for restricting flattening.
+	 *
+	 * @private
+	 * @param {Array} array The array to flatten.
+	 * @param {number} depth The maximum recursion depth.
+	 * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+	 * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
+	 * @param {Array} [result=[]] The initial result value.
+	 * @returns {Array} Returns the new flattened array.
+	 */
+
+	function baseFlatten(array, depth, predicate, isStrict, result) {
+	  var index = -1,
+	      length = array.length;
+	  predicate || (predicate = isFlattenable);
+	  result || (result = []);
+
+	  while (++index < length) {
+	    var value = array[index];
+
+	    if (depth > 0 && predicate(value)) {
+	      if (depth > 1) {
+	        // Recursively flatten arrays (susceptible to call stack limits).
+	        baseFlatten(value, depth - 1, predicate, isStrict, result);
+	      } else {
+	        arrayPush(result, value);
+	      }
+	    } else if (!isStrict) {
+	      result[result.length] = value;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Creates an array of `array` values not included in the other given arrays
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons. The order and references of result values are
+	 * determined by the first array.
+	 *
+	 * **Note:** Unlike `_.pullAll`, this method returns a new array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @param {...Array} [values] The values to exclude.
+	 * @returns {Array} Returns the new array of filtered values.
+	 * @see _.without, _.xor
+	 * @example
+	 *
+	 * _.difference([2, 1], [2, 3]);
+	 * // => [1]
+	 */
+
+	var difference = baseRest(function (array, values) {
+	  return isArrayLikeObject(array) ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true)) : [];
+	});
+
+	/**
+	 * Casts `array` to a slice if it's needed.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {number} start The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the cast slice.
+	 */
+
+	function castSlice(array, start, end) {
+	  var length = array.length;
+	  end = end === undefined ? length : end;
+	  return !start && end >= length ? array : baseSlice(array, start, end);
+	}
+
+	/**
+	 * Used by `_.trim` and `_.trimEnd` to get the index of the last string symbol
+	 * that is not found in the character symbols.
+	 *
+	 * @private
+	 * @param {Array} strSymbols The string symbols to inspect.
+	 * @param {Array} chrSymbols The character symbols to find.
+	 * @returns {number} Returns the index of the last unmatched string symbol.
+	 */
+
+	function charsEndIndex(strSymbols, chrSymbols) {
+	  var index = strSymbols.length;
+
+	  while (index-- && baseIndexOf(chrSymbols, strSymbols[index], 0) > -1) {}
+
+	  return index;
+	}
+
+	/**
+	 * Used by `_.trim` and `_.trimStart` to get the index of the first string symbol
+	 * that is not found in the character symbols.
+	 *
+	 * @private
+	 * @param {Array} strSymbols The string symbols to inspect.
+	 * @param {Array} chrSymbols The character symbols to find.
+	 * @returns {number} Returns the index of the first unmatched string symbol.
+	 */
+
+	function charsStartIndex(strSymbols, chrSymbols) {
+	  var index = -1,
+	      length = strSymbols.length;
+
+	  while (++index < length && baseIndexOf(chrSymbols, strSymbols[index], 0) > -1) {}
+
+	  return index;
+	}
+
+	/**
+	 * Converts an ASCII `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	function asciiToArray(string) {
+	  return string.split('');
+	}
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange$3 = '\\ud800-\\udfff',
+	    rsComboMarksRange$4 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$4 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$4 = '\\u20d0-\\u20ff',
+	    rsComboRange$4 = rsComboMarksRange$4 + reComboHalfMarksRange$4 + rsComboSymbolsRange$4,
+	    rsVarRange$3 = '\\ufe0e\\ufe0f';
+	/** Used to compose unicode capture groups. */
+
+	var rsZWJ$3 = '\\u200d';
+	/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
+
+	var reHasUnicode = RegExp('[' + rsZWJ$3 + rsAstralRange$3 + rsComboRange$4 + rsVarRange$3 + ']');
+	/**
+	 * Checks if `string` contains Unicode symbols.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {boolean} Returns `true` if a symbol is found, else `false`.
+	 */
+
+	function hasUnicode(string) {
+	  return reHasUnicode.test(string);
+	}
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange$2 = '\\ud800-\\udfff',
+	    rsComboMarksRange$3 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$3 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$3 = '\\u20d0-\\u20ff',
+	    rsComboRange$3 = rsComboMarksRange$3 + reComboHalfMarksRange$3 + rsComboSymbolsRange$3,
+	    rsVarRange$2 = '\\ufe0e\\ufe0f';
+	/** Used to compose unicode capture groups. */
+
+	var rsAstral$1 = '[' + rsAstralRange$2 + ']',
+	    rsCombo$3 = '[' + rsComboRange$3 + ']',
+	    rsFitz$2 = '\\ud83c[\\udffb-\\udfff]',
+	    rsModifier$2 = '(?:' + rsCombo$3 + '|' + rsFitz$2 + ')',
+	    rsNonAstral$2 = '[^' + rsAstralRange$2 + ']',
+	    rsRegional$2 = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+	    rsSurrPair$2 = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+	    rsZWJ$2 = '\\u200d';
+	/** Used to compose unicode regexes. */
+
+	var reOptMod$2 = rsModifier$2 + '?',
+	    rsOptVar$2 = '[' + rsVarRange$2 + ']?',
+	    rsOptJoin$2 = '(?:' + rsZWJ$2 + '(?:' + [rsNonAstral$2, rsRegional$2, rsSurrPair$2].join('|') + ')' + rsOptVar$2 + reOptMod$2 + ')*',
+	    rsSeq$2 = rsOptVar$2 + reOptMod$2 + rsOptJoin$2,
+	    rsSymbol$1 = '(?:' + [rsNonAstral$2 + rsCombo$3 + '?', rsCombo$3, rsRegional$2, rsSurrPair$2, rsAstral$1].join('|') + ')';
+	/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+
+	var reUnicode$1 = RegExp(rsFitz$2 + '(?=' + rsFitz$2 + ')|' + rsSymbol$1 + rsSeq$2, 'g');
+	/**
+	 * Converts a Unicode `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+
+	function unicodeToArray(string) {
+	  return string.match(reUnicode$1) || [];
+	}
+
+	/**
+	 * Converts `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+
+	function stringToArray(string) {
+	  return hasUnicode(string) ? unicodeToArray(string) : asciiToArray(string);
+	}
+
+	/**
+	 * Removes leading and trailing whitespace or specified characters from `string`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to trim.
+	 * @param {string} [chars=whitespace] The characters to trim.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {string} Returns the trimmed string.
+	 * @example
+	 *
+	 * _.trim('  abc  ');
+	 * // => 'abc'
+	 *
+	 * _.trim('-_-abc-_-', '_-');
+	 * // => 'abc'
+	 *
+	 * _.map(['  foo  ', '  bar  '], _.trim);
+	 * // => ['foo', 'bar']
+	 */
+
+	function trim(string, chars, guard) {
+	  string = toString(string);
+
+	  if (string && (guard || chars === undefined)) {
+	    return baseTrim(string);
+	  }
+
+	  if (!string || !(chars = baseToString(chars))) {
+	    return string;
+	  }
+
+	  var strSymbols = stringToArray(string),
+	      chrSymbols = stringToArray(chars),
+	      start = charsStartIndex(strSymbols, chrSymbols),
+	      end = charsEndIndex(strSymbols, chrSymbols) + 1;
+	  return castSlice(strSymbols, start, end).join('');
+	}
+
+	/**
+	 * The base implementation of `assignValue` and `assignMergeValue` without
+	 * value checks.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+
+	function baseAssignValue(object, key, value) {
+	  if (key == '__proto__' && defineProperty) {
+	    defineProperty(object, key, {
+	      'configurable': true,
+	      'enumerable': true,
+	      'value': value,
+	      'writable': true
+	    });
+	  } else {
+	    object[key] = value;
+	  }
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto$5 = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
+	/**
+	 * Assigns `value` to `key` of `object` if the existing value is not equivalent
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+
+	function assignValue(object, key, value) {
+	  var objValue = object[key];
+
+	  if (!(hasOwnProperty$4.call(object, key) && eq(objValue, value)) || value === undefined && !(key in object)) {
+	    baseAssignValue(object, key, value);
+	  }
+	}
+
+	/**
+	 * The base implementation of `_.set`.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {Array|string} path The path of the property to set.
+	 * @param {*} value The value to set.
+	 * @param {Function} [customizer] The function to customize path creation.
+	 * @returns {Object} Returns `object`.
+	 */
+
+	function baseSet(object, path, value, customizer) {
+	  if (!isObject$1(object)) {
+	    return object;
+	  }
+
+	  path = castPath(path, object);
+	  var index = -1,
+	      length = path.length,
+	      lastIndex = length - 1,
+	      nested = object;
+
+	  while (nested != null && ++index < length) {
+	    var key = toKey(path[index]),
+	        newValue = value;
+
+	    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+	      return object;
+	    }
+
+	    if (index != lastIndex) {
+	      var objValue = nested[key];
+	      newValue = customizer ? customizer(objValue, key, nested) : undefined;
+
+	      if (newValue === undefined) {
+	        newValue = isObject$1(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
+	      }
+	    }
+
+	    assignValue(nested, key, newValue);
+	    nested = nested[key];
+	  }
+
+	  return object;
+	}
+
+	/**
+	 * The base implementation of  `_.pickBy` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Object} object The source object.
+	 * @param {string[]} paths The property paths to pick.
+	 * @param {Function} predicate The function invoked per property.
+	 * @returns {Object} Returns the new object.
+	 */
+
+	function basePickBy(object, paths, predicate) {
+	  var index = -1,
+	      length = paths.length,
+	      result = {};
+
+	  while (++index < length) {
+	    var path = paths[index],
+	        value = baseGet(object, path);
+
+	    if (predicate(value, path)) {
+	      baseSet(result, castPath(path, object), value);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * The base implementation of `_.pick` without support for individual
+	 * property identifiers.
+	 *
+	 * @private
+	 * @param {Object} object The source object.
+	 * @param {string[]} paths The property paths to pick.
+	 * @returns {Object} Returns the new object.
+	 */
+
+	function basePick(object, paths) {
+	  return basePickBy(object, paths, function (value, path) {
+	    return hasIn(object, path);
+	  });
+	}
+
+	/**
+	 * Flattens `array` a single level deep.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to flatten.
+	 * @returns {Array} Returns the new flattened array.
+	 * @example
+	 *
+	 * _.flatten([1, [2, [3, [4]], 5]]);
+	 * // => [1, 2, [3, [4]], 5]
+	 */
+
+	function flatten(array) {
+	  var length = array == null ? 0 : array.length;
+	  return length ? baseFlatten(array, 1) : [];
+	}
+
+	/**
+	 * A specialized version of `baseRest` which flattens the rest array.
+	 *
+	 * @private
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @returns {Function} Returns the new function.
+	 */
+
+	function flatRest(func) {
+	  return setToString(overRest(func, undefined, flatten), func + '');
+	}
+
+	/**
+	 * Creates an object composed of the picked `object` properties.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The source object.
+	 * @param {...(string|string[])} [paths] The property paths to pick.
+	 * @returns {Object} Returns the new object.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': '2', 'c': 3 };
+	 *
+	 * _.pick(object, ['a', 'c']);
+	 * // => { 'a': 1, 'c': 3 }
+	 */
+
+	var pick = flatRest(function (object, paths) {
+	  return object == null ? {} : basePick(object, paths);
+	});
+
+	/** Built-in value references. */
+
+	var getPrototype = overArg(Object.getPrototypeOf, Object);
+
+	/** `Object#toString` result references. */
+
+	var objectTag = '[object Object]';
+	/** Used for built-in method references. */
+
+	var funcProto = Function.prototype,
+	    objectProto$4 = Object.prototype;
+	/** Used to resolve the decompiled source of functions. */
+
+	var funcToString = funcProto.toString;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+	/** Used to infer the `Object` constructor. */
+
+	var objectCtorString = funcToString.call(Object);
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.8.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+
+	function isPlainObject(value) {
+	  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
+	    return false;
+	  }
+
+	  var proto = getPrototype(value);
+
+	  if (proto === null) {
+	    return true;
+	  }
+
+	  var Ctor = hasOwnProperty$3.call(proto, 'constructor') && proto.constructor;
+	  return typeof Ctor == 'function' && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
+	}
+
+	/**
+	 * Checks if `value` is `null` or `undefined`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
+	 * @example
+	 *
+	 * _.isNil(null);
+	 * // => true
+	 *
+	 * _.isNil(void 0);
+	 * // => true
+	 *
+	 * _.isNil(NaN);
+	 * // => false
+	 */
+	function isNil(value) {
+	  return value == null;
+	}
+
+	/**
+	 * The base implementation of methods like `_.max` and `_.min` which accepts a
+	 * `comparator` to determine the extremum value.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} iteratee The iteratee invoked per iteration.
+	 * @param {Function} comparator The comparator used to compare values.
+	 * @returns {*} Returns the extremum value.
+	 */
+
+	function baseExtremum(array, iteratee, comparator) {
+	  var index = -1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    var value = array[index],
+	        current = iteratee(value);
+
+	    if (current != null && (computed === undefined ? current === current && !isSymbol(current) : comparator(current, computed))) {
+	      var computed = current,
+	          result = value;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * The base implementation of `_.lt` which doesn't coerce arguments.
+	 *
+	 * @private
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if `value` is less than `other`,
+	 *  else `false`.
+	 */
+	function baseLt(value, other) {
+	  return value < other;
+	}
+
+	/**
+	 * Computes the minimum value of `array`. If `array` is empty or falsey,
+	 * `undefined` is returned.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Math
+	 * @param {Array} array The array to iterate over.
+	 * @returns {*} Returns the minimum value.
+	 * @example
+	 *
+	 * _.min([4, 2, 8, 6]);
+	 * // => 2
+	 *
+	 * _.min([]);
+	 * // => undefined
+	 */
+
+	function min(array) {
+	  return array && array.length ? baseExtremum(array, identity, baseLt) : undefined;
+	}
+
+	/**
+	 * The base implementation of `_.sum` and `_.sumBy` without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {number} Returns the sum.
+	 */
+	function baseSum(array, iteratee) {
+	  var result,
+	      index = -1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    var current = iteratee(array[index]);
+
+	    if (current !== undefined) {
+	      result = result === undefined ? current : result + current;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Computes the sum of the values in `array`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.4.0
+	 * @category Math
+	 * @param {Array} array The array to iterate over.
+	 * @returns {number} Returns the sum.
+	 * @example
+	 *
+	 * _.sum([4, 2, 8, 6]);
+	 * // => 20
+	 */
+
+	function sum(array) {
+	  return array && array.length ? baseSum(array, identity) : 0;
+	}
+
+	/**
+	 * The base implementation of `_.map` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 */
+
+	function baseMap(collection, iteratee) {
+	  var index = -1,
+	      result = isArrayLike(collection) ? Array(collection.length) : [];
+	  baseEach(collection, function (value, key, collection) {
+	    result[++index] = iteratee(value, key, collection);
+	  });
+	  return result;
+	}
+
+	/**
+	 * Creates an array of values by running each element in `collection` thru
+	 * `iteratee`. The iteratee is invoked with three arguments:
+	 * (value, index|key, collection).
+	 *
+	 * Many lodash methods are guarded to work as iteratees for methods like
+	 * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
+	 *
+	 * The guarded methods are:
+	 * `ary`, `chunk`, `curry`, `curryRight`, `drop`, `dropRight`, `every`,
+	 * `fill`, `invert`, `parseInt`, `random`, `range`, `rangeRight`, `repeat`,
+	 * `sampleSize`, `slice`, `some`, `sortBy`, `split`, `take`, `takeRight`,
+	 * `template`, `trim`, `trimEnd`, `trimStart`, and `words`
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 * @example
+	 *
+	 * function square(n) {
+	 *   return n * n;
+	 * }
+	 *
+	 * _.map([4, 8], square);
+	 * // => [16, 64]
+	 *
+	 * _.map({ 'a': 4, 'b': 8 }, square);
+	 * // => [16, 64] (iteration order is not guaranteed)
+	 *
+	 * var users = [
+	 *   { 'user': 'barney' },
+	 *   { 'user': 'fred' }
+	 * ];
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.map(users, 'user');
+	 * // => ['barney', 'fred']
+	 */
+
+	function map(collection, iteratee) {
+	  var func = isArray(collection) ? arrayMap : baseMap;
+	  return func(collection, baseIteratee(iteratee));
+	}
+
+	/**
+	 * The base implementation of `_.sortBy` which uses `comparer` to define the
+	 * sort order of `array` and replaces criteria objects with their corresponding
+	 * values.
+	 *
+	 * @private
+	 * @param {Array} array The array to sort.
+	 * @param {Function} comparer The function to define sort order.
+	 * @returns {Array} Returns `array`.
+	 */
+	function baseSortBy(array, comparer) {
+	  var length = array.length;
+	  array.sort(comparer);
+
+	  while (length--) {
+	    array[length] = array[length].value;
+	  }
+
+	  return array;
+	}
+
+	/**
+	 * Compares values to sort them in ascending order.
+	 *
+	 * @private
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {number} Returns the sort order indicator for `value`.
+	 */
+
+	function compareAscending(value, other) {
+	  if (value !== other) {
+	    var valIsDefined = value !== undefined,
+	        valIsNull = value === null,
+	        valIsReflexive = value === value,
+	        valIsSymbol = isSymbol(value);
+	    var othIsDefined = other !== undefined,
+	        othIsNull = other === null,
+	        othIsReflexive = other === other,
+	        othIsSymbol = isSymbol(other);
+
+	    if (!othIsNull && !othIsSymbol && !valIsSymbol && value > other || valIsSymbol && othIsDefined && othIsReflexive && !othIsNull && !othIsSymbol || valIsNull && othIsDefined && othIsReflexive || !valIsDefined && othIsReflexive || !valIsReflexive) {
+	      return 1;
+	    }
+
+	    if (!valIsNull && !valIsSymbol && !othIsSymbol && value < other || othIsSymbol && valIsDefined && valIsReflexive && !valIsNull && !valIsSymbol || othIsNull && valIsDefined && valIsReflexive || !othIsDefined && valIsReflexive || !othIsReflexive) {
+	      return -1;
+	    }
+	  }
+
+	  return 0;
+	}
+
+	/**
+	 * Used by `_.orderBy` to compare multiple properties of a value to another
+	 * and stable sort them.
+	 *
+	 * If `orders` is unspecified, all values are sorted in ascending order. Otherwise,
+	 * specify an order of "desc" for descending or "asc" for ascending sort order
+	 * of corresponding values.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {boolean[]|string[]} orders The order to sort by for each property.
+	 * @returns {number} Returns the sort order indicator for `object`.
+	 */
+
+	function compareMultiple(object, other, orders) {
+	  var index = -1,
+	      objCriteria = object.criteria,
+	      othCriteria = other.criteria,
+	      length = objCriteria.length,
+	      ordersLength = orders.length;
+
+	  while (++index < length) {
+	    var result = compareAscending(objCriteria[index], othCriteria[index]);
+
+	    if (result) {
+	      if (index >= ordersLength) {
+	        return result;
+	      }
+
+	      var order = orders[index];
+	      return result * (order == 'desc' ? -1 : 1);
+	    }
+	  } // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
+	  // that causes it, under certain circumstances, to provide the same value for
+	  // `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247
+	  // for more details.
+	  //
+	  // This also ensures a stable sort in V8 and other engines.
+	  // See https://bugs.chromium.org/p/v8/issues/detail?id=90 for more details.
+
+
+	  return object.index - other.index;
+	}
+
+	/**
+	 * The base implementation of `_.orderBy` without param guards.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function[]|Object[]|string[]} iteratees The iteratees to sort by.
+	 * @param {string[]} orders The sort orders of `iteratees`.
+	 * @returns {Array} Returns the new sorted array.
+	 */
+
+	function baseOrderBy(collection, iteratees, orders) {
+	  if (iteratees.length) {
+	    iteratees = arrayMap(iteratees, function (iteratee) {
+	      if (isArray(iteratee)) {
+	        return function (value) {
+	          return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
+	        };
+	      }
+
+	      return iteratee;
+	    });
+	  } else {
+	    iteratees = [identity];
+	  }
+
+	  var index = -1;
+	  iteratees = arrayMap(iteratees, baseUnary(baseIteratee));
+	  var result = baseMap(collection, function (value, key, collection) {
+	    var criteria = arrayMap(iteratees, function (iteratee) {
+	      return iteratee(value);
+	    });
+	    return {
+	      'criteria': criteria,
+	      'index': ++index,
+	      'value': value
+	    };
+	  });
+	  return baseSortBy(result, function (object, other) {
+	    return compareMultiple(object, other, orders);
+	  });
+	}
+
+	/**
+	 * Creates an array of elements, sorted in ascending order by the results of
+	 * running each element in a collection thru each iteratee. This method
+	 * performs a stable sort, that is, it preserves the original sort order of
+	 * equal elements. The iteratees are invoked with one argument: (value).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {...(Function|Function[])} [iteratees=[_.identity]]
+	 *  The iteratees to sort by.
+	 * @returns {Array} Returns the new sorted array.
+	 * @example
+	 *
+	 * var users = [
+	 *   { 'user': 'fred',   'age': 48 },
+	 *   { 'user': 'barney', 'age': 36 },
+	 *   { 'user': 'fred',   'age': 30 },
+	 *   { 'user': 'barney', 'age': 34 }
+	 * ];
+	 *
+	 * _.sortBy(users, [function(o) { return o.user; }]);
+	 * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 30]]
+	 *
+	 * _.sortBy(users, ['user', 'age']);
+	 * // => objects for [['barney', 34], ['barney', 36], ['fred', 30], ['fred', 48]]
+	 */
+
+	var sortBy = baseRest(function (collection, iteratees) {
+	  if (collection == null) {
+	    return [];
+	  }
+
+	  var length = iteratees.length;
+
+	  if (length > 1 && isIterateeCall(collection, iteratees[0], iteratees[1])) {
+	    iteratees = [];
+	  } else if (length > 2 && isIterateeCall(iteratees[0], iteratees[1], iteratees[2])) {
+	    iteratees = [iteratees[0]];
+	  }
+
+	  return baseOrderBy(collection, baseFlatten(iteratees, 1), []);
+	});
+
+	/**
+	 * Creates a slice of `array` with `n` elements taken from the beginning.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @param {number} [n=1] The number of elements to take.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {Array} Returns the slice of `array`.
+	 * @example
+	 *
+	 * _.take([1, 2, 3]);
+	 * // => [1]
+	 *
+	 * _.take([1, 2, 3], 2);
+	 * // => [1, 2]
+	 *
+	 * _.take([1, 2, 3], 5);
+	 * // => [1, 2, 3]
+	 *
+	 * _.take([1, 2, 3], 0);
+	 * // => []
+	 */
+
+	function take(array, n, guard) {
+	  if (!(array && array.length)) {
+	    return [];
+	  }
+
+	  n = guard || n === undefined ? 1 : toInteger(n);
+	  return baseSlice(array, 0, n < 0 ? 0 : n);
+	}
+
+	// Copy of sindre's leven, wrapped in dead code elimination for production
+	// https://github.com/sindresorhus/leven/blob/master/index.js
+
+	/* eslint-disable complexity, import/no-mutable-exports, no-multi-assign, no-nested-ternary, no-plusplus */
+	var leven = function leven() {
+	  return 0;
+	};
+
+	{
+	  var arr = [];
+	  var charCodeCache = [];
+
+	  leven = function leven(a, b) {
+	    if (a === b) return 0;
+	    var aLen = a.length;
+	    var bLen = b.length;
+	    if (aLen === 0) return bLen;
+	    if (bLen === 0) return aLen;
+	    var bCharCode;
+	    var ret;
+	    var tmp;
+	    var tmp2;
+	    var i = 0;
+	    var j = 0;
+
+	    while (i < aLen) {
+	      charCodeCache[i] = a.charCodeAt(i);
+	      arr[i] = ++i;
+	    }
+
+	    while (j < bLen) {
+	      bCharCode = b.charCodeAt(j);
+	      tmp = j++;
+	      ret = j;
+
+	      for (i = 0; i < aLen; i++) {
+	        tmp2 = bCharCode === charCodeCache[i] ? tmp : tmp + 1;
+	        tmp = arr[i];
+	        ret = arr[i] = tmp > ret ? tmp2 > ret ? ret + 1 : tmp2 : tmp2 > tmp ? tmp + 1 : tmp2;
+	      }
+	    }
+
+	    return ret;
+	  };
+	}
+
+	var leven$1 = leven;
+
+	var typeOf = function typeOf() {
+	  var _Object$prototype$toS;
+
+	  return (_Object$prototype$toS = Object.prototype.toString).call.apply(_Object$prototype$toS, arguments);
+	};
+	/**
+	 * Ensure a prop is a valid DOM node.
+	 */
+
+
+	var domNode = function domNode(props, propName) {
+	  // skip if prop is undefined
+	  if (props[propName] === undefined) return; // short circle for SSR env
+
+	  if (typeof Element === 'undefined') return; // skip if prop is valid
+
+	  if (props[propName] instanceof Element) return;
+	  return new Error("Invalid prop \"" + propName + "\" supplied, expected a DOM node.");
+	};
+	/**
+	 * Similar to PropTypes.oneOf but shows closest matches.
+	 * Word order is ignored allowing `left chevron` to match `chevron left`.
+	 * Useful for very large lists of options (e.g. Icon name, Flag name, etc.)
+	 * @param {string[]} suggestions An array of allowed values.
+	 */
+
+	var suggest = function suggest(suggestions) {
+	  if (!Array.isArray(suggestions)) {
+	    throw new Error('Invalid argument supplied to suggest, expected an instance of array.');
+	  }
+	  /* eslint-disable max-nested-callbacks */
+
+
+	  var findBestSuggestions = memoize(function (str) {
+	    var propValueWords = str.split(' ');
+	    return take(sortBy(map(suggestions, function (suggestion) {
+	      var suggestionWords = suggestion.split(' ');
+
+	      var propValueScore = sum(map(map(propValueWords, function (x) {
+	        return map(suggestionWords, function (y) {
+	          return leven$1(x, y);
+	        });
+	      }), min));
+
+	      var suggestionScore = sum(map(map(suggestionWords, function (x) {
+	        return map(propValueWords, function (y) {
+	          return leven$1(x, y);
+	        });
+	      }), min));
+
+	      return {
+	        suggestion: suggestion,
+	        score: propValueScore + suggestionScore
+	      };
+	    }), ['score', 'suggestion']), 3);
+	  });
+	  /* eslint-enable max-nested-callbacks */
+	  // Convert the suggestions list into a hash map for O(n) lookup times. Ensure
+	  // the words in each key are sorted alphabetically so that we have a consistent
+	  // way of looking up a value in the map, i.e. we can sort the words in the
+	  // incoming propValue and look that up without having to check all permutations.
+
+
+	  var suggestionsLookup = suggestions.reduce(function (acc, key) {
+	    acc[key.split(' ').sort().join(' ')] = true;
+	    return acc;
+	  }, {});
+	  return function (props, propName, componentName) {
+	    var propValue = props[propName]; // skip if prop is undefined or is included in the suggestions
+
+	    if (!propValue || suggestionsLookup[propValue]) return; // check if the words were correct but ordered differently.
+	    // Since we're matching for classNames we need to allow any word order
+	    // to pass validation, e.g. `left chevron` vs `chevron left`.
+
+	    var propValueSorted = propValue.split(' ').sort().join(' ');
+	    if (suggestionsLookup[propValueSorted]) return; // find best suggestions
+
+	    var bestMatches = findBestSuggestions(propValue); // skip if a match scored 0
+
+	    if (bestMatches.some(function (x) {
+	      return x.score === 0;
+	    })) return;
+	    return new Error(["Invalid prop `" + propName + "` of value `" + propValue + "` supplied to `" + componentName + "`.", "\n\nInstead of `" + propValue + "`, did you mean:", bestMatches.map(function (x) {
+	      return "\n  - " + x.suggestion;
+	    }).join(''), '\n'].join(''));
+	  };
+	};
+	/**
+	 * Disallow other props from being defined with this prop.
+	 * @param {string[]} disallowedProps An array of props that cannot be used with this prop.
+	 */
+
+	var disallow = function disallow(disallowedProps) {
+	  return function (props, propName, componentName) {
+	    if (!Array.isArray(disallowedProps)) {
+	      throw new Error(['Invalid argument supplied to disallow, expected an instance of array.', " See `" + propName + "` prop in `" + componentName + "`."].join(''));
+	    } // skip if prop is undefined
+
+
+	    if (isNil(props[propName]) || props[propName] === false) {
+	      return;
+	    } // find disallowed props with values
+
+
+	    var disallowed = disallowedProps.reduce(function (acc, disallowedProp) {
+	      if (!isNil(props[disallowedProp]) && props[disallowedProp] !== false) {
+	        return [].concat(acc, [disallowedProp]);
+	      }
+
+	      return acc;
+	    }, []);
+
+	    if (disallowed.length > 0) {
+	      return new Error(["Prop `" + propName + "` in `" + componentName + "` conflicts with props: `" + disallowed.join('`, `') + "`.", 'They cannot be defined together, choose one or the other.'].join(' '));
+	    }
+	  };
+	};
+	/**
+	 * Ensure a prop adherers to multiple prop type validators.
+	 * @param {function[]} validators An array of propType functions.
+	 */
+
+	var every$1 = function every(validators) {
+	  return function (props, propName, componentName) {
+	    for (var _len = arguments.length, rest = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+	      rest[_key - 3] = arguments[_key];
+	    }
+
+	    if (!Array.isArray(validators)) {
+	      throw new Error(['Invalid argument supplied to every, expected an instance of array.', "See `" + propName + "` prop in `" + componentName + "`."].join(' '));
+	    }
+
+	    var errors = [];
+	    validators.forEach(function (validator) {
+	      if (typeof validator !== 'function') {
+	        throw new Error("every() argument \"validators\" should contain functions, found: " + typeOf(validator) + ".");
+	      }
+
+	      var error = validator.apply(void 0, [props, propName, componentName].concat(rest));
+
+	      if (error) {
+	        errors.push(error);
+	      }
+	    }); // we can only return one error at a time
+
+	    return errors[0];
+	  };
+	};
+	/**
+	 * Ensure a validator passes only when a component has a given propsShape.
+	 * @param {object} propsShape An object describing the prop shape.
+	 * @param {function} validator A propType function.
+	 */
+
+	var givenProps = function givenProps(propsShape, validator) {
+	  return function (props, propName, componentName) {
+	    for (var _len2 = arguments.length, rest = new Array(_len2 > 3 ? _len2 - 3 : 0), _key2 = 3; _key2 < _len2; _key2++) {
+	      rest[_key2 - 3] = arguments[_key2];
+	    }
+
+	    if (!isPlainObject(propsShape)) {
+	      throw new Error(['Invalid argument supplied to givenProps, expected an object.', "See `" + propName + "` prop in `" + componentName + "`."].join(' '));
+	    }
+
+	    if (typeof validator !== 'function') {
+	      throw new Error(['Invalid argument supplied to givenProps, expected a function.', "See `" + propName + "` prop in `" + componentName + "`."].join(' '));
+	    }
+
+	    var shouldValidate = keys(propsShape).every(function (key) {
+	      var val = propsShape[key]; // require propShape validators to pass or prop values to match
+
+	      return typeof val === 'function' ? !val.apply(void 0, [props, key, componentName].concat(rest)) : val === props[propName];
+	    });
+
+	    if (!shouldValidate) return;
+	    var error = validator.apply(void 0, [props, propName, componentName].concat(rest));
+
+	    if (error) {
+	      // poor mans shallow pretty print, prevents JSON circular reference errors
+	      var prettyProps = "{ " + keys(pick(keys(propsShape), props)).map(function (key) {
+	        var val = props[key];
+	        var renderedValue = val;
+	        if (typeof val === 'string') renderedValue = "\"" + val + "\"";else if (Array.isArray(val)) renderedValue = "[" + val.join(', ') + "]";else if (isObject$1(val)) renderedValue = '{...}';
+	        return key + ": " + renderedValue;
+	      }).join(', ') + " }";
+	      error.message = "Given props " + prettyProps + ": " + error.message;
+	      return error;
+	    }
+	  };
+	};
+	/**
+	 * Define prop dependencies by requiring other props.
+	 * @param {string[]} requiredProps An array of required prop names.
+	 */
+
+	var demand = function demand(requiredProps) {
+	  return function (props, propName, componentName) {
+	    if (!Array.isArray(requiredProps)) {
+	      throw new Error(['Invalid `requiredProps` argument supplied to require, expected an instance of array.', " See `" + propName + "` prop in `" + componentName + "`."].join(''));
+	    } // skip if prop is undefined
+
+
+	    if (props[propName] === undefined) return;
+	    var missingRequired = requiredProps.filter(function (requiredProp) {
+	      return props[requiredProp] === undefined;
+	    });
+
+	    if (missingRequired.length > 0) {
+	      return new Error("`" + propName + "` prop in `" + componentName + "` requires props: `" + missingRequired.join('`, `') + "`.");
+	    }
+	  };
+	};
+	/**
+	 * Ensure an multiple prop contains a string with only possible values.
+	 * @param {string[]} possible An array of possible values to prop.
+	 */
+
+	var multipleProp = function multipleProp(possible) {
+	  return function (props, propName, componentName) {
+	    if (!Array.isArray(possible)) {
+	      throw new Error(['Invalid argument supplied to some, expected an instance of array.', "See `" + propName + "` prop in `" + componentName + "`."].join(' '));
+	    }
+
+	    var propValue = props[propName]; // skip if prop is undefined
+
+	    if (isNil(propValue) || propValue === false) return;
+	    var values = propValue.replace('large screen', 'large-screen').replace(/ vertically/g, '-vertically').split(' ').map(function (val) {
+	      return trim(val).replace('-', ' ');
+	    });
+
+	    var invalid = difference(values, possible); // fail only if there are invalid values
+
+
+	    if (invalid.length > 0) {
+	      return new Error("`" + propName + "` prop in `" + componentName + "` has invalid values: `" + invalid.join('`, `') + "`.");
+	    }
+	  };
+	};
+	/**
+	 * Ensure a component can render as a node passed as a prop value in place of children.
+	 */
+
+	var contentShorthand = function contentShorthand() {
+	  return every$1([disallow(['children']), propTypes.exports.node]).apply(void 0, arguments);
+	};
+	/**
+	 * Item shorthand is a description of a component that can be a literal,
+	 * a props object, or an element.
+	 */
+
+	var itemShorthand = function itemShorthand() {
+	  return every$1([disallow(['children']), propTypes.exports.oneOfType([propTypes.exports.func, propTypes.exports.node, propTypes.exports.object, propTypes.exports.arrayOf(propTypes.exports.oneOfType([propTypes.exports.node, propTypes.exports.object]))])]).apply(void 0, arguments);
+	};
+	/**
+	 * Collection shorthand ensures a prop is an array of item shorthand.
+	 */
+
+	var collectionShorthand = function collectionShorthand() {
+	  return every$1([disallow(['children']), propTypes.exports.arrayOf(itemShorthand)]).apply(void 0, arguments);
+	};
+	/** A checker that matches the React.RefObject type. */
+
+	var refObject = propTypes.exports.shape({
+	  current: propTypes.exports.object
+	});
+	/** A checker that matches the React.Ref type. */
+
+	var ref = propTypes.exports.oneOfType([propTypes.exports.func, refObject]);
+
+	var lib = {exports: {}};
+
+	var eventStack_development = {};
+
+	var exenv = {exports: {}};
+
+	/*!
+	  Copyright (c) 2015 Jed Watson.
+	  Based on code that is Copyright 2013-2015, Facebook, Inc.
+	  All rights reserved.
+	*/
+
+	(function (module) {
+		/* global define */
+		(function () {
+
+		  var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+		  var ExecutionEnvironment = {
+		    canUseDOM: canUseDOM,
+		    canUseWorkers: typeof Worker !== 'undefined',
+		    canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+		    canUseViewport: canUseDOM && !!window.screen
+		  };
+
+		  if (module.exports) {
+		    module.exports = ExecutionEnvironment;
+		  } else {
+		    window.ExecutionEnvironment = ExecutionEnvironment;
+		  }
+		})();
+	} (exenv));
+
+	Object.defineProperty(eventStack_development, '__esModule', {
+	  value: true
+	});
+
+	var env = exenv.exports;
+
+	var PropTypes = propTypes.exports;
+
+	var React = react.exports;
+
+	function _typeof(obj) {
+	  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+	    _typeof = function (obj) {
+	      return typeof obj;
+	    };
+	  } else {
+	    _typeof = function (obj) {
+	      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+	    };
+	  }
+
+	  return _typeof(obj);
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	}
+
+	function _defineProperties$1(target, props) {
+	  for (var i = 0; i < props.length; i++) {
+	    var descriptor = props[i];
+	    descriptor.enumerable = descriptor.enumerable || false;
+	    descriptor.configurable = true;
+	    if ("value" in descriptor) descriptor.writable = true;
+	    Object.defineProperty(target, descriptor.key, descriptor);
+	  }
+	}
+
+	function _createClass$1(Constructor, protoProps, staticProps) {
+	  if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
+	  if (staticProps) _defineProperties$1(Constructor, staticProps);
+	  return Constructor;
+	}
+
+	function _defineProperty(obj, key, value) {
+	  if (key in obj) {
+	    Object.defineProperty(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function");
+	  }
+
+	  subClass.prototype = Object.create(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) _setPrototypeOf(subClass, superClass);
+	}
+
+	function _getPrototypeOf(o) {
+	  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+	    return o.__proto__ || Object.getPrototypeOf(o);
+	  };
+	  return _getPrototypeOf(o);
+	}
+
+	function _setPrototypeOf(o, p) {
+	  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+	    o.__proto__ = p;
+	    return o;
+	  };
+
+	  return _setPrototypeOf(o, p);
+	}
+
+	function _assertThisInitialized(self) {
+	  if (self === void 0) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return self;
+	}
+
+	function _possibleConstructorReturn(self, call) {
+	  if (call && (typeof call === "object" || typeof call === "function")) {
+	    return call;
+	  }
+
+	  return _assertThisInitialized(self);
+	}
+	/**
+	 * The current implementation was chosen by performance and compatibility reasons, feel free to play
+	 * with benchmarks and submit PR with faster alternative. Each method contains links to benchmarks.
+	 */
+
+
+	var EventSet = /*#__PURE__*/function () {
+	  /**
+	   * @see https://jsperf.com/suir-eventset-constructor
+	   */
+	  function EventSet(eventHandlers) {
+	    _classCallCheck(this, EventSet);
+
+	    _defineProperty(this, "handlers", void 0);
+
+	    this.handlers = eventHandlers.slice(0);
+	  }
+	  /**
+	   * @see https://jsperf.com/suir-eventset-addhandlers
+	   */
+
+
+	  _createClass$1(EventSet, [{
+	    key: "addHandlers",
+	    value: function addHandlers(additionalHandlers) {
+	      var newHandlers = this.handlers.slice(0);
+	      var length = additionalHandlers.length; // Heads up!
+	      // Previously we use Set there, it granted uniqueness of handlers, now dispatchEvent() is
+	      // responsible for this.
+
+	      for (var i = 0; i < length; i += 1) {
+	        newHandlers.push(additionalHandlers[i]);
+	      }
+
+	      return new EventSet(newHandlers);
+	    }
+	    /**
+	     * @see https://jsperf.com/suir-eventset-dispatchsingle
+	     * @see https://jsperf.com/suir-eventset-dispatchmultiple2
+	     */
+
+	  }, {
+	    key: "dispatchEvent",
+	    value: function dispatchEvent(event, dispatchAll) {
+	      var count = this.handlers.length - 1;
+
+	      if (!dispatchAll) {
+	        // Heads up!
+	        // We don't use .pop() there because it will mutate the array.
+	        var recentHandler = this.handlers[count];
+	        recentHandler(event);
+	        return;
+	      }
+
+	      for (var i = count; i >= 0; i -= 1) {
+	        if (!this.handlers[i].called) {
+	          this.handlers[i].called = true;
+	          this.handlers[i](event);
+	        }
+	      }
+
+	      for (var _i = count; _i >= 0; _i -= 1) {
+	        this.handlers[_i].called = false;
+	      }
+	    }
+	  }, {
+	    key: "hasHandlers",
+	    value: function hasHandlers() {
+	      return this.handlers.length > 0;
+	    }
+	    /**
+	     * @see https://jsperf.com/suir-eventset-removehandlers
+	     */
+
+	  }, {
+	    key: "removeHandlers",
+	    value: function removeHandlers(removalHandlers) {
+	      var newHandlers = [];
+	      var length = this.handlers.length;
+
+	      for (var i = 0; i < length; i += 1) {
+	        var handler = this.handlers[i];
+
+	        if (removalHandlers.indexOf(handler) === -1) {
+	          newHandlers.push(handler);
+	        }
+	      }
+
+	      return new EventSet(newHandlers);
+	    }
+	  }]);
+
+	  return EventSet;
+	}();
+	/**
+	 * An IE11-compatible function.
+	 *
+	 * @see https://jsperf.com/suir-clone-map
+	 */
+
+
+	function cloneMap(map) {
+	  var newMap = new Map();
+	  map.forEach(function (value, key) {
+	    newMap.set(key, value);
+	  });
+	  return newMap;
+	}
+
+	function normalizeHandlers(handlers) {
+	  return Array.isArray(handlers) ? handlers : [handlers];
+	}
+	/**
+	 * Asserts that the passed value is React.RefObject
+	 *
+	 * @see https://github.com/facebook/react/blob/v16.8.2/packages/react-reconciler/src/ReactFiberCommitWork.js#L665
+	 */
+
+
+	var isRefObject = function isRefObject(ref // eslint-disable-next-line
+	) {
+	  return ref !== null && _typeof(ref) === 'object' && ref.hasOwnProperty('current');
+	};
+	/**
+	 * Normalizes `target` for EventStack, because `target` can be passed as `boolean` or `string`.
+	 *
+	 * @see https://jsperf.com/suir-normalize-target
+	 */
+
+
+	function normalizeTarget(target) {
+	  if (target === 'document') return document;
+	  if (target === 'window') return window;
+	  if (isRefObject(target)) return target.current || document;
+	  return target || document;
+	}
+
+	var EventPool = /*#__PURE__*/function () {
+	  function EventPool(poolName, handlerSets) {
+	    _classCallCheck(this, EventPool);
+
+	    _defineProperty(this, "handlerSets", void 0);
+
+	    _defineProperty(this, "poolName", void 0);
+
+	    this.handlerSets = handlerSets;
+	    this.poolName = poolName;
+	  }
+
+	  _createClass$1(EventPool, [{
+	    key: "addHandlers",
+	    value: function addHandlers(eventType, eventHandlers) {
+	      var handlerSets = cloneMap(this.handlerSets);
+
+	      if (handlerSets.has(eventType)) {
+	        var eventSet = handlerSets.get(eventType);
+	        handlerSets.set(eventType, eventSet.addHandlers(eventHandlers));
+	      } else {
+	        handlerSets.set(eventType, new EventSet(eventHandlers));
+	      }
+
+	      return new EventPool(this.poolName, handlerSets);
+	    }
+	  }, {
+	    key: "dispatchEvent",
+	    value: function dispatchEvent(eventType, event) {
+	      var handlerSet = this.handlerSets.get(eventType);
+	      var shouldDispatchAll = this.poolName === 'default';
+
+	      if (handlerSet) {
+	        handlerSet.dispatchEvent(event, shouldDispatchAll);
+	      }
+	    }
+	  }, {
+	    key: "hasHandlers",
+	    value: function hasHandlers(eventType) {
+	      if (!eventType) {
+	        return this.handlerSets.size > 0;
+	      }
+
+	      var eventSet = this.handlerSets.get(eventType);
+
+	      if (eventSet) {
+	        return eventSet.hasHandlers();
+	      }
+
+	      return false;
+	    }
+	  }, {
+	    key: "removeHandlers",
+	    value: function removeHandlers(eventType, eventHandlers) {
+	      var handlerSets = cloneMap(this.handlerSets);
+
+	      if (!handlerSets.has(eventType)) {
+	        return new EventPool(this.poolName, handlerSets);
+	      }
+
+	      var currentSet = handlerSets.get(eventType);
+	      var nextSet = currentSet.removeHandlers(eventHandlers);
+
+	      if (nextSet.hasHandlers()) {
+	        handlerSets.set(eventType, nextSet);
+	      } else {
+	        handlerSets.delete(eventType);
+	      }
+
+	      return new EventPool(this.poolName, handlerSets);
+	    }
+	  }]);
+
+	  return EventPool;
+	}();
+
+	_defineProperty(EventPool, "createByType", function (poolName, eventType, eventHandlers) {
+	  var handlerSets = new Map();
+	  handlerSets.set(eventType, new EventSet(eventHandlers));
+	  return new EventPool(poolName, handlerSets);
+	});
+
+	var EventTarget = /*#__PURE__*/function () {
+	  function EventTarget(target) {
+	    var _this = this;
+
+	    _classCallCheck(this, EventTarget);
+
+	    _defineProperty(this, "handlers", new Map());
+
+	    _defineProperty(this, "pools", new Map());
+
+	    _defineProperty(this, "target", void 0);
+
+	    _defineProperty(this, "createEmitter", function (eventType) {
+	      return function (event) {
+	        _this.pools.forEach(function (pool) {
+	          pool.dispatchEvent(eventType, event);
+	        });
+	      };
+	    });
+
+	    this.target = target;
+	  }
+
+	  _createClass$1(EventTarget, [{
+	    key: "addHandlers",
+	    value: function addHandlers(poolName, eventType, eventHandlers) {
+	      if (this.pools.has(poolName)) {
+	        var eventPool = this.pools.get(poolName);
+	        this.pools.set(poolName, eventPool.addHandlers(eventType, eventHandlers));
+	      } else {
+	        this.pools.set(poolName, EventPool.createByType(poolName, eventType, eventHandlers));
+	      }
+
+	      if (!this.handlers.has(eventType)) {
+	        this.addTargetHandler(eventType);
+	      }
+	    }
+	  }, {
+	    key: "hasHandlers",
+	    value: function hasHandlers() {
+	      return this.handlers.size > 0;
+	    }
+	  }, {
+	    key: "removeHandlers",
+	    value: function removeHandlers(poolName, eventType, eventHandlers) {
+	      if (!this.pools.has(poolName)) {
+	        return;
+	      }
+
+	      var pool = this.pools.get(poolName);
+	      var newPool = pool.removeHandlers(eventType, eventHandlers);
+
+	      if (newPool.hasHandlers()) {
+	        this.pools.set(poolName, newPool);
+	      } else {
+	        this.pools.delete(poolName);
+	      }
+
+	      var hasHandlers = false;
+	      this.pools.forEach(function (pool) {
+	        return hasHandlers = hasHandlers || pool.hasHandlers(eventType);
+	      });
+
+	      if (!hasHandlers) {
+	        this.removeTargetHandler(eventType);
+	      }
+	    }
+	  }, {
+	    key: "addTargetHandler",
+	    value: function addTargetHandler(eventType) {
+	      var handler = this.createEmitter(eventType);
+	      this.handlers.set(eventType, handler);
+	      this.target.addEventListener(eventType, handler, true);
+	    }
+	  }, {
+	    key: "removeTargetHandler",
+	    value: function removeTargetHandler(eventType) {
+	      if (this.handlers.has(eventType)) {
+	        this.target.removeEventListener(eventType, this.handlers.get(eventType), true);
+	        this.handlers.delete(eventType);
+	      }
+	    }
+	  }]);
+
+	  return EventTarget;
+	}();
+
+	var EventStack = /*#__PURE__*/function () {
+	  function EventStack() {
+	    var _this = this;
+
+	    _classCallCheck(this, EventStack);
+
+	    _defineProperty(this, "targets", new Map());
+
+	    _defineProperty(this, "getTarget", function (target) {
+	      var autoCreate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+	      var normalized = normalizeTarget(target);
+
+	      if (_this.targets.has(normalized)) {
+	        return _this.targets.get(normalized);
+	      }
+
+	      if (!autoCreate) return null;
+	      var eventTarget = new EventTarget(normalized);
+
+	      _this.targets.set(normalized, eventTarget);
+
+	      return eventTarget;
+	    });
+
+	    _defineProperty(this, "removeTarget", function (target) {
+	      _this.targets.delete(normalizeTarget(target));
+	    });
+	  }
+
+	  _createClass$1(EventStack, [{
+	    key: "sub",
+	    value: function sub(eventName, eventHandlers) {
+	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	      if (!env.canUseDOM) return;
+	      var _options$target = options.target,
+	          target = _options$target === void 0 ? document : _options$target,
+	          _options$pool = options.pool,
+	          pool = _options$pool === void 0 ? 'default' : _options$pool;
+	      var eventTarget = this.getTarget(target);
+	      eventTarget.addHandlers(pool, eventName, normalizeHandlers(eventHandlers));
+	    }
+	  }, {
+	    key: "unsub",
+	    value: function unsub(eventName, eventHandlers) {
+	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	      if (!env.canUseDOM) return;
+	      var _options$target2 = options.target,
+	          target = _options$target2 === void 0 ? document : _options$target2,
+	          _options$pool2 = options.pool,
+	          pool = _options$pool2 === void 0 ? 'default' : _options$pool2;
+	      var eventTarget = this.getTarget(target, false);
+
+	      if (eventTarget) {
+	        eventTarget.removeHandlers(pool, eventName, normalizeHandlers(eventHandlers));
+	        if (!eventTarget.hasHandlers()) this.removeTarget(target);
+	      }
+	    }
+	  }]);
+
+	  return EventStack;
+	}();
+
+	var instance = new EventStack();
+	/**
+	 * This component exposes the EventStack API as public and provides a declarative way to manage it.
+	 */
+
+	var EventStack$1 = /*#__PURE__*/function (_React$PureComponent) {
+	  _inherits(EventStack, _React$PureComponent);
+
+	  function EventStack() {
+	    _classCallCheck(this, EventStack);
+
+	    return _possibleConstructorReturn(this, _getPrototypeOf(EventStack).apply(this, arguments));
+	  }
+
+	  _createClass$1(EventStack, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      this.subscribe(this.props);
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate(prevProps) {
+	      this.unsubscribe(prevProps);
+	      this.subscribe(this.props);
+	    }
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      this.unsubscribe(this.props);
+	    }
+	  }, {
+	    key: "subscribe",
+	    value: function subscribe(props) {
+	      var name = props.name,
+	          on = props.on,
+	          pool = props.pool,
+	          target = props.target;
+	      instance.sub(name, on, {
+	        pool: pool,
+	        target: target
+	      });
+	    }
+	  }, {
+	    key: "unsubscribe",
+	    value: function unsubscribe(props) {
+	      var name = props.name,
+	          on = props.on,
+	          pool = props.pool,
+	          target = props.target;
+	      instance.unsub(name, on, {
+	        pool: pool,
+	        target: target
+	      });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      return null;
+	    }
+	  }]);
+
+	  return EventStack;
+	}(React.PureComponent);
+
+	_defineProperty(EventStack$1, "defaultProps", {
+	  pool: 'default',
+	  target: 'document'
+	});
+
+	EventStack$1.propTypes = {
+	  /** An event name on which we will subscribe. */
+	  name: PropTypes.string.isRequired,
+
+	  /** An event handler or array of event handlers. */
+	  on: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]).isRequired,
+
+	  /** A name of pool. */
+	  pool: PropTypes.string,
+
+	  /** A DOM element on which we will subscribe. */
+	  target: PropTypes.oneOfType([PropTypes.oneOf(['document', 'window']), // Heads up!
+	  // This condition for SSR safety.
+	  PropTypes.instanceOf(env.canUseDOM ? HTMLElement : Object), PropTypes.shape({
+	    current: PropTypes.object
+	  })])
+	};
+	eventStack_development.instance = instance;
+	eventStack_development.default = EventStack$1;
+
+	var stack;
+
+	{
+	  stack = eventStack_development;
+	}
+
+	lib.exports = stack.default;
+	lib.exports.instance = stack.instance;
+
+	/**
+	 * This method returns `undefined`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 2.3.0
+	 * @category Util
+	 * @example
+	 *
+	 * _.times(2, _.noop);
+	 * // => [undefined, undefined]
+	 */
+	function noop() {// No operation performed.
+	}
+
+	/** Used as references for various `Number` constants. */
+
+	var INFINITY = 1 / 0;
+	/**
+	 * Creates a set object of `values`.
+	 *
+	 * @private
+	 * @param {Array} values The values to add to the set.
+	 * @returns {Object} Returns the new set.
+	 */
+
+	var createSet = !(Set$1 && 1 / setToArray(new Set$1([, -0]))[1] == INFINITY) ? noop : function (values) {
+	  return new Set$1(values);
+	};
+
+	/** Used as the size to enable large array optimizations. */
+
+	var LARGE_ARRAY_SIZE = 200;
+	/**
+	 * The base implementation of `_.uniqBy` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} [iteratee] The iteratee invoked per element.
+	 * @param {Function} [comparator] The comparator invoked per element.
+	 * @returns {Array} Returns the new duplicate free array.
+	 */
+
+	function baseUniq(array, iteratee, comparator) {
+	  var index = -1,
+	      includes = arrayIncludes,
+	      length = array.length,
+	      isCommon = true,
+	      result = [],
+	      seen = result;
+
+	  if (comparator) {
+	    isCommon = false;
+	    includes = arrayIncludesWith;
+	  } else if (length >= LARGE_ARRAY_SIZE) {
+	    var set = iteratee ? null : createSet(array);
+
+	    if (set) {
+	      return setToArray(set);
+	    }
+
+	    isCommon = false;
+	    includes = cacheHas;
+	    seen = new SetCache();
+	  } else {
+	    seen = iteratee ? [] : result;
+	  }
+
+	  outer: while (++index < length) {
+	    var value = array[index],
+	        computed = iteratee ? iteratee(value) : value;
+	    value = comparator || value !== 0 ? value : 0;
+
+	    if (isCommon && computed === computed) {
+	      var seenIndex = seen.length;
+
+	      while (seenIndex--) {
+	        if (seen[seenIndex] === computed) {
+	          continue outer;
+	        }
+	      }
+
+	      if (iteratee) {
+	        seen.push(computed);
+	      }
+
+	      result.push(value);
+	    } else if (!includes(seen, computed, comparator)) {
+	      if (seen !== result) {
+	        seen.push(computed);
+	      }
+
+	      result.push(value);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Creates a duplicate-free version of an array, using
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons, in which only the first occurrence of each element
+	 * is kept. The order of result values is determined by the order they occur
+	 * in the array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @returns {Array} Returns the new duplicate free array.
+	 * @example
+	 *
+	 * _.uniq([2, 1, 2]);
+	 * // => [2, 1]
+	 */
+
+	function uniq(array) {
+	  return array && array.length ? baseUniq(array) : [];
+	}
+
+	/** `Object#toString` result references. */
+
+	var numberTag = '[object Number]';
+	/**
+	 * Checks if `value` is classified as a `Number` primitive or object.
+	 *
+	 * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
+	 * classified as numbers, use the `_.isFinite` method.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a number, else `false`.
+	 * @example
+	 *
+	 * _.isNumber(3);
+	 * // => true
+	 *
+	 * _.isNumber(Number.MIN_VALUE);
+	 * // => true
+	 *
+	 * _.isNumber(Infinity);
+	 * // => true
+	 *
+	 * _.isNumber('3');
+	 * // => false
+	 */
+
+	function isNumber(value) {
+	  return typeof value == 'number' || isObjectLike(value) && baseGetTag(value) == numberTag;
+	}
+
+	/** `Object#toString` result references. */
+
+	var stringTag = '[object String]';
+	/**
+	 * Checks if `value` is classified as a `String` primitive or object.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a string, else `false`.
+	 * @example
+	 *
+	 * _.isString('abc');
+	 * // => true
+	 *
+	 * _.isString(1);
+	 * // => false
+	 */
+
+	function isString(value) {
+	  return typeof value == 'string' || !isArray(value) && isObjectLike(value) && baseGetTag(value) == stringTag;
+	}
+
+	/** `Object#toString` result references. */
+
+	var boolTag = '[object Boolean]';
+	/**
+	 * Checks if `value` is classified as a boolean primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a boolean, else `false`.
+	 * @example
+	 *
+	 * _.isBoolean(false);
+	 * // => true
+	 *
+	 * _.isBoolean(null);
+	 * // => false
+	 */
+
+	function isBoolean(value) {
+	  return value === true || value === false || isObjectLike(value) && baseGetTag(value) == boolTag;
+	}
+
+	function toVal(mix) {
+	  var k,
+	      y,
+	      str = '';
+
+	  if (typeof mix === 'string' || typeof mix === 'number') {
+	    str += mix;
+	  } else if (typeof mix === 'object') {
+	    if (Array.isArray(mix)) {
+	      for (k = 0; k < mix.length; k++) {
+	        if (mix[k]) {
+	          if (y = toVal(mix[k])) {
+	            str && (str += ' ');
+	            str += y;
+	          }
+	        }
+	      }
+	    } else {
+	      for (k in mix) {
+	        if (mix[k]) {
+	          str && (str += ' ');
+	          str += k;
+	        }
+	      }
+	    }
+	  }
+
+	  return str;
+	}
+
+	function cx () {
+	  var i = 0,
+	      tmp,
+	      x,
+	      str = '';
+
+	  while (i < arguments.length) {
+	    if (tmp = arguments[i++]) {
+	      if (x = toVal(tmp)) {
+	        str && (str += ' ');
+	        str += x;
+	      }
+	    }
+	  }
+
+	  return str;
+	}
+
+	var DEPRECATED_CALLS = {}; // ============================================================
+	// Factories
+	// ============================================================
+
+	/**
+	 * A more robust React.createElement. It can create elements from primitive values.
+	 *
+	 * @param {function|string} Component A ReactClass or string
+	 * @param {function} mapValueToProps A function that maps a primitive value to the Component props
+	 * @param {string|object|function} val The value to create a ReactElement from
+	 * @param {Object} [options={}]
+	 * @param {object} [options.defaultProps={}] Default props object
+	 * @param {object|function} [options.overrideProps={}] Override props object or function (called with regular props)
+	 * @param {boolean} [options.autoGenerateKey=true] Whether or not automatic key generation is allowed
+	 * @returns {object|null}
+	 */
+
+	function createShorthand(Component, mapValueToProps, val, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  if (typeof Component !== 'function' && typeof Component !== 'string') {
+	    throw new Error('createShorthand() Component must be a string or function.');
+	  } // short circuit noop values
+
+
+	  if (isNil(val) || isBoolean(val)) {
+	    return null;
+	  }
+
+	  var valIsString = isString(val);
+
+	  var valIsNumber = isNumber(val);
+
+	  var valIsFunction = isFunction(val);
+
+	  var valIsReactElement = /*#__PURE__*/react.exports.isValidElement(val);
+
+	  var valIsPropsObject = isPlainObject(val);
+
+	  var valIsPrimitiveValue = valIsString || valIsNumber || isArray(val); // unhandled type return null
+
+	  /* eslint-disable no-console */
+
+
+	  if (!valIsFunction && !valIsReactElement && !valIsPropsObject && !valIsPrimitiveValue) {
+	    {
+	      console.error(['Shorthand value must be a string|number|array|object|ReactElement|function.', ' Use null|undefined|boolean for none', " Received " + typeof val + "."].join(''));
+	    }
+
+	    return null;
+	  }
+	  /* eslint-enable no-console */
+	  // ----------------------------------------
+	  // Build up props
+	  // ----------------------------------------
+
+
+	  var _options = options,
+	      _options$defaultProps = _options.defaultProps,
+	      defaultProps = _options$defaultProps === void 0 ? {} : _options$defaultProps; // User's props
+
+	  var usersProps = valIsReactElement && val.props || valIsPropsObject && val || valIsPrimitiveValue && mapValueToProps(val); // Override props
+
+	  var _options2 = options,
+	      _options2$overridePro = _options2.overrideProps,
+	      overrideProps = _options2$overridePro === void 0 ? {} : _options2$overridePro;
+	  overrideProps = isFunction(overrideProps) ? overrideProps(_extends({}, defaultProps, usersProps)) : overrideProps; // Merge props
+
+	  /* eslint-disable react/prop-types */
+
+	  var props = _extends({}, defaultProps, usersProps, overrideProps); // Merge className
+
+
+	  if (defaultProps.className || overrideProps.className || usersProps.className) {
+	    var mergedClassesNames = cx(defaultProps.className, overrideProps.className, usersProps.className);
+	    props.className = uniq(mergedClassesNames.split(' ')).join(' ');
+	  } // Merge style
+
+
+	  if (defaultProps.style || overrideProps.style || usersProps.style) {
+	    props.style = _extends({}, defaultProps.style, usersProps.style, overrideProps.style);
+	  } // ----------------------------------------
+	  // Get key
+	  // ----------------------------------------
+	  // Use key, childKey, or generate key
+
+
+	  if (isNil(props.key)) {
+	    var childKey = props.childKey;
+	    var _options3 = options,
+	        _options3$autoGenerat = _options3.autoGenerateKey,
+	        autoGenerateKey = _options3$autoGenerat === void 0 ? true : _options3$autoGenerat;
+
+	    if (!isNil(childKey)) {
+	      // apply and consume the childKey
+	      props.key = typeof childKey === 'function' ? childKey(props) : childKey;
+	      delete props.childKey;
+	    } else if (autoGenerateKey && (valIsString || valIsNumber)) {
+	      // use string/number shorthand values as the key
+	      props.key = val;
+	    }
+	  } // ----------------------------------------
+	  // Create Element
+	  // ----------------------------------------
+	  // Clone ReactElements
+
+
+	  if (valIsReactElement) {
+	    return /*#__PURE__*/react.exports.cloneElement(val, props);
+	  }
+
+	  if (typeof props.children === 'function') {
+	    return props.children(Component, _extends({}, props, {
+	      children: undefined
+	    }));
+	  } // Create ReactElements from built up props
+
+
+	  if (valIsPrimitiveValue || valIsPropsObject) {
+	    return /*#__PURE__*/react.exports.createElement(Component, props);
+	  } // Call functions with args similar to createElement()
+	  // TODO: V3 remove the implementation
+
+
+	  if (valIsFunction) {
+	    {
+	      if (!DEPRECATED_CALLS[Component]) {
+	        DEPRECATED_CALLS[Component] = true; // eslint-disable-next-line no-console
+
+	        console.warn("Warning: There is a deprecated shorthand function usage for \"" + Component + "\". It is deprecated and will be removed in v3 release. Please follow our upgrade guide: https://github.com/Semantic-Org/Semantic-UI-React/pull/4029");
+	      }
+	    }
+
+	    return val(Component, props, props.children);
+	  }
+	  /* eslint-enable react/prop-types */
+
+	} // ============================================================
+	// Factory Creators
+	// ============================================================
+
+	/**
+	 * Creates a `createShorthand` function that is waiting for a value and options.
+	 *
+	 * @param {function|string} Component A ReactClass or string
+	 * @param {function} mapValueToProps A function that maps a primitive value to the Component props
+	 * @returns {function} A shorthand factory function waiting for `val` and `defaultProps`.
+	 */
+
+	function createShorthandFactory(Component, mapValueToProps) {
+	  if (typeof Component !== 'function' && typeof Component !== 'string') {
+	    throw new Error('createShorthandFactory() Component must be a string or function.');
+	  }
+
+	  return function (val, options) {
+	    return createShorthand(Component, mapValueToProps, val, options);
+	  };
+	} // ============================================================
+	var createHTMLImage = /* #__PURE__ */createShorthandFactory('img', function (val) {
+	  return {
+	    src: val
+	  };
+	});
+	var createHTMLInput = /* #__PURE__ */createShorthandFactory('input', function (val) {
+	  return {
+	    type: val
+	  };
+	});
+	var createHTMLLabel = /* #__PURE__ */createShorthandFactory('label', function (val) {
+	  return {
+	    children: val
+	  };
+	});
+
+	/**
+	 * Returns an object consisting of props beyond the scope of the Component.
+	 * Useful for getting and spreading unknown props from the user.
+	 * @param {function} Component A function or ReactClass.
+	 * @param {object} props A ReactElement props object
+	 * @returns {{}} A shallow copy of the prop object
+	 */
+	var getUnhandledProps = function getUnhandledProps(Component, props) {
+	  // Note that `handledProps` are generated automatically during build with `babel-plugin-transform-react-handled-props`
+	  var _Component$handledPro = Component.handledProps,
+	      handledProps = _Component$handledPro === void 0 ? [] : _Component$handledPro;
+	  return Object.keys(props).reduce(function (acc, prop) {
+	    if (prop === 'childKey') return acc;
+	    if (handledProps.indexOf(prop) === -1) acc[prop] = props[prop];
+	    return acc;
+	  }, {});
+	};
+
+	/**
+	 * Returns a createElement() type based on the props of the Component.
+	 * Useful for calculating what type a component should render as.
+	 *
+	 * @param {function} Component A function or ReactClass.
+	 * @param {object} props A ReactElement props object
+	 * @param {function} [getDefault] A function that returns a default element type.
+	 * @returns {string|function} A ReactElement type
+	 */
+	function getElementType(Component, props, getDefault) {
+	  var _Component$defaultPro = Component.defaultProps,
+	      defaultProps = _Component$defaultPro === void 0 ? {} : _Component$defaultPro; // ----------------------------------------
+	  // user defined "as" element type
+
+	  if (props.as && props.as !== defaultProps.as) return props.as; // ----------------------------------------
+	  // computed default element type
+
+	  if (getDefault) {
+	    var computedDefault = getDefault();
+	    if (computedDefault) return computedDefault;
+	  } // ----------------------------------------
+	  // infer anchor links
+
+
+	  if (props.href) return 'a'; // ----------------------------------------
+	  // use defaultProp or 'div'
+
+	  return defaultProps.as || 'div';
+	}
+
+	/**
+	 * The base implementation of `_.values` and `_.valuesIn` which creates an
+	 * array of `object` property values corresponding to the property names
+	 * of `props`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} props The property names to get values for.
+	 * @returns {Object} Returns the array of property values.
+	 */
+
+	function baseValues(object, props) {
+	  return arrayMap(props, function (key) {
+	    return object[key];
+	  });
+	}
+
+	/**
+	 * Creates an array of the own enumerable string keyed property values of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property values.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.values(new Foo);
+	 * // => [1, 2] (iteration order is not guaranteed)
+	 *
+	 * _.values('hi');
+	 * // => ['h', 'i']
+	 */
+
+	function values(object) {
+	  return object == null ? [] : baseValues(object, keys(object));
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMax$4 = Math.max;
+	/**
+	 * Checks if `value` is in `collection`. If `collection` is a string, it's
+	 * checked for a substring of `value`, otherwise
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * is used for equality comparisons. If `fromIndex` is negative, it's used as
+	 * the offset from the end of `collection`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
+	 * @returns {boolean} Returns `true` if `value` is found, else `false`.
+	 * @example
+	 *
+	 * _.includes([1, 2, 3], 1);
+	 * // => true
+	 *
+	 * _.includes([1, 2, 3], 1, 2);
+	 * // => false
+	 *
+	 * _.includes({ 'a': 1, 'b': 2 }, 1);
+	 * // => true
+	 *
+	 * _.includes('abcd', 'bc');
+	 * // => true
+	 */
+
+	function includes(collection, value, fromIndex, guard) {
+	  collection = isArrayLike(collection) ? collection : values(collection);
+	  fromIndex = fromIndex && !guard ? toInteger(fromIndex) : 0;
+	  var length = collection.length;
+
+	  if (fromIndex < 0) {
+	    fromIndex = nativeMax$4(length + fromIndex, 0);
+	  }
+
+	  return isString(collection) ? fromIndex <= length && collection.indexOf(value, fromIndex) > -1 : !!length && baseIndexOf(collection, value, fromIndex) > -1;
+	}
+
+	var htmlInputAttrs = [// REACT
+	'selected', 'defaultValue', 'defaultChecked', // LIMITED HTML PROPS
+	'accept', 'autoCapitalize', 'autoComplete', 'autoCorrect', 'autoFocus', 'checked', 'disabled', 'form', 'id', 'inputMode', 'lang', 'list', 'max', 'maxLength', 'min', 'minLength', 'multiple', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'step', 'title', 'type', 'value'];
+	var htmlInputEvents = [// EVENTS
+	// keyboard
+	'onKeyDown', 'onKeyPress', 'onKeyUp', // focus
+	'onFocus', 'onBlur', // form
+	'onChange', 'onInput', // mouse
+	'onClick', 'onContextMenu', 'onDrag', 'onDragEnd', 'onDragEnter', 'onDragExit', 'onDragLeave', 'onDragOver', 'onDragStart', 'onDrop', 'onMouseDown', 'onMouseEnter', 'onMouseLeave', 'onMouseMove', 'onMouseOut', 'onMouseOver', 'onMouseUp', // selection
+	'onSelect', // touch
+	'onTouchCancel', 'onTouchEnd', 'onTouchMove', 'onTouchStart'];
+	var htmlInputProps = [].concat(htmlInputAttrs, htmlInputEvents);
+	var htmlImageProps = ['alt', 'height', 'src', 'srcSet', 'width', 'loading'];
+	/**
+	 * Returns an array of objects consisting of: props of html input element and rest.
+	 * @param {object} props A ReactElement props object
+	 * @param {Object} [options={}]
+	 * @param {Array} [options.htmlProps] An array of html input props
+	 * @param {boolean} [options.includeAria] Includes all input props that starts with "aria-"
+	 * @returns {[{}, {}]} An array of objects
+	 */
+
+	var partitionHTMLProps = function partitionHTMLProps(props, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  var _options = options,
+	      _options$htmlProps = _options.htmlProps,
+	      htmlProps = _options$htmlProps === void 0 ? htmlInputProps : _options$htmlProps,
+	      _options$includeAria = _options.includeAria,
+	      includeAria = _options$includeAria === void 0 ? true : _options$includeAria;
+	  var inputProps = {};
+	  var rest = {};
+
+	  forEach(props, function (val, prop) {
+	    var possibleAria = includeAria && (/^aria-.*$/.test(prop) || prop === 'role');
+	    var target = includes(htmlProps, prop) || possibleAria ? inputProps : rest;
+	    target[prop] = val;
+	  });
+
+	  return [inputProps, rest];
+	};
+
+	var hasDocument = typeof document === 'object' && document !== null;
+	var hasWindow = typeof window === 'object' && window !== null && window.self === window; // eslint-disable-next-line no-confusing-arrow
+
+	var isBrowser = function isBrowser() {
+	  return !isNil(isBrowser.override) ? isBrowser.override : hasDocument && hasWindow;
+	};
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeMax$3 = Math.max,
+	    nativeMin$2 = Math.min;
+	/**
+	 * The base implementation of `_.inRange` which doesn't coerce arguments.
+	 *
+	 * @private
+	 * @param {number} number The number to check.
+	 * @param {number} start The start of the range.
+	 * @param {number} end The end of the range.
+	 * @returns {boolean} Returns `true` if `number` is in the range, else `false`.
+	 */
+
+	function baseInRange(number, start, end) {
+	  return number >= nativeMin$2(start, end) && number < nativeMax$3(start, end);
+	}
+
+	/**
+	 * Checks if `n` is between `start` and up to, but not including, `end`. If
+	 * `end` is not specified, it's set to `start` with `start` then set to `0`.
+	 * If `start` is greater than `end` the params are swapped to support
+	 * negative ranges.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.3.0
+	 * @category Number
+	 * @param {number} number The number to check.
+	 * @param {number} [start=0] The start of the range.
+	 * @param {number} end The end of the range.
+	 * @returns {boolean} Returns `true` if `number` is in the range, else `false`.
+	 * @see _.range, _.rangeRight
+	 * @example
+	 *
+	 * _.inRange(3, 2, 4);
+	 * // => true
+	 *
+	 * _.inRange(4, 8);
+	 * // => true
+	 *
+	 * _.inRange(4, 2);
+	 * // => false
+	 *
+	 * _.inRange(2, 2);
+	 * // => false
+	 *
+	 * _.inRange(1.2, 2);
+	 * // => true
+	 *
+	 * _.inRange(5.2, 4);
+	 * // => false
+	 *
+	 * _.inRange(-3, -2, -6);
+	 * // => true
+	 */
+
+	function inRange(number, start, end) {
+	  start = toFinite(start);
+
+	  if (end === undefined) {
+	    end = start;
+	    start = 0;
+	  } else {
+	    end = toFinite(end);
+	  }
+
+	  number = toNumber(number);
+	  return baseInRange(number, start, end);
+	}
+
+	/**
+	 * Gets the first element of `array`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @alias first
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @returns {*} Returns the first element of `array`.
+	 * @example
+	 *
+	 * _.head([1, 2, 3]);
+	 * // => 1
+	 *
+	 * _.head([]);
+	 * // => undefined
+	 */
+	function head(array) {
+	  return array && array.length ? array[0] : undefined;
+	}
+
+	/**
+	 * Determines if a click's coordinates are within the bounds of a node.
+	 *
+	 * @see https://github.com/Semantic-Org/Semantic-UI-React/pull/2384
+	 *
+	 * @param {object} node - A DOM node.
+	 * @param {object} e - A SyntheticEvent or DOM Event.
+	 * @returns {boolean}
+	 */
+
+	var doesNodeContainClick = function doesNodeContainClick(node, e) {
+	  if (some([e, node], isNil)) return false; // if there is an e.target and it is in the document, use a simple node.contains() check
+
+	  if (e.target) {
+	    invoke(e.target, 'setAttribute', 'data-suir-click-target', true);
+
+	    if (document.querySelector('[data-suir-click-target=true]')) {
+	      invoke(e.target, 'removeAttribute', 'data-suir-click-target');
+
+	      return node.contains(e.target);
+	    }
+	  } // Below logic handles cases where the e.target is no longer in the document.
+	  // The result of the click likely has removed the e.target node.
+	  // Instead of node.contains(), we'll identify the click by X/Y position.
+	  // return early if the event properties aren't available
+	  // prevent measuring the node and repainting if we don't need to
+
+
+	  var clientX = e.clientX,
+	      clientY = e.clientY;
+	  if (some([clientX, clientY], isNil)) return false; // false if the node is not visible
+
+	  var clientRects = node.getClientRects(); // Heads Up!
+	  // getClientRects returns a DOMRectList, not an array nor a plain object
+	  // We explicitly avoid _.isEmpty and check .length to cover all possible shapes
+
+	  if (!node.offsetWidth || !node.offsetHeight || !clientRects || !clientRects.length) return false; // false if the node doesn't have a valid bounding rect
+
+	  var _first2 = head(clientRects),
+	      top = _first2.top,
+	      bottom = _first2.bottom,
+	      left = _first2.left,
+	      right = _first2.right;
+
+	  if (some([top, bottom, left, right], isNil)) return false; // we add a small decimal to the upper bound just to make it inclusive
+	  // don't add an whole pixel (1) as the event/node values may be decimal sensitive
+
+	  return inRange(clientY, top, bottom + 0.001) && inRange(clientX, left, right + 0.001);
+	};
+
+	var COLORS = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
+	var FLOATS = ['left', 'right'];
+	var SIZES = ['mini', 'tiny', 'small', 'medium', 'large', 'big', 'huge', 'massive'];
+	var TEXT_ALIGNMENTS = ['left', 'center', 'right', 'justified'];
+	var VERTICAL_ALIGNMENTS = ['bottom', 'middle', 'top'];
+	var VISIBILITY = ['mobile', 'tablet', 'computer', 'large screen', 'widescreen'];
+	var WIDTHS = [].concat(keys(numberToWordMap), keys(numberToWordMap).map(Number), values(numberToWordMap));
+	var DIRECTIONAL_TRANSITIONS = ['browse', 'browse right', 'drop', 'fade', 'fade up', 'fade down', 'fade left', 'fade right', 'fly up', 'fly down', 'fly left', 'fly right', 'horizontal flip', 'vertical flip', 'scale', 'slide up', 'slide down', 'slide left', 'slide right', 'swing up', 'swing down', 'swing left', 'swing right', 'zoom'];
+	var STATIC_TRANSITIONS = ['jiggle', 'flash', 'shake', 'pulse', 'tada', 'bounce', 'glow'];
+	var TRANSITIONS = [].concat(DIRECTIONAL_TRANSITIONS, STATIC_TRANSITIONS); // Generated from:
+	// https://github.com/Semantic-Org/Semantic-UI/blob/master/dist/components/icon.css
+
+	var ACCESSIBILITY = ['american sign language interpreting', 'assistive listening systems', 'audio description', 'blind', 'braille', 'closed captioning', 'closed captioning outline', 'deaf', 'low vision', 'phone volume', 'question circle', 'question circle outline', 'sign language', 'tty', 'universal access', 'wheelchair'];
+	var ARROWS = ['angle double down', 'angle double left', 'angle double right', 'angle double up', 'angle down', 'angle left', 'angle right', 'angle up', 'arrow alternate circle down', 'arrow alternate circle down outline', 'arrow alternate circle left', 'arrow alternate circle left outline', 'arrow alternate circle right', 'arrow alternate circle right outline', 'arrow alternate circle up', 'arrow alternate circle up outline', 'arrow circle down', 'arrow circle left', 'arrow circle right', 'arrow circle up', 'arrow down', 'arrow left', 'arrow right', 'arrow up', 'arrows alternate', 'arrows alternate horizontal', 'arrows alternate vertical', 'caret down', 'caret left', 'caret right', 'caret square down', 'caret square down outline', 'caret square left', 'caret square left outline', 'caret square right', 'caret square right outline', 'caret square up', 'caret square up outline', 'caret up', 'cart arrow down', 'chart line', 'chevron circle down', 'chevron circle left', 'chevron circle right', 'chevron circle up', 'chevron down', 'chevron left', 'chevron right', 'chevron up', 'cloud download', 'cloud upload', 'download', 'exchange', 'expand arrows alternate', 'external alternate', 'external square alternate', 'hand point down', 'hand point down outline', 'hand point left', 'hand point left outline', 'hand point right', 'hand point right outline', 'hand point up', 'hand point up outline', 'hand pointer', 'hand pointer outline', 'history', 'level down alternate', 'level up alternate', 'location arrow', 'long arrow alternate down', 'long arrow alternate left', 'long arrow alternate right', 'long arrow alternate up', 'mouse pointer', 'play', 'random', 'recycle', 'redo', 'redo alternate', 'reply', 'reply all', 'retweet', 'share', 'share square', 'share square outline', 'sign-in', 'sign-out', 'sign-in alternate', 'sign-out alternate', 'sort', 'sort alphabet down', 'sort alphabet up', 'sort amount down', 'sort amount up', 'sort down', 'sort numeric down', 'sort numeric up', 'sort up', 'sync', 'sync alternate', 'text height', 'text width', 'undo', 'undo alternate', 'upload', 'zoom-in', 'zoom-out'];
+	var AUDIO_VIDEO = ['audio description', 'backward', 'circle', 'circle outline', 'closed captioning', 'closed captioning outline', 'compress', 'eject', 'expand', 'expand arrows alternate', 'fast backward', 'fast forward', 'file audio', 'file audio outline', 'file video', 'file video outline', 'film', 'forward', 'headphones', 'microphone', 'microphone slash', 'music', 'pause', 'pause circle', 'pause circle outline', 'phone volume', 'play', 'play circle', 'play circle outline', 'podcast', 'random', 'redo', 'redo alternate', 'rss', 'rss square', 'step backward', 'step forward', 'stop', 'stop circle', 'stop circle outline', 'sync', 'sync alternate', 'undo', 'undo alternate', 'video', 'volume down', 'volume off', 'volume up'];
+	var BUSINESS = ['address book', 'address book outline', 'address card', 'address card outline', 'archive', 'balance scale', 'birthday cake', 'book', 'briefcase', 'building', 'building outline', 'bullhorn', 'bullseye', 'calculator', 'calendar', 'calendar outline', 'calendar alternate', 'calendar alternate outline', 'certificate', 'chart area', 'chart bar', 'chart bar outline', 'chart line', 'chart pie', 'clipboard', 'clipboard outline', 'coffee', 'columns', 'compass', 'compass outline', 'copy', 'copy outline', 'copyright', 'copyright outline', 'cut', 'edit', 'edit outline', 'envelope', 'envelope outline', 'envelope open', 'envelope open outline', 'envelope square', 'eraser', 'fax', 'file', 'file outline', 'file alternate', 'file alternate outline', 'folder', 'folder outline', 'folder open', 'folder open outline', 'globe', 'industry', 'paperclip', 'paste', 'pen square', 'pencil alternate', 'percent', 'phone', 'phone square', 'phone volume', 'registered', 'registered outline', 'save', 'save outline', 'sitemap', 'sticky note', 'sticky note outline', 'suitcase', 'table', 'tag', 'tags', 'tasks', 'thumbtack', 'trademark'];
+	var CHESS = ['chess', 'chess bishop', 'chess board', 'chess king', 'chess knight', 'chess pawn', 'chess queen', 'chess rook', 'square full'];
+	var CODE = ['archive', 'barcode', 'bath', 'bug', 'code', 'code branch', 'coffee', 'file', 'file outline', 'file alternate', 'file alternate outline', 'file code', 'file code outline', 'filter', 'fire extinguisher', 'folder', 'folder outline', 'folder open', 'folder open outline', 'keyboard', 'keyboard outline', 'microchip', 'qrcode', 'shield alternate', 'sitemap', 'terminal', 'user secret', 'window close', 'window close outline', 'window maximize', 'window maximize outline', 'window minimize', 'window minimize outline', 'window restore', 'window restore outline'];
+	var COMMUNICATION = ['address book', 'address book outline', 'address card', 'address card outline', 'american sign language interpreting', 'assistive listening systems', 'at', 'bell', 'bell outline', 'bell slash', 'bell slash outline', 'bullhorn', 'comment', 'comment outline', 'comment alternate', 'comment alternate outline', 'comments', 'comments outline', 'envelope', 'envelope outline', 'envelope open', 'envelope open outline', 'envelope square', 'fax', 'inbox', 'language', 'microphone', 'microphone slash', 'mobile', 'mobile alternate', 'paper plane', 'paper plane outline', 'phone', 'phone square', 'phone volume', 'rss', 'rss square', 'tty', 'wifi'];
+	var COMPUTERS = ['desktop', 'download', 'hdd', 'hdd outline', 'headphones', 'keyboard', 'keyboard outline', 'laptop', 'microchip', 'mobile', 'mobile alternate', 'plug', 'power off', 'print', 'save', 'save outline', 'server', 'tablet', 'tablet alternate', 'tv', 'upload'];
+	var CURRENCY = ['dollar sign', 'euro sign', 'lira sign', 'money bill alternate', 'money bill alternate outline', 'pound sign', 'ruble sign', 'rupee sign', 'shekel sign', 'won sign', 'yen sign'];
+	var DATE_TIME = ['bell', 'bell outline', 'bell slash', 'bell slash outline', 'calendar', 'calendar outline', 'calendar alternate', 'calendar alternate outline', 'calendar check', 'calendar check outline', 'calendar minus', 'calendar minus outline', 'calendar plus', 'calendar plus outline', 'calendar times', 'calendar times outline', 'clock', 'clock outline', 'hourglass', 'hourglass outline', 'hourglass end', 'hourglass half', 'hourglass start', 'stopwatch'];
+	var DESIGN = ['adjust', 'clone', 'clone outline', 'copy', 'copy outline', 'crop', 'crosshairs', 'cut', 'edit', 'edit outline', 'eraser', 'eye', 'eye dropper', 'eye slash', 'eye slash outline', 'object group', 'object group outline', 'object ungroup', 'object ungroup outline', 'paint brush', 'paste', 'pencil alternate', 'save', 'save outline', 'tint'];
+	var EDITORS = ['align center', 'align justify', 'align left', 'align right', 'bold', 'clipboard', 'clipboard outline', 'clone', 'clone outline', 'columns', 'copy', 'copy outline', 'cut', 'edit', 'edit outline', 'eraser', 'file', 'file outline', 'file alternate', 'file alternate outline', 'font', 'heading', 'i cursor', 'indent', 'italic', 'linkify', 'list', 'list alternate', 'list alternate outline', 'list ol', 'list ul', 'outdent', 'paper plane', 'paper plane outline', 'paperclip', 'paragraph', 'paste', 'pencil alternate', 'print', 'quote left', 'quote right', 'redo', 'redo alternate', 'reply', 'reply all', 'share', 'strikethrough', 'subscript', 'superscript', 'sync', 'sync alternate', 'table', 'tasks', 'text height', 'text width', 'th', 'th large', 'th list', 'trash', 'trash alternate', 'trash alternate outline', 'underline', 'undo', 'undo alternate', 'unlink'];
+	var FILES = ['archive', 'clone', 'clone outline', 'copy', 'copy outline', 'cut', 'file', 'file outline', 'file alternate', 'file alternate outline', 'file archive', 'file archive outline', 'file audio', 'file audio outline', 'file code', 'file code outline', 'file excel', 'file excel outline', 'file image', 'file image outline', 'file pdf', 'file pdf outline', 'file powerpoint', 'file powerpoint outline', 'file video', 'file video outline', 'file word', 'file word outline', 'folder', 'folder outline', 'folder open', 'folder open outline', 'paste', 'save', 'save outline', 'sticky note', 'sticky note outline'];
+	var GENDERS = ['genderless', 'mars', 'mars double', 'mars stroke', 'mars stroke horizontal', 'mars stroke vertical', 'mercury', 'neuter', 'transgender', 'transgender alternate', 'venus', 'venus double', 'venus mars'];
+	var HANDS_GESTURES = ['hand lizard', 'hand lizard outline', 'hand paper', 'hand paper outline', 'hand peace', 'hand peace outline', 'hand point down', 'hand point down outline', 'hand point left', 'hand point left outline', 'hand point right', 'hand point right outline', 'hand point up', 'hand point up outline', 'hand pointer', 'hand pointer outline', 'hand rock', 'hand rock outline', 'hand scissors', 'hand scissors outline', 'hand spock', 'hand spock outline', 'handshake', 'handshake outline', 'thumbs down', 'thumbs down outline', 'thumbs up', 'thumbs up outline'];
+	var HEALTH = ['ambulance', 'h square', 'heart', 'heart outline', 'heartbeat', 'hospital', 'hospital outline', 'medkit', 'plus square', 'plus square outline', 'stethoscope', 'user md', 'wheelchair'];
+	var IMAGES = ['adjust', 'bolt', 'camera', 'camera retro', 'clone', 'clone outline', 'compress', 'expand', 'eye', 'eye dropper', 'eye slash', 'eye slash outline', 'file image', 'file image outline', 'film', 'id badge', 'id badge outline', 'id card', 'id card outline', 'image', 'image outline', 'images', 'images outline', 'sliders horizontal', 'tint'];
+	var INTERFACES = ['ban', 'barcode', 'bars', 'beer', 'bell', 'bell outline', 'bell slash', 'bell slash outline', 'bug', 'bullhorn', 'bullseye', 'calculator', 'calendar', 'calendar outline', 'calendar alternate', 'calendar alternate outline', 'calendar check', 'calendar check outline', 'calendar minus', 'calendar minus outline', 'calendar plus', 'calendar plus outline', 'calendar times', 'calendar times outline', 'certificate', 'check', 'check circle', 'check circle outline', 'check square', 'check square outline', 'circle', 'circle outline', 'clipboard', 'clipboard outline', 'clone', 'clone outline', 'cloud', 'cloud download', 'cloud upload', 'coffee', 'cog', 'cogs', 'copy', 'copy outline', 'cut', 'database', 'dot circle', 'dot circle outline', 'download', 'edit', 'edit outline', 'ellipsis horizontal', 'ellipsis vertical', 'envelope', 'envelope outline', 'envelope open', 'envelope open outline', 'eraser', 'exclamation', 'exclamation circle', 'exclamation triangle', 'external alternate', 'external square alternate', 'eye', 'eye slash', 'eye slash outline', 'file', 'file outline', 'file alternate', 'file alternate outline', 'filter', 'flag', 'flag outline', 'flag checkered', 'folder', 'folder outline', 'folder open', 'folder open outline', 'frown', 'frown outline', 'hashtag', 'heart', 'heart outline', 'history', 'home', 'i cursor', 'info', 'info circle', 'language', 'magic', 'meh', 'meh outline', 'microphone', 'microphone slash', 'minus', 'minus circle', 'minus square', 'minus square outline', 'paste', 'pencil alternate', 'plus', 'plus circle', 'plus square', 'plus square outline', 'qrcode', 'question', 'question circle', 'question circle outline', 'quote left', 'quote right', 'redo', 'redo alternate', 'reply', 'reply all', 'rss', 'rss square', 'save', 'save outline', 'search', 'search minus', 'search plus', 'share', 'share alternate', 'share alternate square', 'share square', 'share square outline', 'shield alternate', 'sign-in', 'sign-out', 'signal', 'sitemap', 'sliders horizontal', 'smile', 'smile outline', 'sort', 'sort alphabet down', 'sort alphabet up', 'sort amount down', 'sort amount up', 'sort down', 'sort numeric down', 'sort numeric up', 'sort up', 'star', 'star outline', 'star half', 'star half outline', 'sync', 'sync alternate', 'thumbs down', 'thumbs down outline', 'thumbs up', 'thumbs up outline', 'times', 'times circle', 'times circle outline', 'toggle off', 'toggle on', 'trash', 'trash alternate', 'trash alternate outline', 'trophy', 'undo', 'undo alternate', 'upload', 'user', 'user outline', 'user circle', 'user circle outline', 'wifi'];
+	var LOGISTICS = ['box', 'boxes', 'clipboard check', 'clipboard list', 'dolly', 'dolly flatbed', 'pallet', 'shipping fast', 'truck', 'warehouse'];
+	var MAPS = ['ambulance', 'anchor', 'balance scale', 'bath', 'bed', 'beer', 'bell', 'bell outline', 'bell slash', 'bell slash outline', 'bicycle', 'binoculars', 'birthday cake', 'blind', 'bomb', 'book', 'bookmark', 'bookmark outline', 'briefcase', 'building', 'building outline', 'car', 'coffee', 'crosshairs', 'dollar sign', 'eye', 'eye slash', 'eye slash outline', 'fighter jet', 'fire', 'fire extinguisher', 'flag', 'flag outline', 'flag checkered', 'flask', 'gamepad', 'gavel', 'gift', 'glass martini', 'globe', 'graduation cap', 'h square', 'heart', 'heart outline', 'heartbeat', 'home', 'hospital', 'hospital outline', 'image', 'image outline', 'images', 'images outline', 'industry', 'info', 'info circle', 'key', 'leaf', 'lemon', 'lemon outline', 'life ring', 'life ring outline', 'lightbulb', 'lightbulb outline', 'location arrow', 'low vision', 'magnet', 'male', 'map', 'map outline', 'map marker', 'map marker alternate', 'map pin', 'map signs', 'medkit', 'money bill alternate', 'money bill alternate outline', 'motorcycle', 'music', 'newspaper', 'newspaper outline', 'paw', 'phone', 'phone square', 'phone volume', 'plane', 'plug', 'plus', 'plus square', 'plus square outline', 'print', 'recycle', 'road', 'rocket', 'search', 'search minus', 'search plus', 'ship', 'shopping bag', 'shopping basket', 'shopping cart', 'shower', 'street view', 'subway', 'suitcase', 'tag', 'tags', 'taxi', 'thumbtack', 'ticket alternate', 'tint', 'train', 'tree', 'trophy', 'truck', 'tty', 'umbrella', 'university', 'utensil spoon', 'utensils', 'wheelchair', 'wifi', 'wrench'];
+	var MEDICAL = ['ambulance', 'band aid', 'dna', 'first aid', 'heart', 'heart outline', 'heartbeat', 'hospital', 'hospital outline', 'hospital symbol', 'pills', 'plus', 'stethoscope', 'syringe', 'thermometer', 'user md', 'weight'];
+	var OBJECTS = ['ambulance', 'anchor', 'archive', 'balance scale', 'bath', 'bed', 'beer', 'bell', 'bell outline', 'bicycle', 'binoculars', 'birthday cake', 'bomb', 'book', 'bookmark', 'bookmark outline', 'briefcase', 'bug', 'building', 'building outline', 'bullhorn', 'bullseye', 'bus', 'calculator', 'calendar', 'calendar outline', 'calendar alternate', 'calendar alternate outline', 'camera', 'camera retro', 'car', 'clipboard', 'clipboard outline', 'cloud', 'coffee', 'cog', 'cogs', 'compass', 'compass outline', 'copy', 'copy outline', 'cube', 'cubes', 'cut', 'envelope', 'envelope outline', 'envelope open', 'envelope open outline', 'eraser', 'eye', 'eye dropper', 'fax', 'fighter jet', 'file', 'file outline', 'file alternate', 'file alternate outline', 'film', 'fire', 'fire extinguisher', 'flag', 'flag outline', 'flag checkered', 'flask', 'futbol', 'futbol outline', 'gamepad', 'gavel', 'gem', 'gem outline', 'gift', 'glass martini', 'globe', 'graduation cap', 'hdd', 'hdd outline', 'headphones', 'heart', 'heart outline', 'home', 'hospital', 'hospital outline', 'hourglass', 'hourglass outline', 'image', 'image outline', 'images', 'images outline', 'industry', 'key', 'keyboard', 'keyboard outline', 'laptop', 'leaf', 'lemon', 'lemon outline', 'life ring', 'life ring outline', 'lightbulb', 'lightbulb outline', 'lock', 'lock open', 'magic', 'magnet', 'map', 'map outline', 'map marker', 'map marker alternate', 'map pin', 'map signs', 'medkit', 'microchip', 'microphone', 'mobile', 'mobile alternate', 'money bill alternate', 'money bill alternate outline', 'moon', 'moon outline', 'motorcycle', 'newspaper', 'newspaper outline', 'paint brush', 'paper plane', 'paper plane outline', 'paperclip', 'paste', 'paw', 'pencil alternate', 'phone', 'plane', 'plug', 'print', 'puzzle piece', 'road', 'rocket', 'save', 'save outline', 'search', 'shield alternate', 'shopping bag', 'shopping basket', 'shopping cart', 'shower', 'snowflake', 'snowflake outline', 'space shuttle', 'star', 'star outline', 'sticky note', 'sticky note outline', 'stopwatch', 'subway', 'suitcase', 'sun', 'sun outline', 'tablet', 'tablet alternate', 'tachometer alternate', 'tag', 'tags', 'taxi', 'thumbtack', 'ticket alternate', 'train', 'trash', 'trash alternate', 'trash alternate outline', 'tree', 'trophy', 'truck', 'tv', 'umbrella', 'university', 'unlock', 'unlock alternate', 'utensil spoon', 'utensils', 'wheelchair', 'wrench'];
+	var PAYMENTS_SHOPPING = ['bell', 'bell outline', 'bookmark', 'bookmark outline', 'bullhorn', 'camera', 'camera retro', 'cart arrow down', 'cart plus', 'certificate', 'credit card', 'credit card outline', 'gem', 'gem outline', 'gift', 'handshake', 'handshake outline', 'heart', 'heart outline', 'key', 'shopping bag', 'shopping basket', 'shopping cart', 'star', 'star outline', 'tag', 'tags', 'thumbs down', 'thumbs down outline', 'thumbs up', 'thumbs up outline', 'trophy'];
+	var SHAPES = ['bookmark', 'bookmark outline', 'calendar', 'calendar outline', 'certificate', 'circle', 'circle outline', 'cloud', 'comment', 'comment outline', 'file', 'file outline', 'folder', 'folder outline', 'heart', 'heart outline', 'map marker', 'play', 'square', 'square outline', 'star', 'star outline'];
+	var SPINNERS = ['asterisk', 'certificate', 'circle notch', 'cog', 'compass', 'compass outline', 'crosshairs', 'life ring', 'life ring outline', 'snowflake', 'snowflake outline', 'spinner', 'sun', 'sun outline', 'sync'];
+	var SPORTS = ['baseball ball', 'basketball ball', 'bowling ball', 'football ball', 'futbol', 'futbol outline', 'golf ball', 'hockey puck', 'quidditch', 'table tennis', 'volleyball ball'];
+	var STATUS = ['ban', 'battery empty', 'battery full', 'battery half', 'battery quarter', 'battery three quarters', 'bell', 'bell outline', 'bell slash', 'bell slash outline', 'calendar', 'calendar outline', 'calendar alternate', 'calendar alternate outline', 'calendar check', 'calendar check outline', 'calendar minus', 'calendar minus outline', 'calendar plus', 'calendar plus outline', 'calendar times', 'calendar times outline', 'cart arrow down', 'cart plus', 'exclamation', 'exclamation circle', 'exclamation triangle', 'eye', 'eye slash', 'eye slash outline', 'file', 'file outline', 'file alternate', 'file alternate outline', 'folder', 'folder outline', 'folder open', 'folder open outline', 'info', 'info circle', 'lock', 'lock open', 'minus', 'minus circle', 'minus square', 'minus square outline', 'plus', 'plus circle', 'plus square', 'plus square outline', 'question', 'question circle', 'question circle outline', 'shield alternate', 'shopping cart', 'sign in alternate', 'sign out alternate', 'thermometer empty', 'thermometer full', 'thermometer half', 'thermometer quarter', 'thermometer three quarters', 'thumbs down', 'thumbs down outline', 'thumbs up', 'thumbs up outline', 'toggle off', 'toggle on', 'unlock', 'unlock alternate'];
+	var USERS_PEOPLE = ['address book', 'address book outline', 'address card', 'address card outline', 'bed', 'blind', 'child', 'female', 'frown', 'frown outline', 'id badge', 'id badge outline', 'id card', 'id card outline', 'male', 'meh', 'meh outline', 'power off', 'smile', 'smile outline', 'street view', 'user', 'user outline', 'user circle', 'user circle outline', 'user md', 'user plus', 'user secret', 'user times', 'users', 'wheelchair'];
+	var VEHICLES = ['ambulance', 'bicycle', 'bus', 'car', 'fighter jet', 'motorcycle', 'paper plane', 'paper plane outline', 'plane', 'rocket', 'ship', 'shopping cart', 'space shuttle', 'subway', 'taxi', 'train', 'truck', 'wheelchair'];
+	var WRITING = ['archive', 'book', 'bookmark', 'bookmark outline', 'edit', 'edit outline', 'envelope', 'envelope outline', 'envelope open', 'envelope open outline', 'eraser', 'file', 'file outline', 'file alternate', 'file alternate outline', 'folder', 'folder outline', 'folder open', 'folder open outline', 'keyboard', 'keyboard outline', 'newspaper', 'newspaper outline', 'paper plane', 'paper plane outline', 'paperclip', 'paragraph', 'pen square', 'pencil alternate', 'quote left', 'quote right', 'sticky note', 'sticky note outline', 'thumbtack'];
+	var BRANDS = ['500px', 'accessible', 'accusoft', 'adn', 'adversal', 'affiliatetheme', 'algolia', 'amazon', 'amazon pay', 'amilia', 'android', 'angellist', 'angrycreative', 'angular', 'app store', 'app store ios', 'apper', 'apple', 'apple pay', 'asymmetrik', 'audible', 'autoprefixer', 'avianex', 'aviato', 'aws', 'bandcamp', 'behance', 'behance square', 'bimobject', 'bitbucket', 'bitcoin', 'bity', 'black tie', 'blackberry', 'blogger', 'blogger b', 'bluetooth', 'bluetooth b', 'btc', 'buromobelexperte', 'buysellads', 'cc amazon pay', 'cc amex', 'cc apple pay', 'cc diners club', 'cc discover', 'cc jcb', 'cc mastercard', 'cc paypal', 'cc stripe', 'cc visa', 'centercode', 'chrome', 'cloudscale', 'cloudsmith', 'cloudversify', 'codepen', 'codiepie', 'connectdevelop', 'contao', 'cpanel', 'creative commons', 'css3', 'css3 alternate', 'cuttlefish', 'd and d', 'dashcube', 'delicious', 'deploydog', 'deskpro', 'deviantart', 'digg', 'digital ocean', 'discord', 'discourse', 'dochub', 'docker', 'draft2digital', 'dribbble', 'dribbble square', 'dropbox', 'drupal', 'dyalog', 'earlybirds', 'edge', 'elementor', 'ember', 'empire', 'envira', 'erlang', 'ethereum', 'etsy', 'expeditedssl', 'facebook', 'facebook f', 'facebook messenger', 'facebook square', 'firefox', 'first order', 'firstdraft', 'flickr', 'flipboard', 'fly', 'font awesome', 'font awesome alternate', 'font awesome flag', 'fonticons', 'fonticons fi', 'fort awesome', 'fort awesome alternate', 'forumbee', 'foursquare', 'free code camp', 'freebsd', 'get pocket', 'gg', 'gg circle', 'git', 'git square', 'github', 'github alternate', 'github square', 'gitkraken', 'gitlab', 'gitter', 'glide', 'glide g', 'gofore', 'goodreads', 'goodreads g', 'google', 'google drive', 'google play', 'google plus', 'google plus g', 'google plus square', 'google wallet', 'gratipay', 'grav', 'gripfire', 'grunt', 'gulp', 'hacker news', 'hacker news square', 'hips', 'hire a helper', 'hooli', 'hotjar', 'houzz', 'html5', 'hubspot', 'imdb', 'instagram', 'internet explorer', 'ioxhost', 'itunes', 'itunes note', 'jenkins', 'joget', 'joomla', 'js', 'js square', 'jsfiddle', 'keycdn', 'kickstarter', 'kickstarter k', 'korvue', 'laravel', 'lastfm', 'lastfm square', 'leanpub', 'less', 'linechat', 'linkedin', 'linkedin alternate', 'linode', 'linux', 'lyft', 'magento', 'maxcdn', 'medapps', 'medium', 'medium m', 'medrt', 'meetup', 'microsoft', 'mix', 'mixcloud', 'mizuni', 'modx', 'monero', 'napster', 'nintendo switch', 'node', 'node js', 'npm', 'ns8', 'nutritionix', 'odnoklassniki', 'odnoklassniki square', 'opencart', 'openid', 'opera', 'optin monster', 'osi', 'page4', 'pagelines', 'palfed', 'patreon', 'paypal', 'periscope', 'phabricator', 'phoenix framework', 'php', 'pied piper', 'pied piper alternate', 'pied piper pp', 'pinterest', 'pinterest p', 'pinterest square', 'playstation', 'product hunt', 'pushed', 'python', 'qq', 'quinscape', 'quora', 'ravelry', 'react', 'rebel', 'redriver', 'reddit', 'reddit alien', 'reddit square', 'rendact', 'renren', 'replyd', 'resolving', 'rocketchat', 'rockrms', 'safari', 'sass', 'schlix', 'scribd', 'searchengin', 'sellcast', 'sellsy', 'servicestack', 'shirtsinbulk', 'simplybuilt', 'sistrix', 'skyatlas', 'skype', 'slack', 'slack hash', 'slideshare', 'snapchat', 'snapchat ghost', 'snapchat square', 'soundcloud', 'speakap', 'spotify', 'stack exchange', 'stack overflow', 'staylinked', 'steam', 'steam square', 'steam symbol', 'sticker mule', 'strava', 'stripe', 'stripe s', 'studiovinari', 'stumbleupon', 'stumbleupon circle', 'superpowers', 'supple', 'telegram', 'telegram plane', 'tencent weibo', 'themeisle', 'trello', 'tripadvisor', 'tumblr', 'tumblr square', 'twitch', 'twitter', 'twitter square', 'typo3', 'uber', 'uikit', 'uniregistry', 'untappd', 'usb', 'ussunnah', 'vaadin', 'viacoin', 'viadeo', 'viadeo square', 'viber', 'vimeo', 'vimeo square', 'vimeo v', 'vine', 'vk', 'vnv', 'vuejs', 'wechat', 'weibo', 'weixin', 'whatsapp', 'whatsapp square', 'whmcs', 'wikipedia w', 'windows', 'wordpress', 'wordpress simple', 'wpbeginner', 'wpexplorer', 'wpforms', 'xbox', 'xing', 'xing square', 'y combinator', 'yahoo', 'yandex', 'yandex international', 'yelp', 'yoast', 'youtube', 'youtube square'];
+	var ICONS = uniq([].concat(ACCESSIBILITY, ARROWS, AUDIO_VIDEO, BUSINESS, CHESS, CODE, COMMUNICATION, COMPUTERS, CURRENCY, DATE_TIME, DESIGN, EDITORS, FILES, GENDERS, HANDS_GESTURES, HEALTH, IMAGES, INTERFACES, LOGISTICS, MAPS, MEDICAL, OBJECTS, PAYMENTS_SHOPPING, SHAPES, SPINNERS, SPORTS, STATUS, USERS_PEOPLE, VEHICLES, WRITING, BRANDS));
+	var ICON_ALIASES = ['chess rock', 'ordered list', 'unordered list', 'user doctor', 'shield', 'puzzle', 'add circle', 'add square', 'add to calendar', 'add to cart', 'add user', 'add', 'alarm mute', 'alarm', 'ald', 'als', 'announcement', 'area chart', 'area graph', 'arrow down cart', 'asexual', 'asl interpreting', 'asl', 'assistive listening devices', 'attach', 'attention', 'balance', 'bar', 'bathtub', 'battery four', 'battery high', 'battery low', 'battery one', 'battery three', 'battery two', 'battery zero', 'birthday', 'block layout', 'bluetooth alternative', 'broken chain', 'browser', 'call square', 'call', 'cancel', 'cart', 'cc', 'chain', 'chat', 'checked calendar', 'checkmark', 'circle notched', 'close', 'cny', 'cocktail', 'commenting', 'computer', 'configure', 'content', 'deafness', 'delete calendar', 'delete', 'detective', 'discussions', 'doctor', 'dollar', 'dont', 'drivers license', 'dropdown', 'emergency', 'envira gallery', 'erase', 'eur', 'euro', 'eyedropper', 'factory', 'favorite', 'feed', 'female homosexual', 'file text', 'file text outline', 'find', 'first aid', 'fork', 'game', 'gay', 'gbp', 'google plus circle', 'google plus official', 'grab', 'graduation', 'grid layout', 'group', 'h', 'hand victory', 'handicap', 'hard of hearing', 'header', 'help circle', 'help', 'heterosexual', 'hide', 'hotel', 'hourglass four', 'hourglass full', 'hourglass one', 'hourglass three', 'hourglass two', 'idea', 'ils', 'in cart', 'inr', 'intergender', 'intersex', 'jpy', 'krw', 'lab', 'law', 'legal', 'lesbian', 'lightning', 'like', 'line graph', 'linkedin square', 'linkify', 'lira', 'list layout', 'magnify', 'mail forward', 'mail outline', 'mail square', 'mail', 'male homosexual', 'man', 'marker', 'mars alternate', 'mars horizontal', 'mars vertical', 'microsoft edge', 'military', 'ms edge', 'mute', 'new pied piper', 'non binary transgender', 'numbered list', 'options', 'other gender horizontal', 'other gender vertical', 'other gender', 'payment', 'paypal card', 'pencil square', 'photo', 'picture', 'pie chart', 'pie graph', 'pied piper hat', 'pin', 'plus cart', 'point', 'pointing down', 'pointing left', 'pointing right', 'pointing up', 'pound', 'power cord', 'power', 'privacy', 'r circle', 'rain', 'record', 'refresh', 'remove circle', 'remove from calendar', 'remove user', 'remove', 'repeat', 'rmb', 'rouble', 'rub', 'ruble', 'rupee', 's15', 'selected radio', 'send', 'setting', 'settings', 'shekel', 'sheqel', 'shipping', 'shop', 'shuffle', 'shutdown', 'sidebar', 'signing', 'signup', 'sliders', 'soccer', 'sort alphabet ascending', 'sort alphabet descending', 'sort ascending', 'sort content ascending', 'sort content descending', 'sort descending', 'sort numeric ascending', 'sort numeric descending', 'sound', 'spy', 'stripe card', 'student', 'talk', 'target', 'teletype', 'television', 'text cursor', 'text telephone', 'theme', 'thermometer', 'thumb tack', 'time', 'tm', 'toggle down', 'toggle left', 'toggle right', 'toggle up', 'translate', 'travel', 'treatment', 'triangle down', 'triangle left', 'triangle right', 'triangle up', 'try', 'unhide', 'unlinkify', 'unmute', 'usd', 'user cancel', 'user close', 'user delete', 'user x', 'vcard', 'video camera', 'video play', 'volume control phone', 'wait', 'warning circle', 'warning sign', 'warning', 'wi-fi', 'winner', 'wizard', 'woman', 'won', 'wordpress beginner', 'wordpress forms', 'world', 'write square', 'x', 'yen', 'zip', 'zoom in', 'zoom out', 'zoom', 'bitbucket square', 'checkmark box', 'circle thin', 'cloud download', 'cloud upload', 'compose', 'conversation', 'credit card alternative', 'currency', 'dashboard', 'diamond', 'disk', 'exchange', 'external share', 'external square', 'external', 'facebook official', 'food', 'hourglass zero', 'level down', 'level up', 'log out', 'meanpath', 'money', 'move', 'pencil', 'protect', 'radio', 'remove bookmark', 'resize horizontal', 'resize vertical', 'sign in', 'sign out', 'spoon', 'star half empty', 'star half full', 'ticket', 'times rectangle', 'write', 'youtube play'];
+	var ICONS_AND_ALIASES = uniq([].concat(ICONS, ICON_ALIASES)); // Some icon names are not part of icons.css.
+	// These are only valid as children of other components.
+	// Their CSS rules are defined by a specific component's CSS.
+	// We don't want to show name warnings for those usages so we add them as valid names here.
+
+	var COMPONENT_CONTEXT_SPECIFIC_ICONS = ['left dropdown' // nested dropdown menu direction icon
+	];
+	var ALL_ICONS_IN_ALL_CONTEXTS = uniq([].concat(ICONS_AND_ALIASES, COMPONENT_CONTEXT_SPECIFIC_ICONS));
+
+	/**
+	 * Normalizes the duration of a transition.
+	 * @param {number|object} duration The value to normalize.
+	 * @param {'hide'|'show'} type The type of transition.
+	 * @returns {number}
+	 */
+	var normalizeTransitionDuration = (function (duration, type) {
+	  return typeof duration === 'number' || typeof duration === 'string' ? duration : duration[type];
+	});
+
+	/**
+	 * Performs a deep comparison between two values to determine if they are
+	 * equivalent.
+	 *
+	 * **Note:** This method supports comparing arrays, array buffers, booleans,
+	 * date objects, error objects, maps, numbers, `Object` objects, regexes,
+	 * sets, strings, symbols, and typed arrays. `Object` objects are compared
+	 * by their own, not inherited, enumerable properties. Functions and DOM
+	 * nodes are compared by strict equality, i.e. `===`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 * var other = { 'a': 1 };
+	 *
+	 * _.isEqual(object, other);
+	 * // => true
+	 *
+	 * object === other;
+	 * // => false
+	 */
+
+	function isEqual(value, other) {
+	  return baseIsEqual(value, other);
+	}
+
+	/** Built-in value references. */
+
+	var objectCreate = Object.create;
+	/**
+	 * The base implementation of `_.create` without support for assigning
+	 * properties to the created object.
+	 *
+	 * @private
+	 * @param {Object} proto The object to inherit from.
+	 * @returns {Object} Returns the new object.
+	 */
+
+	var baseCreate = function () {
+	  function object() {}
+
+	  return function (proto) {
+	    if (!isObject$1(proto)) {
+	      return {};
+	    }
+
+	    if (objectCreate) {
+	      return objectCreate(proto);
+	    }
+
+	    object.prototype = proto;
+	    var result = new object();
+	    object.prototype = undefined;
+	    return result;
+	  };
+	}();
+
+	// https://medium.com/@alexandereardon/uselayouteffect-and-ssr-192986cdcf7a
+
+	var useIsomorphicLayoutEffect = isBrowser() && "development" !== 'test' ? React$1.useLayoutEffect : React$1.useEffect;
+
+	var CLASS_NAME_DELITIMITER = /\s+/;
+	/**
+	 * Accepts a set of ref objects that contain classnames as a string and returns an array of unique
+	 * classNames.
+	 *
+	 * @param {Set<React.RefObject>|undefined} classNameRefs
+	 * @returns String[]
+	 */
+
+	function computeClassNames(classNameRefs) {
+	  var classNames = [];
+
+	  if (classNameRefs) {
+	    classNameRefs.forEach(function (classNameRef) {
+	      if (typeof classNameRef.current === 'string') {
+	        var classNamesForRef = classNameRef.current.split(CLASS_NAME_DELITIMITER);
+	        classNamesForRef.forEach(function (className) {
+	          classNames.push(className);
+	        });
+	      }
+	    });
+	    return classNames.filter(function (className, i, array) {
+	      return className.length > 0 && array.indexOf(className) === i;
+	    });
+	  }
+
+	  return [];
+	}
+	/**
+	 * Computes classnames that should be removed and added to a node based on input differences.
+	 *
+	 * @param {String[]} prevClassNames
+	 * @param {String[]} currentClassNames
+	 */
+
+	function computeClassNamesDifference(prevClassNames, currentClassNames) {
+	  return [currentClassNames.filter(function (className) {
+	    return prevClassNames.indexOf(className) === -1;
+	  }), prevClassNames.filter(function (className) {
+	    return currentClassNames.indexOf(className) === -1;
+	  })];
+	}
+	var prevClassNames = new Map();
+	/**
+	 * @param {HTMLElement} node
+	 * @param {Set<React.RefObject>|undefined} classNameRefs
+	 */
+
+	var handleClassNamesChange = function handleClassNamesChange(node, classNameRefs) {
+	  var currentClassNames = computeClassNames(classNameRefs);
+
+	  var _computeClassNamesDif = computeClassNamesDifference(prevClassNames.get(node) || [], currentClassNames),
+	      forAdd = _computeClassNamesDif[0],
+	      forRemoval = _computeClassNamesDif[1];
+
+	  if (node) {
+	    forAdd.forEach(function (className) {
+	      return node.classList.add(className);
+	    });
+	    forRemoval.forEach(function (className) {
+	      return node.classList.remove(className);
+	    });
+	  }
+
+	  prevClassNames.set(node, currentClassNames);
+	};
+	var NodeRegistry = function NodeRegistry() {
+	  var _this = this;
+
+	  this.add = function (node, classNameRef) {
+	    if (_this.nodes.has(node)) {
+	      var _set = _this.nodes.get(node);
+
+	      _set.add(classNameRef);
+
+	      return;
+	    } // IE11 does not support constructor params
+
+
+	    var set = new Set();
+	    set.add(classNameRef);
+
+	    _this.nodes.set(node, set);
+	  };
+
+	  this.del = function (node, classNameRef) {
+	    if (!_this.nodes.has(node)) {
+	      return;
+	    }
+
+	    var set = _this.nodes.get(node);
+
+	    if (set.size === 1) {
+	      _this.nodes.delete(node);
+
+	      return;
+	    }
+
+	    set.delete(classNameRef);
+	  };
+
+	  this.emit = function (node, callback) {
+	    callback(node, _this.nodes.get(node));
+	  };
+
+	  this.nodes = new Map();
+	};
+	var nodeRegistry = new NodeRegistry();
+	/**
+	 * A React hooks that allows to manage classNames on a DOM node in declarative manner. Accepts
+	 * a HTML element or React ref objects with it.
+	 *
+	 * @param {HTMLElement|React.RefObject} node
+	 * @param {String} className
+	 */
+
+	function useClassNamesOnNode(node, className) {
+	  var classNameRef = React$1.useRef();
+	  var isMounted = React$1.useRef(false);
+	  useIsomorphicLayoutEffect(function () {
+	    classNameRef.current = className;
+
+	    if (isMounted.current) {
+	      var element = isRefObject$1(node) ? node.current : node;
+	      nodeRegistry.emit(element, handleClassNamesChange);
+	    }
+
+	    isMounted.current = true;
+	  }, [className]);
+	  useIsomorphicLayoutEffect(function () {
+	    var element = isRefObject$1(node) ? node.current : node;
+	    nodeRegistry.add(element, classNameRef);
+	    nodeRegistry.emit(element, handleClassNamesChange);
+	    return function () {
+	      nodeRegistry.del(element, classNameRef);
+	      nodeRegistry.emit(element, handleClassNamesChange);
+	    };
+	  }, [node]);
+	}
+
+	/**
+	 * Creates an array excluding all given values using
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * **Note:** Unlike `_.pull`, this method returns a new array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @param {...*} [values] The values to exclude.
+	 * @returns {Array} Returns the new array of filtered values.
+	 * @see _.difference, _.xor
+	 * @example
+	 *
+	 * _.without([2, 1, 2, 3], 1, 2);
+	 * // => [3]
+	 */
+
+	var without = baseRest(function (array, values) {
+	  return isArrayLikeObject(array) ? baseDifference(array, values) : [];
+	});
+
+	/**
+	 * Several icons can be used together as a group.
+	 */
+
+	function IconGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      size = props.size;
+	  var classes = cx(size, 'icons', className);
+	  var rest = getUnhandledProps(IconGroup, props);
+	  var ElementType = getElementType(IconGroup, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	IconGroup.handledProps = ["as", "children", "className", "content", "size"];
+	IconGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Size of the icon group. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium'))
+	} ;
+	IconGroup.defaultProps = {
+	  as: 'i'
+	};
+
+	/**
+	 * An icon is a glyph used to represent something else.
+	 * @see Image
+	 */
+
+	var Icon = /*#__PURE__*/function (_PureComponent) {
+	  _inheritsLoose(Icon, _PureComponent);
+
+	  function Icon() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _PureComponent.call.apply(_PureComponent, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var disabled = _this.props.disabled;
+
+	      if (disabled) {
+	        e.preventDefault();
+	        return;
+	      }
+
+	      invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Icon.prototype;
+
+	  _proto.getIconAriaOptions = function getIconAriaOptions() {
+	    var ariaOptions = {};
+	    var _this$props = this.props,
+	        ariaLabel = _this$props['aria-label'],
+	        ariaHidden = _this$props['aria-hidden'];
+
+	    if (isNil(ariaLabel)) {
+	      ariaOptions['aria-hidden'] = 'true';
+	    } else {
+	      ariaOptions['aria-label'] = ariaLabel;
+	    }
+
+	    if (!isNil(ariaHidden)) {
+	      ariaOptions['aria-hidden'] = ariaHidden;
+	    }
+
+	    return ariaOptions;
+	  };
+
+	  _proto.render = function render() {
+	    var _this$props2 = this.props,
+	        bordered = _this$props2.bordered,
+	        circular = _this$props2.circular,
+	        className = _this$props2.className,
+	        color = _this$props2.color,
+	        corner = _this$props2.corner,
+	        disabled = _this$props2.disabled,
+	        fitted = _this$props2.fitted,
+	        flipped = _this$props2.flipped,
+	        inverted = _this$props2.inverted,
+	        link = _this$props2.link,
+	        loading = _this$props2.loading,
+	        name = _this$props2.name,
+	        rotated = _this$props2.rotated,
+	        size = _this$props2.size;
+	    var classes = cx(color, name, size, useKeyOnly(bordered, 'bordered'), useKeyOnly(circular, 'circular'), useKeyOnly(disabled, 'disabled'), useKeyOnly(fitted, 'fitted'), useKeyOnly(inverted, 'inverted'), useKeyOnly(link, 'link'), useKeyOnly(loading, 'loading'), useKeyOrValueAndKey(corner, 'corner'), useValueAndKey(flipped, 'flipped'), useValueAndKey(rotated, 'rotated'), 'icon', className);
+	    var rest = getUnhandledProps(Icon, this.props);
+	    var ElementType = getElementType(Icon, this.props);
+	    var ariaOptions = this.getIconAriaOptions();
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }));
+	  };
+
+	  return Icon;
+	}(react.exports.PureComponent);
+
+	Icon.handledProps = ["aria-hidden", "aria-label", "as", "bordered", "circular", "className", "color", "corner", "disabled", "fitted", "flipped", "inverted", "link", "loading", "name", "rotated", "size"];
+	Icon.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Formatted to appear bordered. */
+	  bordered: propTypes.exports.bool,
+
+	  /** Icon can formatted to appear circular. */
+	  circular: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Color of the icon. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Icons can display a smaller corner icon. */
+	  corner: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['top left', 'top right', 'bottom left', 'bottom right'])]),
+
+	  /** Show that the icon is inactive. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Fitted, without space to left or right of Icon. */
+	  fitted: propTypes.exports.bool,
+
+	  /** Icon can be flipped. */
+	  flipped: propTypes.exports.oneOf(['horizontally', 'vertically']),
+
+	  /** Formatted to have its colors inverted for contrast. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Icon can be formatted as a link. */
+	  link: propTypes.exports.bool,
+
+	  /** Icon can be used as a simple loader. */
+	  loading: propTypes.exports.bool,
+
+	  /** Name of the icon. */
+	  name: suggest(ALL_ICONS_IN_ALL_CONTEXTS),
+
+	  /** Icon can rotated. */
+	  rotated: propTypes.exports.oneOf(['clockwise', 'counterclockwise']),
+
+	  /** Size of the icon. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** Icon can have an aria label. */
+	  'aria-hidden': propTypes.exports.string,
+
+	  /** Icon can have an aria label. */
+	  'aria-label': propTypes.exports.string
+	} ;
+	Icon.defaultProps = {
+	  as: 'i'
+	};
+	Icon.Group = IconGroup;
+	Icon.create = createShorthandFactory(Icon, function (value) {
+	  return {
+	    name: value
+	  };
+	});
+
+	var isObject = function isObject(val) {
+	  return val !== null && !Array.isArray(val) && typeof val === 'object';
+	};
+
+	var codes = {
+	  // ----------------------------------------
+	  // By Code
+	  // ----------------------------------------
+	  3: 'Cancel',
+	  6: 'Help',
+	  8: 'Backspace',
+	  9: 'Tab',
+	  12: 'Clear',
+	  13: 'Enter',
+	  16: 'Shift',
+	  17: 'Control',
+	  18: 'Alt',
+	  19: 'Pause',
+	  20: 'CapsLock',
+	  27: 'Escape',
+	  28: 'Convert',
+	  29: 'NonConvert',
+	  30: 'Accept',
+	  31: 'ModeChange',
+	  32: ' ',
+	  33: 'PageUp',
+	  34: 'PageDown',
+	  35: 'End',
+	  36: 'Home',
+	  37: 'ArrowLeft',
+	  38: 'ArrowUp',
+	  39: 'ArrowRight',
+	  40: 'ArrowDown',
+	  41: 'Select',
+	  42: 'Print',
+	  43: 'Execute',
+	  44: 'PrintScreen',
+	  45: 'Insert',
+	  46: 'Delete',
+	  48: ['0', ')'],
+	  49: ['1', '!'],
+	  50: ['2', '@'],
+	  51: ['3', '#'],
+	  52: ['4', '$'],
+	  53: ['5', '%'],
+	  54: ['6', '^'],
+	  55: ['7', '&'],
+	  56: ['8', '*'],
+	  57: ['9', '('],
+	  91: 'OS',
+	  93: 'ContextMenu',
+	  144: 'NumLock',
+	  145: 'ScrollLock',
+	  181: 'VolumeMute',
+	  182: 'VolumeDown',
+	  183: 'VolumeUp',
+	  186: [';', ':'],
+	  187: ['=', '+'],
+	  188: [',', '<'],
+	  189: ['-', '_'],
+	  190: ['.', '>'],
+	  191: ['/', '?'],
+	  192: ['`', '~'],
+	  219: ['[', '{'],
+	  220: ['\\', '|'],
+	  221: [']', '}'],
+	  222: ["'", '"'],
+	  224: 'Meta',
+	  225: 'AltGraph',
+	  246: 'Attn',
+	  247: 'CrSel',
+	  248: 'ExSel',
+	  249: 'EraseEof',
+	  250: 'Play',
+	  251: 'ZoomOut'
+	}; // Function Keys (F1-24)
+
+	for (var i = 0; i < 24; i += 1) {
+	  codes[112 + i] = 'F' + (i + 1);
+	} // Alphabet (a-Z)
+
+
+	for (var j = 0; j < 26; j += 1) {
+	  var n = j + 65;
+	  codes[n] = [String.fromCharCode(n + 32), String.fromCharCode(n)];
+	}
+
+	var keyboardKey = {
+	  codes: codes,
+
+	  /**
+	   * Get the `keyCode` or `which` value from a keyboard event or `key` name.
+	   * @param {string|object} eventOrKey A keyboard event-like object or `key` name.
+	   * @param {string} [eventOrKey.key] If object, it must have one of these keys.
+	   * @param {number} [eventOrKey.keyCode] If object, it must have one of these keys.
+	   * @param {number} [eventOrKey.which] If object, it must have one of these keys.
+	   * @returns {number|undefined}
+	   */
+	  getCode: function getCode(eventOrKey) {
+	    if (isObject(eventOrKey)) {
+	      return eventOrKey.keyCode || eventOrKey.which || this[eventOrKey.key];
+	    }
+
+	    return this[eventOrKey];
+	  },
+
+	  /**
+	   * Get the key name from a keyboard event, `keyCode`, or `which` value.
+	   * @param {number|object} eventOrCode A keyboard event-like object or key code.
+	   * @param {string} [eventOrCode.key] If object with a `key` name, it will be returned.
+	   * @param {number} [eventOrCode.keyCode] If object, it must have one of these keys.
+	   * @param {number} [eventOrCode.which] If object, it must have one of these keys.
+	   * @param {boolean} [eventOrCode.shiftKey] If object, it must have one of these keys.
+	   * @returns {string|undefined}
+	   */
+	  getKey: function getKey(eventOrCode) {
+	    var isEvent = isObject(eventOrCode); // handle events with a `key` already defined
+
+	    if (isEvent && eventOrCode.key) {
+	      return eventOrCode.key;
+	    }
+
+	    var name = codes[isEvent ? eventOrCode.keyCode || eventOrCode.which : eventOrCode];
+
+	    if (Array.isArray(name)) {
+	      if (isEvent) {
+	        name = name[eventOrCode.shiftKey ? 1 : 0];
+	      } else {
+	        name = name[0];
+	      }
+	    }
+
+	    return name;
+	  },
+	  // ----------------------------------------
+	  // By Name
+	  // ----------------------------------------
+	  // declare these manually for static analysis
+	  Cancel: 3,
+	  Help: 6,
+	  Backspace: 8,
+	  Tab: 9,
+	  Clear: 12,
+	  Enter: 13,
+	  Shift: 16,
+	  Control: 17,
+	  Alt: 18,
+	  Pause: 19,
+	  CapsLock: 20,
+	  Escape: 27,
+	  Convert: 28,
+	  NonConvert: 29,
+	  Accept: 30,
+	  ModeChange: 31,
+	  ' ': 32,
+	  PageUp: 33,
+	  PageDown: 34,
+	  End: 35,
+	  Home: 36,
+	  ArrowLeft: 37,
+	  ArrowUp: 38,
+	  ArrowRight: 39,
+	  ArrowDown: 40,
+	  Select: 41,
+	  Print: 42,
+	  Execute: 43,
+	  PrintScreen: 44,
+	  Insert: 45,
+	  Delete: 46,
+	  0: 48,
+	  ')': 48,
+	  1: 49,
+	  '!': 49,
+	  2: 50,
+	  '@': 50,
+	  3: 51,
+	  '#': 51,
+	  4: 52,
+	  $: 52,
+	  5: 53,
+	  '%': 53,
+	  6: 54,
+	  '^': 54,
+	  7: 55,
+	  '&': 55,
+	  8: 56,
+	  '*': 56,
+	  9: 57,
+	  '(': 57,
+	  a: 65,
+	  A: 65,
+	  b: 66,
+	  B: 66,
+	  c: 67,
+	  C: 67,
+	  d: 68,
+	  D: 68,
+	  e: 69,
+	  E: 69,
+	  f: 70,
+	  F: 70,
+	  g: 71,
+	  G: 71,
+	  h: 72,
+	  H: 72,
+	  i: 73,
+	  I: 73,
+	  j: 74,
+	  J: 74,
+	  k: 75,
+	  K: 75,
+	  l: 76,
+	  L: 76,
+	  m: 77,
+	  M: 77,
+	  n: 78,
+	  N: 78,
+	  o: 79,
+	  O: 79,
+	  p: 80,
+	  P: 80,
+	  q: 81,
+	  Q: 81,
+	  r: 82,
+	  R: 82,
+	  s: 83,
+	  S: 83,
+	  t: 84,
+	  T: 84,
+	  u: 85,
+	  U: 85,
+	  v: 86,
+	  V: 86,
+	  w: 87,
+	  W: 87,
+	  x: 88,
+	  X: 88,
+	  y: 89,
+	  Y: 89,
+	  z: 90,
+	  Z: 90,
+	  OS: 91,
+	  ContextMenu: 93,
+	  F1: 112,
+	  F2: 113,
+	  F3: 114,
+	  F4: 115,
+	  F5: 116,
+	  F6: 117,
+	  F7: 118,
+	  F8: 119,
+	  F9: 120,
+	  F10: 121,
+	  F11: 122,
+	  F12: 123,
+	  F13: 124,
+	  F14: 125,
+	  F15: 126,
+	  F16: 127,
+	  F17: 128,
+	  F18: 129,
+	  F19: 130,
+	  F20: 131,
+	  F21: 132,
+	  F22: 133,
+	  F23: 134,
+	  F24: 135,
+	  NumLock: 144,
+	  ScrollLock: 145,
+	  VolumeMute: 181,
+	  VolumeDown: 182,
+	  VolumeUp: 183,
+	  ';': 186,
+	  ':': 186,
+	  '=': 187,
+	  '+': 187,
+	  ',': 188,
+	  '<': 188,
+	  '-': 189,
+	  _: 189,
+	  '.': 190,
+	  '>': 190,
+	  '/': 191,
+	  '?': 191,
+	  '`': 192,
+	  '~': 192,
+	  '[': 219,
+	  '{': 219,
+	  '\\': 220,
+	  '|': 220,
+	  ']': 221,
+	  '}': 221,
+	  "'": 222,
+	  '"': 222,
+	  Meta: 224,
+	  AltGraph: 225,
+	  Attn: 246,
+	  CrSel: 247,
+	  ExSel: 248,
+	  EraseEof: 249,
+	  Play: 250,
+	  ZoomOut: 251
+	}; // ----------------------------------------
+	// By Alias
+	// ----------------------------------------
+	// provide dot-notation accessible keys for all key names
+
+	keyboardKey.Spacebar = keyboardKey[' '];
+	keyboardKey.Digit0 = keyboardKey['0'];
+	keyboardKey.Digit1 = keyboardKey['1'];
+	keyboardKey.Digit2 = keyboardKey['2'];
+	keyboardKey.Digit3 = keyboardKey['3'];
+	keyboardKey.Digit4 = keyboardKey['4'];
+	keyboardKey.Digit5 = keyboardKey['5'];
+	keyboardKey.Digit6 = keyboardKey['6'];
+	keyboardKey.Digit7 = keyboardKey['7'];
+	keyboardKey.Digit8 = keyboardKey['8'];
+	keyboardKey.Digit9 = keyboardKey['9'];
+	keyboardKey.Tilde = keyboardKey['~'];
+	keyboardKey.GraveAccent = keyboardKey['`'];
+	keyboardKey.ExclamationPoint = keyboardKey['!'];
+	keyboardKey.AtSign = keyboardKey['@'];
+	keyboardKey.PoundSign = keyboardKey['#'];
+	keyboardKey.PercentSign = keyboardKey['%'];
+	keyboardKey.Caret = keyboardKey['^'];
+	keyboardKey.Ampersand = keyboardKey['&'];
+	keyboardKey.PlusSign = keyboardKey['+'];
+	keyboardKey.MinusSign = keyboardKey['-'];
+	keyboardKey.EqualsSign = keyboardKey['='];
+	keyboardKey.DivisionSign = keyboardKey['/'];
+	keyboardKey.MultiplicationSign = keyboardKey['*'];
+	keyboardKey.Comma = keyboardKey[','];
+	keyboardKey.Decimal = keyboardKey['.'];
+	keyboardKey.Colon = keyboardKey[':'];
+	keyboardKey.Semicolon = keyboardKey[';'];
+	keyboardKey.Pipe = keyboardKey['|'];
+	keyboardKey.BackSlash = keyboardKey['\\'];
+	keyboardKey.QuestionMark = keyboardKey['?'];
+	keyboardKey.SingleQuote = keyboardKey["'"];
+	keyboardKey.DoubleQuote = keyboardKey['"'];
+	keyboardKey.LeftCurlyBrace = keyboardKey['{'];
+	keyboardKey.RightCurlyBrace = keyboardKey['}'];
+	keyboardKey.LeftParenthesis = keyboardKey['('];
+	keyboardKey.RightParenthesis = keyboardKey[')'];
+	keyboardKey.LeftAngleBracket = keyboardKey['<'];
+	keyboardKey.RightAngleBracket = keyboardKey['>'];
+	keyboardKey.LeftSquareBracket = keyboardKey['['];
+	keyboardKey.RightSquareBracket = keyboardKey[']'];
+	var keyboardKey_1 = keyboardKey;
+
+	var reactIs = {exports: {}};
+
+	var reactIs_development = {};
+
+	/** @license React v17.0.2
+	 * react-is.development.js
+	 *
+	 * Copyright (c) Facebook, Inc. and its affiliates.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	{
+	  (function () {
+	    // When adding new symbols to this file,
+	    // Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+	    // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+	    // nor polyfill, then a plain number is used for performance.
+
+	    var REACT_ELEMENT_TYPE = 0xeac7;
+	    var REACT_PORTAL_TYPE = 0xeaca;
+	    var REACT_FRAGMENT_TYPE = 0xeacb;
+	    var REACT_STRICT_MODE_TYPE = 0xeacc;
+	    var REACT_PROFILER_TYPE = 0xead2;
+	    var REACT_PROVIDER_TYPE = 0xeacd;
+	    var REACT_CONTEXT_TYPE = 0xeace;
+	    var REACT_FORWARD_REF_TYPE = 0xead0;
+	    var REACT_SUSPENSE_TYPE = 0xead1;
+	    var REACT_SUSPENSE_LIST_TYPE = 0xead8;
+	    var REACT_MEMO_TYPE = 0xead3;
+	    var REACT_LAZY_TYPE = 0xead4;
+	    var REACT_BLOCK_TYPE = 0xead9;
+	    var REACT_SERVER_BLOCK_TYPE = 0xeada;
+	    var REACT_FUNDAMENTAL_TYPE = 0xead5;
+	    var REACT_DEBUG_TRACING_MODE_TYPE = 0xeae1;
+	    var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
+
+	    if (typeof Symbol === 'function' && Symbol.for) {
+	      var symbolFor = Symbol.for;
+	      REACT_ELEMENT_TYPE = symbolFor('react.element');
+	      REACT_PORTAL_TYPE = symbolFor('react.portal');
+	      REACT_FRAGMENT_TYPE = symbolFor('react.fragment');
+	      REACT_STRICT_MODE_TYPE = symbolFor('react.strict_mode');
+	      REACT_PROFILER_TYPE = symbolFor('react.profiler');
+	      REACT_PROVIDER_TYPE = symbolFor('react.provider');
+	      REACT_CONTEXT_TYPE = symbolFor('react.context');
+	      REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
+	      REACT_SUSPENSE_TYPE = symbolFor('react.suspense');
+	      REACT_SUSPENSE_LIST_TYPE = symbolFor('react.suspense_list');
+	      REACT_MEMO_TYPE = symbolFor('react.memo');
+	      REACT_LAZY_TYPE = symbolFor('react.lazy');
+	      REACT_BLOCK_TYPE = symbolFor('react.block');
+	      REACT_SERVER_BLOCK_TYPE = symbolFor('react.server.block');
+	      REACT_FUNDAMENTAL_TYPE = symbolFor('react.fundamental');
+	      symbolFor('react.scope');
+	      symbolFor('react.opaque.id');
+	      REACT_DEBUG_TRACING_MODE_TYPE = symbolFor('react.debug_trace_mode');
+	      symbolFor('react.offscreen');
+	      REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
+	    } // Filter certain DOM attributes (e.g. src, href) if their values are empty strings.
+
+
+	    var enableScopeAPI = false; // Experimental Create Event Handle API.
+
+	    function isValidElementType(type) {
+	      if (typeof type === 'string' || typeof type === 'function') {
+	        return true;
+	      } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+
+
+	      if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_DEBUG_TRACING_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_LEGACY_HIDDEN_TYPE || enableScopeAPI) {
+	        return true;
+	      }
+
+	      if (typeof type === 'object' && type !== null) {
+	        if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE) {
+	          return true;
+	        }
+	      }
+
+	      return false;
+	    }
+
+	    function typeOf(object) {
+	      if (typeof object === 'object' && object !== null) {
+	        var $$typeof = object.$$typeof;
+
+	        switch ($$typeof) {
+	          case REACT_ELEMENT_TYPE:
+	            var type = object.type;
+
+	            switch (type) {
+	              case REACT_FRAGMENT_TYPE:
+	              case REACT_PROFILER_TYPE:
+	              case REACT_STRICT_MODE_TYPE:
+	              case REACT_SUSPENSE_TYPE:
+	              case REACT_SUSPENSE_LIST_TYPE:
+	                return type;
+
+	              default:
+	                var $$typeofType = type && type.$$typeof;
+
+	                switch ($$typeofType) {
+	                  case REACT_CONTEXT_TYPE:
+	                  case REACT_FORWARD_REF_TYPE:
+	                  case REACT_LAZY_TYPE:
+	                  case REACT_MEMO_TYPE:
+	                  case REACT_PROVIDER_TYPE:
+	                    return $$typeofType;
+
+	                  default:
+	                    return $$typeof;
+	                }
+
+	            }
+
+	          case REACT_PORTAL_TYPE:
+	            return $$typeof;
+	        }
+	      }
+
+	      return undefined;
+	    }
+
+	    var ContextConsumer = REACT_CONTEXT_TYPE;
+	    var ContextProvider = REACT_PROVIDER_TYPE;
+	    var Element = REACT_ELEMENT_TYPE;
+	    var ForwardRef = REACT_FORWARD_REF_TYPE;
+	    var Fragment = REACT_FRAGMENT_TYPE;
+	    var Lazy = REACT_LAZY_TYPE;
+	    var Memo = REACT_MEMO_TYPE;
+	    var Portal = REACT_PORTAL_TYPE;
+	    var Profiler = REACT_PROFILER_TYPE;
+	    var StrictMode = REACT_STRICT_MODE_TYPE;
+	    var Suspense = REACT_SUSPENSE_TYPE;
+	    var hasWarnedAboutDeprecatedIsAsyncMode = false;
+	    var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
+
+	    function isAsyncMode(object) {
+	      {
+	        if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+	          hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+	          console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+	        }
+	      }
+	      return false;
+	    }
+
+	    function isConcurrentMode(object) {
+	      {
+	        if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
+	          hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
+
+	          console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+	        }
+	      }
+	      return false;
+	    }
+
+	    function isContextConsumer(object) {
+	      return typeOf(object) === REACT_CONTEXT_TYPE;
+	    }
+
+	    function isContextProvider(object) {
+	      return typeOf(object) === REACT_PROVIDER_TYPE;
+	    }
+
+	    function isElement(object) {
+	      return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+	    }
+
+	    function isForwardRef(object) {
+	      return typeOf(object) === REACT_FORWARD_REF_TYPE;
+	    }
+
+	    function isFragment(object) {
+	      return typeOf(object) === REACT_FRAGMENT_TYPE;
+	    }
+
+	    function isLazy(object) {
+	      return typeOf(object) === REACT_LAZY_TYPE;
+	    }
+
+	    function isMemo(object) {
+	      return typeOf(object) === REACT_MEMO_TYPE;
+	    }
+
+	    function isPortal(object) {
+	      return typeOf(object) === REACT_PORTAL_TYPE;
+	    }
+
+	    function isProfiler(object) {
+	      return typeOf(object) === REACT_PROFILER_TYPE;
+	    }
+
+	    function isStrictMode(object) {
+	      return typeOf(object) === REACT_STRICT_MODE_TYPE;
+	    }
+
+	    function isSuspense(object) {
+	      return typeOf(object) === REACT_SUSPENSE_TYPE;
+	    }
+
+	    reactIs_development.ContextConsumer = ContextConsumer;
+	    reactIs_development.ContextProvider = ContextProvider;
+	    reactIs_development.Element = Element;
+	    reactIs_development.ForwardRef = ForwardRef;
+	    reactIs_development.Fragment = Fragment;
+	    reactIs_development.Lazy = Lazy;
+	    reactIs_development.Memo = Memo;
+	    reactIs_development.Portal = Portal;
+	    reactIs_development.Profiler = Profiler;
+	    reactIs_development.StrictMode = StrictMode;
+	    reactIs_development.Suspense = Suspense;
+	    reactIs_development.isAsyncMode = isAsyncMode;
+	    reactIs_development.isConcurrentMode = isConcurrentMode;
+	    reactIs_development.isContextConsumer = isContextConsumer;
+	    reactIs_development.isContextProvider = isContextProvider;
+	    reactIs_development.isElement = isElement;
+	    reactIs_development.isForwardRef = isForwardRef;
+	    reactIs_development.isFragment = isFragment;
+	    reactIs_development.isLazy = isLazy;
+	    reactIs_development.isMemo = isMemo;
+	    reactIs_development.isPortal = isPortal;
+	    reactIs_development.isProfiler = isProfiler;
+	    reactIs_development.isStrictMode = isStrictMode;
+	    reactIs_development.isSuspense = isSuspense;
+	    reactIs_development.isValidElementType = isValidElementType;
+	    reactIs_development.typeOf = typeOf;
+	  })();
+	}
+
+	(function (module) {
+
+		{
+		  module.exports = reactIs_development;
+		}
+	} (reactIs));
+
+	/**
+	 * Asserts that a passed element can be used cloned a props will be applied properly.
+	 */
+
+	function validateTrigger(element) {
+	  if (element) {
+	    React$1.Children.only(element);
+
+	    if (reactIs.exports.isFragment(element)) {
+	      throw new Error('An "React.Fragment" cannot be used as a `trigger`.');
+	    }
+	  }
+	}
+
+	/**
+	 * An inner component that allows you to render children outside their parent.
+	 */
+
+	var PortalInner = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(PortalInner, _Component);
+
+	  function PortalInner() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleRef = function (c) {
+	      handleRef(_this.props.innerRef, c);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = PortalInner.prototype;
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    invoke(this.props, 'onMount', null, this.props);
+	  };
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    invoke(this.props, 'onUnmount', null, this.props);
+	  };
+
+	  _proto.render = function render() {
+	    if (!isBrowser()) return null;
+	    var _this$props = this.props,
+	        children = _this$props.children,
+	        _this$props$mountNode = _this$props.mountNode,
+	        mountNode = _this$props$mountNode === void 0 ? document.body : _this$props$mountNode;
+	    return /*#__PURE__*/reactDom.exports.createPortal( /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.handleRef
+	    }, children), mountNode);
+	  };
+
+	  return PortalInner;
+	}(react.exports.Component);
+
+	PortalInner.handledProps = ["children", "innerRef", "mountNode", "onMount", "onUnmount"];
+	PortalInner.propTypes = {
+	  /** Primary content. */
+	  children: propTypes.exports.node.isRequired,
+
+	  /** Called with a ref to the inner node. */
+	  innerRef: ref,
+
+	  /** The node where the portal should mount. */
+	  mountNode: propTypes.exports.any,
+
+	  /**
+	   * Called when the portal is mounted on the DOM
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onMount: propTypes.exports.func,
+
+	  /**
+	   * Called when the portal is unmounted from the DOM
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUnmount: propTypes.exports.func
+	} ;
+
+	/**
+	 * A component that allows you to render children outside their parent.
+	 * @see Modal
+	 * @see Popup
+	 * @see Dimmer
+	 * @see Confirm
+	 */
+
+	var Portal = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Portal, _Component);
+
+	  function Portal() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.contentRef = /*#__PURE__*/React$1.createRef();
+	    _this.triggerRef = /*#__PURE__*/React$1.createRef();
+	    _this.latestDocumentMouseDownEvent = null;
+
+	    _this.handleDocumentMouseDown = function (e) {
+	      _this.latestDocumentMouseDownEvent = e;
+	    };
+
+	    _this.handleDocumentClick = function (e) {
+	      var closeOnDocumentClick = _this.props.closeOnDocumentClick;
+	      var currentMouseDownEvent = _this.latestDocumentMouseDownEvent;
+	      _this.latestDocumentMouseDownEvent = null;
+
+	      if (!_this.contentRef.current || // no portal
+	      doesNodeContainClick(_this.triggerRef.current, e) || // event happened in trigger (delegate to trigger handlers)
+	      currentMouseDownEvent && doesNodeContainClick(_this.contentRef.current, currentMouseDownEvent) || // event originated in the portal but was ended outside
+	      doesNodeContainClick(_this.contentRef.current, e) // event happened in the portal
+	      ) {
+	        return;
+	      } // ignore the click
+
+
+	      if (closeOnDocumentClick) {
+	        _this.close(e);
+	      }
+	    };
+
+	    _this.handleEscape = function (e) {
+	      if (!_this.props.closeOnEscape) return;
+	      if (keyboardKey_1.getCode(e) !== keyboardKey_1.Escape) return;
+
+	      _this.close(e);
+	    };
+
+	    _this.handlePortalMouseLeave = function (e) {
+	      var _this$props = _this.props,
+	          closeOnPortalMouseLeave = _this$props.closeOnPortalMouseLeave,
+	          mouseLeaveDelay = _this$props.mouseLeaveDelay;
+	      if (!closeOnPortalMouseLeave) return; // Do not close the portal when 'mouseleave' is triggered by children
+
+	      if (e.target !== _this.contentRef.current) return;
+	      _this.mouseLeaveTimer = _this.closeWithTimeout(e, mouseLeaveDelay);
+	    };
+
+	    _this.handlePortalMouseEnter = function () {
+	      // In order to enable mousing from the trigger to the portal, we need to
+	      // clear the mouseleave timer that was set when leaving the trigger.
+	      var closeOnPortalMouseLeave = _this.props.closeOnPortalMouseLeave;
+	      if (!closeOnPortalMouseLeave) return;
+	      clearTimeout(_this.mouseLeaveTimer);
+	    };
+
+	    _this.handleTriggerBlur = function (e) {
+	      var _this$props2 = _this.props,
+	          trigger = _this$props2.trigger,
+	          closeOnTriggerBlur = _this$props2.closeOnTriggerBlur; // Call original event handler
+
+	      for (var _len2 = arguments.length, rest = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	        rest[_key2 - 1] = arguments[_key2];
+	      }
+
+	      invoke.apply(void 0, [trigger, 'props.onBlur', e].concat(rest)); // IE 11 doesn't work with relatedTarget in blur events
+
+
+	      var target = e.relatedTarget || document.activeElement; // do not close if focus is given to the portal
+
+	      var didFocusPortal = invoke(_this.contentRef.current, 'contains', target);
+
+	      if (!closeOnTriggerBlur || didFocusPortal) return;
+
+	      _this.close(e);
+	    };
+
+	    _this.handleTriggerClick = function (e) {
+	      var _this$props3 = _this.props,
+	          trigger = _this$props3.trigger,
+	          closeOnTriggerClick = _this$props3.closeOnTriggerClick,
+	          openOnTriggerClick = _this$props3.openOnTriggerClick;
+	      var open = _this.state.open; // Call original event handler
+
+	      for (var _len3 = arguments.length, rest = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+	        rest[_key3 - 1] = arguments[_key3];
+	      }
+
+	      invoke.apply(void 0, [trigger, 'props.onClick', e].concat(rest));
+
+	      if (open && closeOnTriggerClick) {
+	        _this.close(e);
+	      } else if (!open && openOnTriggerClick) {
+	        _this.open(e);
+	      }
+	    };
+
+	    _this.handleTriggerFocus = function (e) {
+	      var _this$props4 = _this.props,
+	          trigger = _this$props4.trigger,
+	          openOnTriggerFocus = _this$props4.openOnTriggerFocus; // Call original event handler
+
+	      for (var _len4 = arguments.length, rest = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+	        rest[_key4 - 1] = arguments[_key4];
+	      }
+
+	      invoke.apply(void 0, [trigger, 'props.onFocus', e].concat(rest));
+
+	      if (!openOnTriggerFocus) return;
+
+	      _this.open(e);
+	    };
+
+	    _this.handleTriggerMouseLeave = function (e) {
+	      clearTimeout(_this.mouseEnterTimer);
+	      var _this$props5 = _this.props,
+	          trigger = _this$props5.trigger,
+	          closeOnTriggerMouseLeave = _this$props5.closeOnTriggerMouseLeave,
+	          mouseLeaveDelay = _this$props5.mouseLeaveDelay; // Call original event handler
+
+	      for (var _len5 = arguments.length, rest = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+	        rest[_key5 - 1] = arguments[_key5];
+	      }
+
+	      invoke.apply(void 0, [trigger, 'props.onMouseLeave', e].concat(rest));
+
+	      if (!closeOnTriggerMouseLeave) return;
+	      _this.mouseLeaveTimer = _this.closeWithTimeout(e, mouseLeaveDelay);
+	    };
+
+	    _this.handleTriggerMouseEnter = function (e) {
+	      clearTimeout(_this.mouseLeaveTimer);
+	      var _this$props6 = _this.props,
+	          trigger = _this$props6.trigger,
+	          mouseEnterDelay = _this$props6.mouseEnterDelay,
+	          openOnTriggerMouseEnter = _this$props6.openOnTriggerMouseEnter; // Call original event handler
+
+	      for (var _len6 = arguments.length, rest = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+	        rest[_key6 - 1] = arguments[_key6];
+	      }
+
+	      invoke.apply(void 0, [trigger, 'props.onMouseEnter', e].concat(rest));
+
+	      if (!openOnTriggerMouseEnter) return;
+	      _this.mouseEnterTimer = _this.openWithTimeout(e, mouseEnterDelay);
+	    };
+
+	    _this.open = function (e) {
+	      invoke(_this.props, 'onOpen', e, _extends({}, _this.props, {
+	        open: true
+	      }));
+
+	      _this.setState({
+	        open: true
+	      });
+	    };
+
+	    _this.openWithTimeout = function (e, delay) {
+	      // React wipes the entire event object and suggests using e.persist() if
+	      // you need the event for async access. However, even with e.persist
+	      // certain required props (e.g. currentTarget) are null so we're forced to clone.
+	      var eventClone = _extends({}, e);
+
+	      return setTimeout(function () {
+	        return _this.open(eventClone);
+	      }, delay || 0);
+	    };
+
+	    _this.close = function (e) {
+	      _this.setState({
+	        open: false
+	      });
+
+	      invoke(_this.props, 'onClose', e, _extends({}, _this.props, {
+	        open: false
+	      }));
+	    };
+
+	    _this.closeWithTimeout = function (e, delay) {
+	      // React wipes the entire event object and suggests using e.persist() if
+	      // you need the event for async access. However, even with e.persist
+	      // certain required props (e.g. currentTarget) are null so we're forced to clone.
+	      var eventClone = _extends({}, e);
+
+	      return setTimeout(function () {
+	        return _this.close(eventClone);
+	      }, delay || 0);
+	    };
+
+	    _this.handleMount = function () {
+	      invoke(_this.props, 'onMount', null, _this.props);
+	    };
+
+	    _this.handleUnmount = function () {
+	      invoke(_this.props, 'onUnmount', null, _this.props);
+	    };
+
+	    _this.handleTriggerRef = function (c) {
+	      _this.triggerRef.current = c;
+	      handleRef(_this.props.triggerRef, c);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Portal.prototype;
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    // Clean up timers
+	    clearTimeout(this.mouseEnterTimer);
+	    clearTimeout(this.mouseLeaveTimer);
+	  } // ----------------------------------------
+	  // Document Event Handlers
+	  // ----------------------------------------
+	  ;
+
+	  _proto.render = function render() {
+	    var _this$props7 = this.props,
+	        children = _this$props7.children,
+	        eventPool = _this$props7.eventPool,
+	        mountNode = _this$props7.mountNode,
+	        trigger = _this$props7.trigger;
+	    var open = this.state.open;
+	    /* istanbul ignore else */
+
+	    {
+	      validateTrigger(trigger);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, open && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(PortalInner, {
+	      innerRef: this.contentRef,
+	      mountNode: mountNode,
+	      onMount: this.handleMount,
+	      onUnmount: this.handleUnmount
+	    }, children), /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "mouseleave",
+	      on: this.handlePortalMouseLeave,
+	      pool: eventPool,
+	      target: this.contentRef
+	    }), /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "mouseenter",
+	      on: this.handlePortalMouseEnter,
+	      pool: eventPool,
+	      target: this.contentRef
+	    }), /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "mousedown",
+	      on: this.handleDocumentMouseDown,
+	      pool: eventPool
+	    }), /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "click",
+	      on: this.handleDocumentClick,
+	      pool: eventPool
+	    }), /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "keydown",
+	      on: this.handleEscape,
+	      pool: eventPool
+	    })), trigger && /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.handleTriggerRef
+	    }, /*#__PURE__*/React$1.cloneElement(trigger, {
+	      onBlur: this.handleTriggerBlur,
+	      onClick: this.handleTriggerClick,
+	      onFocus: this.handleTriggerFocus,
+	      onMouseLeave: this.handleTriggerMouseLeave,
+	      onMouseEnter: this.handleTriggerMouseEnter
+	    })));
+	  };
+
+	  return Portal;
+	}(ModernAutoControlledComponent);
+
+	Portal.handledProps = ["children", "closeOnDocumentClick", "closeOnEscape", "closeOnPortalMouseLeave", "closeOnTriggerBlur", "closeOnTriggerClick", "closeOnTriggerMouseLeave", "defaultOpen", "eventPool", "mountNode", "mouseEnterDelay", "mouseLeaveDelay", "onClose", "onMount", "onOpen", "onUnmount", "open", "openOnTriggerClick", "openOnTriggerFocus", "openOnTriggerMouseEnter", "trigger", "triggerRef"];
+	Portal.propTypes = {
+	  /** Primary content. */
+	  children: propTypes.exports.node.isRequired,
+
+	  /** Controls whether or not the portal should close when the document is clicked. */
+	  closeOnDocumentClick: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should close when escape is pressed is displayed. */
+	  closeOnEscape: propTypes.exports.bool,
+
+	  /**
+	   * Controls whether or not the portal should close when mousing out of the portal.
+	   * NOTE: This will prevent `closeOnTriggerMouseLeave` when mousing over the
+	   * gap from the trigger to the portal.
+	   */
+	  closeOnPortalMouseLeave: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should close on blur of the trigger. */
+	  closeOnTriggerBlur: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should close on click of the trigger. */
+	  closeOnTriggerClick: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should close when mousing out of the trigger. */
+	  closeOnTriggerMouseLeave: propTypes.exports.bool,
+
+	  /** Initial value of open. */
+	  defaultOpen: propTypes.exports.bool,
+
+	  /** Event pool namespace that is used to handle component events */
+	  eventPool: propTypes.exports.string,
+
+	  /** The node where the portal should mount. */
+	  mountNode: propTypes.exports.any,
+
+	  /** Milliseconds to wait before opening on mouse over */
+	  mouseEnterDelay: propTypes.exports.number,
+
+	  /** Milliseconds to wait before closing on mouse leave */
+	  mouseLeaveDelay: propTypes.exports.number,
+
+	  /**
+	   * Called when a close event happens
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: propTypes.exports.func,
+
+	  /**
+	   * Called when the portal is mounted on the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onMount: propTypes.exports.func,
+
+	  /**
+	   * Called when an open event happens
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: propTypes.exports.func,
+
+	  /**
+	   * Called when the portal is unmounted from the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUnmount: propTypes.exports.func,
+
+	  /** Controls whether or not the portal is displayed. */
+	  open: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should open when the trigger is clicked. */
+	  openOnTriggerClick: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should open on focus of the trigger. */
+	  openOnTriggerFocus: propTypes.exports.bool,
+
+	  /** Controls whether or not the portal should open when mousing over the trigger. */
+	  openOnTriggerMouseEnter: propTypes.exports.bool,
+
+	  /** Element to be rendered in-place where the portal is defined. */
+	  trigger: propTypes.exports.node,
+
+	  /** Called with a ref to the trigger node. */
+	  triggerRef: ref
+	} ;
+	Portal.defaultProps = {
+	  closeOnDocumentClick: true,
+	  closeOnEscape: true,
+	  eventPool: 'default',
+	  openOnTriggerClick: true
+	};
+	Portal.autoControlledProps = ['open'];
+	Portal.Inner = PortalInner;
+
+	/**
+	 * A dimmable sub-component for Dimmer.
+	 */
+
+	function DimmerDimmable(props) {
+	  var blurring = props.blurring,
+	      className = props.className,
+	      children = props.children,
+	      content = props.content,
+	      dimmed = props.dimmed;
+	  var classes = cx(useKeyOnly(blurring, 'blurring'), useKeyOnly(dimmed, 'dimmed'), 'dimmable', className);
+	  var rest = getUnhandledProps(DimmerDimmable, props);
+	  var ElementType = getElementType(DimmerDimmable, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	DimmerDimmable.handledProps = ["as", "blurring", "children", "className", "content", "dimmed"];
+	DimmerDimmable.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A dimmable element can blur its contents. */
+	  blurring: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Controls whether or not the dim is displayed. */
+	  dimmed: propTypes.exports.bool
+	} ;
+
+	/**
+	 * An inner element for a Dimmer.
+	 */
+
+	var DimmerInner = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(DimmerInner, _Component);
+
+	  function DimmerInner() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.containerRef = /*#__PURE__*/react.exports.createRef();
+	    _this.contentRef = /*#__PURE__*/react.exports.createRef();
+
+	    _this.handleClick = function (e) {
+	      var contentRef = _this.contentRef.current;
+
+	      invoke(_this.props, 'onClick', e, _this.props);
+
+	      if (contentRef && contentRef !== e.target && doesNodeContainClick(contentRef, e)) {
+	        return;
+	      }
+
+	      invoke(_this.props, 'onClickOutside', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = DimmerInner.prototype;
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    var active = this.props.active;
+	    this.toggleStyles(active);
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+	    var currentActive = this.props.active;
+	    var prevActive = prevProps.active;
+	    if (prevActive !== currentActive) this.toggleStyles(currentActive);
+	  };
+
+	  _proto.toggleStyles = function toggleStyles(active) {
+	    var containerRef = this.containerRef.current;
+	    if (!containerRef || !containerRef.style) return;
+
+	    if (active) {
+	      containerRef.style.setProperty('display', 'flex', 'important');
+	    } else {
+	      containerRef.style.removeProperty('display');
+	    }
+	  };
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        disabled = _this$props.disabled,
+	        inverted = _this$props.inverted,
+	        page = _this$props.page,
+	        simple = _this$props.simple,
+	        verticalAlign = _this$props.verticalAlign;
+	    var classes = cx('ui', useKeyOnly(active, 'active transition visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(inverted, 'inverted'), useKeyOnly(page, 'page'), useKeyOnly(simple, 'simple'), useVerticalAlignProp(verticalAlign), 'dimmer', className);
+	    var rest = getUnhandledProps(DimmerInner, this.props);
+	    var ElementType = getElementType(DimmerInner, this.props);
+	    var childrenContent = isNil$1(children) ? content : children;
+	    return /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.containerRef
+	    }, /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }), childrenContent && /*#__PURE__*/React$1.createElement("div", {
+	      className: "content",
+	      ref: this.contentRef
+	    }, childrenContent)));
+	  };
+
+	  return DimmerInner;
+	}(react.exports.Component);
+
+	DimmerInner.handledProps = ["active", "as", "children", "className", "content", "disabled", "inverted", "onClick", "onClickOutside", "page", "simple", "verticalAlign"];
+	DimmerInner.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** An active dimmer will dim its parent container. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A disabled dimmer cannot be activated */
+	  disabled: propTypes.exports.bool,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * Handles click outside Dimmer's content, but inside Dimmer area.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClickOutside: propTypes.exports.func,
+
+	  /** A dimmer can be formatted to have its colors inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** A dimmer can be formatted to be fixed to the page. */
+	  page: propTypes.exports.bool,
+
+	  /** A dimmer can be controlled with simple prop. */
+	  simple: propTypes.exports.bool,
+
+	  /** A dimmer can have its content top or bottom aligned. */
+	  verticalAlign: propTypes.exports.oneOf(['bottom', 'top'])
+	} ;
+
+	/**
+	 * A dimmer hides distractions to focus attention on particular content.
+	 */
+
+	var Dimmer = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Dimmer, _Component);
+
+	  function Dimmer() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handlePortalMount = function () {
+	      if (!isBrowser()) return; // Heads up, IE doesn't support second argument in add()
+
+	      document.body.classList.add('dimmed');
+	      document.body.classList.add('dimmable');
+	    };
+
+	    _this.handlePortalUnmount = function () {
+	      if (!isBrowser()) return; // Heads up, IE doesn't support second argument in add()
+
+	      document.body.classList.remove('dimmed');
+	      document.body.classList.remove('dimmable');
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Dimmer.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        page = _this$props.page;
+	    var rest = getUnhandledProps(Dimmer, this.props);
+
+	    if (page) {
+	      return /*#__PURE__*/React$1.createElement(Portal, {
+	        closeOnEscape: false,
+	        closeOnDocumentClick: false,
+	        onMount: this.handlePortalMount,
+	        onUnmount: this.handlePortalUnmount,
+	        open: active,
+	        openOnTriggerClick: false
+	      }, /*#__PURE__*/React$1.createElement(DimmerInner, _extends({}, rest, {
+	        active: active,
+	        page: page
+	      })));
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(DimmerInner, _extends({}, rest, {
+	      active: active,
+	      page: page
+	    }));
+	  };
+
+	  return Dimmer;
+	}(react.exports.Component);
+
+	Dimmer.handledProps = ["active", "page"];
+	Dimmer.propTypes = {
+	  /** An active dimmer will dim its parent container. */
+	  active: propTypes.exports.bool,
+
+	  /** A dimmer can be formatted to be fixed to the page. */
+	  page: propTypes.exports.bool
+	} ;
+	Dimmer.Dimmable = DimmerDimmable;
+	Dimmer.Inner = DimmerInner;
+	Dimmer.create = createShorthandFactory(Dimmer, function (value) {
+	  return {
+	    content: value
+	  };
+	});
+
+	/**
+	 * A group of images.
+	 */
+
+	function ImageGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      size = props.size;
+	  var classes = cx('ui', size, className, 'images');
+	  var rest = getUnhandledProps(ImageGroup, props);
+	  var ElementType = getElementType(ImageGroup, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ImageGroup.handledProps = ["as", "children", "className", "content", "size"];
+	ImageGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A group of images can be formatted to have the same size. */
+	  size: propTypes.exports.oneOf(SIZES)
+	} ;
+
+	/**
+	 * An image is a graphic representation of something.
+	 * @see Icon
+	 */
+
+	function Image(props) {
+	  var avatar = props.avatar,
+	      bordered = props.bordered,
+	      centered = props.centered,
+	      children = props.children,
+	      circular = props.circular,
+	      className = props.className,
+	      content = props.content,
+	      dimmer = props.dimmer,
+	      disabled = props.disabled,
+	      floated = props.floated,
+	      fluid = props.fluid,
+	      hidden = props.hidden,
+	      href = props.href,
+	      inline = props.inline,
+	      label = props.label,
+	      rounded = props.rounded,
+	      size = props.size,
+	      spaced = props.spaced,
+	      verticalAlign = props.verticalAlign,
+	      wrapped = props.wrapped,
+	      ui = props.ui;
+	  var classes = cx(useKeyOnly(ui, 'ui'), size, useKeyOnly(avatar, 'avatar'), useKeyOnly(bordered, 'bordered'), useKeyOnly(circular, 'circular'), useKeyOnly(centered, 'centered'), useKeyOnly(disabled, 'disabled'), useKeyOnly(fluid, 'fluid'), useKeyOnly(hidden, 'hidden'), useKeyOnly(inline, 'inline'), useKeyOnly(rounded, 'rounded'), useKeyOrValueAndKey(spaced, 'spaced'), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'image', className);
+	  var rest = getUnhandledProps(Image, props);
+
+	  var _partitionHTMLProps = partitionHTMLProps(rest, {
+	    htmlProps: htmlImageProps
+	  }),
+	      imgTagProps = _partitionHTMLProps[0],
+	      rootProps = _partitionHTMLProps[1];
+
+	  var ElementType = getElementType(Image, props, function () {
+	    if (!isNil(dimmer) || !isNil(label) || !isNil(wrapped) || !isNil$1(children)) {
+	      return 'div';
+	    }
+	  });
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  if (ElementType === 'img') {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rootProps, imgTagProps, {
+	      className: classes
+	    }));
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rootProps, {
+	    className: classes,
+	    href: href
+	  }), Dimmer.create(dimmer, {
+	    autoGenerateKey: false
+	  }), Label.create(label, {
+	    autoGenerateKey: false
+	  }), /*#__PURE__*/React$1.createElement("img", imgTagProps));
+	}
+
+	Image.handledProps = ["as", "avatar", "bordered", "centered", "children", "circular", "className", "content", "dimmer", "disabled", "floated", "fluid", "hidden", "href", "inline", "label", "rounded", "size", "spaced", "ui", "verticalAlign", "wrapped"];
+	Image.Group = ImageGroup;
+	Image.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** An image may be formatted to appear inline with text as an avatar. */
+	  avatar: propTypes.exports.bool,
+
+	  /** An image may include a border to emphasize the edges of white or transparent content. */
+	  bordered: propTypes.exports.bool,
+
+	  /** An image can appear centered in a content block. */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** An image may appear circular. */
+	  circular: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** An image can show that it is disabled and cannot be selected. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Shorthand for Dimmer. */
+	  dimmer: itemShorthand,
+
+	  /** An image can sit to the left or right of other content. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** An image can take up the width of its container. */
+	  fluid: every$1([propTypes.exports.bool, disallow(['size'])]),
+
+	  /** An image can be hidden. */
+	  hidden: propTypes.exports.bool,
+
+	  /** Renders the Image as an <a> tag with this href. */
+	  href: propTypes.exports.string,
+
+	  /** An image may appear inline. */
+	  inline: propTypes.exports.bool,
+
+	  /** Shorthand for Label. */
+	  label: itemShorthand,
+
+	  /** An image may appear rounded. */
+	  rounded: propTypes.exports.bool,
+
+	  /** An image may appear at different sizes. */
+	  size: propTypes.exports.oneOf(SIZES),
+
+	  /** An image can specify that it needs an additional spacing to separate it from nearby content. */
+	  spaced: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['left', 'right'])]),
+
+	  /** Whether or not to add the ui className. */
+	  ui: propTypes.exports.bool,
+
+	  /** An image can specify its vertical alignment. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS),
+
+	  /** An image can render wrapped in a `div.ui.image` as alternative HTML markup. */
+	  wrapped: propTypes.exports.bool
+	} ;
+	Image.defaultProps = {
+	  as: 'img',
+	  ui: true
+	};
+	Image.create = createShorthandFactory(Image, function (value) {
+	  return {
+	    src: value
+	  };
+	});
+
+	function LabelDetail(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('detail', className);
+	  var rest = getUnhandledProps(LabelDetail, props);
+	  var ElementType = getElementType(LabelDetail, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	LabelDetail.handledProps = ["as", "children", "className", "content"];
+	LabelDetail.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	LabelDetail.create = createShorthandFactory(LabelDetail, function (val) {
+	  return {
+	    content: val
+	  };
+	});
+
+	/**
+	 * A label can be grouped.
+	 */
+
+	function LabelGroup(props) {
+	  var children = props.children,
+	      circular = props.circular,
+	      className = props.className,
+	      color = props.color,
+	      content = props.content,
+	      size = props.size,
+	      tag = props.tag;
+	  var classes = cx('ui', color, size, useKeyOnly(circular, 'circular'), useKeyOnly(tag, 'tag'), 'labels', className);
+	  var rest = getUnhandledProps(LabelGroup, props);
+	  var ElementType = getElementType(LabelGroup, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	LabelGroup.handledProps = ["as", "children", "circular", "className", "color", "content", "size", "tag"];
+	LabelGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Labels can share shapes. */
+	  circular: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Label group can share colors together. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Label group can share sizes together. */
+	  size: propTypes.exports.oneOf(SIZES),
+
+	  /** Label group can share tag formatting. */
+	  tag: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A label displays content classification.
+	 */
+
+	var Label = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Label, _Component);
+
+	  function Label() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var onClick = _this.props.onClick;
+	      if (onClick) onClick(e, _this.props);
+	    };
+
+	    _this.handleIconOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e) {
+	          invoke(predefinedProps, 'onClick', e);
+
+	          invoke(_this.props, 'onRemove', e, _this.props);
+	        }
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Label.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        attached = _this$props.attached,
+	        basic = _this$props.basic,
+	        children = _this$props.children,
+	        circular = _this$props.circular,
+	        className = _this$props.className,
+	        color = _this$props.color,
+	        content = _this$props.content,
+	        corner = _this$props.corner,
+	        detail = _this$props.detail,
+	        empty = _this$props.empty,
+	        floating = _this$props.floating,
+	        horizontal = _this$props.horizontal,
+	        icon = _this$props.icon,
+	        image = _this$props.image,
+	        onRemove = _this$props.onRemove,
+	        pointing = _this$props.pointing,
+	        prompt = _this$props.prompt,
+	        removeIcon = _this$props.removeIcon,
+	        ribbon = _this$props.ribbon,
+	        size = _this$props.size,
+	        tag = _this$props.tag;
+	    var pointingClass = pointing === true && 'pointing' || (pointing === 'left' || pointing === 'right') && pointing + " pointing" || (pointing === 'above' || pointing === 'below') && "pointing " + pointing;
+	    var classes = cx('ui', color, pointingClass, size, useKeyOnly(active, 'active'), useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(empty, 'empty'), useKeyOnly(floating, 'floating'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(image === true, 'image'), useKeyOnly(prompt, 'prompt'), useKeyOnly(tag, 'tag'), useKeyOrValueAndKey(corner, 'corner'), useKeyOrValueAndKey(ribbon, 'ribbon'), useValueAndKey(attached, 'attached'), 'label', className);
+	    var rest = getUnhandledProps(Label, this.props);
+	    var ElementType = getElementType(Label, this.props);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    var removeIconShorthand = isUndefined(removeIcon) ? 'delete' : removeIcon;
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({
+	      className: classes,
+	      onClick: this.handleClick
+	    }, rest), Icon.create(icon, {
+	      autoGenerateKey: false
+	    }), typeof image !== 'boolean' && Image.create(image, {
+	      autoGenerateKey: false
+	    }), content, LabelDetail.create(detail, {
+	      autoGenerateKey: false
+	    }), onRemove && Icon.create(removeIconShorthand, {
+	      autoGenerateKey: false,
+	      overrideProps: this.handleIconOverrides
+	    }));
+	  };
+
+	  return Label;
+	}(react.exports.Component);
+
+	Label.handledProps = ["active", "as", "attached", "basic", "children", "circular", "className", "color", "content", "corner", "detail", "empty", "floating", "horizontal", "icon", "image", "onClick", "onRemove", "pointing", "prompt", "removeIcon", "ribbon", "size", "tag"];
+	Label.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A label can be active. */
+	  active: propTypes.exports.bool,
+
+	  /** A label can attach to a content segment. */
+	  attached: propTypes.exports.oneOf(['top', 'bottom', 'top right', 'top left', 'bottom left', 'bottom right']),
+
+	  /** A label can reduce its complexity. */
+	  basic: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** A label can be circular. */
+	  circular: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Color of the label. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A label can position itself in the corner of an element. */
+	  corner: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['left', 'right'])]),
+
+	  /** Shorthand for LabelDetail. */
+	  detail: itemShorthand,
+
+	  /** Formats the label as a dot. */
+	  empty: every$1([propTypes.exports.bool, demand(['circular'])]),
+
+	  /** Float above another element in the upper right corner. */
+	  floating: propTypes.exports.bool,
+
+	  /** A horizontal label is formatted to label content along-side it horizontally. */
+	  horizontal: propTypes.exports.bool,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand,
+
+	  /** A label can be formatted to emphasize an image or prop can be used as shorthand for Image. */
+	  image: propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand]),
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * Adds an "x" icon, called when "x" is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onRemove: propTypes.exports.func,
+
+	  /** A label can point to content next to it. */
+	  pointing: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['above', 'below', 'left', 'right'])]),
+
+	  /** A label can prompt for an error in your forms. */
+	  prompt: propTypes.exports.bool,
+
+	  /** Shorthand for Icon to appear as the last child and trigger onRemove. */
+	  removeIcon: itemShorthand,
+
+	  /** A label can appear as a ribbon attaching itself to an element. */
+	  ribbon: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['right'])]),
+
+	  /** A label can have different sizes. */
+	  size: propTypes.exports.oneOf(SIZES),
+
+	  /** A label can appear as a tag. */
+	  tag: propTypes.exports.bool
+	} ;
+	Label.Detail = LabelDetail;
+	Label.Group = LabelGroup;
+	Label.create = createShorthandFactory(Label, function (value) {
+	  return {
+	    content: value
+	  };
+	});
+
+	/**
+	 * Used in some Button types, such as `animated`.
+	 */
+
+	function ButtonContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      hidden = props.hidden,
+	      visible = props.visible;
+	  var classes = cx(useKeyOnly(visible, 'visible'), useKeyOnly(hidden, 'hidden'), 'content', className);
+	  var rest = getUnhandledProps(ButtonContent, props);
+	  var ElementType = getElementType(ButtonContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ButtonContent.handledProps = ["as", "children", "className", "content", "hidden", "visible"];
+	ButtonContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Initially hidden, visible on hover. */
+	  hidden: propTypes.exports.bool,
+
+	  /** Initially visible, hidden on hover. */
+	  visible: propTypes.exports.bool
+	} ;
+
+	/**
+	 * Buttons can be grouped.
+	 */
+
+	function ButtonGroup(props) {
+	  var attached = props.attached,
+	      basic = props.basic,
+	      buttons = props.buttons,
+	      children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      compact = props.compact,
+	      content = props.content,
+	      floated = props.floated,
+	      fluid = props.fluid,
+	      icon = props.icon,
+	      inverted = props.inverted,
+	      labeled = props.labeled,
+	      negative = props.negative,
+	      positive = props.positive,
+	      primary = props.primary,
+	      secondary = props.secondary,
+	      size = props.size,
+	      toggle = props.toggle,
+	      vertical = props.vertical,
+	      widths = props.widths;
+	  var classes = cx('ui', color, size, useKeyOnly(basic, 'basic'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(icon, 'icon'), useKeyOnly(inverted, 'inverted'), useKeyOnly(labeled, 'labeled'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(primary, 'primary'), useKeyOnly(secondary, 'secondary'), useKeyOnly(toggle, 'toggle'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useValueAndKey(floated, 'floated'), useWidthProp(widths), 'buttons', className);
+	  var rest = getUnhandledProps(ButtonGroup, props);
+	  var ElementType = getElementType(ButtonGroup, props);
+
+	  if (isNil(buttons)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), isNil$1(children) ? content : children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), map(buttons, function (button) {
+	    return Button.create(button);
+	  }));
+	}
+
+	ButtonGroup.handledProps = ["as", "attached", "basic", "buttons", "children", "className", "color", "compact", "content", "floated", "fluid", "icon", "inverted", "labeled", "negative", "positive", "primary", "secondary", "size", "toggle", "vertical", "widths"];
+	ButtonGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Groups can be attached to other content. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['left', 'right', 'top', 'bottom'])]),
+
+	  /** Groups can be less pronounced. */
+	  basic: propTypes.exports.bool,
+
+	  /** Array of shorthand Button values. */
+	  buttons: collectionShorthand,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Groups can have a shared color. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Groups can reduce their padding to fit into tighter spaces. */
+	  compact: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Groups can be aligned to the left or right of its container. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** Groups can take the width of their container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Groups can be formatted as icons. */
+	  icon: propTypes.exports.bool,
+
+	  /** Groups can be formatted to appear on dark backgrounds. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Groups can be formatted as labeled icon buttons. */
+	  labeled: propTypes.exports.bool,
+
+	  /** Groups can hint towards a negative consequence. */
+	  negative: propTypes.exports.bool,
+
+	  /** Groups can hint towards a positive consequence. */
+	  positive: propTypes.exports.bool,
+
+	  /** Groups can be formatted to show different levels of emphasis. */
+	  primary: propTypes.exports.bool,
+
+	  /** Groups can be formatted to show different levels of emphasis. */
+	  secondary: propTypes.exports.bool,
+
+	  /** Groups can have different sizes. */
+	  size: propTypes.exports.oneOf(SIZES),
+
+	  /** Groups can be formatted to toggle on and off. */
+	  toggle: propTypes.exports.bool,
+
+	  /** Groups can be formatted to appear vertically. */
+	  vertical: propTypes.exports.bool,
+
+	  /** Groups can have their widths divided evenly. */
+	  widths: propTypes.exports.oneOf(WIDTHS)
+	} ;
+
+	/**
+	 * Button groups can contain conditionals.
+	 */
+
+	function ButtonOr(props) {
+	  var className = props.className,
+	      text = props.text;
+	  var classes = cx('or', className);
+	  var rest = getUnhandledProps(ButtonOr, props);
+	  var ElementType = getElementType(ButtonOr, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes,
+	    "data-text": text
+	  }));
+	}
+
+	ButtonOr.handledProps = ["as", "className", "text"];
+	ButtonOr.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Or buttons can have their text localized, or adjusted by using the text prop. */
+	  text: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])
+	} ;
+
+	/**
+	 * A Button indicates a possible user action.
+	 * @see Form
+	 * @see Icon
+	 * @see Label
+	 */
+
+	var Button = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Button, _Component);
+
+	  function Button() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.ref = /*#__PURE__*/react.exports.createRef();
+
+	    _this.computeElementType = function () {
+	      var _this$props = _this.props,
+	          attached = _this$props.attached,
+	          label = _this$props.label;
+	      if (!isNil(attached) || !isNil(label)) return 'div';
+	    };
+
+	    _this.computeTabIndex = function (ElementType) {
+	      var _this$props2 = _this.props,
+	          disabled = _this$props2.disabled,
+	          tabIndex = _this$props2.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      if (disabled) return -1;
+	      if (ElementType === 'div') return 0;
+	    };
+
+	    _this.focus = function () {
+	      return invoke(_this.ref.current, 'focus');
+	    };
+
+	    _this.handleClick = function (e) {
+	      var disabled = _this.props.disabled;
+
+	      if (disabled) {
+	        e.preventDefault();
+	        return;
+	      }
+
+	      invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    _this.hasIconClass = function () {
+	      var _this$props3 = _this.props,
+	          labelPosition = _this$props3.labelPosition,
+	          children = _this$props3.children,
+	          content = _this$props3.content,
+	          icon = _this$props3.icon;
+	      if (icon === true) return true;
+	      return icon && (labelPosition || isNil$1(children) && isNil(content));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Button.prototype;
+
+	  _proto.computeButtonAriaRole = function computeButtonAriaRole(ElementType) {
+	    var role = this.props.role;
+	    if (!isNil(role)) return role;
+	    if (ElementType !== 'button') return 'button';
+	  };
+
+	  _proto.render = function render() {
+	    var _this$props4 = this.props,
+	        active = _this$props4.active,
+	        animated = _this$props4.animated,
+	        attached = _this$props4.attached,
+	        basic = _this$props4.basic,
+	        children = _this$props4.children,
+	        circular = _this$props4.circular,
+	        className = _this$props4.className,
+	        color = _this$props4.color,
+	        compact = _this$props4.compact,
+	        content = _this$props4.content,
+	        disabled = _this$props4.disabled,
+	        floated = _this$props4.floated,
+	        fluid = _this$props4.fluid,
+	        icon = _this$props4.icon,
+	        inverted = _this$props4.inverted,
+	        label = _this$props4.label,
+	        labelPosition = _this$props4.labelPosition,
+	        loading = _this$props4.loading,
+	        negative = _this$props4.negative,
+	        positive = _this$props4.positive,
+	        primary = _this$props4.primary,
+	        secondary = _this$props4.secondary,
+	        size = _this$props4.size,
+	        toggle = _this$props4.toggle,
+	        type = _this$props4.type;
+	    var baseClasses = cx(color, size, useKeyOnly(active, 'active'), useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(this.hasIconClass(), 'icon'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(primary, 'primary'), useKeyOnly(secondary, 'secondary'), useKeyOnly(toggle, 'toggle'), useKeyOrValueAndKey(animated, 'animated'), useKeyOrValueAndKey(attached, 'attached'));
+	    var labeledClasses = cx(useKeyOrValueAndKey(labelPosition || !!label, 'labeled'));
+	    var wrapperClasses = cx(useKeyOnly(disabled, 'disabled'), useValueAndKey(floated, 'floated'));
+	    var rest = getUnhandledProps(Button, this.props);
+	    var ElementType = getElementType(Button, this.props, this.computeElementType);
+	    var tabIndex = this.computeTabIndex(ElementType);
+
+	    if (!isNil(label)) {
+	      var buttonClasses = cx('ui', baseClasses, 'button', className);
+	      var containerClasses = cx('ui', labeledClasses, 'button', className, wrapperClasses);
+	      var labelElement = Label.create(label, {
+	        defaultProps: {
+	          basic: true,
+	          pointing: labelPosition === 'left' ? 'right' : 'left'
+	        },
+	        autoGenerateKey: false
+	      });
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: containerClasses,
+	        onClick: this.handleClick
+	      }), labelPosition === 'left' && labelElement, /*#__PURE__*/React$1.createElement(Ref, {
+	        innerRef: this.ref
+	      }, /*#__PURE__*/React$1.createElement("button", {
+	        className: buttonClasses,
+	        "aria-pressed": toggle ? !!active : undefined,
+	        disabled: disabled,
+	        type: type,
+	        tabIndex: tabIndex
+	      }, Icon.create(icon, {
+	        autoGenerateKey: false
+	      }), " ", content)), (labelPosition === 'right' || !labelPosition) && labelElement);
+	    }
+
+	    var classes = cx('ui', baseClasses, wrapperClasses, labeledClasses, 'button', className);
+	    var hasChildren = !isNil$1(children);
+	    var role = this.computeButtonAriaRole(ElementType);
+	    return /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.ref
+	    }, /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      "aria-pressed": toggle ? !!active : undefined,
+	      disabled: disabled && ElementType === 'button' || undefined,
+	      onClick: this.handleClick,
+	      role: role,
+	      type: type,
+	      tabIndex: tabIndex
+	    }), hasChildren && children, !hasChildren && Icon.create(icon, {
+	      autoGenerateKey: false
+	    }), !hasChildren && content));
+	  };
+
+	  return Button;
+	}(react.exports.Component);
+
+	Button.handledProps = ["active", "animated", "as", "attached", "basic", "children", "circular", "className", "color", "compact", "content", "disabled", "floated", "fluid", "icon", "inverted", "label", "labelPosition", "loading", "negative", "onClick", "positive", "primary", "role", "secondary", "size", "tabIndex", "toggle", "type"];
+	Button.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A button can show it is currently the active user selection. */
+	  active: propTypes.exports.bool,
+
+	  /** A button can animate to show hidden content. */
+	  animated: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['fade', 'vertical'])]),
+
+	  /** A button can be attached to other content. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['left', 'right', 'top', 'bottom'])]),
+
+	  /** A basic button is less pronounced. */
+	  basic: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: every$1([propTypes.exports.node, disallow(['label']), givenProps({
+	    icon: propTypes.exports.oneOfType([propTypes.exports.string.isRequired, propTypes.exports.object.isRequired, propTypes.exports.element.isRequired])
+	  }, disallow(['icon']))]),
+
+	  /** A button can be circular. */
+	  circular: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A button can have different colors */
+	  color: propTypes.exports.oneOf([].concat(COLORS, ['facebook', 'google plus', 'instagram', 'linkedin', 'twitter', 'vk', 'youtube'])),
+
+	  /** A button can reduce its padding to fit into tighter spaces. */
+	  compact: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A button can show it is currently unable to be interacted with. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A button can be aligned to the left or right of its container. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** A button can take the width of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Add an Icon by name, props object, or pass an <Icon />. */
+	  icon: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.string, propTypes.exports.object, propTypes.exports.element]),
+
+	  /** A button can be formatted to appear on dark backgrounds. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Add a Label by text, props object, or pass a <Label />. */
+	  label: propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.object, propTypes.exports.element]),
+
+	  /** A labeled button can format a Label or Icon to appear on the left or right. */
+	  labelPosition: propTypes.exports.oneOf(['right', 'left']),
+
+	  /** A button can show a loading indicator. */
+	  loading: propTypes.exports.bool,
+
+	  /** A button can hint towards a negative consequence. */
+	  negative: propTypes.exports.bool,
+
+	  /**
+	   * Called after user's click.
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /** A button can hint towards a positive consequence. */
+	  positive: propTypes.exports.bool,
+
+	  /** A button can be formatted to show different levels of emphasis. */
+	  primary: propTypes.exports.bool,
+
+	  /** The role of the HTML element. */
+	  role: propTypes.exports.string,
+
+	  /** A button can be formatted to show different levels of emphasis. */
+	  secondary: propTypes.exports.bool,
+
+	  /** A button can have different sizes. */
+	  size: propTypes.exports.oneOf(SIZES),
+
+	  /** A button can receive focus. */
+	  tabIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** A button can be formatted to toggle on and off. */
+	  toggle: propTypes.exports.bool,
+
+	  /** The type of the HTML element. */
+	  type: propTypes.exports.oneOf(['button', 'submit', 'reset'])
+	} ;
+	Button.defaultProps = {
+	  as: 'button'
+	};
+	Button.Content = ButtonContent;
+	Button.Group = ButtonGroup;
+	Button.Or = ButtonOr;
+	Button.create = createShorthandFactory(Button, function (value) {
+	  return {
+	    content: value
+	  };
+	});
+
+	/**
+	 * A specialized version of `_.reduce` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @param {boolean} [initAccum] Specify using the first element of `array` as
+	 *  the initial value.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	function arrayReduce(array, iteratee, accumulator, initAccum) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  if (initAccum && length) {
+	    accumulator = array[++index];
+	  }
+
+	  while (++index < length) {
+	    accumulator = iteratee(accumulator, array[index], index, array);
+	  }
+
+	  return accumulator;
+	}
+
+	/**
+	 * The base implementation of `_.reduce` and `_.reduceRight`, without support
+	 * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} accumulator The initial value.
+	 * @param {boolean} initAccum Specify using the first or last element of
+	 *  `collection` as the initial value.
+	 * @param {Function} eachFunc The function to iterate over `collection`.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	function baseReduce(collection, iteratee, accumulator, initAccum, eachFunc) {
+	  eachFunc(collection, function (value, index, collection) {
+	    accumulator = initAccum ? (initAccum = false, value) : iteratee(accumulator, value, index, collection);
+	  });
+	  return accumulator;
+	}
+
+	/**
+	 * Reduces `collection` to a value which is the accumulated result of running
+	 * each element in `collection` thru `iteratee`, where each successive
+	 * invocation is supplied the return value of the previous. If `accumulator`
+	 * is not given, the first element of `collection` is used as the initial
+	 * value. The iteratee is invoked with four arguments:
+	 * (accumulator, value, index|key, collection).
+	 *
+	 * Many lodash methods are guarded to work as iteratees for methods like
+	 * `_.reduce`, `_.reduceRight`, and `_.transform`.
+	 *
+	 * The guarded methods are:
+	 * `assign`, `defaults`, `defaultsDeep`, `includes`, `merge`, `orderBy`,
+	 * and `sortBy`
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @returns {*} Returns the accumulated value.
+	 * @see _.reduceRight
+	 * @example
+	 *
+	 * _.reduce([1, 2], function(sum, n) {
+	 *   return sum + n;
+	 * }, 0);
+	 * // => 3
+	 *
+	 * _.reduce({ 'a': 1, 'b': 2, 'c': 1 }, function(result, value, key) {
+	 *   (result[value] || (result[value] = [])).push(key);
+	 *   return result;
+	 * }, {});
+	 * // => { '1': ['a', 'c'], '2': ['b'] } (iteration order is not guaranteed)
+	 */
+
+	function reduce(collection, iteratee, accumulator) {
+	  var func = isArray(collection) ? arrayReduce : baseReduce,
+	      initAccum = arguments.length < 3;
+	  return func(collection, baseIteratee(iteratee), accumulator, initAccum, baseEach);
+	}
+
+	//
+	var shallowequal = function shallowEqual(objA, objB, compare, compareContext) {
+	  var ret = compare ? compare.call(compareContext, objA, objB) : void 0;
+
+	  if (ret !== void 0) {
+	    return !!ret;
+	  }
+
+	  if (objA === objB) {
+	    return true;
+	  }
+
+	  if (typeof objA !== "object" || !objA || typeof objB !== "object" || !objB) {
+	    return false;
+	  }
+
+	  var keysA = Object.keys(objA);
+	  var keysB = Object.keys(objB);
+
+	  if (keysA.length !== keysB.length) {
+	    return false;
+	  }
+
+	  var bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB); // Test for A's keys different from B.
+
+	  for (var idx = 0; idx < keysA.length; idx++) {
+	    var key = keysA[idx];
+
+	    if (!bHasOwnProperty(key)) {
+	      return false;
+	    }
+
+	    var valueA = objA[key];
+	    var valueB = objB[key];
+	    ret = compare ? compare.call(compareContext, valueA, valueB, key) : void 0;
+
+	    if (ret === false || ret === void 0 && valueA !== valueB) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	};
+
+	/**
+	 * A modal can contain a row of actions.
+	 */
+
+	var ModalActions = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(ModalActions, _Component);
+
+	  function ModalActions() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleButtonOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e, buttonProps) {
+	          invoke(predefinedProps, 'onClick', e, buttonProps);
+
+	          invoke(_this.props, 'onActionClick', e, buttonProps);
+	        }
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = ModalActions.prototype;
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props = this.props,
+	        actions = _this$props.actions,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content;
+	    var classes = cx('actions', className);
+	    var rest = getUnhandledProps(ModalActions, this.props);
+	    var ElementType = getElementType(ModalActions, this.props);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), children);
+	    }
+
+	    if (!isNil$1(content)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), content);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), map(actions, function (action) {
+	      return Button.create(action, {
+	        overrideProps: _this2.handleButtonOverrides
+	      });
+	    }));
+	  };
+
+	  return ModalActions;
+	}(react.exports.Component);
+
+	ModalActions.handledProps = ["actions", "as", "children", "className", "content", "onActionClick"];
+	ModalActions.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Array of shorthand buttons. */
+	  actions: collectionShorthand,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /**
+	   * Action onClick handler when using shorthand `actions`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props from the clicked action.
+	   */
+	  onActionClick: every$1([disallow(['children']), propTypes.exports.func])
+	} ;
+	ModalActions.create = createShorthandFactory(ModalActions, function (actions) {
+	  return {
+	    actions: actions
+	  };
+	});
+
+	/**
+	 * A modal can contain content.
+	 */
+
+	function ModalContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      image = props.image,
+	      scrolling = props.scrolling;
+	  var classes = cx(className, useKeyOnly(image, 'image'), useKeyOnly(scrolling, 'scrolling'), 'content');
+	  var rest = getUnhandledProps(ModalContent, props);
+	  var ElementType = getElementType(ModalContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ModalContent.handledProps = ["as", "children", "className", "content", "image", "scrolling"];
+	ModalContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A modal can contain image content. */
+	  image: propTypes.exports.bool,
+
+	  /** A modal can use the entire size of the screen. */
+	  scrolling: propTypes.exports.bool
+	} ;
+	ModalContent.create = createShorthandFactory(ModalContent, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A modal can contain a description with one or more paragraphs.
+	 */
+
+	function ModalDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('description', className);
+	  var rest = getUnhandledProps(ModalDescription, props);
+	  var ElementType = getElementType(ModalDescription, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ModalDescription.handledProps = ["as", "children", "className", "content"];
+	ModalDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A modal has a dimmer.
+	 */
+
+	function ModalDimmer(props) {
+	  var blurring = props.blurring,
+	      children = props.children,
+	      className = props.className,
+	      centered = props.centered,
+	      content = props.content,
+	      inverted = props.inverted,
+	      mountNode = props.mountNode,
+	      scrolling = props.scrolling;
+	  var ref = React$1.useRef();
+	  var classes = cx('ui', useKeyOnly(inverted, 'inverted'), useKeyOnly(!centered, 'top aligned'), 'page modals dimmer transition visible active', className);
+	  var bodyClasses = cx('dimmable dimmed', useKeyOnly(blurring, 'blurring'), useKeyOnly(scrolling, 'scrolling'));
+	  var rest = getUnhandledProps(ModalDimmer, props);
+	  var ElementType = getElementType(ModalDimmer, props);
+	  useClassNamesOnNode(mountNode, bodyClasses);
+	  React$1.useEffect(function () {
+	    if (ref.current && ref.current.style) {
+	      ref.current.style.setProperty('display', 'flex', 'important');
+	    }
+	  }, []);
+	  return /*#__PURE__*/React$1.createElement(Ref, {
+	    innerRef: ref
+	  }, /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children));
+	}
+
+	ModalDimmer.handledProps = ["as", "blurring", "centered", "children", "className", "content", "inverted", "mountNode", "scrolling"];
+	ModalDimmer.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A dimmer can be blurred. */
+	  blurring: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A dimmer can center its contents in the viewport. */
+	  centered: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A dimmer can be inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** The node where the modal should mount. Defaults to document.body. */
+	  mountNode: propTypes.exports.any,
+
+	  /** A dimmer can make body scrollable. */
+	  scrolling: propTypes.exports.bool
+	} ;
+	ModalDimmer.create = createShorthandFactory(ModalDimmer, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A modal can have a header.
+	 */
+
+	function ModalHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(ModalHeader, props);
+	  var ElementType = getElementType(ModalHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ModalHeader.handledProps = ["as", "children", "className", "content"];
+	ModalHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ModalHeader.create = createShorthandFactory(ModalHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Shorthand for Modal.Actions. Typically an array of button shorthand. */
+	  actions: itemShorthand,
+
+	  /** A modal can reduce its complexity */
+	  basic: propTypes.exports.bool,
+
+	  /** A modal can be vertically centered in the viewport */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for the close icon. Closes the modal on click. */
+	  closeIcon: propTypes.exports.oneOfType([propTypes.exports.node, propTypes.exports.object, propTypes.exports.bool]),
+
+	  /** Whether or not the Modal should close when the dimmer is clicked. */
+	  closeOnDimmerClick: propTypes.exports.bool,
+
+	  /** Whether or not the Modal should close when the document is clicked. */
+	  closeOnDocumentClick: propTypes.exports.bool,
+
+	  /** Simple text content for the Modal. */
+	  content: itemShorthand,
+
+	  /** Initial value of open. */
+	  defaultOpen: propTypes.exports.bool,
+
+	  /** A Modal can appear in a dimmer. */
+	  dimmer: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.func, propTypes.exports.object, propTypes.exports.oneOf(['inverted', 'blurring'])]),
+
+	  /** Event pool namespace that is used to handle component events */
+	  eventPool: propTypes.exports.string,
+
+	  /** Modal displayed above the content in bold. */
+	  header: itemShorthand,
+
+	  /** The node where the modal should mount. Defaults to document.body. */
+	  mountNode: propTypes.exports.any,
+
+	  /**
+	   * Action onClick handler when using shorthand `actions`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onActionClick: propTypes.exports.func,
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: propTypes.exports.func,
+
+	  /**
+	   * Called when the modal is mounted on the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onMount: propTypes.exports.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: propTypes.exports.func,
+
+	  /**
+	   * Called when the modal is unmounted from the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUnmount: propTypes.exports.func,
+
+	  /** Controls whether or not the Modal is displayed. */
+	  open: propTypes.exports.bool,
+
+	  /** A modal can vary in size */
+	  size: propTypes.exports.oneOf(['mini', 'tiny', 'small', 'large', 'fullscreen']),
+
+	  /** Custom styles. */
+	  style: propTypes.exports.object,
+
+	  /** Element to be rendered in-place where the modal is defined. */
+	  trigger: propTypes.exports.node
+	  /**
+	   * NOTE: Any unhandled props that are defined in Modal are passed-through
+	   * to the inner Portal.
+	   */
+
+	}) ;
+
+	({
+	  /** The cancel button text. */
+	  cancelButton: itemShorthand,
+
+	  /** The OK button text. */
+	  confirmButton: itemShorthand,
+
+	  /** The ModalContent text. */
+	  content: itemShorthand,
+
+	  /** The ModalHeader text. */
+	  header: itemShorthand,
+
+	  /**
+	   * Called when the Modal is closed without clicking confirm.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onCancel: propTypes.exports.func,
+
+	  /**
+	   * Called when the OK button is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onConfirm: propTypes.exports.func,
+
+	  /** Whether or not the modal is visible. */
+	  open: propTypes.exports.bool,
+
+	  /** A Confirm can vary in size */
+	  size: propTypes.exports.oneOf(['mini', 'tiny', 'small', 'large', 'fullscreen'])
+	}) ;
+
+	/**
+	 * A menu item may include a header or may itself be a header.
+	 */
+
+	function MenuHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(MenuHeader, props);
+	  var ElementType = getElementType(MenuHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MenuHeader.handledProps = ["as", "children", "className", "content"];
+	MenuHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * The base implementation of `_.propertyOf` without support for deep paths.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Function} Returns the new accessor function.
+	 */
+	function basePropertyOf(object) {
+	  return function (key) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/** Used to map Latin Unicode letters to basic Latin letters. */
+
+	var deburredLetters = {
+	  // Latin-1 Supplement block.
+	  '\xc0': 'A',
+	  '\xc1': 'A',
+	  '\xc2': 'A',
+	  '\xc3': 'A',
+	  '\xc4': 'A',
+	  '\xc5': 'A',
+	  '\xe0': 'a',
+	  '\xe1': 'a',
+	  '\xe2': 'a',
+	  '\xe3': 'a',
+	  '\xe4': 'a',
+	  '\xe5': 'a',
+	  '\xc7': 'C',
+	  '\xe7': 'c',
+	  '\xd0': 'D',
+	  '\xf0': 'd',
+	  '\xc8': 'E',
+	  '\xc9': 'E',
+	  '\xca': 'E',
+	  '\xcb': 'E',
+	  '\xe8': 'e',
+	  '\xe9': 'e',
+	  '\xea': 'e',
+	  '\xeb': 'e',
+	  '\xcc': 'I',
+	  '\xcd': 'I',
+	  '\xce': 'I',
+	  '\xcf': 'I',
+	  '\xec': 'i',
+	  '\xed': 'i',
+	  '\xee': 'i',
+	  '\xef': 'i',
+	  '\xd1': 'N',
+	  '\xf1': 'n',
+	  '\xd2': 'O',
+	  '\xd3': 'O',
+	  '\xd4': 'O',
+	  '\xd5': 'O',
+	  '\xd6': 'O',
+	  '\xd8': 'O',
+	  '\xf2': 'o',
+	  '\xf3': 'o',
+	  '\xf4': 'o',
+	  '\xf5': 'o',
+	  '\xf6': 'o',
+	  '\xf8': 'o',
+	  '\xd9': 'U',
+	  '\xda': 'U',
+	  '\xdb': 'U',
+	  '\xdc': 'U',
+	  '\xf9': 'u',
+	  '\xfa': 'u',
+	  '\xfb': 'u',
+	  '\xfc': 'u',
+	  '\xdd': 'Y',
+	  '\xfd': 'y',
+	  '\xff': 'y',
+	  '\xc6': 'Ae',
+	  '\xe6': 'ae',
+	  '\xde': 'Th',
+	  '\xfe': 'th',
+	  '\xdf': 'ss',
+	  // Latin Extended-A block.
+	  '\u0100': 'A',
+	  '\u0102': 'A',
+	  '\u0104': 'A',
+	  '\u0101': 'a',
+	  '\u0103': 'a',
+	  '\u0105': 'a',
+	  '\u0106': 'C',
+	  '\u0108': 'C',
+	  '\u010a': 'C',
+	  '\u010c': 'C',
+	  '\u0107': 'c',
+	  '\u0109': 'c',
+	  '\u010b': 'c',
+	  '\u010d': 'c',
+	  '\u010e': 'D',
+	  '\u0110': 'D',
+	  '\u010f': 'd',
+	  '\u0111': 'd',
+	  '\u0112': 'E',
+	  '\u0114': 'E',
+	  '\u0116': 'E',
+	  '\u0118': 'E',
+	  '\u011a': 'E',
+	  '\u0113': 'e',
+	  '\u0115': 'e',
+	  '\u0117': 'e',
+	  '\u0119': 'e',
+	  '\u011b': 'e',
+	  '\u011c': 'G',
+	  '\u011e': 'G',
+	  '\u0120': 'G',
+	  '\u0122': 'G',
+	  '\u011d': 'g',
+	  '\u011f': 'g',
+	  '\u0121': 'g',
+	  '\u0123': 'g',
+	  '\u0124': 'H',
+	  '\u0126': 'H',
+	  '\u0125': 'h',
+	  '\u0127': 'h',
+	  '\u0128': 'I',
+	  '\u012a': 'I',
+	  '\u012c': 'I',
+	  '\u012e': 'I',
+	  '\u0130': 'I',
+	  '\u0129': 'i',
+	  '\u012b': 'i',
+	  '\u012d': 'i',
+	  '\u012f': 'i',
+	  '\u0131': 'i',
+	  '\u0134': 'J',
+	  '\u0135': 'j',
+	  '\u0136': 'K',
+	  '\u0137': 'k',
+	  '\u0138': 'k',
+	  '\u0139': 'L',
+	  '\u013b': 'L',
+	  '\u013d': 'L',
+	  '\u013f': 'L',
+	  '\u0141': 'L',
+	  '\u013a': 'l',
+	  '\u013c': 'l',
+	  '\u013e': 'l',
+	  '\u0140': 'l',
+	  '\u0142': 'l',
+	  '\u0143': 'N',
+	  '\u0145': 'N',
+	  '\u0147': 'N',
+	  '\u014a': 'N',
+	  '\u0144': 'n',
+	  '\u0146': 'n',
+	  '\u0148': 'n',
+	  '\u014b': 'n',
+	  '\u014c': 'O',
+	  '\u014e': 'O',
+	  '\u0150': 'O',
+	  '\u014d': 'o',
+	  '\u014f': 'o',
+	  '\u0151': 'o',
+	  '\u0154': 'R',
+	  '\u0156': 'R',
+	  '\u0158': 'R',
+	  '\u0155': 'r',
+	  '\u0157': 'r',
+	  '\u0159': 'r',
+	  '\u015a': 'S',
+	  '\u015c': 'S',
+	  '\u015e': 'S',
+	  '\u0160': 'S',
+	  '\u015b': 's',
+	  '\u015d': 's',
+	  '\u015f': 's',
+	  '\u0161': 's',
+	  '\u0162': 'T',
+	  '\u0164': 'T',
+	  '\u0166': 'T',
+	  '\u0163': 't',
+	  '\u0165': 't',
+	  '\u0167': 't',
+	  '\u0168': 'U',
+	  '\u016a': 'U',
+	  '\u016c': 'U',
+	  '\u016e': 'U',
+	  '\u0170': 'U',
+	  '\u0172': 'U',
+	  '\u0169': 'u',
+	  '\u016b': 'u',
+	  '\u016d': 'u',
+	  '\u016f': 'u',
+	  '\u0171': 'u',
+	  '\u0173': 'u',
+	  '\u0174': 'W',
+	  '\u0175': 'w',
+	  '\u0176': 'Y',
+	  '\u0177': 'y',
+	  '\u0178': 'Y',
+	  '\u0179': 'Z',
+	  '\u017b': 'Z',
+	  '\u017d': 'Z',
+	  '\u017a': 'z',
+	  '\u017c': 'z',
+	  '\u017e': 'z',
+	  '\u0132': 'IJ',
+	  '\u0133': 'ij',
+	  '\u0152': 'Oe',
+	  '\u0153': 'oe',
+	  '\u0149': "'n",
+	  '\u017f': 's'
+	};
+	/**
+	 * Used by `_.deburr` to convert Latin-1 Supplement and Latin Extended-A
+	 * letters to basic Latin letters.
+	 *
+	 * @private
+	 * @param {string} letter The matched letter to deburr.
+	 * @returns {string} Returns the deburred letter.
+	 */
+
+	var deburrLetter = basePropertyOf(deburredLetters);
+
+	/** Used to match Latin Unicode letters (excluding mathematical operators). */
+
+	var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
+	/** Used to compose unicode character classes. */
+
+	var rsComboMarksRange$2 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$2 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$2 = '\\u20d0-\\u20ff',
+	    rsComboRange$2 = rsComboMarksRange$2 + reComboHalfMarksRange$2 + rsComboSymbolsRange$2;
+	/** Used to compose unicode capture groups. */
+
+	var rsCombo$2 = '[' + rsComboRange$2 + ']';
+	/**
+	 * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
+	 * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
+	 */
+
+	var reComboMark = RegExp(rsCombo$2, 'g');
+	/**
+	 * Deburrs `string` by converting
+	 * [Latin-1 Supplement](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+	 * and [Latin Extended-A](https://en.wikipedia.org/wiki/Latin_Extended-A)
+	 * letters to basic Latin letters and removing
+	 * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to deburr.
+	 * @returns {string} Returns the deburred string.
+	 * @example
+	 *
+	 * _.deburr('déjà vu');
+	 * // => 'deja vu'
+	 */
+
+	function deburr(string) {
+	  string = toString(string);
+	  return string && string.replace(reLatin, deburrLetter).replace(reComboMark, '');
+	}
+
+	/** Used to match words composed of alphanumeric characters. */
+	var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
+	/**
+	 * Splits an ASCII `string` into an array of its words.
+	 *
+	 * @private
+	 * @param {string} The string to inspect.
+	 * @returns {Array} Returns the words of `string`.
+	 */
+
+	function asciiWords(string) {
+	  return string.match(reAsciiWord) || [];
+	}
+
+	/** Used to detect strings that need a more robust regexp to match words. */
+	var reHasUnicodeWord = /[a-z][A-Z]|[A-Z]{2}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
+	/**
+	 * Checks if `string` contains a word composed of Unicode symbols.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {boolean} Returns `true` if a word is found, else `false`.
+	 */
+
+	function hasUnicodeWord(string) {
+	  return reHasUnicodeWord.test(string);
+	}
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange$1 = '\\ud800-\\udfff',
+	    rsComboMarksRange$1 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$1 = '\\u20d0-\\u20ff',
+	    rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1,
+	    rsDingbatRange = '\\u2700-\\u27bf',
+	    rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff',
+	    rsMathOpRange = '\\xac\\xb1\\xd7\\xf7',
+	    rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf',
+	    rsPunctuationRange = '\\u2000-\\u206f',
+	    rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000',
+	    rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde',
+	    rsVarRange$1 = '\\ufe0e\\ufe0f',
+	    rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
+	/** Used to compose unicode capture groups. */
+
+	var rsApos$1 = "['\u2019]",
+	    rsBreak = '[' + rsBreakRange + ']',
+	    rsCombo$1 = '[' + rsComboRange$1 + ']',
+	    rsDigits = '\\d+',
+	    rsDingbat = '[' + rsDingbatRange + ']',
+	    rsLower = '[' + rsLowerRange + ']',
+	    rsMisc = '[^' + rsAstralRange$1 + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']',
+	    rsFitz$1 = '\\ud83c[\\udffb-\\udfff]',
+	    rsModifier$1 = '(?:' + rsCombo$1 + '|' + rsFitz$1 + ')',
+	    rsNonAstral$1 = '[^' + rsAstralRange$1 + ']',
+	    rsRegional$1 = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+	    rsSurrPair$1 = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+	    rsUpper = '[' + rsUpperRange + ']',
+	    rsZWJ$1 = '\\u200d';
+	/** Used to compose unicode regexes. */
+
+	var rsMiscLower = '(?:' + rsLower + '|' + rsMisc + ')',
+	    rsMiscUpper = '(?:' + rsUpper + '|' + rsMisc + ')',
+	    rsOptContrLower = '(?:' + rsApos$1 + '(?:d|ll|m|re|s|t|ve))?',
+	    rsOptContrUpper = '(?:' + rsApos$1 + '(?:D|LL|M|RE|S|T|VE))?',
+	    reOptMod$1 = rsModifier$1 + '?',
+	    rsOptVar$1 = '[' + rsVarRange$1 + ']?',
+	    rsOptJoin$1 = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral$1, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsOptVar$1 + reOptMod$1 + ')*',
+	    rsOrdLower = '\\d*(?:1st|2nd|3rd|(?![123])\\dth)(?=\\b|[A-Z_])',
+	    rsOrdUpper = '\\d*(?:1ST|2ND|3RD|(?![123])\\dTH)(?=\\b|[a-z_])',
+	    rsSeq$1 = rsOptVar$1 + reOptMod$1 + rsOptJoin$1,
+	    rsEmoji = '(?:' + [rsDingbat, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsSeq$1;
+	/** Used to match complex or compound words. */
+
+	var reUnicodeWord = RegExp([rsUpper + '?' + rsLower + '+' + rsOptContrLower + '(?=' + [rsBreak, rsUpper, '$'].join('|') + ')', rsMiscUpper + '+' + rsOptContrUpper + '(?=' + [rsBreak, rsUpper + rsMiscLower, '$'].join('|') + ')', rsUpper + '?' + rsMiscLower + '+' + rsOptContrLower, rsUpper + '+' + rsOptContrUpper, rsOrdUpper, rsOrdLower, rsDigits, rsEmoji].join('|'), 'g');
+	/**
+	 * Splits a Unicode `string` into an array of its words.
+	 *
+	 * @private
+	 * @param {string} The string to inspect.
+	 * @returns {Array} Returns the words of `string`.
+	 */
+
+	function unicodeWords(string) {
+	  return string.match(reUnicodeWord) || [];
+	}
+
+	/**
+	 * Splits `string` into an array of its words.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to inspect.
+	 * @param {RegExp|string} [pattern] The pattern to match words.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {Array} Returns the words of `string`.
+	 * @example
+	 *
+	 * _.words('fred, barney, & pebbles');
+	 * // => ['fred', 'barney', 'pebbles']
+	 *
+	 * _.words('fred, barney, & pebbles', /[^, ]+/g);
+	 * // => ['fred', 'barney', '&', 'pebbles']
+	 */
+
+	function words(string, pattern, guard) {
+	  string = toString(string);
+	  pattern = guard ? undefined : pattern;
+
+	  if (pattern === undefined) {
+	    return hasUnicodeWord(string) ? unicodeWords(string) : asciiWords(string);
+	  }
+
+	  return string.match(pattern) || [];
+	}
+
+	/** Used to compose unicode capture groups. */
+
+	var rsApos = "['\u2019]";
+	/** Used to match apostrophes. */
+
+	var reApos = RegExp(rsApos, 'g');
+	/**
+	 * Creates a function like `_.camelCase`.
+	 *
+	 * @private
+	 * @param {Function} callback The function to combine each word.
+	 * @returns {Function} Returns the new compounder function.
+	 */
+
+	function createCompounder(callback) {
+	  return function (string) {
+	    return arrayReduce(words(deburr(string).replace(reApos, '')), callback, '');
+	  };
+	}
+
+	/**
+	 * Creates a function like `_.lowerFirst`.
+	 *
+	 * @private
+	 * @param {string} methodName The name of the `String` case method to use.
+	 * @returns {Function} Returns the new case function.
+	 */
+
+	function createCaseFirst(methodName) {
+	  return function (string) {
+	    string = toString(string);
+	    var strSymbols = hasUnicode(string) ? stringToArray(string) : undefined;
+	    var chr = strSymbols ? strSymbols[0] : string.charAt(0);
+	    var trailing = strSymbols ? castSlice(strSymbols, 1).join('') : string.slice(1);
+	    return chr[methodName]() + trailing;
+	  };
+	}
+
+	/**
+	 * Converts the first character of `string` to upper case.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to convert.
+	 * @returns {string} Returns the converted string.
+	 * @example
+	 *
+	 * _.upperFirst('fred');
+	 * // => 'Fred'
+	 *
+	 * _.upperFirst('FRED');
+	 * // => 'FRED'
+	 */
+
+	var upperFirst = createCaseFirst('toUpperCase');
+
+	/**
+	 * Converts `string` to
+	 * [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.1.0
+	 * @category String
+	 * @param {string} [string=''] The string to convert.
+	 * @returns {string} Returns the start cased string.
+	 * @example
+	 *
+	 * _.startCase('--foo-bar--');
+	 * // => 'Foo Bar'
+	 *
+	 * _.startCase('fooBar');
+	 * // => 'Foo Bar'
+	 *
+	 * _.startCase('__FOO_BAR__');
+	 * // => 'FOO BAR'
+	 */
+
+	var startCase = createCompounder(function (result, word, index) {
+	  return result + (index ? ' ' : '') + upperFirst(word);
+	});
+
+	/**
+	 * A menu can contain an item.
+	 */
+
+	var MenuItem = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(MenuItem, _Component);
+
+	  function MenuItem() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var disabled = _this.props.disabled;
+	      if (!disabled) invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = MenuItem.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        color = _this$props.color,
+	        content = _this$props.content,
+	        disabled = _this$props.disabled,
+	        fitted = _this$props.fitted,
+	        header = _this$props.header,
+	        icon = _this$props.icon,
+	        link = _this$props.link,
+	        name = _this$props.name,
+	        onClick = _this$props.onClick,
+	        position = _this$props.position;
+	    var classes = cx(color, position, useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(icon === true || icon && !(name || content), 'icon'), useKeyOnly(header, 'header'), useKeyOnly(link, 'link'), useKeyOrValueAndKey(fitted, 'fitted'), 'item', className);
+	    var ElementType = getElementType(MenuItem, this.props, function () {
+	      if (onClick) return 'a';
+	    });
+	    var rest = getUnhandledProps(MenuItem, this.props);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }), Icon.create(icon, {
+	      autoGenerateKey: false
+	    }), isNil$1(content) ? startCase(name) : content);
+	  };
+
+	  return MenuItem;
+	}(react.exports.Component);
+
+	MenuItem.handledProps = ["active", "as", "children", "className", "color", "content", "disabled", "fitted", "header", "icon", "index", "link", "name", "onClick", "position"];
+	MenuItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A menu item can be active. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Additional colors can be specified. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A menu item can be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A menu item or menu can remove element padding, vertically or horizontally. */
+	  fitted: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['horizontally', 'vertically'])]),
+
+	  /** A menu item may include a header or may itself be a header. */
+	  header: propTypes.exports.bool,
+
+	  /** MenuItem can be only icon. */
+	  icon: propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand]),
+
+	  /** MenuItem index inside Menu. */
+	  index: propTypes.exports.number,
+
+	  /** A menu item can be link. */
+	  link: propTypes.exports.bool,
+
+	  /** Internal name of the MenuItem. */
+	  name: propTypes.exports.string,
+
+	  /**
+	   * Called on click. When passed, the component will render as an `a`
+	   * tag by default instead of a `div`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /** A menu item can take left or right position. */
+	  position: propTypes.exports.oneOf(['left', 'right'])
+	} ;
+	MenuItem.create = createShorthandFactory(MenuItem, function (val) {
+	  return {
+	    content: val,
+	    name: val
+	  };
+	});
+
+	/**
+	 * A menu can contain a sub menu.
+	 */
+
+	function MenuMenu(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      position = props.position;
+	  var classes = cx(position, 'menu', className);
+	  var rest = getUnhandledProps(MenuMenu, props);
+	  var ElementType = getElementType(MenuMenu, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MenuMenu.handledProps = ["as", "children", "className", "content", "position"];
+	MenuMenu.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A sub menu can take left or right position. */
+	  position: propTypes.exports.oneOf(['left', 'right'])
+	} ;
+
+	/**
+	 * A menu displays grouped navigation actions.
+	 * @see Dropdown
+	 */
+
+	var Menu = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Menu, _Component);
+
+	  function Menu() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleItemOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e, itemProps) {
+	          var index = itemProps.index;
+
+	          _this.setState({
+	            activeIndex: index
+	          });
+
+	          invoke(predefinedProps, 'onClick', e, itemProps);
+
+	          invoke(_this.props, 'onItemClick', e, itemProps);
+	        }
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Menu.prototype;
+
+	  _proto.renderItems = function renderItems() {
+	    var _this2 = this;
+
+	    var items = this.props.items;
+	    var activeIndex = this.state.activeIndex;
+	    return map(items, function (item, index) {
+	      return MenuItem.create(item, {
+	        defaultProps: {
+	          active: parseInt(activeIndex, 10) === index,
+	          index: index
+	        },
+	        overrideProps: _this2.handleItemOverrides
+	      });
+	    });
+	  };
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        attached = _this$props.attached,
+	        borderless = _this$props.borderless,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        color = _this$props.color,
+	        compact = _this$props.compact,
+	        fixed = _this$props.fixed,
+	        floated = _this$props.floated,
+	        fluid = _this$props.fluid,
+	        icon = _this$props.icon,
+	        inverted = _this$props.inverted,
+	        pagination = _this$props.pagination,
+	        pointing = _this$props.pointing,
+	        secondary = _this$props.secondary,
+	        size = _this$props.size,
+	        stackable = _this$props.stackable,
+	        tabular = _this$props.tabular,
+	        text = _this$props.text,
+	        vertical = _this$props.vertical,
+	        widths = _this$props.widths;
+	    var classes = cx('ui', color, size, useKeyOnly(borderless, 'borderless'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(inverted, 'inverted'), useKeyOnly(pagination, 'pagination'), useKeyOnly(pointing, 'pointing'), useKeyOnly(secondary, 'secondary'), useKeyOnly(stackable, 'stackable'), useKeyOnly(text, 'text'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(floated, 'floated'), useKeyOrValueAndKey(icon, 'icon'), useKeyOrValueAndKey(tabular, 'tabular'), useValueAndKey(fixed, 'fixed'), useWidthProp(widths, 'item'), className, 'menu');
+	    var rest = getUnhandledProps(Menu, this.props);
+	    var ElementType = getElementType(Menu, this.props);
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), isNil$1(children) ? this.renderItems() : children);
+	  };
+
+	  return Menu;
+	}(ModernAutoControlledComponent);
+
+	Menu.handledProps = ["activeIndex", "as", "attached", "borderless", "children", "className", "color", "compact", "defaultActiveIndex", "fixed", "floated", "fluid", "icon", "inverted", "items", "onItemClick", "pagination", "pointing", "secondary", "size", "stackable", "tabular", "text", "vertical", "widths"];
+	Menu.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Index of the currently active item. */
+	  activeIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** A menu may be attached to other content segments. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['top', 'bottom'])]),
+
+	  /** A menu item or menu can have no borders. */
+	  borderless: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Additional colors can be specified. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** A menu can take up only the space necessary to fit its content. */
+	  compact: propTypes.exports.bool,
+
+	  /** Initial activeIndex value. */
+	  defaultActiveIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** A menu can be fixed to a side of its context. */
+	  fixed: propTypes.exports.oneOf(['left', 'right', 'bottom', 'top']),
+
+	  /** A menu can be floated. */
+	  floated: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['right'])]),
+
+	  /** A vertical menu may take the size of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** A menu may have just icons (bool) or labeled icons. */
+	  icon: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['labeled'])]),
+
+	  /** A menu may have its colors inverted to show greater contrast. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Shorthand array of props for Menu. */
+	  items: collectionShorthand,
+
+	  /**
+	   * onClick handler for MenuItem. Mutually exclusive with children.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All item props.
+	   */
+	  onItemClick: every$1([disallow(['children']), propTypes.exports.func]),
+
+	  /** A pagination menu is specially formatted to present links to pages of content. */
+	  pagination: propTypes.exports.bool,
+
+	  /** A menu can point to show its relationship to nearby content. */
+	  pointing: propTypes.exports.bool,
+
+	  /** A menu can adjust its appearance to de-emphasize its contents. */
+	  secondary: propTypes.exports.bool,
+
+	  /** A menu can vary in size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium', 'big')),
+
+	  /** A menu can stack at mobile resolutions. */
+	  stackable: propTypes.exports.bool,
+
+	  /** A menu can be formatted to show tabs of information. */
+	  tabular: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['right'])]),
+
+	  /** A menu can be formatted for text content. */
+	  text: propTypes.exports.bool,
+
+	  /** A vertical menu displays elements vertically. */
+	  vertical: propTypes.exports.bool,
+
+	  /** A menu can have its items divided evenly. */
+	  widths: propTypes.exports.oneOf(WIDTHS)
+	} ;
+	Menu.autoControlledProps = ['activeIndex'];
+	Menu.Header = MenuHeader;
+	Menu.Item = MenuItem;
+	Menu.Menu = MenuMenu;
+	Menu.create = createShorthandFactory(Menu, function (items) {
+	  return {
+	    items: items
+	  };
+	});
+
+	/**
+	 * An item of a pagination.
+	 */
+
+	var PaginationItem = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(PaginationItem, _Component);
+
+	  function PaginationItem() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    _this.handleKeyDown = function (e) {
+	      invoke(_this.props, 'onKeyDown', e, _this.props);
+
+	      if (keyboardKey_1.getCode(e) === keyboardKey_1.Enter) invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    _this.handleOverrides = function () {
+	      return {
+	        onClick: _this.handleClick,
+	        onKeyDown: _this.handleKeyDown
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = PaginationItem.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        type = _this$props.type;
+	    var disabled = this.props.disabled || type === 'ellipsisItem';
+	    return MenuItem.create(this.props, {
+	      defaultProps: {
+	        active: active,
+	        'aria-current': active,
+	        'aria-disabled': disabled,
+	        disabled: disabled,
+	        onClick: this.handleClick,
+	        onKeyDown: this.handleKeyDown,
+	        tabIndex: disabled ? -1 : 0
+	      },
+	      overrideProps: this.handleOverrides
+	    });
+	  };
+
+	  return PaginationItem;
+	}(react.exports.Component);
+
+	PaginationItem.handledProps = ["active", "disabled", "onClick", "onKeyDown", "type"];
+	PaginationItem.propTypes = {
+	  /** A pagination item can be active. */
+	  active: propTypes.exports.bool,
+
+	  /** A pagination item can be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * Called on key down.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onKeyDown: propTypes.exports.func,
+
+	  /** A pagination should have a type. */
+	  type: propTypes.exports.oneOf(['ellipsisItem', 'firstItem', 'prevItem', 'pageItem', 'nextItem', 'lastItem'])
+	} ;
+	PaginationItem.create = createShorthandFactory(PaginationItem, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	({
+	  /** A pagination item can have an aria label. */
+	  'aria-label': propTypes.exports.string,
+
+	  /** Initial activePage value. */
+	  defaultActivePage: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Index of the currently active page. */
+	  activePage: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Number of always visible pages at the beginning and end. */
+	  boundaryRange: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** A pagination can be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A shorthand for PaginationItem. */
+	  ellipsisItem: itemShorthand,
+
+	  /** A shorthand for PaginationItem. */
+	  firstItem: itemShorthand,
+
+	  /** A shorthand for PaginationItem. */
+	  lastItem: itemShorthand,
+
+	  /** A shorthand for PaginationItem. */
+	  nextItem: itemShorthand,
+
+	  /** A shorthand for PaginationItem. */
+	  pageItem: itemShorthand,
+
+	  /** A shorthand for PaginationItem. */
+	  prevItem: itemShorthand,
+
+	  /**
+	   * Called on change of an active page.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onPageChange: propTypes.exports.func,
+
+	  /** Number of always visible pages before and after the current one. */
+	  siblingRange: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Total number of pages. */
+	  totalPages: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]).isRequired
+	}) ;
+
+	/**
+	 * Sets the value at `path` of `object`. If a portion of `path` doesn't exist,
+	 * it's created. Arrays are created for missing index properties while objects
+	 * are created for all other missing properties. Use `_.setWith` to customize
+	 * `path` creation.
+	 *
+	 * **Note:** This method mutates `object`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.7.0
+	 * @category Object
+	 * @param {Object} object The object to modify.
+	 * @param {Array|string} path The path of the property to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+	 *
+	 * _.set(object, 'a[0].b.c', 4);
+	 * console.log(object.a[0].b.c);
+	 * // => 4
+	 *
+	 * _.set(object, ['x', '0', 'y', 'z'], 5);
+	 * console.log(object.x[0].y.z);
+	 * // => 5
+	 */
+
+	function set(object, path, value) {
+	  return object == null ? object : baseSet(object, path, value);
+	}
+
+	/**
+	 * A checkbox allows a user to select a value from a small set of options, often binary.
+	 * @see Form
+	 * @see Radio
+	 */
+
+	var Checkbox = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Checkbox, _Component);
+
+	  function Checkbox() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.inputRef = /*#__PURE__*/react.exports.createRef();
+	    _this.labelRef = /*#__PURE__*/react.exports.createRef();
+
+	    _this.canToggle = function () {
+	      var _this$props = _this.props,
+	          disabled = _this$props.disabled,
+	          radio = _this$props.radio,
+	          readOnly = _this$props.readOnly;
+	      var checked = _this.state.checked;
+	      return !disabled && !readOnly && !(radio && checked);
+	    };
+
+	    _this.computeTabIndex = function () {
+	      var _this$props2 = _this.props,
+	          disabled = _this$props2.disabled,
+	          tabIndex = _this$props2.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      return disabled ? -1 : 0;
+	    };
+
+	    _this.handleClick = function (e) {
+	      var id = _this.props.id;
+	      var _this$state = _this.state,
+	          checked = _this$state.checked,
+	          indeterminate = _this$state.indeterminate;
+
+	      var isInputClick = invoke(_this.inputRef.current, 'contains', e.target);
+
+	      var isLabelClick = invoke(_this.labelRef.current, 'contains', e.target);
+
+	      var isRootClick = !isLabelClick && !isInputClick;
+	      var hasId = !isNil(id);
+	      var isLabelClickAndForwardedToInput = isLabelClick && hasId; // https://github.com/Semantic-Org/Semantic-UI-React/pull/3351
+
+	      if (!isLabelClickAndForwardedToInput) {
+	        invoke(_this.props, 'onClick', e, _extends({}, _this.props, {
+	          checked: !checked,
+	          indeterminate: !!indeterminate
+	        }));
+	      }
+
+	      if (_this.isClickFromMouse) {
+	        _this.isClickFromMouse = false;
+
+	        if (isLabelClick && !hasId) {
+	          _this.handleChange(e);
+	        } // Changes should be triggered for the slider variation
+
+
+	        if (isRootClick) {
+	          _this.handleChange(e);
+	        }
+
+	        if (isLabelClick && hasId) {
+	          // To prevent two clicks from being fired from the component we have to stop the propagation
+	          // from the "input" click: https://github.com/Semantic-Org/Semantic-UI-React/issues/3433
+	          e.stopPropagation();
+	        }
+	      }
+	    };
+
+	    _this.handleChange = function (e) {
+	      var checked = _this.state.checked;
+	      if (!_this.canToggle()) return;
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        checked: !checked,
+	        indeterminate: false
+	      }));
+
+	      _this.setState({
+	        checked: !checked,
+	        indeterminate: false
+	      });
+	    };
+
+	    _this.handleMouseDown = function (e) {
+	      var _this$state2 = _this.state,
+	          checked = _this$state2.checked,
+	          indeterminate = _this$state2.indeterminate;
+
+	      invoke(_this.props, 'onMouseDown', e, _extends({}, _this.props, {
+	        checked: !!checked,
+	        indeterminate: !!indeterminate
+	      }));
+
+	      if (!e.defaultPrevented) {
+	        invoke(_this.inputRef.current, 'focus');
+	      } // Heads up!
+	      // We need to call "preventDefault" to keep element focused.
+
+
+	      e.preventDefault();
+	    };
+
+	    _this.handleMouseUp = function (e) {
+	      var _this$state3 = _this.state,
+	          checked = _this$state3.checked,
+	          indeterminate = _this$state3.indeterminate;
+	      _this.isClickFromMouse = true;
+
+	      invoke(_this.props, 'onMouseUp', e, _extends({}, _this.props, {
+	        checked: !!checked,
+	        indeterminate: !!indeterminate
+	      }));
+	    };
+
+	    _this.setIndeterminate = function () {
+	      var indeterminate = _this.state.indeterminate;
+
+	      set(_this.inputRef, 'current.indeterminate', !!indeterminate);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Checkbox.prototype;
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    this.setIndeterminate();
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate() {
+	    this.setIndeterminate();
+	  };
+
+	  _proto.render = function render() {
+	    var _this$props3 = this.props,
+	        className = _this$props3.className,
+	        disabled = _this$props3.disabled,
+	        label = _this$props3.label,
+	        id = _this$props3.id,
+	        name = _this$props3.name,
+	        radio = _this$props3.radio,
+	        readOnly = _this$props3.readOnly,
+	        slider = _this$props3.slider,
+	        toggle = _this$props3.toggle,
+	        type = _this$props3.type,
+	        value = _this$props3.value;
+	    var _this$state4 = this.state,
+	        checked = _this$state4.checked,
+	        indeterminate = _this$state4.indeterminate;
+	    var classes = cx('ui', useKeyOnly(checked, 'checked'), useKeyOnly(disabled, 'disabled'), useKeyOnly(indeterminate, 'indeterminate'), // auto apply fitted class to compact white space when there is no label
+	    // https://semantic-ui.com/modules/checkbox.html#fitted
+	    useKeyOnly(isNil(label), 'fitted'), useKeyOnly(radio, 'radio'), useKeyOnly(readOnly, 'read-only'), useKeyOnly(slider, 'slider'), useKeyOnly(toggle, 'toggle'), 'checkbox', className);
+	    var unhandled = getUnhandledProps(Checkbox, this.props);
+	    var ElementType = getElementType(Checkbox, this.props);
+
+	    var _partitionHTMLProps = partitionHTMLProps(unhandled, {
+	      htmlProps: htmlInputAttrs
+	    }),
+	        htmlInputProps = _partitionHTMLProps[0],
+	        rest = _partitionHTMLProps[1]; // Heads Up!
+	    // Do not remove empty labels, they are required by SUI CSS
+
+
+	    var labelElement = createHTMLLabel(label, {
+	      defaultProps: {
+	        htmlFor: id
+	      },
+	      autoGenerateKey: false
+	    }) || /*#__PURE__*/React$1.createElement("label", {
+	      htmlFor: id
+	    });
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick,
+	      onChange: this.handleChange,
+	      onMouseDown: this.handleMouseDown,
+	      onMouseUp: this.handleMouseUp
+	    }), /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.inputRef
+	    }, /*#__PURE__*/React$1.createElement("input", _extends({}, htmlInputProps, {
+	      checked: checked,
+	      className: "hidden",
+	      disabled: disabled,
+	      id: id,
+	      name: name,
+	      readOnly: true,
+	      tabIndex: this.computeTabIndex(),
+	      type: type,
+	      value: value
+	    }))), /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.labelRef
+	    }, labelElement));
+	  };
+
+	  return Checkbox;
+	}(ModernAutoControlledComponent);
+
+	Checkbox.handledProps = ["as", "checked", "className", "defaultChecked", "defaultIndeterminate", "disabled", "fitted", "id", "indeterminate", "label", "name", "onChange", "onClick", "onMouseDown", "onMouseUp", "radio", "readOnly", "slider", "tabIndex", "toggle", "type", "value"];
+	Checkbox.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Whether or not checkbox is checked. */
+	  checked: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** The initial value of checked. */
+	  defaultChecked: propTypes.exports.bool,
+
+	  /** Whether or not checkbox is indeterminate. */
+	  defaultIndeterminate: propTypes.exports.bool,
+
+	  /** A checkbox can appear disabled and be unable to change states */
+	  disabled: propTypes.exports.bool,
+
+	  /** Removes padding for a label. Auto applied when there is no label. */
+	  fitted: propTypes.exports.bool,
+
+	  /** A unique identifier. */
+	  id: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Whether or not checkbox is indeterminate. */
+	  indeterminate: propTypes.exports.bool,
+
+	  /** The text of the associated label element. */
+	  label: itemShorthand,
+
+	  /** The HTML input name. */
+	  name: propTypes.exports.string,
+
+	  /**
+	   * Called when the user attempts to change the checked state.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed checked/indeterminate state.
+	   */
+	  onChange: propTypes.exports.func,
+
+	  /**
+	   * Called when the checkbox or label is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and current checked/indeterminate state.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * Called when the user presses down on the mouse.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and current checked/indeterminate state.
+	   */
+	  onMouseDown: propTypes.exports.func,
+
+	  /**
+	   * Called when the user releases the mouse.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and current checked/indeterminate state.
+	   */
+	  onMouseUp: propTypes.exports.func,
+
+	  /** Format as a radio element. This means it is an exclusive option. */
+	  radio: every$1([propTypes.exports.bool, disallow(['slider', 'toggle'])]),
+
+	  /** A checkbox can be read-only and unable to change states. */
+	  readOnly: propTypes.exports.bool,
+
+	  /** Format to emphasize the current selection state. */
+	  slider: every$1([propTypes.exports.bool, disallow(['radio', 'toggle'])]),
+
+	  /** A checkbox can receive focus. */
+	  tabIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Format to show an on or off choice. */
+	  toggle: every$1([propTypes.exports.bool, disallow(['radio', 'slider'])]),
+
+	  /** HTML input type, either checkbox or radio. */
+	  type: propTypes.exports.oneOf(['checkbox', 'radio']),
+
+	  /** The HTML input value. */
+	  value: propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.number])
+	} ;
+	Checkbox.defaultProps = {
+	  type: 'checkbox'
+	};
+	Checkbox.autoControlledProps = ['checked', 'indeterminate'];
+
+	/**
+	 * A Radio is sugar for <Checkbox radio />.
+	 * Useful for exclusive groups of sliders or toggles.
+	 * @see Checkbox
+	 * @see Form
+	 */
+
+	function Radio(props) {
+	  var slider = props.slider,
+	      toggle = props.toggle,
+	      type = props.type;
+	  var rest = getUnhandledProps(Radio, props); // const ElementType = getElementType(Radio, props)
+	  // radio, slider, toggle are exclusive
+	  // use an undefined radio if slider or toggle are present
+
+	  var radio = !(slider || toggle) || undefined;
+	  return /*#__PURE__*/React$1.createElement(Checkbox, _extends({}, rest, {
+	    type: type,
+	    radio: radio,
+	    slider: slider,
+	    toggle: toggle
+	  }));
+	}
+
+	Radio.handledProps = ["slider", "toggle", "type"];
+	Radio.propTypes = {
+	  /** Format to emphasize the current selection state. */
+	  slider: Checkbox.propTypes.slider,
+
+	  /** Format to show an on or off choice. */
+	  toggle: Checkbox.propTypes.toggle,
+
+	  /** HTML input type, either checkbox or radio. */
+	  type: Checkbox.propTypes.type
+	} ;
+	Radio.defaultProps = {
+	  type: 'radio'
+	};
+
+	/**
+	 * Creates an array with all falsey values removed. The values `false`, `null`,
+	 * `0`, `""`, `undefined`, and `NaN` are falsey.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to compact.
+	 * @returns {Array} Returns the new array of filtered values.
+	 * @example
+	 *
+	 * _.compact([0, 1, false, 2, '', 3]);
+	 * // => [1, 2, 3]
+	 */
+	function compact(array) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length,
+	      resIndex = 0,
+	      result = [];
+
+	  while (++index < length) {
+	    var value = array[index];
+
+	    if (value) {
+	      result[resIndex++] = value;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * A specialized version of `_.every` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if all elements pass the predicate check,
+	 *  else `false`.
+	 */
+	function arrayEvery(array, predicate) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  while (++index < length) {
+	    if (!predicate(array[index], index, array)) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	}
+
+	/**
+	 * The base implementation of `_.every` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if all elements pass the predicate check,
+	 *  else `false`
+	 */
+
+	function baseEvery(collection, predicate) {
+	  var result = true;
+	  baseEach(collection, function (value, index, collection) {
+	    result = !!predicate(value, index, collection);
+	    return result;
+	  });
+	  return result;
+	}
+
+	/**
+	 * Checks if `predicate` returns truthy for **all** elements of `collection`.
+	 * Iteration is stopped once `predicate` returns falsey. The predicate is
+	 * invoked with three arguments: (value, index|key, collection).
+	 *
+	 * **Note:** This method returns `true` for
+	 * [empty collections](https://en.wikipedia.org/wiki/Empty_set) because
+	 * [everything is true](https://en.wikipedia.org/wiki/Vacuous_truth) of
+	 * elements of empty collections.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {boolean} Returns `true` if all elements pass the predicate check,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.every([true, 1, null, 'yes'], Boolean);
+	 * // => false
+	 *
+	 * var users = [
+	 *   { 'user': 'barney', 'age': 36, 'active': false },
+	 *   { 'user': 'fred',   'age': 40, 'active': false }
+	 * ];
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.every(users, { 'user': 'barney', 'active': false });
+	 * // => false
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.every(users, ['active', false]);
+	 * // => true
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.every(users, 'active');
+	 * // => false
+	 */
+
+	function every(collection, predicate, guard) {
+	  var func = isArray(collection) ? arrayEvery : baseEvery;
+
+	  if (guard && isIterateeCall(collection, predicate, guard)) {
+	    predicate = undefined;
+	  }
+
+	  return func(collection, baseIteratee(predicate));
+	}
+
+	/**
+	 * Creates a slice of `array` with `n` elements dropped from the end.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @param {number} [n=1] The number of elements to drop.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {Array} Returns the slice of `array`.
+	 * @example
+	 *
+	 * _.dropRight([1, 2, 3]);
+	 * // => [1, 2]
+	 *
+	 * _.dropRight([1, 2, 3], 2);
+	 * // => [1]
+	 *
+	 * _.dropRight([1, 2, 3], 5);
+	 * // => []
+	 *
+	 * _.dropRight([1, 2, 3], 0);
+	 * // => [1, 2, 3]
+	 */
+
+	function dropRight(array, n, guard) {
+	  var length = array == null ? 0 : array.length;
+
+	  if (!length) {
+	    return [];
+	  }
+
+	  n = guard || n === undefined ? 1 : toInteger(n);
+	  n = length - n;
+	  return baseSlice(array, 0, n < 0 ? 0 : n);
+	}
+
+	/**
+	 * Gets the size of an ASCII `string`.
+	 *
+	 * @private
+	 * @param {string} string The string inspect.
+	 * @returns {number} Returns the string size.
+	 */
+
+	var asciiSize = baseProperty('length');
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange = '\\ud800-\\udfff',
+	    rsComboMarksRange = '\\u0300-\\u036f',
+	    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange = '\\u20d0-\\u20ff',
+	    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
+	    rsVarRange = '\\ufe0e\\ufe0f';
+	/** Used to compose unicode capture groups. */
+
+	var rsAstral = '[' + rsAstralRange + ']',
+	    rsCombo = '[' + rsComboRange + ']',
+	    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+	    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+	    rsNonAstral = '[^' + rsAstralRange + ']',
+	    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+	    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+	    rsZWJ = '\\u200d';
+	/** Used to compose unicode regexes. */
+
+	var reOptMod = rsModifier + '?',
+	    rsOptVar = '[' + rsVarRange + ']?',
+	    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+	    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+	    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+	/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+
+	var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+	/**
+	 * Gets the size of a Unicode `string`.
+	 *
+	 * @private
+	 * @param {string} string The string inspect.
+	 * @returns {number} Returns the string size.
+	 */
+
+	function unicodeSize(string) {
+	  var result = reUnicode.lastIndex = 0;
+
+	  while (reUnicode.test(string)) {
+	    ++result;
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Gets the number of symbols in `string`.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {number} Returns the string size.
+	 */
+
+	function stringSize(string) {
+	  return hasUnicode(string) ? unicodeSize(string) : asciiSize(string);
+	}
+
+	/** `Object#toString` result references. */
+
+	var mapTag = '[object Map]',
+	    setTag = '[object Set]';
+	/**
+	 * Gets the size of `collection` by returning its length for array-like
+	 * values or the number of own enumerable string keyed properties for objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to inspect.
+	 * @returns {number} Returns the collection size.
+	 * @example
+	 *
+	 * _.size([1, 2, 3]);
+	 * // => 3
+	 *
+	 * _.size({ 'a': 1, 'b': 2 });
+	 * // => 2
+	 *
+	 * _.size('pebbles');
+	 * // => 7
+	 */
+
+	function size(collection) {
+	  if (collection == null) {
+	    return 0;
+	  }
+
+	  if (isArrayLike(collection)) {
+	    return isString(collection) ? stringSize(collection) : collection.length;
+	  }
+
+	  var tag = getTag$1(collection);
+
+	  if (tag == mapTag || tag == setTag) {
+	    return collection.size;
+	  }
+
+	  return baseKeys(collection).length;
+	}
+
+	/**
+	 * Creates an array of unique values, in order, from all given arrays using
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {...Array} [arrays] The arrays to inspect.
+	 * @returns {Array} Returns the new array of combined values.
+	 * @example
+	 *
+	 * _.union([2], [1, 2]);
+	 * // => [2, 1]
+	 */
+
+	var union = baseRest(function (arrays) {
+	  return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true));
+	});
+
+	var names = ['ad', 'andorra', 'ae', 'united arab emirates', 'uae', 'af', 'afghanistan', 'ag', 'antigua', 'ai', 'anguilla', 'al', 'albania', 'am', 'armenia', 'an', 'netherlands antilles', 'ao', 'angola', 'ar', 'argentina', 'as', 'american samoa', 'at', 'austria', 'au', 'australia', 'aw', 'aruba', 'ax', 'aland islands', 'az', 'azerbaijan', 'ba', 'bosnia', 'bb', 'barbados', 'bd', 'bangladesh', 'be', 'belgium', 'bf', 'burkina faso', 'bg', 'bulgaria', 'bh', 'bahrain', 'bi', 'burundi', 'bj', 'benin', 'bm', 'bermuda', 'bn', 'brunei', 'bo', 'bolivia', 'br', 'brazil', 'bs', 'bahamas', 'bt', 'bhutan', 'bv', 'bouvet island', 'bw', 'botswana', 'by', 'belarus', 'bz', 'belize', 'ca', 'canada', 'cc', 'cocos islands', 'cd', 'congo', 'cf', 'central african republic', 'cg', 'congo brazzaville', 'ch', 'switzerland', 'ci', 'cote divoire', 'ck', 'cook islands', 'cl', 'chile', 'cm', 'cameroon', 'cn', 'china', 'co', 'colombia', 'cr', 'costa rica', 'cs', 'cu', 'cuba', 'cv', 'cape verde', 'cx', 'christmas island', 'cy', 'cyprus', 'cz', 'czech republic', 'de', 'germany', 'dj', 'djibouti', 'dk', 'denmark', 'dm', 'dominica', 'do', 'dominican republic', 'dz', 'algeria', 'ec', 'ecuador', 'england', 'gb eng', 'ee', 'estonia', 'eg', 'egypt', 'eh', 'western sahara', 'er', 'eritrea', 'es', 'spain', 'et', 'ethiopia', 'eu', 'european union', 'fi', 'finland', 'fj', 'fiji', 'fk', 'falkland islands', 'fm', 'micronesia', 'fo', 'faroe islands', 'fr', 'france', 'ga', 'gabon', 'gb', 'uk', 'united kingdom', 'gd', 'grenada', 'ge', 'georgia', 'gf', 'french guiana', 'gh', 'ghana', 'gi', 'gibraltar', 'gl', 'greenland', 'gm', 'gambia', 'gn', 'guinea', 'gp', 'guadeloupe', 'gq', 'equatorial guinea', 'gr', 'greece', 'gs', 'sandwich islands', 'gt', 'guatemala', 'gu', 'guam', 'gw', 'guinea-bissau', 'gy', 'guyana', 'hk', 'hong kong', 'hm', 'heard island', 'hn', 'honduras', 'hr', 'croatia', 'ht', 'haiti', 'hu', 'hungary', 'id', 'indonesia', 'ie', 'ireland', 'il', 'israel', 'in', 'india', 'io', 'indian ocean territory', 'iq', 'iraq', 'ir', 'iran', 'is', 'iceland', 'it', 'italy', 'jm', 'jamaica', 'jo', 'jordan', 'jp', 'japan', 'ke', 'kenya', 'kg', 'kyrgyzstan', 'kh', 'cambodia', 'ki', 'kiribati', 'km', 'comoros', 'kn', 'saint kitts and nevis', 'kp', 'north korea', 'kr', 'south korea', 'kw', 'kuwait', 'ky', 'cayman islands', 'kz', 'kazakhstan', 'la', 'laos', 'lb', 'lebanon', 'lc', 'saint lucia', 'li', 'liechtenstein', 'lk', 'sri lanka', 'lr', 'liberia', 'ls', 'lesotho', 'lt', 'lithuania', 'lu', 'luxembourg', 'lv', 'latvia', 'ly', 'libya', 'ma', 'morocco', 'mc', 'monaco', 'md', 'moldova', 'me', 'montenegro', 'mg', 'madagascar', 'mh', 'marshall islands', 'mk', 'macedonia', 'ml', 'mali', 'mm', 'myanmar', 'burma', 'mn', 'mongolia', 'mo', 'macau', 'mp', 'northern mariana islands', 'mq', 'martinique', 'mr', 'mauritania', 'ms', 'montserrat', 'mt', 'malta', 'mu', 'mauritius', 'mv', 'maldives', 'mw', 'malawi', 'mx', 'mexico', 'my', 'malaysia', 'mz', 'mozambique', 'na', 'namibia', 'nc', 'new caledonia', 'ne', 'niger', 'nf', 'norfolk island', 'ng', 'nigeria', 'ni', 'nicaragua', 'nl', 'netherlands', 'no', 'norway', 'np', 'nepal', 'nr', 'nauru', 'nu', 'niue', 'nz', 'new zealand', 'om', 'oman', 'pa', 'panama', 'pe', 'peru', 'pf', 'french polynesia', 'pg', 'new guinea', 'ph', 'philippines', 'pk', 'pakistan', 'pl', 'poland', 'pm', 'saint pierre', 'pn', 'pitcairn islands', 'pr', 'puerto rico', 'ps', 'palestine', 'pt', 'portugal', 'pw', 'palau', 'py', 'paraguay', 'qa', 'qatar', 're', 'reunion', 'ro', 'romania', 'rs', 'serbia', 'ru', 'russia', 'rw', 'rwanda', 'sa', 'saudi arabia', 'sb', 'solomon islands', 'sc', 'seychelles', 'gb sct', 'scotland', 'sd', 'sudan', 'se', 'sweden', 'sg', 'singapore', 'sh', 'saint helena', 'si', 'slovenia', 'sj', 'svalbard', 'jan mayen', 'sk', 'slovakia', 'sl', 'sierra leone', 'sm', 'san marino', 'sn', 'senegal', 'so', 'somalia', 'sr', 'suriname', 'st', 'sao tome', 'sv', 'el salvador', 'sy', 'syria', 'sz', 'swaziland', 'tc', 'caicos islands', 'td', 'chad', 'tf', 'french territories', 'tg', 'togo', 'th', 'thailand', 'tj', 'tajikistan', 'tk', 'tokelau', 'tl', 'timorleste', 'tm', 'turkmenistan', 'tn', 'tunisia', 'to', 'tonga', 'tr', 'turkey', 'tt', 'trinidad', 'tv', 'tuvalu', 'tw', 'taiwan', 'tz', 'tanzania', 'ua', 'ukraine', 'ug', 'uganda', 'um', 'us minor islands', 'us', 'america', 'united states', 'uy', 'uruguay', 'uz', 'uzbekistan', 'va', 'vatican city', 'vc', 'saint vincent', 've', 'venezuela', 'vg', 'british virgin islands', 'vi', 'us virgin islands', 'vn', 'vietnam', 'vu', 'vanuatu', 'gb wls', 'wales', 'wf', 'wallis and futuna', 'ws', 'samoa', 'ye', 'yemen', 'yt', 'mayotte', 'za', 'south africa', 'zm', 'zambia', 'zw', 'zimbabwe'];
+	/**
+	 * A flag is is used to represent a political state.
+	 */
+
+	var Flag = /*#__PURE__*/function (_PureComponent) {
+	  _inheritsLoose(Flag, _PureComponent);
+
+	  function Flag() {
+	    return _PureComponent.apply(this, arguments) || this;
+	  }
+
+	  var _proto = Flag.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        className = _this$props.className,
+	        name = _this$props.name;
+	    var classes = cx(name, 'flag', className);
+	    var rest = getUnhandledProps(Flag, this.props);
+	    var ElementType = getElementType(Flag, this.props);
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }));
+	  };
+
+	  return Flag;
+	}(react.exports.PureComponent);
+
+	Flag.handledProps = ["as", "className", "name"];
+	Flag.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Flag name, can use the two digit country code, the full name, or a common alias. */
+	  name: suggest(names)
+	} ;
+	Flag.defaultProps = {
+	  as: 'i'
+	};
+	Flag.create = createShorthandFactory(Flag, function (value) {
+	  return {
+	    name: value
+	  };
+	});
+
+	/**
+	 * A dropdown menu can contain dividers to separate related content.
+	 */
+
+	function DropdownDivider(props) {
+	  var className = props.className;
+	  var classes = cx('divider', className);
+	  var rest = getUnhandledProps(DropdownDivider, props);
+	  var ElementType = getElementType(DropdownDivider, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }));
+	}
+
+	DropdownDivider.handledProps = ["as", "className"];
+	DropdownDivider.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string
+	} ;
+
+	/**
+	 * An item sub-component for Dropdown component.
+	 */
+
+	var DropdownItem = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(DropdownItem, _Component);
+
+	  function DropdownItem() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = DropdownItem.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        disabled = _this$props.disabled,
+	        description = _this$props.description,
+	        flag = _this$props.flag,
+	        icon = _this$props.icon,
+	        image = _this$props.image,
+	        label = _this$props.label,
+	        selected = _this$props.selected,
+	        text = _this$props.text;
+	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(selected, 'selected'), 'item', className); // add default dropdown icon if item contains another menu
+
+	    var iconName = isNil(icon) ? someByType(children, 'DropdownMenu') && 'dropdown' : icon;
+	    var rest = getUnhandledProps(DropdownItem, this.props);
+	    var ElementType = getElementType(DropdownItem, this.props);
+	    var ariaOptions = {
+	      role: 'option',
+	      'aria-disabled': disabled,
+	      'aria-checked': active,
+	      'aria-selected': selected
+	    };
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	        className: classes,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    var flagElement = Flag.create(flag, {
+	      autoGenerateKey: false
+	    });
+	    var iconElement = Icon.create(iconName, {
+	      autoGenerateKey: false
+	    });
+	    var imageElement = Image.create(image, {
+	      autoGenerateKey: false
+	    });
+	    var labelElement = Label.create(label, {
+	      autoGenerateKey: false
+	    });
+	    var descriptionElement = createShorthand('span', function (val) {
+	      return {
+	        children: val
+	      };
+	    }, description, {
+	      defaultProps: {
+	        className: 'description'
+	      },
+	      autoGenerateKey: false
+	    });
+	    var textElement = createShorthand('span', function (val) {
+	      return {
+	        children: val
+	      };
+	    }, isNil$1(content) ? text : content, {
+	      defaultProps: {
+	        className: 'text'
+	      },
+	      autoGenerateKey: false
+	    });
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }), imageElement, iconElement, flagElement, labelElement, descriptionElement, textElement);
+	  };
+
+	  return DropdownItem;
+	}(react.exports.Component);
+
+	DropdownItem.handledProps = ["active", "as", "children", "className", "content", "description", "disabled", "flag", "icon", "image", "label", "onClick", "selected", "text", "value"];
+	DropdownItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Style as the currently chosen item. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Additional text with less emphasis. */
+	  description: itemShorthand,
+
+	  /** A dropdown item can be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Shorthand for Flag. */
+	  flag: itemShorthand,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand,
+
+	  /** Shorthand for Image. */
+	  image: itemShorthand,
+
+	  /** Shorthand for Label. */
+	  label: itemShorthand,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * The item currently selected by keyboard shortcut.
+	   * This is not the active item.
+	   */
+	  selected: propTypes.exports.bool,
+
+	  /** Display text. */
+	  text: contentShorthand,
+
+	  /** Stored value. */
+	  value: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.number, propTypes.exports.string])
+	} ;
+	DropdownItem.create = createShorthandFactory(DropdownItem, function (opts) {
+	  return opts;
+	});
+
+	/**
+	 * A dropdown menu can contain a header.
+	 */
+
+	function DropdownHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      icon = props.icon;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(DropdownHeader, props);
+	  var ElementType = getElementType(DropdownHeader, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), Icon.create(icon, {
+	    autoGenerateKey: false
+	  }), content);
+	}
+
+	DropdownHeader.handledProps = ["as", "children", "className", "content", "icon"];
+	DropdownHeader.propTypes = {
+	  /** An element type to render as (string or function) */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand
+	} ;
+	DropdownHeader.create = createShorthandFactory(DropdownHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A dropdown menu can contain a menu.
+	 */
+
+	function DropdownMenu(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      direction = props.direction,
+	      open = props.open,
+	      scrolling = props.scrolling;
+	  var classes = cx(direction, useKeyOnly(open, 'visible'), useKeyOnly(scrolling, 'scrolling'), 'menu transition', className);
+	  var rest = getUnhandledProps(DropdownMenu, props);
+	  var ElementType = getElementType(DropdownMenu, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	DropdownMenu.handledProps = ["as", "children", "className", "content", "direction", "open", "scrolling"];
+	DropdownMenu.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A dropdown menu can open to the left or to the right. */
+	  direction: propTypes.exports.oneOf(['left', 'right']),
+
+	  /** Whether or not the dropdown menu is displayed. */
+	  open: propTypes.exports.bool,
+
+	  /** A dropdown menu can scroll. */
+	  scrolling: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A search item sub-component for Dropdown component.
+	 */
+
+	var DropdownSearchInput = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(DropdownSearchInput, _Component);
+
+	  function DropdownSearchInput() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleChange = function (e) {
+	      var value = get(e, 'target.value');
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = DropdownSearchInput.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        autoComplete = _this$props.autoComplete,
+	        className = _this$props.className,
+	        tabIndex = _this$props.tabIndex,
+	        type = _this$props.type,
+	        value = _this$props.value;
+	    var classes = cx('search', className);
+	    var rest = getUnhandledProps(DropdownSearchInput, this.props);
+	    return /*#__PURE__*/React$1.createElement("input", _extends({}, rest, {
+	      "aria-autocomplete": "list",
+	      autoComplete: autoComplete,
+	      className: classes,
+	      onChange: this.handleChange,
+	      tabIndex: tabIndex,
+	      type: type,
+	      value: value
+	    }));
+	  };
+
+	  return DropdownSearchInput;
+	}(react.exports.Component);
+
+	DropdownSearchInput.handledProps = ["as", "autoComplete", "className", "tabIndex", "type", "value"];
+	DropdownSearchInput.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** An input can have the auto complete. */
+	  autoComplete: propTypes.exports.string,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** An input can receive focus. */
+	  tabIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** The HTML input type. */
+	  type: propTypes.exports.string,
+
+	  /** Stored value. */
+	  value: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])
+	} ;
+	DropdownSearchInput.defaultProps = {
+	  autoComplete: 'off',
+	  type: 'text'
+	};
+	DropdownSearchInput.create = createShorthandFactory(DropdownSearchInput, function (type) {
+	  return {
+	    type: type
+	  };
+	});
+
+	/**
+	 * A dropdown contains a selected value.
+	 */
+
+	function DropdownText(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('divider', className);
+	  var rest = getUnhandledProps(DropdownText, props);
+	  var ElementType = getElementType(DropdownText, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({
+	    "aria-atomic": true,
+	    "aria-live": "polite",
+	    role: "alert"
+	  }, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	DropdownText.handledProps = ["as", "children", "className", "content"];
+	DropdownText.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	DropdownText.create = createShorthandFactory(DropdownText, function (val) {
+	  return {
+	    content: val
+	  };
+	});
+
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+	 */
+
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
+	    reHasRegExpChar = RegExp(reRegExpChar.source);
+	/**
+	 * Escapes the `RegExp` special characters "^", "$", "\", ".", "*", "+",
+	 * "?", "(", ")", "[", "]", "{", "}", and "|" in `string`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to escape.
+	 * @returns {string} Returns the escaped string.
+	 * @example
+	 *
+	 * _.escapeRegExp('[lodash](https://lodash.com/)');
+	 * // => '\[lodash\]\(https://lodash\.com/\)'
+	 */
+
+	function escapeRegExp(string) {
+	  string = toString(string);
+	  return string && reHasRegExpChar.test(string) ? string.replace(reRegExpChar, '\\$&') : string;
+	}
+
+	// that hasn't yet been persisted to state.
+
+	function getMenuOptions(config) {
+	  var additionLabel = config.additionLabel,
+	      additionPosition = config.additionPosition,
+	      allowAdditions = config.allowAdditions,
+	      deburr$1 = config.deburr,
+	      multiple = config.multiple,
+	      options = config.options,
+	      search = config.search,
+	      searchQuery = config.searchQuery,
+	      value = config.value;
+	  var filteredOptions = options; // filter out active options
+
+	  if (multiple) {
+	    filteredOptions = filter(filteredOptions, function (opt) {
+	      return !includes(value, opt.value);
+	    });
+	  } // filter by search query
+
+
+	  if (search && searchQuery) {
+	    if (isFunction(search)) {
+	      filteredOptions = search(filteredOptions, searchQuery);
+	    } else {
+	      // remove diacritics on search input and options, if deburr prop is set
+	      var strippedQuery = deburr$1 ? deburr(searchQuery) : searchQuery;
+	      var re = new RegExp(escapeRegExp(strippedQuery), 'i');
+	      filteredOptions = filter(filteredOptions, function (opt) {
+	        return re.test(deburr$1 ? deburr(opt.text) : opt.text);
+	      });
+	    }
+	  } // insert the "add" item
+
+
+	  if (allowAdditions && search && searchQuery && !some(filteredOptions, {
+	    text: searchQuery
+	  })) {
+	    var additionLabelElement = /*#__PURE__*/ /*#__PURE__*/React$1.isValidElement(additionLabel) ? /*#__PURE__*/React$1.cloneElement(additionLabel, {
+	      key: 'addition-label'
+	    }) : additionLabel || '';
+	    var addItem = {
+	      key: 'addition',
+	      // by using an array, we can pass multiple elements, but when doing so
+	      // we must specify a `key` for React to know which one is which
+	      text: [additionLabelElement, /*#__PURE__*/React$1.createElement("b", {
+	        key: "addition-query"
+	      }, searchQuery)],
+	      value: searchQuery,
+	      className: 'addition',
+	      'data-additional': true
+	    };
+	    if (additionPosition === 'top') filteredOptions.unshift(addItem);else filteredOptions.push(addItem);
+	  }
+
+	  return filteredOptions;
+	}
+	getMenuOptions.handledProps = [];
+
+	function getSelectedIndex(config) {
+	  var additionLabel = config.additionLabel,
+	      additionPosition = config.additionPosition,
+	      allowAdditions = config.allowAdditions,
+	      deburr = config.deburr,
+	      multiple = config.multiple,
+	      options = config.options,
+	      search = config.search,
+	      searchQuery = config.searchQuery,
+	      selectedIndex = config.selectedIndex,
+	      value = config.value;
+	  var menuOptions = getMenuOptions({
+	    value: value,
+	    options: options,
+	    searchQuery: searchQuery,
+	    additionLabel: additionLabel,
+	    additionPosition: additionPosition,
+	    allowAdditions: allowAdditions,
+	    deburr: deburr,
+	    multiple: multiple,
+	    search: search
+	  });
+
+	  var enabledIndexes = reduce(menuOptions, function (memo, item, index) {
+	    if (!item.disabled) memo.push(index);
+	    return memo;
+	  }, []);
+
+	  var newSelectedIndex; // update the selected index
+
+	  if (!selectedIndex || selectedIndex < 0) {
+	    var firstIndex = enabledIndexes[0]; // Select the currently active item, if none, use the first item.
+	    // Multiple selects remove active items from the list,
+	    // their initial selected index should be 0.
+
+	    newSelectedIndex = multiple ? firstIndex : findIndex(menuOptions, ['value', value]) || enabledIndexes[0];
+	  } else if (multiple) {
+	    newSelectedIndex = find(enabledIndexes, function (index) {
+	      return index >= selectedIndex;
+	    }); // multiple selects remove options from the menu as they are made active
+	    // keep the selected index within range of the remaining items
+
+	    if (selectedIndex >= menuOptions.length - 1) {
+	      newSelectedIndex = enabledIndexes[enabledIndexes.length - 1];
+	    }
+	  } else {
+	    var activeIndex = findIndex(menuOptions, ['value', value]); // regular selects can only have one active item
+	    // set the selected index to the currently active item
+
+
+	    newSelectedIndex = includes(enabledIndexes, activeIndex) ? activeIndex : undefined;
+	  }
+
+	  if (!newSelectedIndex || newSelectedIndex < 0) {
+	    newSelectedIndex = enabledIndexes[0];
+	  }
+
+	  return newSelectedIndex;
+	}
+
+	var getKeyOrValue = function getKeyOrValue(key, value) {
+	  return isNil(key) ? value : key;
+	};
+
+	var getKeyAndValues = function getKeyAndValues(options) {
+	  return options ? options.map(function (option) {
+	    return pick(option, ['key', 'value']);
+	  }) : options;
+	};
+
+	function renderItemContent(item) {
+	  var flag = item.flag,
+	      image = item.image,
+	      text = item.text; // TODO: remove this in v3
+	  // This maintains compatibility with Shorthand API in v1 as this might be called in "Label.create()"
+
+	  if (isFunction(text)) {
+	    return text;
+	  }
+
+	  return {
+	    content: /*#__PURE__*/React$1.createElement(React$1.Fragment, null, Flag.create(flag), Image.create(image), text)
+	  };
+	}
+	/**
+	 * A dropdown allows a user to select a value from a series of options.
+	 * @see Form
+	 * @see Select
+	 * @see Menu
+	 */
+
+
+	var Dropdown = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Dropdown, _Component);
+
+	  function Dropdown() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.searchRef = /*#__PURE__*/react.exports.createRef();
+	    _this.sizerRef = /*#__PURE__*/react.exports.createRef();
+	    _this.ref = /*#__PURE__*/react.exports.createRef();
+
+	    _this.handleChange = function (e, value) {
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    _this.closeOnChange = function (e) {
+	      var _this$props = _this.props,
+	          closeOnChange = _this$props.closeOnChange,
+	          multiple = _this$props.multiple;
+	      var shouldClose = isUndefined(closeOnChange) ? !multiple : closeOnChange;
+
+	      if (shouldClose) {
+	        _this.close(e, noop);
+	      }
+	    };
+
+	    _this.closeOnEscape = function (e) {
+	      if (!_this.props.closeOnEscape) return;
+	      if (keyboardKey_1.getCode(e) !== keyboardKey_1.Escape) return;
+	      e.preventDefault();
+
+	      _this.close(e);
+	    };
+
+	    _this.moveSelectionOnKeyDown = function (e) {
+	      var _moves;
+
+	      var _this$props2 = _this.props,
+	          multiple = _this$props2.multiple,
+	          selectOnNavigation = _this$props2.selectOnNavigation;
+	      var open = _this.state.open;
+
+	      if (!open) {
+	        return;
+	      }
+
+	      var moves = (_moves = {}, _moves[keyboardKey_1.ArrowDown] = 1, _moves[keyboardKey_1.ArrowUp] = -1, _moves);
+	      var move = moves[keyboardKey_1.getCode(e)];
+
+	      if (move === undefined) {
+	        return;
+	      }
+
+	      e.preventDefault();
+
+	      var nextIndex = _this.getSelectedIndexAfterMove(move);
+
+	      if (!multiple && selectOnNavigation) {
+	        _this.makeSelectedItemActive(e, nextIndex);
+	      }
+
+	      _this.setState({
+	        selectedIndex: nextIndex
+	      });
+	    };
+
+	    _this.openOnSpace = function (e) {
+	      var _e$target, _e$target2, _e$target3;
+
+	      var shouldHandleEvent = _this.state.focus && !_this.state.open && keyboardKey_1.getCode(e) === keyboardKey_1.Spacebar;
+	      var shouldPreventDefault = ((_e$target = e.target) == null ? void 0 : _e$target.tagName) !== 'INPUT' && ((_e$target2 = e.target) == null ? void 0 : _e$target2.tagName) !== 'TEXTAREA' && ((_e$target3 = e.target) == null ? void 0 : _e$target3.isContentEditable) !== true;
+
+	      if (shouldHandleEvent) {
+	        if (shouldPreventDefault) {
+	          e.preventDefault();
+	        }
+
+	        _this.open(e);
+	      }
+	    };
+
+	    _this.openOnArrow = function (e) {
+	      var _this$state = _this.state,
+	          focus = _this$state.focus,
+	          open = _this$state.open;
+
+	      if (focus && !open) {
+	        var code = keyboardKey_1.getCode(e);
+
+	        if (code === keyboardKey_1.ArrowDown || code === keyboardKey_1.ArrowUp) {
+	          e.preventDefault();
+
+	          _this.open(e);
+	        }
+	      }
+	    };
+
+	    _this.makeSelectedItemActive = function (e, selectedIndex) {
+	      var _this$state2 = _this.state,
+	          open = _this$state2.open,
+	          value = _this$state2.value;
+	      var multiple = _this.props.multiple;
+
+	      var item = _this.getSelectedItem(selectedIndex);
+
+	      var selectedValue = get(item, 'value');
+
+	      var disabled = get(item, 'disabled'); // prevent selecting null if there was no selected item value
+	      // prevent selecting duplicate items when the dropdown is closed
+	      // prevent selecting disabled items
+
+
+	      if (isNil(selectedValue) || !open || disabled) {
+	        return value;
+	      } // state value may be undefined
+
+
+	      var newValue = multiple ? union(value, [selectedValue]) : selectedValue;
+	      var valueHasChanged = multiple ? !!difference(newValue, value).length : newValue !== value;
+
+	      if (valueHasChanged) {
+	        // notify the onChange prop that the user is trying to change value
+	        _this.setState({
+	          value: newValue
+	        });
+
+	        _this.handleChange(e, newValue); // Heads up! This event handler should be called after `onChange`
+	        // Notify the onAddItem prop if this is a new value
+
+
+	        if (item['data-additional']) {
+	          invoke(_this.props, 'onAddItem', e, _extends({}, _this.props, {
+	            value: selectedValue
+	          }));
+	        }
+	      }
+
+	      return value;
+	    };
+
+	    _this.selectItemOnEnter = function (e) {
+	      var search = _this.props.search;
+	      var _this$state3 = _this.state,
+	          open = _this$state3.open,
+	          selectedIndex = _this$state3.selectedIndex;
+
+	      if (!open) {
+	        return;
+	      }
+
+	      var shouldSelect = keyboardKey_1.getCode(e) === keyboardKey_1.Enter || // https://github.com/Semantic-Org/Semantic-UI-React/pull/3766
+	      !search && keyboardKey_1.getCode(e) === keyboardKey_1.Spacebar;
+
+	      if (!shouldSelect) {
+	        return;
+	      }
+
+	      e.preventDefault();
+
+	      var optionSize = size(getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      }));
+
+	      if (search && optionSize === 0) {
+	        return;
+	      }
+
+	      var nextValue = _this.makeSelectedItemActive(e, selectedIndex); // This is required as selected value may be the same
+
+
+	      _this.setState({
+	        selectedIndex: getSelectedIndex({
+	          additionLabel: _this.props.additionLabel,
+	          additionPosition: _this.props.additionPosition,
+	          allowAdditions: _this.props.allowAdditions,
+	          deburr: _this.props.deburr,
+	          multiple: _this.props.multiple,
+	          search: _this.props.search,
+	          selectedIndex: selectedIndex,
+	          value: nextValue,
+	          options: _this.props.options,
+	          searchQuery: ''
+	        })
+	      });
+
+	      _this.closeOnChange(e);
+
+	      _this.clearSearchQuery();
+
+	      if (search) {
+	        invoke(_this.searchRef.current, 'focus');
+	      }
+	    };
+
+	    _this.removeItemOnBackspace = function (e) {
+	      var _this$props3 = _this.props,
+	          multiple = _this$props3.multiple,
+	          search = _this$props3.search;
+	      var _this$state4 = _this.state,
+	          searchQuery = _this$state4.searchQuery,
+	          value = _this$state4.value;
+	      if (keyboardKey_1.getCode(e) !== keyboardKey_1.Backspace) return;
+	      if (searchQuery || !search || !multiple || isEmpty(value)) return;
+	      e.preventDefault(); // remove most recent value
+
+	      var newValue = dropRight(value);
+
+	      _this.setState({
+	        value: newValue
+	      });
+
+	      _this.handleChange(e, newValue);
+	    };
+
+	    _this.closeOnDocumentClick = function (e) {
+	      if (!_this.props.closeOnBlur) return; // If event happened in the dropdown, ignore it
+
+	      if (_this.ref.current && doesNodeContainClick(_this.ref.current, e)) return;
+
+	      _this.close();
+	    };
+
+	    _this.handleMouseDown = function (e) {
+	      _this.isMouseDown = true;
+
+	      invoke(_this.props, 'onMouseDown', e, _this.props);
+
+	      document.addEventListener('mouseup', _this.handleDocumentMouseUp);
+	    };
+
+	    _this.handleDocumentMouseUp = function () {
+	      _this.isMouseDown = false;
+	      document.removeEventListener('mouseup', _this.handleDocumentMouseUp);
+	    };
+
+	    _this.handleClick = function (e) {
+	      var _this$props4 = _this.props,
+	          minCharacters = _this$props4.minCharacters,
+	          search = _this$props4.search;
+	      var _this$state5 = _this.state,
+	          open = _this$state5.open,
+	          searchQuery = _this$state5.searchQuery;
+
+	      invoke(_this.props, 'onClick', e, _this.props); // prevent closeOnDocumentClick()
+
+
+	      e.stopPropagation();
+	      if (!search) return _this.toggle(e);
+
+	      if (open) {
+	        invoke(_this.searchRef.current, 'focus');
+
+	        return;
+	      }
+
+	      if (searchQuery.length >= minCharacters || minCharacters === 1) {
+	        _this.open(e);
+
+	        return;
+	      }
+
+	      invoke(_this.searchRef.current, 'focus');
+	    };
+
+	    _this.handleIconClick = function (e) {
+	      var clearable = _this.props.clearable;
+
+	      var hasValue = _this.hasValue();
+
+	      invoke(_this.props, 'onClick', e, _this.props); // prevent handleClick()
+
+
+	      e.stopPropagation();
+
+	      if (clearable && hasValue) {
+	        _this.clearValue(e);
+	      } else {
+	        _this.toggle(e);
+	      }
+	    };
+
+	    _this.handleItemClick = function (e, item) {
+	      var _this$props5 = _this.props,
+	          multiple = _this$props5.multiple,
+	          search = _this$props5.search;
+	      var currentValue = _this.state.value;
+	      var value = item.value; // prevent toggle() in handleClick()
+
+	      e.stopPropagation(); // prevent closeOnDocumentClick() if multiple or item is disabled
+
+	      if (multiple || item.disabled) {
+	        e.nativeEvent.stopImmediatePropagation();
+	      }
+
+	      if (item.disabled) {
+	        return;
+	      }
+
+	      var isAdditionItem = item['data-additional'];
+	      var newValue = multiple ? union(_this.state.value, [value]) : value;
+	      var valueHasChanged = multiple ? !!difference(newValue, currentValue).length : newValue !== currentValue; // notify the onChange prop that the user is trying to change value
+
+	      if (valueHasChanged) {
+	        _this.setState({
+	          value: newValue
+	        });
+
+	        _this.handleChange(e, newValue);
+	      }
+
+	      _this.clearSearchQuery();
+
+	      if (search) {
+	        invoke(_this.searchRef.current, 'focus');
+	      } else {
+	        invoke(_this.ref.current, 'focus');
+	      }
+
+	      _this.closeOnChange(e); // Heads up! This event handler should be called after `onChange`
+	      // Notify the onAddItem prop if this is a new value
+
+
+	      if (isAdditionItem) {
+	        invoke(_this.props, 'onAddItem', e, _extends({}, _this.props, {
+	          value: value
+	        }));
+	      }
+	    };
+
+	    _this.handleFocus = function (e) {
+	      var focus = _this.state.focus;
+	      if (focus) return;
+
+	      invoke(_this.props, 'onFocus', e, _this.props);
+
+	      _this.setState({
+	        focus: true
+	      });
+	    };
+
+	    _this.handleBlur = function (e) {
+	      // Heads up! Don't remove this.
+	      // https://github.com/Semantic-Org/Semantic-UI-React/issues/1315
+	      var currentTarget = get(e, 'currentTarget');
+
+	      if (currentTarget && currentTarget.contains(document.activeElement)) return;
+	      var _this$props6 = _this.props,
+	          closeOnBlur = _this$props6.closeOnBlur,
+	          multiple = _this$props6.multiple,
+	          selectOnBlur = _this$props6.selectOnBlur; // do not "blur" when the mouse is down inside of the Dropdown
+
+	      if (_this.isMouseDown) return;
+
+	      invoke(_this.props, 'onBlur', e, _this.props);
+
+	      if (selectOnBlur && !multiple) {
+	        _this.makeSelectedItemActive(e, _this.state.selectedIndex);
+
+	        if (closeOnBlur) _this.close();
+	      }
+
+	      _this.setState({
+	        focus: false
+	      });
+
+	      _this.clearSearchQuery();
+	    };
+
+	    _this.handleSearchChange = function (e, _ref) {
+	      var value = _ref.value; // prevent propagating to this.props.onChange()
+
+	      e.stopPropagation();
+	      var minCharacters = _this.props.minCharacters;
+	      var open = _this.state.open;
+	      var newQuery = value;
+
+	      invoke(_this.props, 'onSearchChange', e, _extends({}, _this.props, {
+	        searchQuery: newQuery
+	      }));
+
+	      _this.setState({
+	        searchQuery: newQuery,
+	        selectedIndex: 0
+	      }); // open search dropdown on search query
+
+
+	      if (!open && newQuery.length >= minCharacters) {
+	        _this.open();
+
+	        return;
+	      } // close search dropdown if search query is too small
+
+
+	      if (open && minCharacters !== 1 && newQuery.length < minCharacters) _this.close();
+	    };
+
+	    _this.handleKeyDown = function (e) {
+	      _this.moveSelectionOnKeyDown(e);
+
+	      _this.openOnArrow(e);
+
+	      _this.openOnSpace(e);
+
+	      _this.selectItemOnEnter(e);
+
+	      invoke(_this.props, 'onKeyDown', e);
+	    };
+
+	    _this.getSelectedItem = function (selectedIndex) {
+	      var options = getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      });
+	      return get(options, "[" + selectedIndex + "]");
+	    };
+
+	    _this.getItemByValue = function (value) {
+	      var options = _this.props.options;
+	      return find(options, {
+	        value: value
+	      });
+	    };
+
+	    _this.getDropdownAriaOptions = function () {
+	      var _this$props7 = _this.props,
+	          loading = _this$props7.loading,
+	          disabled = _this$props7.disabled,
+	          search = _this$props7.search,
+	          multiple = _this$props7.multiple;
+	      var open = _this.state.open;
+	      var ariaOptions = {
+	        role: search ? 'combobox' : 'listbox',
+	        'aria-busy': loading,
+	        'aria-disabled': disabled,
+	        'aria-expanded': !!open
+	      };
+
+	      if (ariaOptions.role === 'listbox') {
+	        ariaOptions['aria-multiselectable'] = multiple;
+	      }
+
+	      return ariaOptions;
+	    };
+
+	    _this.clearSearchQuery = function () {
+	      var searchQuery = _this.state.searchQuery;
+	      if (searchQuery === undefined || searchQuery === '') return;
+
+	      _this.setState({
+	        searchQuery: ''
+	      });
+	    };
+
+	    _this.handleLabelClick = function (e, labelProps) {
+	      // prevent focusing search input on click
+	      e.stopPropagation();
+
+	      _this.setState({
+	        selectedLabel: labelProps.value
+	      });
+
+	      invoke(_this.props, 'onLabelClick', e, labelProps);
+	    };
+
+	    _this.handleLabelRemove = function (e, labelProps) {
+	      // prevent focusing search input on click
+	      e.stopPropagation();
+	      var value = _this.state.value;
+
+	      var newValue = without(value, labelProps.value);
+
+	      _this.setState({
+	        value: newValue
+	      });
+
+	      _this.handleChange(e, newValue);
+	    };
+
+	    _this.getSelectedIndexAfterMove = function (offset, startIndex) {
+	      if (startIndex === void 0) {
+	        startIndex = _this.state.selectedIndex;
+	      }
+
+	      var options = getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      }); // Prevent infinite loop
+	      // TODO: remove left part of condition after children API will be removed
+
+	      if (options === undefined || every(options, 'disabled')) return;
+	      var lastIndex = options.length - 1;
+	      var wrapSelection = _this.props.wrapSelection; // next is after last, wrap to beginning
+	      // next is before first, wrap to end
+
+	      var nextIndex = startIndex + offset; // if 'wrapSelection' is set to false and selection is after last or before first, it just does not change
+
+	      if (!wrapSelection && (nextIndex > lastIndex || nextIndex < 0)) {
+	        nextIndex = startIndex;
+	      } else if (nextIndex > lastIndex) {
+	        nextIndex = 0;
+	      } else if (nextIndex < 0) {
+	        nextIndex = lastIndex;
+	      }
+
+	      if (options[nextIndex].disabled) {
+	        return _this.getSelectedIndexAfterMove(offset, nextIndex);
+	      }
+
+	      return nextIndex;
+	    };
+
+	    _this.handleIconOverrides = function (predefinedProps) {
+	      var clearable = _this.props.clearable;
+	      var classes = cx(clearable && _this.hasValue() && 'clear', predefinedProps.className);
+	      return {
+	        className: classes,
+	        onClick: function onClick(e) {
+	          invoke(predefinedProps, 'onClick', e, predefinedProps);
+
+	          _this.handleIconClick(e);
+	        }
+	      };
+	    };
+
+	    _this.clearValue = function (e) {
+	      var multiple = _this.props.multiple;
+	      var newValue = multiple ? [] : '';
+
+	      _this.setState({
+	        value: newValue
+	      });
+
+	      _this.handleChange(e, newValue);
+	    };
+
+	    _this.computeSearchInputTabIndex = function () {
+	      var _this$props8 = _this.props,
+	          disabled = _this$props8.disabled,
+	          tabIndex = _this$props8.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      return disabled ? -1 : 0;
+	    };
+
+	    _this.computeSearchInputWidth = function () {
+	      var searchQuery = _this.state.searchQuery;
+
+	      if (_this.sizerRef.current && searchQuery) {
+	        // resize the search input, temporarily show the sizer so we can measure it
+	        _this.sizerRef.current.style.display = 'inline';
+	        _this.sizerRef.current.textContent = searchQuery;
+	        var searchWidth = Math.ceil(_this.sizerRef.current.getBoundingClientRect().width);
+
+	        _this.sizerRef.current.style.removeProperty('display');
+
+	        return searchWidth;
+	      }
+	    };
+
+	    _this.computeTabIndex = function () {
+	      var _this$props9 = _this.props,
+	          disabled = _this$props9.disabled,
+	          search = _this$props9.search,
+	          tabIndex = _this$props9.tabIndex; // don't set a root node tabIndex as the search input has its own tabIndex
+
+	      if (search) return undefined;
+	      if (disabled) return -1;
+	      return isNil(tabIndex) ? 0 : tabIndex;
+	    };
+
+	    _this.handleSearchInputOverrides = function (predefinedProps) {
+	      return {
+	        onChange: function onChange(e, inputProps) {
+	          invoke(predefinedProps, 'onChange', e, inputProps);
+
+	          _this.handleSearchChange(e, inputProps);
+	        }
+	      };
+	    };
+
+	    _this.hasValue = function () {
+	      var multiple = _this.props.multiple;
+	      var value = _this.state.value;
+	      return multiple ? !isEmpty(value) : !isNil(value) && value !== '';
+	    };
+
+	    _this.scrollSelectedItemIntoView = function () {
+	      if (!_this.ref.current) return;
+
+	      var menu = _this.ref.current.querySelector('.menu.visible');
+
+	      if (!menu) return;
+	      var item = menu.querySelector('.item.selected');
+	      if (!item) return;
+	      var isOutOfUpperView = item.offsetTop < menu.scrollTop;
+	      var isOutOfLowerView = item.offsetTop + item.clientHeight > menu.scrollTop + menu.clientHeight;
+
+	      if (isOutOfUpperView) {
+	        menu.scrollTop = item.offsetTop;
+	      } else if (isOutOfLowerView) {
+	        // eslint-disable-next-line no-mixed-operators
+	        menu.scrollTop = item.offsetTop + item.clientHeight - menu.clientHeight;
+	      }
+	    };
+
+	    _this.setOpenDirection = function () {
+	      if (!_this.ref.current) return;
+
+	      var menu = _this.ref.current.querySelector('.menu.visible');
+
+	      if (!menu) return;
+
+	      var dropdownRect = _this.ref.current.getBoundingClientRect();
+
+	      var menuHeight = menu.clientHeight;
+	      var spaceAtTheBottom = document.documentElement.clientHeight - dropdownRect.top - dropdownRect.height - menuHeight;
+	      var spaceAtTheTop = dropdownRect.top - menuHeight;
+	      var upward = spaceAtTheBottom < 0 && spaceAtTheTop > spaceAtTheBottom; // set state only if there's a relevant difference
+
+	      if (!upward !== !_this.state.upward) {
+	        _this.setState({
+	          upward: upward
+	        });
+	      }
+	    };
+
+	    _this.open = function (e, triggerSetState) {
+	      if (e === void 0) {
+	        e = null;
+	      }
+
+	      if (triggerSetState === void 0) {
+	        triggerSetState = true;
+	      }
+
+	      var _this$props10 = _this.props,
+	          disabled = _this$props10.disabled,
+	          search = _this$props10.search;
+	      if (disabled) return;
+	      if (search) invoke(_this.searchRef.current, 'focus');
+
+	      invoke(_this.props, 'onOpen', e, _this.props);
+
+	      if (triggerSetState) {
+	        _this.setState({
+	          open: true
+	        });
+	      }
+
+	      _this.scrollSelectedItemIntoView();
+	    };
+
+	    _this.close = function (e, callback) {
+	      if (callback === void 0) {
+	        callback = _this.handleClose;
+	      }
+
+	      if (_this.state.open) {
+	        invoke(_this.props, 'onClose', e, _this.props);
+
+	        _this.setState({
+	          open: false
+	        }, callback);
+	      }
+	    };
+
+	    _this.handleClose = function () {
+	      var hasSearchFocus = document.activeElement === _this.searchRef.current; // https://github.com/Semantic-Org/Semantic-UI-React/issues/627
+	      // Blur the Dropdown on close so it is blurred after selecting an item.
+	      // This is to prevent it from re-opening when switching tabs after selecting an item.
+
+	      if (!hasSearchFocus && _this.ref.current) {
+	        _this.ref.current.blur();
+	      }
+
+	      var hasDropdownFocus = document.activeElement === _this.ref.current;
+	      var hasFocus = hasSearchFocus || hasDropdownFocus; // We need to keep the virtual model in sync with the browser focus change
+	      // https://github.com/Semantic-Org/Semantic-UI-React/issues/692
+
+	      _this.setState({
+	        focus: hasFocus
+	      });
+	    };
+
+	    _this.toggle = function (e) {
+	      return _this.state.open ? _this.close(e) : _this.open(e);
+	    };
+
+	    _this.renderText = function () {
+	      var _this$props11 = _this.props,
+	          multiple = _this$props11.multiple,
+	          placeholder = _this$props11.placeholder,
+	          search = _this$props11.search,
+	          text = _this$props11.text;
+	      var _this$state6 = _this.state,
+	          searchQuery = _this$state6.searchQuery,
+	          selectedIndex = _this$state6.selectedIndex,
+	          value = _this$state6.value,
+	          open = _this$state6.open;
+
+	      var hasValue = _this.hasValue();
+
+	      var classes = cx(placeholder && !hasValue && 'default', 'text', search && searchQuery && 'filtered');
+	      var _text = placeholder;
+	      var selectedItem;
+
+	      if (text) {
+	        _text = text;
+	      } else if (open && !multiple) {
+	        selectedItem = _this.getSelectedItem(selectedIndex);
+	      } else if (hasValue) {
+	        selectedItem = _this.getItemByValue(value);
+	      }
+
+	      return DropdownText.create(selectedItem ? renderItemContent(selectedItem) : _text, {
+	        defaultProps: {
+	          className: classes
+	        }
+	      });
+	    };
+
+	    _this.renderSearchInput = function () {
+	      var _this$props12 = _this.props,
+	          search = _this$props12.search,
+	          searchInput = _this$props12.searchInput;
+	      var searchQuery = _this.state.searchQuery;
+	      return search && /*#__PURE__*/React$1.createElement(Ref, {
+	        innerRef: _this.searchRef
+	      }, DropdownSearchInput.create(searchInput, {
+	        defaultProps: {
+	          style: {
+	            width: _this.computeSearchInputWidth()
+	          },
+	          tabIndex: _this.computeSearchInputTabIndex(),
+	          value: searchQuery
+	        },
+	        overrideProps: _this.handleSearchInputOverrides
+	      }));
+	    };
+
+	    _this.renderSearchSizer = function () {
+	      var _this$props13 = _this.props,
+	          search = _this$props13.search,
+	          multiple = _this$props13.multiple;
+	      return search && multiple && /*#__PURE__*/React$1.createElement("span", {
+	        className: "sizer",
+	        ref: _this.sizerRef
+	      });
+	    };
+
+	    _this.renderLabels = function () {
+	      var _this$props14 = _this.props,
+	          multiple = _this$props14.multiple,
+	          renderLabel = _this$props14.renderLabel;
+	      var _this$state7 = _this.state,
+	          selectedLabel = _this$state7.selectedLabel,
+	          value = _this$state7.value;
+
+	      if (!multiple || isEmpty(value)) {
+	        return;
+	      }
+
+	      var selectedItems = map(value, _this.getItemByValue); // if no item could be found for a given state value the selected item will be undefined
+	      // compact the selectedItems so we only have actual objects left
+
+
+	      return map(compact(selectedItems), function (item, index) {
+	        var defaultProps = {
+	          active: item.value === selectedLabel,
+	          as: 'a',
+	          key: getKeyOrValue(item.key, item.value),
+	          onClick: _this.handleLabelClick,
+	          onRemove: _this.handleLabelRemove,
+	          value: item.value
+	        };
+	        return Label.create(renderLabel(item, index, defaultProps), {
+	          defaultProps: defaultProps
+	        });
+	      });
+	    };
+
+	    _this.renderOptions = function () {
+	      var _this$props15 = _this.props,
+	          lazyLoad = _this$props15.lazyLoad,
+	          multiple = _this$props15.multiple,
+	          search = _this$props15.search,
+	          noResultsMessage = _this$props15.noResultsMessage;
+	      var _this$state8 = _this.state,
+	          open = _this$state8.open,
+	          selectedIndex = _this$state8.selectedIndex,
+	          value = _this$state8.value; // lazy load, only render options when open
+
+	      if (lazyLoad && !open) return null;
+	      var options = getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      });
+
+	      if (noResultsMessage !== null && search && isEmpty(options)) {
+	        return /*#__PURE__*/React$1.createElement("div", {
+	          className: "message"
+	        }, noResultsMessage);
+	      }
+
+	      var isActive = multiple ? function (optValue) {
+	        return includes(value, optValue);
+	      } : function (optValue) {
+	        return optValue === value;
+	      };
+	      return map(options, function (opt, i) {
+	        return DropdownItem.create(_extends({
+	          active: isActive(opt.value),
+	          selected: selectedIndex === i
+	        }, opt, {
+	          key: getKeyOrValue(opt.key, opt.value),
+	          // Needed for handling click events on disabled items
+	          style: _extends({}, opt.style, {
+	            pointerEvents: 'all'
+	          })
+	        }), {
+	          generateKey: false,
+	          overrideProps: function overrideProps(predefinedProps) {
+	            return {
+	              onClick: function onClick(e, item) {
+	                predefinedProps.onClick == null ? void 0 : predefinedProps.onClick(e, item);
+
+	                _this.handleItemClick(e, item);
+	              }
+	            };
+	          }
+	        });
+	      });
+	    };
+
+	    _this.renderMenu = function () {
+	      var _this$props16 = _this.props,
+	          children = _this$props16.children,
+	          direction = _this$props16.direction,
+	          header = _this$props16.header;
+	      var open = _this.state.open;
+
+	      var ariaOptions = _this.getDropdownMenuAriaOptions(); // single menu child
+
+
+	      if (!isNil$1(children)) {
+	        var menuChild = react.exports.Children.only(children);
+	        var className = cx(direction, useKeyOnly(open, 'visible'), menuChild.props.className);
+	        return /*#__PURE__*/react.exports.cloneElement(menuChild, _extends({
+	          className: className
+	        }, ariaOptions));
+	      }
+
+	      return /*#__PURE__*/React$1.createElement(DropdownMenu, _extends({}, ariaOptions, {
+	        direction: direction,
+	        open: open
+	      }), DropdownHeader.create(header, {
+	        autoGenerateKey: false
+	      }), _this.renderOptions());
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Dropdown.prototype;
+
+	  _proto.getInitialAutoControlledState = function getInitialAutoControlledState() {
+	    return {
+	      focus: false,
+	      searchQuery: ''
+	    };
+	  };
+
+	  Dropdown.getAutoControlledStateFromProps = function getAutoControlledStateFromProps(nextProps, computedState, prevState) {
+	    // These values are stored only for a comparison on next getAutoControlledStateFromProps()
+	    var derivedState = {
+	      __options: nextProps.options,
+	      __value: computedState.value
+	    }; // The selected index is only dependent:
+
+	    var shouldComputeSelectedIndex = // On value change
+	    !shallowequal(prevState.__value, computedState.value) || // On option keys/values, we only check those properties to avoid recursive performance impacts.
+	    // https://github.com/Semantic-Org/Semantic-UI-React/issues/3000
+	    !isEqual(getKeyAndValues(nextProps.options), getKeyAndValues(prevState.__options));
+
+	    if (shouldComputeSelectedIndex) {
+	      derivedState.selectedIndex = getSelectedIndex({
+	        additionLabel: nextProps.additionLabel,
+	        additionPosition: nextProps.additionPosition,
+	        allowAdditions: nextProps.allowAdditions,
+	        deburr: nextProps.deburr,
+	        multiple: nextProps.multiple,
+	        search: nextProps.search,
+	        selectedIndex: computedState.selectedIndex,
+	        value: computedState.value,
+	        options: nextProps.options,
+	        searchQuery: computedState.searchQuery
+	      });
+	    }
+
+	    return derivedState;
+	  };
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    var open = this.state.open;
+
+	    if (open) {
+	      this.open(null, false);
+	    }
+	  };
+
+	  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+	    return !shallowequal(nextProps, this.props) || !shallowequal(nextState, this.state);
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
+	    // eslint-disable-line complexity
+	    var _this$props17 = this.props,
+	        closeOnBlur = _this$props17.closeOnBlur,
+	        minCharacters = _this$props17.minCharacters,
+	        openOnFocus = _this$props17.openOnFocus,
+	        search = _this$props17.search;
+	    /* eslint-disable no-console */
+
+	    {
+	      // in development, validate value type matches dropdown type
+	      var isNextValueArray = Array.isArray(this.props.value);
+
+	      var hasValue = has$3(this.props, 'value');
+
+	      if (hasValue && this.props.multiple && !isNextValueArray) {
+	        console.error('Dropdown `value` must be an array when `multiple` is set.' + (" Received type: `" + Object.prototype.toString.call(this.props.value) + "`."));
+	      } else if (hasValue && !this.props.multiple && isNextValueArray) {
+	        console.error('Dropdown `value` must not be an array when `multiple` is not set.' + ' Either set `multiple={true}` or use a string or number value.');
+	      }
+	    }
+	    /* eslint-enable no-console */
+	    // focused / blurred
+
+
+	    if (!prevState.focus && this.state.focus) {
+	      if (!this.isMouseDown) {
+	        var openable = !search || search && minCharacters === 1 && !this.state.open;
+	        if (openOnFocus && openable) this.open();
+	      }
+	    } else if (prevState.focus && !this.state.focus) {
+	      if (!this.isMouseDown && closeOnBlur) {
+	        this.close();
+	      }
+	    } // opened / closed
+
+
+	    if (!prevState.open && this.state.open) {
+	      this.setOpenDirection();
+	      this.scrollSelectedItemIntoView();
+	    } else if (prevState.open && !this.state.open) ;
+
+	    if (prevState.selectedIndex !== this.state.selectedIndex) {
+	      this.scrollSelectedItemIntoView();
+	    }
+	  } // ----------------------------------------
+	  // Document Event Handlers
+	  // ----------------------------------------
+	  // onChange needs to receive a value
+	  // can't rely on props.value if we are controlled
+	  ;
+
+	  _proto.getDropdownMenuAriaOptions = function getDropdownMenuAriaOptions() {
+	    var _this$props18 = this.props,
+	        search = _this$props18.search,
+	        multiple = _this$props18.multiple;
+	    var ariaOptions = {};
+
+	    if (search) {
+	      ariaOptions['aria-multiselectable'] = multiple;
+	      ariaOptions.role = 'listbox';
+	    }
+
+	    return ariaOptions;
+	  } // ----------------------------------------
+	  // Setters
+	  // ----------------------------------------
+	  ;
+
+	  _proto.render = function render() {
+	    var _this$props19 = this.props,
+	        basic = _this$props19.basic,
+	        button = _this$props19.button,
+	        className = _this$props19.className,
+	        compact = _this$props19.compact,
+	        disabled = _this$props19.disabled,
+	        error = _this$props19.error,
+	        fluid = _this$props19.fluid,
+	        floating = _this$props19.floating,
+	        icon = _this$props19.icon,
+	        inline = _this$props19.inline,
+	        item = _this$props19.item,
+	        labeled = _this$props19.labeled,
+	        loading = _this$props19.loading,
+	        multiple = _this$props19.multiple,
+	        pointing = _this$props19.pointing,
+	        search = _this$props19.search,
+	        selection = _this$props19.selection,
+	        scrolling = _this$props19.scrolling,
+	        simple = _this$props19.simple,
+	        trigger = _this$props19.trigger;
+	    var _this$state9 = this.state,
+	        focus = _this$state9.focus,
+	        open = _this$state9.open,
+	        upward = _this$state9.upward; // Classes
+
+	    var classes = cx('ui', useKeyOnly(open, 'active visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(loading, 'loading'), useKeyOnly(basic, 'basic'), useKeyOnly(button, 'button'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(floating, 'floating'), useKeyOnly(inline, 'inline'), // TODO: consider augmentation to render Dropdowns as Button/Menu, solves icon/link item issues
+	    // https://github.com/Semantic-Org/Semantic-UI-React/issues/401#issuecomment-240487229
+	    // TODO: the icon class is only required when a dropdown is a button
+	    // useKeyOnly(icon, 'icon'),
+	    useKeyOnly(labeled, 'labeled'), useKeyOnly(item, 'item'), useKeyOnly(multiple, 'multiple'), useKeyOnly(search, 'search'), useKeyOnly(selection, 'selection'), useKeyOnly(simple, 'simple'), useKeyOnly(scrolling, 'scrolling'), useKeyOnly(upward, 'upward'), useKeyOrValueAndKey(pointing, 'pointing'), 'dropdown', className);
+	    var rest = getUnhandledProps(Dropdown, this.props);
+	    var ElementType = getElementType(Dropdown, this.props);
+	    var ariaOptions = this.getDropdownAriaOptions(ElementType, this.props);
+	    return /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.ref
+	    }, /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	      className: classes,
+	      onBlur: this.handleBlur,
+	      onClick: this.handleClick,
+	      onKeyDown: this.handleKeyDown,
+	      onMouseDown: this.handleMouseDown,
+	      onFocus: this.handleFocus,
+	      onChange: this.handleChange,
+	      tabIndex: this.computeTabIndex()
+	    }), this.renderLabels(), this.renderSearchInput(), this.renderSearchSizer(), trigger || this.renderText(), Icon.create(icon, {
+	      overrideProps: this.handleIconOverrides,
+	      autoGenerateKey: false
+	    }), this.renderMenu(), open && /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "keydown",
+	      on: this.closeOnEscape
+	    }), open && /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "click",
+	      on: this.closeOnDocumentClick
+	    }), focus && /*#__PURE__*/React$1.createElement(lib.exports, {
+	      name: "keydown",
+	      on: this.removeItemOnBackspace
+	    })));
+	  };
+
+	  return Dropdown;
+	}(ModernAutoControlledComponent);
+
+	Dropdown.handledProps = ["additionLabel", "additionPosition", "allowAdditions", "as", "basic", "button", "children", "className", "clearable", "closeOnBlur", "closeOnChange", "closeOnEscape", "compact", "deburr", "defaultOpen", "defaultSearchQuery", "defaultSelectedLabel", "defaultUpward", "defaultValue", "direction", "disabled", "error", "floating", "fluid", "header", "icon", "inline", "item", "labeled", "lazyLoad", "loading", "minCharacters", "multiple", "noResultsMessage", "onAddItem", "onBlur", "onChange", "onClick", "onClose", "onFocus", "onLabelClick", "onMouseDown", "onOpen", "onSearchChange", "open", "openOnFocus", "options", "placeholder", "pointing", "renderLabel", "scrolling", "search", "searchInput", "searchQuery", "selectOnBlur", "selectOnNavigation", "selectedLabel", "selection", "simple", "tabIndex", "text", "trigger", "upward", "value", "wrapSelection"];
+	Dropdown.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Label prefixed to an option added by a user. */
+	  additionLabel: propTypes.exports.oneOfType([propTypes.exports.element, propTypes.exports.string]),
+
+	  /** Position of the `Add: ...` option in the dropdown list ('top' or 'bottom'). */
+	  additionPosition: propTypes.exports.oneOf(['top', 'bottom']),
+
+	  /**
+	   * Allow user additions to the list of options (boolean).
+	   * Requires the use of `selection`, `options` and `search`.
+	   */
+	  allowAdditions: every$1([demand(['options', 'selection', 'search']), propTypes.exports.bool]),
+
+	  /** A Dropdown can reduce its complexity. */
+	  basic: propTypes.exports.bool,
+
+	  /** Format the Dropdown to appear as a button. */
+	  button: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: every$1([disallow(['options', 'selection']), givenProps({
+	    children: propTypes.exports.any.isRequired
+	  }, propTypes.exports.element.isRequired)]),
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Using the clearable setting will let users remove their selection from a dropdown. */
+	  clearable: propTypes.exports.bool,
+
+	  /** Whether or not the menu should close when the dropdown is blurred. */
+	  closeOnBlur: propTypes.exports.bool,
+
+	  /** Whether or not the dropdown should close when the escape key is pressed. */
+	  closeOnEscape: propTypes.exports.bool,
+
+	  /**
+	   * Whether or not the menu should close when a value is selected from the dropdown.
+	   * By default, multiple selection dropdowns will remain open on change, while single
+	   * selection dropdowns will close on change.
+	   */
+	  closeOnChange: propTypes.exports.bool,
+
+	  /** A compact dropdown has no minimum width. */
+	  compact: propTypes.exports.bool,
+
+	  /** Whether or not the dropdown should strip diacritics in options and input search */
+	  deburr: propTypes.exports.bool,
+
+	  /** Initial value of open. */
+	  defaultOpen: propTypes.exports.bool,
+
+	  /** Initial value of searchQuery. */
+	  defaultSearchQuery: propTypes.exports.string,
+
+	  /** Currently selected label in multi-select. */
+	  defaultSelectedLabel: every$1([demand(['multiple']), propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])]),
+
+	  /** Initial value of upward. */
+	  defaultUpward: propTypes.exports.bool,
+
+	  /** Initial value or value array if multiple. */
+	  defaultValue: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string, propTypes.exports.bool, propTypes.exports.arrayOf(propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.number, propTypes.exports.bool]))]),
+
+	  /** A dropdown menu can open to the left or to the right. */
+	  direction: propTypes.exports.oneOf(['left', 'right']),
+
+	  /** A disabled dropdown menu or item does not allow user interaction. */
+	  disabled: propTypes.exports.bool,
+
+	  /** An errored dropdown can alert a user to a problem. */
+	  error: propTypes.exports.bool,
+
+	  /** A dropdown menu can contain floated content. */
+	  floating: propTypes.exports.bool,
+
+	  /** A dropdown can take the full width of its parent */
+	  fluid: propTypes.exports.bool,
+
+	  /** A dropdown menu can contain a header. */
+	  header: propTypes.exports.node,
+
+	  /** Shorthand for Icon. */
+	  icon: propTypes.exports.oneOfType([propTypes.exports.node, propTypes.exports.object]),
+
+	  /** A dropdown can be formatted to appear inline in other content. */
+	  inline: propTypes.exports.bool,
+
+	  /** A dropdown can be formatted as a Menu item. */
+	  item: propTypes.exports.bool,
+
+	  /** A dropdown can be labeled. */
+	  labeled: propTypes.exports.bool,
+
+	  /** A dropdown can defer rendering its options until it is open. */
+	  lazyLoad: propTypes.exports.bool,
+
+	  /** A dropdown can show that it is currently loading data. */
+	  loading: propTypes.exports.bool,
+
+	  /** The minimum characters for a search to begin showing results. */
+	  minCharacters: propTypes.exports.number,
+
+	  /** A selection dropdown can allow multiple selections. */
+	  multiple: propTypes.exports.bool,
+
+	  /** Message to display when there are no results. */
+	  noResultsMessage: propTypes.exports.node,
+
+	  /**
+	   * Called when a user adds a new item. Use this to update the options list.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and the new item's value.
+	   */
+	  onAddItem: propTypes.exports.func,
+
+	  /**
+	   * Called on blur.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onBlur: propTypes.exports.func,
+
+	  /**
+	   * Called when the user attempts to change the value.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed value.
+	   */
+	  onChange: propTypes.exports.func,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: propTypes.exports.func,
+
+	  /**
+	   * Called on focus.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onFocus: propTypes.exports.func,
+
+	  /**
+	   * Called when a multi-select label is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All label props.
+	   */
+	  onLabelClick: propTypes.exports.func,
+
+	  /**
+	   * Called on mousedown.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onMouseDown: propTypes.exports.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: propTypes.exports.func,
+
+	  /**
+	   * Called on search input change.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props, includes current value of searchQuery.
+	   */
+	  onSearchChange: propTypes.exports.func,
+
+	  /** Controls whether or not the dropdown menu is displayed. */
+	  open: propTypes.exports.bool,
+
+	  /** Whether or not the menu should open when the dropdown is focused. */
+	  openOnFocus: propTypes.exports.bool,
+
+	  /** Array of Dropdown.Item props e.g. `{ text: '', value: '' }` */
+	  options: every$1([disallow(['children']), propTypes.exports.arrayOf(propTypes.exports.shape(DropdownItem.propTypes))]),
+
+	  /** Placeholder text. */
+	  placeholder: propTypes.exports.string,
+
+	  /** A dropdown can be formatted so that its menu is pointing. */
+	  pointing: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['left', 'right', 'top', 'top left', 'top right', 'bottom', 'bottom left', 'bottom right'])]),
+
+	  /**
+	   * Mapped over the active items and returns shorthand for the active item Labels.
+	   * Only applies to `multiple` Dropdowns.
+	   *
+	   * @param {object} item - A currently active dropdown item.
+	   * @param {number} index - The current index.
+	   * @param {object} defaultLabelProps - The default props for an active item Label.
+	   * @returns {*} Shorthand for a Label.
+	   */
+	  renderLabel: propTypes.exports.func,
+
+	  /** A dropdown can have its menu scroll. */
+	  scrolling: propTypes.exports.bool,
+
+	  /**
+	   * A selection dropdown can allow a user to search through a large list of choices.
+	   * Pass a function here to replace the default search.
+	   */
+	  search: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.func]),
+
+	  /** A shorthand for a search input. */
+	  searchInput: propTypes.exports.oneOfType([propTypes.exports.array, propTypes.exports.node, propTypes.exports.object]),
+
+	  /** Current value of searchQuery. Creates a controlled component. */
+	  searchQuery: propTypes.exports.string,
+	  // TODO 'searchInMenu' or 'search='in menu' or ???  How to handle this markup and functionality?
+
+	  /** Define whether the highlighted item should be selected on blur. */
+	  selectOnBlur: propTypes.exports.bool,
+
+	  /**
+	   * Whether or not to change the value when navigating the menu using arrow keys.
+	   * Setting to false will require enter or left click to confirm a choice.
+	   */
+	  selectOnNavigation: propTypes.exports.bool,
+
+	  /** Currently selected label in multi-select. */
+	  selectedLabel: every$1([demand(['multiple']), propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.number])]),
+
+	  /** A dropdown can be used to select between choices in a form. */
+	  selection: every$1([disallow(['children']), demand(['options']), propTypes.exports.bool]),
+
+	  /** A simple dropdown can open without Javascript. */
+	  simple: propTypes.exports.bool,
+
+	  /** A dropdown can receive focus. */
+	  tabIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** The text displayed in the dropdown, usually for the active item. */
+	  text: propTypes.exports.string,
+
+	  /** Custom element to trigger the menu to become visible. Takes place of 'text'. */
+	  trigger: every$1([disallow(['selection', 'text']), propTypes.exports.node]),
+
+	  /** Current value or value array if multiple. Creates a controlled component. */
+	  value: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.string, propTypes.exports.number, propTypes.exports.arrayOf(propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.string, propTypes.exports.number]))]),
+
+	  /** Controls whether the dropdown will open upward. */
+	  upward: propTypes.exports.bool,
+
+	  /**
+	   * A dropdown will go to the last element when ArrowUp is pressed on the first,
+	   * or go to the first when ArrowDown is pressed on the last( aka infinite selection )
+	   */
+	  wrapSelection: propTypes.exports.bool
+	} ;
+	Dropdown.defaultProps = {
+	  additionLabel: 'Add ',
+	  additionPosition: 'top',
+	  closeOnBlur: true,
+	  closeOnEscape: true,
+	  deburr: false,
+	  icon: 'dropdown',
+	  minCharacters: 1,
+	  noResultsMessage: 'No results found.',
+	  openOnFocus: true,
+	  renderLabel: renderItemContent,
+	  searchInput: 'text',
+	  selectOnBlur: true,
+	  selectOnNavigation: true,
+	  wrapSelection: true
+	};
+	Dropdown.autoControlledProps = ['open', 'searchQuery', 'selectedLabel', 'value', 'upward'];
+	Dropdown.Divider = DropdownDivider;
+	Dropdown.Header = DropdownHeader;
+	Dropdown.Item = DropdownItem;
+	Dropdown.Menu = DropdownMenu;
+	Dropdown.SearchInput = DropdownSearchInput;
+	Dropdown.Text = DropdownText;
+
+	/**
+	 * A Select is sugar for <Dropdown selection />.
+	 * @see Dropdown
+	 * @see Form
+	 */
+
+	function Select(props) {
+	  return /*#__PURE__*/React$1.createElement(Dropdown, _extends({}, props, {
+	    selection: true
+	  }));
+	}
+
+	Select.handledProps = ["options"];
+	Select.propTypes = {
+	  /** Array of Dropdown.Item props e.g. `{ text: '', value: '' }` */
+	  options: propTypes.exports.arrayOf(propTypes.exports.shape(Dropdown.Item.propTypes)).isRequired
+	} ;
+	Select.Divider = Dropdown.Divider;
+	Select.Header = Dropdown.Header;
+	Select.Item = Dropdown.Item;
+	Select.Menu = Dropdown.Menu;
+
+	/**
+	 * A TextArea can be used to allow for extended user input.
+	 * @see Form
+	 */
+
+	var TextArea = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(TextArea, _Component);
+
+	  function TextArea() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.ref = /*#__PURE__*/react.exports.createRef();
+
+	    _this.focus = function () {
+	      return _this.ref.current.focus();
+	    };
+
+	    _this.handleChange = function (e) {
+	      var value = get(e, 'target.value');
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    _this.handleInput = function (e) {
+	      var value = get(e, 'target.value');
+
+	      invoke(_this.props, 'onInput', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = TextArea.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        rows = _this$props.rows,
+	        value = _this$props.value;
+	    var rest = getUnhandledProps(TextArea, this.props);
+	    var ElementType = getElementType(TextArea, this.props);
+	    return /*#__PURE__*/React$1.createElement(Ref, {
+	      innerRef: this.ref
+	    }, /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      onChange: this.handleChange,
+	      onInput: this.handleInput,
+	      rows: rows,
+	      value: value
+	    })));
+	  };
+
+	  return TextArea;
+	}(react.exports.Component);
+
+	TextArea.handledProps = ["as", "onChange", "onInput", "rows", "value"];
+	TextArea.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /**
+	   * Called on change.
+	   * @param {SyntheticEvent} event - The React SyntheticEvent object
+	   * @param {object} data - All props and the event value.
+	   */
+	  onChange: propTypes.exports.func,
+
+	  /**
+	   * Called on input.
+	   * @param {SyntheticEvent} event - The React SyntheticEvent object
+	   * @param {object} data - All props and the event value.
+	   */
+	  onInput: propTypes.exports.func,
+
+	  /** Indicates row count for a TextArea. */
+	  rows: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** The value of the textarea. */
+	  value: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])
+	} ;
+	TextArea.defaultProps = {
+	  as: 'textarea',
+	  rows: 3
+	};
+
+	/**
+	 * Creates an object with the same keys as `object` and values generated
+	 * by running each own enumerable string keyed property of `object` thru
+	 * `iteratee`. The iteratee is invoked with three arguments:
+	 * (value, key, object).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 2.4.0
+	 * @category Object
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+	 * @returns {Object} Returns the new mapped object.
+	 * @see _.mapKeys
+	 * @example
+	 *
+	 * var users = {
+	 *   'fred':    { 'user': 'fred',    'age': 40 },
+	 *   'pebbles': { 'user': 'pebbles', 'age': 1 }
+	 * };
+	 *
+	 * _.mapValues(users, function(o) { return o.age; });
+	 * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.mapValues(users, 'age');
+	 * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
+	 */
+
+	function mapValues(object, iteratee) {
+	  var result = {};
+	  iteratee = baseIteratee(iteratee);
+	  baseForOwn(object, function (value, key, object) {
+	    baseAssignValue(result, key, iteratee(value, key, object));
+	  });
+	  return result;
+	}
+
+	/**
+	 * A specialized version of `baseAggregator` for arrays.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} setter The function to set `accumulator` values.
+	 * @param {Function} iteratee The iteratee to transform keys.
+	 * @param {Object} accumulator The initial aggregated object.
+	 * @returns {Function} Returns `accumulator`.
+	 */
+	function arrayAggregator(array, setter, iteratee, accumulator) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  while (++index < length) {
+	    var value = array[index];
+	    setter(accumulator, value, iteratee(value), array);
+	  }
+
+	  return accumulator;
+	}
+
+	/**
+	 * Aggregates elements of `collection` on `accumulator` with keys transformed
+	 * by `iteratee` and values set by `setter`.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} setter The function to set `accumulator` values.
+	 * @param {Function} iteratee The iteratee to transform keys.
+	 * @param {Object} accumulator The initial aggregated object.
+	 * @returns {Function} Returns `accumulator`.
+	 */
+
+	function baseAggregator(collection, setter, iteratee, accumulator) {
+	  baseEach(collection, function (value, key, collection) {
+	    setter(accumulator, value, iteratee(value), collection);
+	  });
+	  return accumulator;
+	}
+
+	/**
+	 * Creates a function like `_.groupBy`.
+	 *
+	 * @private
+	 * @param {Function} setter The function to set accumulator values.
+	 * @param {Function} [initializer] The accumulator object initializer.
+	 * @returns {Function} Returns the new aggregator function.
+	 */
+
+	function createAggregator(setter, initializer) {
+	  return function (collection, iteratee) {
+	    var func = isArray(collection) ? arrayAggregator : baseAggregator,
+	        accumulator = initializer ? initializer() : {};
+	    return func(collection, setter, baseIteratee(iteratee), accumulator);
+	  };
+	}
+
+	/**
+	 * Creates an object composed of keys generated from the results of running
+	 * each element of `collection` thru `iteratee`. The corresponding value of
+	 * each key is the last element responsible for generating the key. The
+	 * iteratee is invoked with one argument: (value).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [iteratee=_.identity] The iteratee to transform keys.
+	 * @returns {Object} Returns the composed aggregate object.
+	 * @example
+	 *
+	 * var array = [
+	 *   { 'dir': 'left', 'code': 97 },
+	 *   { 'dir': 'right', 'code': 100 }
+	 * ];
+	 *
+	 * _.keyBy(array, function(o) {
+	 *   return String.fromCharCode(o.code);
+	 * });
+	 * // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
+	 *
+	 * _.keyBy(array, 'dir');
+	 * // => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
+	 */
+
+	var keyBy = createAggregator(function (result, value, key) {
+	  baseAssignValue(result, key, value);
+	});
+
+	/**
+	 * Given `this.props.children`, return an object mapping key to child.
+	 *
+	 * @param {object} children Element's children
+	 * @return {object} Mapping of key to child
+	 */
+
+	var getChildMapping = function getChildMapping(children) {
+	  return keyBy(filter(react.exports.Children.toArray(children), react.exports.isValidElement), 'key');
+	};
+
+	var getPendingKeys = function getPendingKeys(prev, next) {
+	  var nextKeysPending = {};
+	  var pendingKeys = [];
+
+	  forEach(keys(prev), function (prevKey) {
+	    if (!has$3(next, prevKey)) {
+	      pendingKeys.push(prevKey);
+	      return;
+	    }
+
+	    if (pendingKeys.length) {
+	      nextKeysPending[prevKey] = pendingKeys;
+	      pendingKeys = [];
+	    }
+	  });
+
+	  return [nextKeysPending, pendingKeys];
+	};
+
+	var getValue = function getValue(key, prev, next) {
+	  return has$3(next, key) ? next[key] : prev[key];
+	};
+	/**
+	 * When you're adding or removing children some may be added or removed in the same render pass. We want to show *both*
+	 * since we want to simultaneously animate elements in and out. This function takes a previous set of keys and a new set
+	 * of keys and merges them with its best guess of the correct ordering.
+	 *
+	 * @param {object} prev Prev children as returned from `getChildMapping()`
+	 * @param {object} next Next children as returned from `getChildMapping()`
+	 * @return {object} A key set that contains all keys in `prev` and all keys in `next` in a reasonable order
+	 */
+
+
+	var mergeChildMappings = function mergeChildMappings(prev, next) {
+	  if (prev === void 0) {
+	    prev = {};
+	  }
+
+	  if (next === void 0) {
+	    next = {};
+	  }
+
+	  var childMapping = {};
+
+	  var _getPendingKeys = getPendingKeys(prev, next),
+	      nextKeysPending = _getPendingKeys[0],
+	      pendingKeys = _getPendingKeys[1];
+
+	  forEach(keys(next), function (nextKey) {
+	    if (has$3(nextKeysPending, nextKey)) {
+	      forEach(nextKeysPending[nextKey], function (pendingKey) {
+	        childMapping[pendingKey] = getValue(pendingKey, prev, next);
+	      });
+	    }
+
+	    childMapping[nextKey] = getValue(nextKey, prev, next);
+	  });
+
+	  forEach(pendingKeys, function (pendingKey) {
+	    childMapping[pendingKey] = getValue(pendingKey, prev, next);
+	  });
+
+	  return childMapping;
+	};
+
+	/**
+	 * Wraps a React element with a Transition component.
+	 *
+	 * @param {React.ReactElement} child
+	 * @param {Function} onHide
+	 * @param {Object} [options={}]
+	 * @param {String} [options.animation]
+	 * @param {Number} [options.duration]
+	 * @param {Boolean} [options.directional]
+	 * @param {Boolean} [options.transitionOnMount=false]
+	 * @param {Boolean} [options.visible=true]
+	 */
+
+	function wrapChild(child, onHide, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  var key = child.key;
+	  var _options = options,
+	      animation = _options.animation,
+	      directional = _options.directional,
+	      duration = _options.duration,
+	      _options$transitionOn = _options.transitionOnMount,
+	      transitionOnMount = _options$transitionOn === void 0 ? false : _options$transitionOn,
+	      _options$visible = _options.visible,
+	      visible = _options$visible === void 0 ? true : _options$visible;
+	  return /*#__PURE__*/React$1.createElement(Transition, {
+	    animation: animation,
+	    directional: directional,
+	    duration: duration,
+	    key: key,
+	    onHide: onHide,
+	    reactKey: key,
+	    transitionOnMount: transitionOnMount,
+	    visible: visible
+	  }, child);
+	}
+	wrapChild.handledProps = [];
+
+	/**
+	 * A Transition.Group animates children as they mount and unmount.
+	 */
+
+	var TransitionGroup = /*#__PURE__*/function (_React$Component) {
+	  _inheritsLoose(TransitionGroup, _React$Component);
+
+	  function TransitionGroup() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+	    _this.state = {
+	      // Keeping a callback under the state is a hack to make it accessible under getDerivedStateFromProps()
+	      handleOnHide: function handleOnHide(nothing, childProps) {
+	        var reactKey = childProps.reactKey;
+
+	        _this.setState(function (state) {
+	          var children = _extends({}, state.children);
+
+	          delete children[reactKey];
+	          return {
+	            children: children
+	          };
+	        });
+	      }
+	    };
+	    return _this;
+	  }
+
+	  TransitionGroup.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
+	    var animation = props.animation,
+	        duration = props.duration,
+	        directional = props.directional;
+	    var prevMapping = state.children; // A short circuit for an initial render as there will be no `prevMapping`
+
+	    if (typeof prevMapping === 'undefined') {
+	      return {
+	        children: mapValues(getChildMapping(props.children), function (child) {
+	          return wrapChild(child, state.handleOnHide, {
+	            animation: animation,
+	            duration: duration,
+	            directional: directional
+	          });
+	        })
+	      };
+	    }
+
+	    var nextMapping = getChildMapping(props.children);
+	    var children = mergeChildMappings(prevMapping, nextMapping);
+
+	    forEach(children, function (child, key) {
+	      var hasPrev = has$3(prevMapping, key);
+
+	      var hasNext = has$3(nextMapping, key);
+
+	      var prevChild = prevMapping[key];
+	      var isLeaving = !get(prevChild, 'props.visible'); // Heads up!
+	      // An item is new (entering), it will be picked from `nextChildren`, so it should be wrapped
+
+	      if (hasNext && (!hasPrev || isLeaving)) {
+	        children[key] = wrapChild(child, state.handleOnHide, {
+	          animation: animation,
+	          duration: duration,
+	          directional: directional,
+	          transitionOnMount: true
+	        });
+	        return;
+	      } // Heads up!
+	      // An item is old (exiting), it will be picked from `prevChildren`, so it has been already
+	      // wrapped, so should be only updated
+
+
+	      if (!hasNext && hasPrev && !isLeaving) {
+	        children[key] = /*#__PURE__*/React$1.cloneElement(prevChild, {
+	          visible: false
+	        });
+	        return;
+	      } // Heads up!
+	      // An item item hasn't changed transition states, but it will be picked from `nextChildren`,
+	      // so we should wrap it again
+
+
+	      var _prevChild$props = prevChild.props,
+	          visible = _prevChild$props.visible,
+	          transitionOnMount = _prevChild$props.transitionOnMount;
+	      children[key] = wrapChild(child, state.handleOnHide, {
+	        animation: animation,
+	        duration: duration,
+	        directional: directional,
+	        transitionOnMount: transitionOnMount,
+	        visible: visible
+	      });
+	    });
+
+	    return {
+	      children: children
+	    };
+	  };
+
+	  var _proto = TransitionGroup.prototype;
+
+	  _proto.render = function render() {
+	    var children = this.state.children;
+	    var ElementType = getElementType(TransitionGroup, this.props);
+	    var rest = getUnhandledProps(TransitionGroup, this.props);
+	    return /*#__PURE__*/React$1.createElement(ElementType, rest, values(children));
+	  };
+
+	  return TransitionGroup;
+	}(React$1.Component);
+
+	TransitionGroup.handledProps = ["animation", "as", "children", "directional", "duration"];
+	TransitionGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Named animation event to used. Must be defined in CSS. */
+	  animation: propTypes.exports.oneOfType([propTypes.exports.oneOf(TRANSITIONS), propTypes.exports.string]),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Whether it is directional animation event or not. Use it only for custom transitions. */
+	  directional: propTypes.exports.bool,
+
+	  /** Duration of the CSS transition animation in milliseconds. */
+	  duration: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.shape({
+	    hide: propTypes.exports.number.isRequired,
+	    show: propTypes.exports.number.isRequired
+	  }), propTypes.exports.string])
+	} ;
+	TransitionGroup.defaultProps = {
+	  as: React$1.Fragment,
+	  animation: 'fade',
+	  duration: 500
+	};
+
+	var TRANSITION_STATUS_INITIAL = 'INITIAL';
+	var TRANSITION_STATUS_ENTERED = 'ENTERED';
+	var TRANSITION_STATUS_ENTERING = 'ENTERING';
+	var TRANSITION_STATUS_EXITED = 'EXITED';
+	var TRANSITION_STATUS_EXITING = 'EXITING';
+	var TRANSITION_STATUS_UNMOUNTED = 'UNMOUNTED';
+	/**
+	 * @param {Object} [options]
+	 * @param {String} [options.status]
+	 * @param {Boolean} [options.mountOnShow]
+	 * @param {Boolean} [options.transitionOnMount]
+	 * @param {Boolean} [options.visible]
+	 * @param {Boolean} [options.unmountOnHide]
+	 */
+
+	function computeStatuses(options) {
+	  var mountOnShow = options.mountOnShow,
+	      status = options.status,
+	      transitionOnMount = options.transitionOnMount,
+	      visible = options.visible,
+	      unmountOnHide = options.unmountOnHide;
+
+	  if (visible) {
+	    if (status === TRANSITION_STATUS_INITIAL) {
+	      if (transitionOnMount) {
+	        return {
+	          animating: true,
+	          status: TRANSITION_STATUS_ENTERING,
+	          nextStatus: TRANSITION_STATUS_ENTERED
+	        };
+	      }
+
+	      return {
+	        animating: false,
+	        status: TRANSITION_STATUS_ENTERED,
+	        nextStatus: undefined
+	      };
+	    }
+
+	    if (status === TRANSITION_STATUS_UNMOUNTED) {
+	      return {
+	        animating: true,
+	        status: TRANSITION_STATUS_ENTERING,
+	        nextStatus: TRANSITION_STATUS_ENTERED
+	      };
+	    }
+
+	    if (status === TRANSITION_STATUS_EXITED || status === TRANSITION_STATUS_EXITING) {
+	      return {
+	        animating: true,
+	        status: TRANSITION_STATUS_ENTERING,
+	        nextStatus: TRANSITION_STATUS_ENTERED
+	      };
+	    }
+
+	    if (status === TRANSITION_STATUS_ENTERING) {
+	      return {};
+	    }
+	    /* istanbul ignore else */
+
+
+	    if (status === TRANSITION_STATUS_ENTERED) {
+	      return {
+	        animating: false,
+	        status: TRANSITION_STATUS_ENTERED,
+	        nextStatus: undefined
+	      };
+	    }
+	  }
+
+	  if (status === TRANSITION_STATUS_INITIAL) {
+	    if (mountOnShow || unmountOnHide) {
+	      return {
+	        animating: false,
+	        status: TRANSITION_STATUS_UNMOUNTED,
+	        nextStatus: undefined
+	      };
+	    }
+
+	    return {
+	      animating: false,
+	      status: TRANSITION_STATUS_EXITED,
+	      nextStatus: undefined
+	    };
+	  }
+
+	  if (status === TRANSITION_STATUS_ENTERED || status === TRANSITION_STATUS_ENTERING) {
+	    return {
+	      animating: true,
+	      status: TRANSITION_STATUS_EXITING,
+	      nextStatus: unmountOnHide ? TRANSITION_STATUS_UNMOUNTED : TRANSITION_STATUS_EXITED
+	    };
+	  }
+
+	  if (status === TRANSITION_STATUS_EXITING) {
+	    return {};
+	  }
+
+	  if (status === TRANSITION_STATUS_EXITED) {
+	    return {
+	      animating: false,
+	      status: TRANSITION_STATUS_EXITED,
+	      nextStatus: undefined
+	    };
+	  }
+	  /* istanbul ignore else */
+
+
+	  if (status === TRANSITION_STATUS_UNMOUNTED) {
+	    return {
+	      animating: false,
+	      status: TRANSITION_STATUS_UNMOUNTED,
+	      nextStatus: undefined
+	    };
+	  }
+	  /* istanbul ignore next */
+
+
+	  throw new Error("Transition:computeStatuses(): an unexpected status transition: { visible: " + visible + ", status: " + status + " }");
+	}
+
+	var _TRANSITION_CALLBACK_, _TRANSITION_STYLE_TYP;
+	var TRANSITION_CALLBACK_TYPE = (_TRANSITION_CALLBACK_ = {}, _TRANSITION_CALLBACK_[TRANSITION_STATUS_ENTERED] = 'show', _TRANSITION_CALLBACK_[TRANSITION_STATUS_EXITED] = 'hide', _TRANSITION_CALLBACK_);
+	var TRANSITION_STYLE_TYPE = (_TRANSITION_STYLE_TYP = {}, _TRANSITION_STYLE_TYP[TRANSITION_STATUS_ENTERING] = 'show', _TRANSITION_STYLE_TYP[TRANSITION_STATUS_EXITING] = 'hide', _TRANSITION_STYLE_TYP);
+	/**
+	 * A transition is an animation usually used to move content in or out of view.
+	 */
+
+	var Transition = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Transition, _Component);
+
+	  function Transition() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.state = {
+	      status: TRANSITION_STATUS_INITIAL
+	    };
+
+	    _this.handleStart = function (nextStatus) {
+	      var duration = _this.props.duration;
+	      var durationType = TRANSITION_CALLBACK_TYPE[nextStatus];
+	      var durationValue = normalizeTransitionDuration(duration, durationType);
+	      _this.timeoutId = setTimeout(function () {
+	        return _this.setState({
+	          status: nextStatus
+	        });
+	      }, durationValue);
+	    };
+
+	    _this.updateStatus = function (prevState) {
+	      if (prevState.status !== _this.state.status) {
+	        // Timeout should be cleared in any case as previous can lead set to unexpected `nextStatus`
+	        clearTimeout(_this.timeoutId);
+
+	        if (_this.state.nextStatus) {
+	          _this.handleStart(_this.state.nextStatus);
+	        }
+	      }
+
+	      if (!prevState.animating && _this.state.animating) {
+	        invoke(_this.props, 'onStart', null, _extends({}, _this.props, {
+	          status: _this.state.status
+	        }));
+	      }
+
+	      if (prevState.animating && !_this.state.animating) {
+	        var callback = _this.state.status === TRANSITION_STATUS_ENTERED ? 'onShow' : 'onHide';
+
+	        invoke(_this.props, 'onComplete', null, _extends({}, _this.props, {
+	          status: _this.state.status
+	        }));
+
+	        invoke(_this.props, callback, null, _extends({}, _this.props, {
+	          status: _this.state.status
+	        }));
+	      }
+	    };
+
+	    _this.computeClasses = function () {
+	      var _this$props = _this.props,
+	          animation = _this$props.animation,
+	          directional = _this$props.directional,
+	          children = _this$props.children;
+	      var _this$state = _this.state,
+	          animating = _this$state.animating,
+	          status = _this$state.status;
+
+	      var childClasses = get(children, 'props.className');
+
+	      var isDirectional = isNil(directional) ? includes(DIRECTIONAL_TRANSITIONS, animation) : directional;
+
+	      if (isDirectional) {
+	        return cx(animation, childClasses, useKeyOnly(animating, 'animating'), useKeyOnly(status === TRANSITION_STATUS_ENTERING, 'in'), useKeyOnly(status === TRANSITION_STATUS_EXITING, 'out'), useKeyOnly(status === TRANSITION_STATUS_EXITED, 'hidden'), useKeyOnly(status !== TRANSITION_STATUS_EXITED, 'visible'), 'transition');
+	      }
+
+	      return cx(animation, childClasses, useKeyOnly(animating, 'animating transition'));
+	    };
+
+	    _this.computeStyle = function () {
+	      var _this$props2 = _this.props,
+	          children = _this$props2.children,
+	          duration = _this$props2.duration;
+	      var status = _this.state.status;
+
+	      var childStyle = get(children, 'props.style');
+
+	      var type = TRANSITION_STYLE_TYPE[status];
+	      var animationDuration = type && normalizeTransitionDuration(duration, type) + "ms";
+	      return _extends({}, childStyle, {
+	        animationDuration: animationDuration
+	      });
+	    };
+
+	    return _this;
+	  } // ----------------------------------------
+	  // Lifecycle
+	  // ----------------------------------------
+
+
+	  Transition.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
+	    var derivedState = computeStatuses({
+	      mountOnShow: props.mountOnShow,
+	      status: state.status,
+	      transitionOnMount: props.transitionOnMount,
+	      visible: props.visible,
+	      unmountOnHide: props.unmountOnHide
+	    });
+	    return derivedState;
+	  };
+
+	  var _proto = Transition.prototype;
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    this.updateStatus({});
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
+	    this.updateStatus(prevState);
+	  };
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    clearTimeout(this.timeoutId);
+	  } // ----------------------------------------
+	  // Callback handling
+	  // ----------------------------------------
+	  ; // ----------------------------------------
+	  // Render
+	  // ----------------------------------------
+
+
+	  _proto.render = function render() {
+	    var children = this.props.children;
+	    var status = this.state.status;
+
+	    if (status === TRANSITION_STATUS_UNMOUNTED) {
+	      return null;
+	    }
+
+	    return /*#__PURE__*/react.exports.cloneElement(children, {
+	      className: this.computeClasses(),
+	      style: this.computeStyle()
+	    });
+	  };
+
+	  return Transition;
+	}(react.exports.Component);
+
+	Transition.INITIAL = TRANSITION_STATUS_INITIAL;
+	Transition.ENTERED = TRANSITION_STATUS_ENTERED;
+	Transition.ENTERING = TRANSITION_STATUS_ENTERING;
+	Transition.EXITED = TRANSITION_STATUS_EXITED;
+	Transition.EXITING = TRANSITION_STATUS_EXITING;
+	Transition.UNMOUNTED = TRANSITION_STATUS_UNMOUNTED;
+	Transition.Group = TransitionGroup;
+	Transition.handledProps = ["animation", "children", "directional", "duration", "mountOnShow", "onComplete", "onHide", "onShow", "onStart", "reactKey", "transitionOnMount", "unmountOnHide", "visible"];
+	Transition.propTypes = {
+	  /** Named animation event to used. Must be defined in CSS. */
+	  animation: propTypes.exports.oneOfType([propTypes.exports.oneOf(TRANSITIONS), propTypes.exports.string]),
+
+	  /** Primary content. */
+	  children: propTypes.exports.element.isRequired,
+
+	  /** Whether it is directional animation event or not. Use it only for custom transitions. */
+	  directional: propTypes.exports.bool,
+
+	  /** Duration of the CSS transition animation in milliseconds. */
+	  duration: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.shape({
+	    hide: propTypes.exports.number,
+	    show: propTypes.exports.number
+	  }), propTypes.exports.string]),
+
+	  /** Show the component; triggers the enter or exit animation. */
+	  visible: propTypes.exports.bool,
+
+	  /** Wait until the first "enter" transition to mount the component (add it to the DOM). */
+	  mountOnShow: propTypes.exports.bool,
+
+	  /**
+	   * Callback on each transition that changes visibility to shown.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props with status.
+	   */
+	  onComplete: propTypes.exports.func,
+
+	  /**
+	   * Callback on each transition that changes visibility to hidden.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props with status.
+	   */
+	  onHide: propTypes.exports.func,
+
+	  /**
+	   * Callback on each transition that changes visibility to shown.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props with status.
+	   */
+	  onShow: propTypes.exports.func,
+
+	  /**
+	   * Callback on animation start.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props with status.
+	   */
+	  onStart: propTypes.exports.func,
+
+	  /** React's key of the element. */
+	  reactKey: propTypes.exports.string,
+
+	  /** Run the enter animation when the component mounts, if it is initially shown. */
+	  transitionOnMount: propTypes.exports.bool,
+
+	  /** Unmount the component (remove it from the DOM) when it is not shown. */
+	  unmountOnHide: propTypes.exports.bool
+	} ;
+	Transition.defaultProps = {
+	  animation: 'fade',
+	  duration: 500,
+	  visible: true,
+	  mountOnShow: true,
+	  transitionOnMount: false,
+	  unmountOnHide: false
+	};
+
+	({
+	  /** Primary content. */
+	  children: propTypes.exports.node.isRequired,
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and internal state.
+	   */
+	  onClose: propTypes.exports.func,
+
+	  /**
+	   * Callback on each transition that changes visibility to hidden.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props with transition status and internal state.
+	   */
+	  onHide: propTypes.exports.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and internal state.
+	   */
+	  onOpen: propTypes.exports.func,
+
+	  /**
+	   * Callback on animation start.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props with transition status and internal state.
+	   */
+	  onStart: propTypes.exports.func,
+
+	  /** Controls whether or not the portal is displayed. */
+	  open: propTypes.exports.bool,
+
+	  /** Transition props. */
+	  transition: propTypes.exports.object
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Context which visibility should attach onscroll events. */
+	  context: propTypes.exports.object,
+
+	  /**
+	   * When set to true a callback will occur anytime an element passes a condition not just immediately after the
+	   * threshold is met.
+	   */
+	  continuous: propTypes.exports.bool,
+
+	  /** Fires callbacks immediately after mount. */
+	  fireOnMount: propTypes.exports.bool,
+
+	  /**
+	   * Element's bottom edge has passed top of screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onBottomPassed: propTypes.exports.func,
+
+	  /**
+	   * Element's bottom edge has not passed top of screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onBottomPassedReverse: propTypes.exports.func,
+
+	  /**
+	   * Element's bottom edge has passed bottom of screen
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onBottomVisible: propTypes.exports.func,
+
+	  /**
+	   * Element's bottom edge has not passed bottom of screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onBottomVisibleReverse: propTypes.exports.func,
+
+	  /**
+	   * Value that context should be adjusted in pixels. Useful for making content appear below content fixed to the
+	   * page.
+	   */
+	  offset: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string, propTypes.exports.arrayOf(propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]))]),
+
+	  /** When set to false a callback will occur each time an element passes the threshold for a condition. */
+	  once: propTypes.exports.bool,
+
+	  /** Element is not visible on the screen. */
+	  onPassed: propTypes.exports.object,
+
+	  /**
+	   * Any part of an element is visible on screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onPassing: propTypes.exports.func,
+
+	  /**
+	   * Element's top has not passed top of screen but bottom has.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onPassingReverse: propTypes.exports.func,
+
+	  /**
+	   * Element is not visible on the screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onOffScreen: propTypes.exports.func,
+
+	  /**
+	   * Element is visible on the screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onOnScreen: propTypes.exports.func,
+
+	  /**
+	   * Element's top edge has passed top of the screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onTopPassed: propTypes.exports.func,
+
+	  /**
+	   * Element's top edge has not passed top of the screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onTopPassedReverse: propTypes.exports.func,
+
+	  /**
+	   * Element's top edge has passed bottom of screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onTopVisible: propTypes.exports.func,
+
+	  /**
+	   * Element's top edge has not passed bottom of screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onTopVisibleReverse: propTypes.exports.func,
+
+	  /**
+	   * Element's top edge has passed bottom of screen.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUpdate: propTypes.exports.func,
+
+	  /**
+	   * Allows to choose the mode of the position calculations:
+	   * - `events` - (default) update and fire callbacks only on scroll/resize events
+	   * - `repaint` - update and fire callbacks on browser repaint (animation frames)
+	   */
+	  updateOn: propTypes.exports.oneOf(['events', 'repaint'])
+	}) ;
+
+	/**
+	 * A divider sub-component for Breadcrumb component.
+	 */
+
+	function BreadcrumbDivider(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      icon = props.icon;
+	  var classes = cx('divider', className);
+	  var rest = getUnhandledProps(BreadcrumbDivider, props);
+	  var ElementType = getElementType(BreadcrumbDivider, props);
+
+	  if (!isNil(icon)) {
+	    return Icon.create(icon, {
+	      defaultProps: _extends({}, rest, {
+	        className: classes
+	      }),
+	      autoGenerateKey: false
+	    });
+	  }
+
+	  if (!isNil(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? '/' : children);
+	}
+
+	BreadcrumbDivider.handledProps = ["as", "children", "className", "content", "icon"];
+	BreadcrumbDivider.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Render as an `Icon` component with `divider` class instead of a `div`. */
+	  icon: itemShorthand
+	} ;
+	BreadcrumbDivider.create = createShorthandFactory(BreadcrumbDivider, function (icon) {
+	  return {
+	    icon: icon
+	  };
+	});
+
+	/**
+	 * A section sub-component for Breadcrumb component.
+	 */
+
+	var BreadcrumbSection = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(BreadcrumbSection, _Component);
+
+	  function BreadcrumbSection() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.computeElementType = function () {
+	      var _this$props = _this.props,
+	          link = _this$props.link,
+	          onClick = _this$props.onClick;
+	      if (link || onClick) return 'a';
+	    };
+
+	    _this.handleClick = function (e) {
+	      return invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = BreadcrumbSection.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props2 = this.props,
+	        active = _this$props2.active,
+	        children = _this$props2.children,
+	        className = _this$props2.className,
+	        content = _this$props2.content,
+	        href = _this$props2.href;
+	    var classes = cx(useKeyOnly(active, 'active'), 'section', className);
+	    var rest = getUnhandledProps(BreadcrumbSection, this.props);
+	    var ElementType = getElementType(BreadcrumbSection, this.props, this.computeElementType);
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      href: href,
+	      onClick: this.handleClick
+	    }), isNil$1(children) ? content : children);
+	  };
+
+	  return BreadcrumbSection;
+	}(react.exports.Component);
+
+	BreadcrumbSection.handledProps = ["active", "as", "children", "className", "content", "href", "link", "onClick"];
+	BreadcrumbSection.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Style as the currently active section. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Render as an `a` tag instead of a `div` and adds the href attribute. */
+	  href: every$1([disallow(['link']), propTypes.exports.string]),
+
+	  /** Render as an `a` tag instead of a `div`. */
+	  link: every$1([disallow(['href']), propTypes.exports.bool]),
+
+	  /**
+	   * Called on click. When passed, the component will render as an `a`
+	   * tag by default instead of a `div`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func
+	} ;
+	BreadcrumbSection.create = createShorthandFactory(BreadcrumbSection, function (content) {
+	  return {
+	    content: content,
+	    link: true
+	  };
+	});
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content of the Breadcrumb.Divider. */
+	  divider: every$1([disallow(['icon']), contentShorthand]),
+
+	  /** For use with the sections prop. Render as an `Icon` component with `divider` class instead of a `div` in
+	   *  Breadcrumb.Divider. */
+	  icon: every$1([disallow(['divider']), itemShorthand]),
+
+	  /** Shorthand array of props for Breadcrumb.Section. */
+	  sections: collectionShorthand,
+
+	  /** Size of Breadcrumb. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium'))
+	}) ;
+
+	/**
+	 * A field is a form element containing a label and an input.
+	 * @see Form
+	 * @see Button
+	 * @see Checkbox
+	 * @see Dropdown
+	 * @see Input
+	 * @see Radio
+	 * @see Select
+	 * @see Visibility
+	 */
+
+	function FormField(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      control = props.control,
+	      disabled = props.disabled,
+	      error = props.error,
+	      inline = props.inline,
+	      label = props.label,
+	      required = props.required,
+	      type = props.type,
+	      width = props.width,
+	      id = props.id;
+	  var classes = cx(useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(inline, 'inline'), useKeyOnly(required, 'required'), useWidthProp(width, 'wide'), 'field', className);
+	  var rest = getUnhandledProps(FormField, props);
+	  var ElementType = getElementType(FormField, props);
+
+	  var errorPointing = get(error, 'pointing', 'above');
+
+	  var errorLabel = Label.create(error, {
+	    autoGenerateKey: false,
+	    defaultProps: {
+	      prompt: true,
+	      pointing: errorPointing,
+	      id: id ? id + "-error-message" : undefined,
+	      role: 'alert',
+	      'aria-atomic': true
+	    }
+	  });
+	  var errorLabelBefore = (errorPointing === 'below' || errorPointing === 'right') && errorLabel;
+	  var errorLabelAfter = (errorPointing === 'above' || errorPointing === 'left') && errorLabel; // ----------------------------------------
+	  // No Control
+	  // ----------------------------------------
+
+	  if (isNil(control)) {
+	    if (isNil(label)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        id: id
+	      }), isNil$1(children) ? content : children);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      id: id
+	    }), errorLabelBefore, createHTMLLabel(label, {
+	      autoGenerateKey: false
+	    }), errorLabelAfter);
+	  } // ----------------------------------------
+	  // Checkbox/Radio Control
+	  // ----------------------------------------
+
+
+	  var ariaDescribedBy = id && error ? id + "-error-message" : null;
+	  var ariaAttrs = {
+	    'aria-describedby': ariaDescribedBy,
+	    'aria-invalid': error ? true : undefined
+	  };
+
+	  var controlProps = _extends({}, rest, {
+	    content: content,
+	    children: children,
+	    disabled: disabled,
+	    required: required,
+	    type: type,
+	    id: id
+	  }); // wrap HTML checkboxes/radios in the label
+
+
+	  if (control === 'input' && (type === 'checkbox' || type === 'radio')) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, {
+	      className: classes
+	    }, /*#__PURE__*/React$1.createElement("label", null, errorLabelBefore, /*#__PURE__*/react.exports.createElement(control, _extends({}, ariaAttrs, controlProps)), " ", label, errorLabelAfter));
+	  } // pass label prop to controls that support it
+
+
+	  if (control === Checkbox || control === Radio) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, {
+	      className: classes
+	    }, errorLabelBefore, /*#__PURE__*/react.exports.createElement(control, _extends({}, ariaAttrs, controlProps, {
+	      label: label
+	    })), errorLabelAfter);
+	  } // ----------------------------------------
+	  // Other Control
+	  // ----------------------------------------
+
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, {
+	    className: classes
+	  }, createHTMLLabel(label, {
+	    defaultProps: {
+	      htmlFor: id
+	    },
+	    autoGenerateKey: false
+	  }), errorLabelBefore, /*#__PURE__*/react.exports.createElement(control, _extends({}, ariaAttrs, controlProps)), errorLabelAfter);
+	}
+
+	FormField.handledProps = ["as", "children", "className", "content", "control", "disabled", "error", "id", "inline", "label", "required", "type", "width"];
+	FormField.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /**
+	   * A form control component (i.e. Dropdown) or HTML tagName (i.e. 'input').
+	   * Extra FormField props are passed to the control component.
+	   * Mutually exclusive with children.
+	   */
+	  control: propTypes.exports.oneOfType([propTypes.exports.elementType, propTypes.exports.oneOf(['button', 'input', 'select', 'textarea'])]),
+
+	  /** Individual fields may be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Individual fields may display an error state along with a message. */
+	  error: propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand]),
+
+	  /** The id of the control */
+	  id: propTypes.exports.string,
+
+	  /** A field can have its label next to instead of above it. */
+	  inline: propTypes.exports.bool,
+	  // Heads Up!
+	  // Do not disallow children with `label` shorthand
+	  // The `control` might accept a `label` prop and `children`
+
+	  /** Mutually exclusive with children. */
+	  label: propTypes.exports.oneOfType([propTypes.exports.node, propTypes.exports.object]),
+
+	  /** A field can show that input is mandatory. */
+	  required: propTypes.exports.bool,
+
+	  /** Passed to the control component (i.e. <input type='password' />) */
+	  type: every$1([demand(['control']) // don't strictly validate HTML types
+	  // a control might be passed that uses a `type` prop with unknown values
+	  // let the control validate if for us
+	  ]),
+
+	  /** A field can specify its width in grid columns */
+	  width: propTypes.exports.oneOf(WIDTHS)
+	} ;
+
+	/**
+	 * Sugar for <Form.Field control={Button} />.
+	 * @see Button
+	 * @see Form
+	 */
+
+	function FormButton(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormButton, props);
+	  var ElementType = getElementType(FormButton, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormButton.handledProps = ["as", "control"];
+	FormButton.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormButton.defaultProps = {
+	  as: FormField,
+	  control: Button
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Checkbox} />.
+	 * @see Checkbox
+	 * @see Form
+	 */
+
+	function FormCheckbox(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormCheckbox, props);
+	  var ElementType = getElementType(FormCheckbox, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormCheckbox.handledProps = ["as", "control"];
+	FormCheckbox.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormCheckbox.defaultProps = {
+	  as: FormField,
+	  control: Checkbox
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Dropdown} />.
+	 * @see Dropdown
+	 * @see Form
+	 */
+
+	function FormDropdown(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormDropdown, props);
+	  var ElementType = getElementType(FormDropdown, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormDropdown.handledProps = ["as", "control"];
+	FormDropdown.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormDropdown.defaultProps = {
+	  as: FormField,
+	  control: Dropdown
+	};
+
+	/**
+	 * A set of fields can appear grouped together.
+	 * @see Form
+	 */
+
+	function FormGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      grouped = props.grouped,
+	      inline = props.inline,
+	      unstackable = props.unstackable,
+	      widths = props.widths;
+	  var classes = cx(useKeyOnly(grouped, 'grouped'), useKeyOnly(inline, 'inline'), useKeyOnly(unstackable, 'unstackable'), useWidthProp(widths, null, true), 'fields', className);
+	  var rest = getUnhandledProps(FormGroup, props);
+	  var ElementType = getElementType(FormGroup, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	FormGroup.handledProps = ["as", "children", "className", "grouped", "inline", "unstackable", "widths"];
+	FormGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Fields can show related choices. */
+	  grouped: every$1([disallow(['inline']), propTypes.exports.bool]),
+
+	  /** Multiple fields may be inline in a row. */
+	  inline: every$1([disallow(['grouped']), propTypes.exports.bool]),
+
+	  /** A form group can prevent itself from stacking on mobile. */
+	  unstackable: propTypes.exports.bool,
+
+	  /** Fields Groups can specify their width in grid columns or automatically divide fields to be equal width. */
+	  widths: propTypes.exports.oneOf([].concat(WIDTHS, ['equal']))
+	} ;
+
+	/**
+	 * An Input is a field used to elicit a response from a user.
+	 * @see Button
+	 * @see Form
+	 * @see Icon
+	 * @see Label
+	 */
+
+	var Input = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Input, _Component);
+
+	  function Input() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.inputRef = /*#__PURE__*/react.exports.createRef();
+
+	    _this.computeIcon = function () {
+	      var _this$props = _this.props,
+	          loading = _this$props.loading,
+	          icon = _this$props.icon;
+	      if (!isNil(icon)) return icon;
+	      if (loading) return 'spinner';
+	    };
+
+	    _this.computeTabIndex = function () {
+	      var _this$props2 = _this.props,
+	          disabled = _this$props2.disabled,
+	          tabIndex = _this$props2.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      if (disabled) return -1;
+	    };
+
+	    _this.focus = function () {
+	      return _this.inputRef.current.focus();
+	    };
+
+	    _this.select = function () {
+	      return _this.inputRef.current.select();
+	    };
+
+	    _this.handleChange = function (e) {
+	      var value = get(e, 'target.value');
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    _this.handleChildOverrides = function (child, defaultProps) {
+	      return _extends({}, defaultProps, child.props, {
+	        ref: function ref(c) {
+	          handleRef(child.ref, c);
+	          _this.inputRef.current = c;
+	        }
+	      });
+	    };
+
+	    _this.partitionProps = function () {
+	      var _this$props3 = _this.props,
+	          disabled = _this$props3.disabled,
+	          type = _this$props3.type;
+
+	      var tabIndex = _this.computeTabIndex();
+
+	      var unhandled = getUnhandledProps(Input, _this.props);
+
+	      var _partitionHTMLProps = partitionHTMLProps(unhandled),
+	          htmlInputProps = _partitionHTMLProps[0],
+	          rest = _partitionHTMLProps[1];
+
+	      return [_extends({}, htmlInputProps, {
+	        disabled: disabled,
+	        type: type,
+	        tabIndex: tabIndex,
+	        onChange: _this.handleChange,
+	        ref: _this.inputRef
+	      }), rest];
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Input.prototype;
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props4 = this.props,
+	        action = _this$props4.action,
+	        actionPosition = _this$props4.actionPosition,
+	        children = _this$props4.children,
+	        className = _this$props4.className,
+	        disabled = _this$props4.disabled,
+	        error = _this$props4.error,
+	        fluid = _this$props4.fluid,
+	        focus = _this$props4.focus,
+	        icon = _this$props4.icon,
+	        iconPosition = _this$props4.iconPosition,
+	        input = _this$props4.input,
+	        inverted = _this$props4.inverted,
+	        label = _this$props4.label,
+	        labelPosition = _this$props4.labelPosition,
+	        loading = _this$props4.loading,
+	        size = _this$props4.size,
+	        transparent = _this$props4.transparent,
+	        type = _this$props4.type;
+	    var classes = cx('ui', size, useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(fluid, 'fluid'), useKeyOnly(focus, 'focus'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(transparent, 'transparent'), useValueAndKey(actionPosition, 'action') || useKeyOnly(action, 'action'), useValueAndKey(iconPosition, 'icon') || useKeyOnly(icon || loading, 'icon'), useValueAndKey(labelPosition, 'labeled') || useKeyOnly(label, 'labeled'), 'input', className);
+	    var ElementType = getElementType(Input, this.props);
+
+	    var _this$partitionProps = this.partitionProps(),
+	        htmlInputProps = _this$partitionProps[0],
+	        rest = _this$partitionProps[1]; // Render with children
+	    // ----------------------------------------
+
+
+	    if (!isNil$1(children)) {
+	      // add htmlInputProps to the `<input />` child
+	      var childElements = map(react.exports.Children.toArray(children), function (child) {
+	        if (child.type !== 'input') return child;
+	        return /*#__PURE__*/react.exports.cloneElement(child, _this2.handleChildOverrides(child, htmlInputProps));
+	      });
+
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), childElements);
+	    } // Render Shorthand
+	    // ----------------------------------------
+
+
+	    var actionElement = Button.create(action, {
+	      autoGenerateKey: false
+	    });
+	    var labelElement = Label.create(label, {
+	      defaultProps: {
+	        className: cx('label', // add 'left|right corner'
+	        includes(labelPosition, 'corner') && labelPosition)
+	      },
+	      autoGenerateKey: false
+	    });
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), actionPosition === 'left' && actionElement, labelPosition !== 'right' && labelElement, createHTMLInput(input || type, {
+	      defaultProps: htmlInputProps,
+	      autoGenerateKey: false
+	    }), Icon.create(this.computeIcon(), {
+	      autoGenerateKey: false
+	    }), actionPosition !== 'left' && actionElement, labelPosition === 'right' && labelElement);
+	  };
+
+	  return Input;
+	}(react.exports.Component);
+
+	Input.handledProps = ["action", "actionPosition", "as", "children", "className", "disabled", "error", "fluid", "focus", "icon", "iconPosition", "input", "inverted", "label", "labelPosition", "loading", "onChange", "size", "tabIndex", "transparent", "type"];
+	Input.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** An Input can be formatted to alert the user to an action they may perform. */
+	  action: propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand]),
+
+	  /** An action can appear along side an Input on the left or right. */
+	  actionPosition: propTypes.exports.oneOf(['left']),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** An Input field can show that it is disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** An Input field can show the data contains errors. */
+	  error: propTypes.exports.bool,
+
+	  /** Take on the size of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** An Input field can show a user is currently interacting with it. */
+	  focus: propTypes.exports.bool,
+
+	  /** Optional Icon to display inside the Input. */
+	  icon: propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand]),
+
+	  /** An Icon can appear inside an Input on the left or right. */
+	  iconPosition: propTypes.exports.oneOf(['left']),
+
+	  /** Shorthand for creating the HTML Input. */
+	  input: itemShorthand,
+
+	  /** Format to appear on dark backgrounds. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Optional Label to display along side the Input. */
+	  label: itemShorthand,
+
+	  /** A Label can appear outside an Input on the left or right. */
+	  labelPosition: propTypes.exports.oneOf(['left', 'right', 'left corner', 'right corner']),
+
+	  /** An Icon Input field can show that it is currently loading data. */
+	  loading: propTypes.exports.bool,
+
+	  /**
+	   * Called on change.
+	   *
+	   * @param {ChangeEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and a proposed value.
+	   */
+	  onChange: propTypes.exports.func,
+
+	  /** An Input can vary in size. */
+	  size: propTypes.exports.oneOf(['mini', 'small', 'large', 'big', 'huge', 'massive']),
+
+	  /** An Input can receive focus. */
+	  tabIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Transparent Input has no background. */
+	  transparent: propTypes.exports.bool,
+
+	  /** The HTML input type. */
+	  type: propTypes.exports.string
+	} ;
+	Input.defaultProps = {
+	  type: 'text'
+	};
+	Input.create = createShorthandFactory(Input, function (type) {
+	  return {
+	    type: type
+	  };
+	});
+
+	/**
+	 * Sugar for <Form.Field control={Input} />.
+	 * @see Form
+	 * @see Input
+	 */
+
+	function FormInput(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormInput, props);
+	  var ElementType = getElementType(FormInput, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormInput.handledProps = ["as", "control"];
+	FormInput.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormInput.defaultProps = {
+	  as: FormField,
+	  control: Input
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Radio} />.
+	 * @see Form
+	 * @see Radio
+	 */
+
+	function FormRadio(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormRadio, props);
+	  var ElementType = getElementType(FormRadio, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormRadio.handledProps = ["as", "control"];
+	FormRadio.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormRadio.defaultProps = {
+	  as: FormField,
+	  control: Radio
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Select} />.
+	 * @see Form
+	 * @see Select
+	 */
+
+	function FormSelect(props) {
+	  var control = props.control,
+	      options = props.options;
+	  var rest = getUnhandledProps(FormSelect, props);
+	  var ElementType = getElementType(FormSelect, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control,
+	    options: options
+	  }));
+	}
+
+	FormSelect.handledProps = ["as", "control", "options"];
+	FormSelect.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control,
+
+	  /** Array of Dropdown.Item props e.g. `{ text: '', value: '' }` */
+	  options: propTypes.exports.arrayOf(propTypes.exports.shape(Dropdown.Item.propTypes)).isRequired
+	} ;
+	FormSelect.defaultProps = {
+	  as: FormField,
+	  control: Select
+	};
+
+	/**
+	 * Sugar for <Form.Field control={TextArea} />.
+	 * @see Form
+	 * @see TextArea
+	 */
+
+	function FormTextArea(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormTextArea, props);
+	  var ElementType = getElementType(FormTextArea, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormTextArea.handledProps = ["as", "control"];
+	FormTextArea.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormTextArea.defaultProps = {
+	  as: FormField,
+	  control: TextArea
+	};
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** The HTML form action */
+	  action: propTypes.exports.string,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Automatically show any error Message children. */
+	  error: propTypes.exports.bool,
+
+	  /** A form can have its color inverted for contrast. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Automatically show a loading indicator. */
+	  loading: propTypes.exports.bool,
+
+	  /** The HTML form submit handler. */
+	  onSubmit: propTypes.exports.func,
+
+	  /** A comment can contain a form to reply to a comment. This may have arbitrary content. */
+	  reply: propTypes.exports.bool,
+
+	  /** A form can vary in size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** Automatically show any success Message children. */
+	  success: propTypes.exports.bool,
+
+	  /** A form can prevent itself from stacking on mobile. */
+	  unstackable: propTypes.exports.bool,
+
+	  /** Automatically show any warning Message children. */
+	  warning: propTypes.exports.bool,
+
+	  /** Forms can automatically divide fields to be equal width. */
+	  widths: propTypes.exports.oneOf(['equal'])
+	}) ;
+
+	/**
+	 * A column sub-component for Grid.
+	 */
+
+	function GridColumn(props) {
+	  var children = props.children,
+	      className = props.className,
+	      computer = props.computer,
+	      color = props.color,
+	      floated = props.floated,
+	      largeScreen = props.largeScreen,
+	      mobile = props.mobile,
+	      only = props.only,
+	      stretched = props.stretched,
+	      tablet = props.tablet,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign,
+	      widescreen = props.widescreen,
+	      width = props.width;
+	  var classes = cx(color, useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), useWidthProp(computer, 'wide computer'), useWidthProp(largeScreen, 'wide large screen'), useWidthProp(mobile, 'wide mobile'), useWidthProp(tablet, 'wide tablet'), useWidthProp(widescreen, 'wide widescreen'), useWidthProp(width, 'wide'), 'column', className);
+	  var rest = getUnhandledProps(GridColumn, props);
+	  var ElementType = getElementType(GridColumn, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	GridColumn.handledProps = ["as", "children", "className", "color", "computer", "floated", "largeScreen", "mobile", "only", "stretched", "tablet", "textAlign", "verticalAlign", "widescreen", "width"];
+	GridColumn.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A grid column can be colored. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** A column can specify a width for a computer. */
+	  computer: every$1([disallow(['width']), propTypes.exports.oneOf(WIDTHS)]),
+
+	  /** A column can sit flush against the left or right edge of a row. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** A column can specify a width for a large screen device. */
+	  largeScreen: every$1([disallow(['width']), propTypes.exports.oneOf(WIDTHS)]),
+
+	  /** A column can specify a width for a mobile device. */
+	  mobile: every$1([disallow(['width']), propTypes.exports.oneOf(WIDTHS)]),
+
+	  /** A column can appear only for a specific device, or screen sizes. */
+	  only: multipleProp(VISIBILITY),
+
+	  /** A column can stretch its contents to take up the entire grid or row height. */
+	  stretched: propTypes.exports.bool,
+
+	  /** A column can specify a width for a tablet device. */
+	  tablet: every$1([disallow(['width']), propTypes.exports.oneOf(WIDTHS)]),
+
+	  /** A column can specify its text alignment. */
+	  textAlign: propTypes.exports.oneOf(TEXT_ALIGNMENTS),
+
+	  /** A column can specify its vertical alignment to have all its columns vertically centered. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS),
+
+	  /** A column can specify a width for a wide screen device. */
+	  widescreen: every$1([disallow(['width']), propTypes.exports.oneOf(WIDTHS)]),
+
+	  /** Represents width of column. */
+	  width: every$1([disallow(['computer', 'largeScreen', 'mobile', 'tablet', 'widescreen']), propTypes.exports.oneOf(WIDTHS)])
+	} ;
+	GridColumn.create = createShorthandFactory(GridColumn, function (children) {
+	  return {
+	    children: children
+	  };
+	});
+
+	/**
+	 * A row sub-component for Grid.
+	 */
+
+	function GridRow(props) {
+	  var centered = props.centered,
+	      children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      columns = props.columns,
+	      divided = props.divided,
+	      only = props.only,
+	      reversed = props.reversed,
+	      stretched = props.stretched,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign;
+	  var classes = cx(color, useKeyOnly(centered, 'centered'), useKeyOnly(divided, 'divided'), useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useMultipleProp(reversed, 'reversed'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column', true), 'row', className);
+	  var rest = getUnhandledProps(GridRow, props);
+	  var ElementType = getElementType(GridRow, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	GridRow.handledProps = ["as", "centered", "children", "className", "color", "columns", "divided", "only", "reversed", "stretched", "textAlign", "verticalAlign"];
+	GridRow.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A row can have its columns centered. */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A grid row can be colored. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Represents column count per line in Row. */
+	  columns: propTypes.exports.oneOf([].concat(WIDTHS, ['equal'])),
+
+	  /** A row can have dividers between its columns. */
+	  divided: propTypes.exports.bool,
+
+	  /** A row can appear only for a specific device, or screen sizes. */
+	  only: multipleProp(VISIBILITY),
+
+	  /** A row can specify that its columns should reverse order at different device sizes. */
+	  reversed: multipleProp(['computer', 'computer vertically', 'mobile', 'mobile vertically', 'tablet', 'tablet vertically']),
+
+	  /** A row can stretch its contents to take up the entire column height. */
+	  stretched: propTypes.exports.bool,
+
+	  /** A row can specify its text alignment. */
+	  textAlign: propTypes.exports.oneOf(TEXT_ALIGNMENTS),
+
+	  /** A row can specify its vertical alignment to have all its columns vertically centered. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A grid can have rows divided into cells. */
+	  celled: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['internally'])]),
+
+	  /** A grid can have its columns centered. */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Represents column count per row in Grid. */
+	  columns: propTypes.exports.oneOf([].concat(WIDTHS, ['equal'])),
+
+	  /** A grid can be combined with a container to use the available layout and alignment. */
+	  container: propTypes.exports.bool,
+
+	  /** A grid can have dividers between its columns. */
+	  divided: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['vertically'])]),
+
+	  /** A grid can double its column width on tablet and mobile sizes. */
+	  doubling: propTypes.exports.bool,
+
+	  /** A grid's colors can be inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** A grid can preserve its vertical and horizontal gutters on first and last columns. */
+	  padded: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['horizontally', 'vertically'])]),
+
+	  /** A grid can increase its gutters to allow for more negative space. */
+	  relaxed: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /** A grid can specify that its columns should reverse order at different device sizes. */
+	  reversed: multipleProp(['computer', 'computer vertically', 'mobile', 'mobile vertically', 'tablet', 'tablet vertically']),
+
+	  /** A grid can have its columns stack on-top of each other after reaching mobile breakpoints. */
+	  stackable: propTypes.exports.bool,
+
+	  /** A grid can stretch its contents to take up the entire grid height. */
+	  stretched: propTypes.exports.bool,
+
+	  /** A grid can specify its text alignment. */
+	  textAlign: propTypes.exports.oneOf(TEXT_ALIGNMENTS),
+
+	  /** A grid can specify its vertical alignment to have all its columns vertically centered. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	}) ;
+
+	/**
+	 * A message can contain a content.
+	 */
+
+	function MessageContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('content', className);
+	  var rest = getUnhandledProps(MessageContent, props);
+	  var ElementType = getElementType(MessageContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MessageContent.handledProps = ["as", "children", "className", "content"];
+	MessageContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A message can contain a header.
+	 */
+
+	function MessageHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(MessageHeader, props);
+	  var ElementType = getElementType(MessageHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MessageHeader.handledProps = ["as", "children", "className", "content"];
+	MessageHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	MessageHeader.create = createShorthandFactory(MessageHeader, function (val) {
+	  return {
+	    content: val
+	  };
+	});
+
+	/**
+	 * A message list can contain an item.
+	 */
+
+	function MessageItem(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('content', className);
+	  var rest = getUnhandledProps(MessageItem, props);
+	  var ElementType = getElementType(MessageItem, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MessageItem.handledProps = ["as", "children", "className", "content"];
+	MessageItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	MessageItem.defaultProps = {
+	  as: 'li'
+	};
+	MessageItem.create = createShorthandFactory(MessageItem, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A message can contain a list of items.
+	 */
+
+	function MessageList(props) {
+	  var children = props.children,
+	      className = props.className,
+	      items = props.items;
+	  var classes = cx('list', className);
+	  var rest = getUnhandledProps(MessageList, props);
+	  var ElementType = getElementType(MessageList, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? map(items, MessageItem.create) : children);
+	}
+
+	MessageList.handledProps = ["as", "children", "className", "items"];
+	MessageList.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand Message.Items. */
+	  items: collectionShorthand
+	} ;
+	MessageList.defaultProps = {
+	  as: 'ul'
+	};
+	MessageList.create = createShorthandFactory(MessageList, function (val) {
+	  return {
+	    items: val
+	  };
+	});
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A message can be formatted to attach itself to other content. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['bottom', 'top'])]),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A message can be formatted to be different colors. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** A message can only take up the width of its content. */
+	  compact: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A message may be formatted to display a negative message. Same as `negative`. */
+	  error: propTypes.exports.bool,
+
+	  /** A message can float above content that it is related to. */
+	  floating: propTypes.exports.bool,
+
+	  /** Shorthand for MessageHeader. */
+	  header: itemShorthand,
+
+	  /** A message can be hidden. */
+	  hidden: propTypes.exports.bool,
+
+	  /** A message can contain an icon. */
+	  icon: propTypes.exports.oneOfType([itemShorthand, propTypes.exports.bool]),
+
+	  /** A message may be formatted to display information. */
+	  info: propTypes.exports.bool,
+
+	  /** Array shorthand items for the MessageList. Mutually exclusive with children. */
+	  list: collectionShorthand,
+
+	  /** A message may be formatted to display a negative message. Same as `error`. */
+	  negative: propTypes.exports.bool,
+
+	  /**
+	   * A message that the user can choose to hide.
+	   * Called when the user clicks the "x" icon. This also adds the "x" icon.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onDismiss: propTypes.exports.func,
+
+	  /** A message may be formatted to display a positive message.  Same as `success`. */
+	  positive: propTypes.exports.bool,
+
+	  /** A message can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** A message may be formatted to display a positive message.  Same as `positive`. */
+	  success: propTypes.exports.bool,
+
+	  /** A message can be set to visible to force itself to be shown. */
+	  visible: propTypes.exports.bool,
+
+	  /** A message may be formatted to display warning messages. */
+	  warning: propTypes.exports.bool
+	}) ;
+
+	function TableBody(props) {
+	  var children = props.children,
+	      className = props.className;
+	  var classes = cx(className);
+	  var rest = getUnhandledProps(TableBody, props);
+	  var ElementType = getElementType(TableBody, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	TableBody.handledProps = ["as", "children", "className"];
+	TableBody.defaultProps = {
+	  as: 'tbody'
+	};
+	TableBody.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string
+	} ;
+
+	/**
+	 * A table row can have cells.
+	 */
+
+	function TableCell(props) {
+	  var active = props.active,
+	      children = props.children,
+	      className = props.className,
+	      collapsing = props.collapsing,
+	      content = props.content,
+	      disabled = props.disabled,
+	      error = props.error,
+	      icon = props.icon,
+	      negative = props.negative,
+	      positive = props.positive,
+	      selectable = props.selectable,
+	      singleLine = props.singleLine,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign,
+	      warning = props.warning,
+	      width = props.width;
+	  var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(collapsing, 'collapsing'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(selectable, 'selectable'), useKeyOnly(singleLine, 'single line'), useKeyOnly(warning, 'warning'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(width, 'wide'), className);
+	  var rest = getUnhandledProps(TableCell, props);
+	  var ElementType = getElementType(TableCell, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), Icon.create(icon), content);
+	}
+
+	TableCell.handledProps = ["active", "as", "children", "className", "collapsing", "content", "disabled", "error", "icon", "negative", "positive", "selectable", "singleLine", "textAlign", "verticalAlign", "warning", "width"];
+	TableCell.defaultProps = {
+	  as: 'td'
+	};
+	TableCell.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A cell can be active or selected by a user. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A cell can be collapsing so that it only uses as much space as required. */
+	  collapsing: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A cell can be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A cell may call attention to an error or a negative value. */
+	  error: propTypes.exports.bool,
+
+	  /** Add an Icon by name, props object, or pass an <Icon /> */
+	  icon: itemShorthand,
+
+	  /** A cell may let a user know whether a value is bad. */
+	  negative: propTypes.exports.bool,
+
+	  /** A cell may let a user know whether a value is good. */
+	  positive: propTypes.exports.bool,
+
+	  /** A cell can be selectable. */
+	  selectable: propTypes.exports.bool,
+
+	  /** A cell can specify that its contents should remain on a single line and not wrap. */
+	  singleLine: propTypes.exports.bool,
+
+	  /** A table cell can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified')),
+
+	  /** A table cell can adjust its text alignment. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS),
+
+	  /** A cell may warn a user. */
+	  warning: propTypes.exports.bool,
+
+	  /** A table can specify the width of individual columns independently. */
+	  width: propTypes.exports.oneOf(WIDTHS)
+	} ;
+	TableCell.create = createShorthandFactory(TableCell, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A table can have a header.
+	 */
+
+	function TableHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      fullWidth = props.fullWidth;
+	  var classes = cx(useKeyOnly(fullWidth, 'full-width'), className);
+	  var rest = getUnhandledProps(TableHeader, props);
+	  var ElementType = getElementType(TableHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	TableHeader.handledProps = ["as", "children", "className", "content", "fullWidth"];
+	TableHeader.defaultProps = {
+	  as: 'thead'
+	};
+	TableHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A definition table can have a full width header or footer, filling in the gap left by the first column. */
+	  fullWidth: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A table can have a footer.
+	 */
+
+	function TableFooter(props) {
+	  var as = props.as;
+	  var rest = getUnhandledProps(TableFooter, props);
+	  return /*#__PURE__*/React$1.createElement(TableHeader, _extends({}, rest, {
+	    as: as
+	  }));
+	}
+
+	TableFooter.handledProps = ["as"];
+	TableFooter.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType
+	} ;
+	TableFooter.defaultProps = {
+	  as: 'tfoot'
+	};
+
+	/**
+	 * A table can have a header cell.
+	 */
+
+	function TableHeaderCell(props) {
+	  var as = props.as,
+	      className = props.className,
+	      sorted = props.sorted;
+	  var classes = cx(useValueAndKey(sorted, 'sorted'), className);
+	  var rest = getUnhandledProps(TableHeaderCell, props);
+	  return /*#__PURE__*/React$1.createElement(TableCell, _extends({}, rest, {
+	    as: as,
+	    className: classes
+	  }));
+	}
+
+	TableHeaderCell.handledProps = ["as", "className", "sorted"];
+	TableHeaderCell.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A header cell can be sorted in ascending or descending order. */
+	  sorted: propTypes.exports.oneOf(['ascending', 'descending'])
+	} ;
+	TableHeaderCell.defaultProps = {
+	  as: 'th'
+	};
+
+	/**
+	 * A table can have rows.
+	 */
+
+	function TableRow(props) {
+	  var active = props.active,
+	      cellAs = props.cellAs,
+	      cells = props.cells,
+	      children = props.children,
+	      className = props.className,
+	      disabled = props.disabled,
+	      error = props.error,
+	      negative = props.negative,
+	      positive = props.positive,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign,
+	      warning = props.warning;
+	  var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(warning, 'warning'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), className);
+	  var rest = getUnhandledProps(TableRow, props);
+	  var ElementType = getElementType(TableRow, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), map(cells, function (cell) {
+	    return TableCell.create(cell, {
+	      defaultProps: {
+	        as: cellAs
+	      }
+	    });
+	  }));
+	}
+
+	TableRow.handledProps = ["active", "as", "cellAs", "cells", "children", "className", "disabled", "error", "negative", "positive", "textAlign", "verticalAlign", "warning"];
+	TableRow.defaultProps = {
+	  as: 'tr',
+	  cellAs: 'td'
+	};
+	TableRow.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A row can be active or selected by a user. */
+	  active: propTypes.exports.bool,
+
+	  /** An element type to render as (string or function). */
+	  cellAs: propTypes.exports.elementType,
+
+	  /** Shorthand array of props for TableCell. */
+	  cells: collectionShorthand,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A row can be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A row may call attention to an error or a negative value. */
+	  error: propTypes.exports.bool,
+
+	  /** A row may let a user know whether a value is bad. */
+	  negative: propTypes.exports.bool,
+
+	  /** A row may let a user know whether a value is good. */
+	  positive: propTypes.exports.bool,
+
+	  /** A table row can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified')),
+
+	  /** A table row can adjust its vertical alignment. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS),
+
+	  /** A row may warn a user. */
+	  warning: propTypes.exports.bool
+	} ;
+	TableRow.create = createShorthandFactory(TableRow, function (cells) {
+	  return {
+	    cells: cells
+	  };
+	});
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Attach table to other content */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['top', 'bottom'])]),
+
+	  /** A table can reduce its complexity to increase readability. */
+	  basic: propTypes.exports.oneOfType([propTypes.exports.oneOf(['very']), propTypes.exports.bool]),
+
+	  /** A table may be divided into individual cells. */
+	  celled: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A table can be collapsing, taking up only as much space as its rows. */
+	  collapsing: propTypes.exports.bool,
+
+	  /** A table can be given a color to distinguish it from other tables. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** A table can specify its column count to divide its content evenly. */
+	  columns: propTypes.exports.oneOf(WIDTHS),
+
+	  /** A table may sometimes need to be more compact to make more rows visible at a time. */
+	  compact: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /** A table may be formatted to emphasize a first column that defines a rows content. */
+	  definition: propTypes.exports.bool,
+
+	  /**
+	   * A table can use fixed a special faster form of table rendering that does not resize table cells based on content
+	   */
+	  fixed: propTypes.exports.bool,
+
+	  /** Shorthand for a TableRow to be placed within Table.Footer. */
+	  footerRow: itemShorthand,
+
+	  /** Shorthand for a TableRow to be placed within Table.Header. */
+	  headerRow: every$1([disallow(['headerRows']), itemShorthand]),
+
+	  /** Shorthand for multiple TableRows to be placed within Table.Header. */
+	  headerRows: every$1([disallow(['headerRow']), collectionShorthand]),
+
+	  /** A table's colors can be inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** A table may sometimes need to be more padded for legibility. */
+	  padded: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /**
+	   * Mapped over `tableData` and should return shorthand for each Table.Row to be placed within Table.Body.
+	   *
+	   * @param {*} data - An element in the `tableData` array.
+	   * @param {number} index - The index of the current element in `tableData`.
+	   * @returns {*} Shorthand for a Table.Row.
+	   */
+	  renderBodyRow: every$1([disallow(['children']), demand(['tableData']), propTypes.exports.func]),
+
+	  /** A table can have its rows appear selectable. */
+	  selectable: propTypes.exports.bool,
+
+	  /** A table can specify that its cell contents should remain on a single line and not wrap. */
+	  singleLine: propTypes.exports.bool,
+
+	  /** A table can also be small or large. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'mini', 'tiny', 'medium', 'big', 'huge', 'massive')),
+
+	  /** A table may allow a user to sort contents by clicking on a table header. */
+	  sortable: propTypes.exports.bool,
+
+	  /** A table can specify how it stacks table content responsively. */
+	  stackable: propTypes.exports.bool,
+
+	  /** A table can stripe alternate rows of content with a darker color to increase contrast. */
+	  striped: propTypes.exports.bool,
+
+	  /** A table can be formatted to display complex structured data. */
+	  structured: propTypes.exports.bool,
+
+	  /** Data to be passed to the renderBodyRow function. */
+	  tableData: every$1([disallow(['children']), demand(['renderBodyRow']), propTypes.exports.array]),
+
+	  /** A table can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified')),
+
+	  /** A table can specify how it stacks table content responsively. */
+	  unstackable: propTypes.exports.bool,
+
+	  /** A table can adjust its text alignment. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Container has no maximum width. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Reduce maximum width to more naturally accommodate text. */
+	  text: propTypes.exports.bool,
+
+	  /** Align container text. */
+	  textAlign: propTypes.exports.oneOf(TEXT_ALIGNMENTS)
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Divider can clear the content above it. */
+	  clearing: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Divider can be fitted without any space above or below it. */
+	  fitted: propTypes.exports.bool,
+
+	  /** Divider can divide content without creating a dividing line. */
+	  hidden: propTypes.exports.bool,
+
+	  /** Divider can segment content horizontally. */
+	  horizontal: propTypes.exports.bool,
+
+	  /** Divider can have its colours inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Divider can provide greater margins to divide sections of content. */
+	  section: propTypes.exports.bool,
+
+	  /** Divider can segment content vertically. */
+	  vertical: propTypes.exports.bool
+	}) ;
+
+	/**
+	 * Headers may contain subheaders.
+	 */
+
+	function HeaderSubheader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('sub header', className);
+	  var rest = getUnhandledProps(HeaderSubheader, props);
+	  var ElementType = getElementType(HeaderSubheader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	HeaderSubheader.handledProps = ["as", "children", "className", "content"];
+	HeaderSubheader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	HeaderSubheader.create = createShorthandFactory(HeaderSubheader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * Header content wraps the main content when there is an adjacent Icon or Image.
+	 */
+
+	function HeaderContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('content', className);
+	  var rest = getUnhandledProps(HeaderContent, props);
+	  var ElementType = getElementType(HeaderContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	HeaderContent.handledProps = ["as", "children", "className", "content"];
+	HeaderContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Attach header  to other content, like a segment. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['top', 'bottom'])]),
+
+	  /** Format header to appear inside a content block. */
+	  block: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Color of the header. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Show that the header is inactive. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Divide header from the content below it. */
+	  dividing: propTypes.exports.bool,
+
+	  /** Header can sit to the left or right of other content. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** Add an icon by icon name or pass an Icon. */
+	  icon: every$1([disallow(['image']), propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand])]),
+
+	  /** Add an image by img src or pass an Image. */
+	  image: every$1([disallow(['icon']), propTypes.exports.oneOfType([propTypes.exports.bool, itemShorthand])]),
+
+	  /** Inverts the color of the header for dark backgrounds. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Content headings are sized with em and are based on the font-size of their container. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'big', 'massive', 'mini')),
+
+	  /** Headers may be formatted to label smaller or de-emphasized content. */
+	  sub: propTypes.exports.bool,
+
+	  /** Shorthand for Header.Subheader. */
+	  subheader: itemShorthand,
+
+	  /** Align header content. */
+	  textAlign: propTypes.exports.oneOf(TEXT_ALIGNMENTS)
+	}) ;
+
+	/**
+	 * A list item can contain a description.
+	 */
+
+	function ListDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx(className, 'description');
+	  var rest = getUnhandledProps(ListDescription, props);
+	  var ElementType = getElementType(ListDescription, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ListDescription.handledProps = ["as", "children", "className", "content"];
+	ListDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ListDescription.create = createShorthandFactory(ListDescription, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list item can contain a header.
+	 */
+
+	function ListHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(ListHeader, props);
+	  var ElementType = getElementType(ListHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ListHeader.handledProps = ["as", "children", "className", "content"];
+	ListHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ListHeader.create = createShorthandFactory(ListHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list item can contain a content.
+	 */
+
+	function ListContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      description = props.description,
+	      floated = props.floated,
+	      header = props.header,
+	      verticalAlign = props.verticalAlign;
+	  var classes = cx(useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'content', className);
+	  var rest = getUnhandledProps(ListContent, props);
+	  var ElementType = getElementType(ListContent, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), ListHeader.create(header), ListDescription.create(description), content);
+	}
+
+	ListContent.handledProps = ["as", "children", "className", "content", "description", "floated", "header", "verticalAlign"];
+	ListContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for ListDescription. */
+	  description: itemShorthand,
+
+	  /** An list content can be floated left or right. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** Shorthand for ListHeader. */
+	  header: itemShorthand,
+
+	  /** An element inside a list can be vertically aligned. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+	ListContent.create = createShorthandFactory(ListContent, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list item can contain an icon.
+	 */
+
+	function ListIcon(props) {
+	  var className = props.className,
+	      verticalAlign = props.verticalAlign;
+	  var classes = cx(useVerticalAlignProp(verticalAlign), className);
+	  var rest = getUnhandledProps(ListIcon, props);
+	  return /*#__PURE__*/React$1.createElement(Icon, _extends({}, rest, {
+	    className: classes
+	  }));
+	}
+
+	ListIcon.handledProps = ["className", "verticalAlign"];
+	ListIcon.propTypes = {
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** An element inside a list can be vertically aligned. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+	ListIcon.create = createShorthandFactory(ListIcon, function (name) {
+	  return {
+	    name: name
+	  };
+	});
+
+	/**
+	 * A list item can contain a set of items.
+	 */
+
+	var ListItem = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(ListItem, _Component);
+
+	  function ListItem() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var disabled = _this.props.disabled;
+	      if (!disabled) invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = ListItem.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        description = _this$props.description,
+	        disabled = _this$props.disabled,
+	        header = _this$props.header,
+	        icon = _this$props.icon,
+	        image = _this$props.image,
+	        value = _this$props.value;
+	    var ElementType = getElementType(ListItem, this.props);
+	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(ElementType !== 'li', 'item'), className);
+	    var rest = getUnhandledProps(ListItem, this.props);
+	    var valueProp = ElementType === 'li' ? {
+	      value: value
+	    } : {
+	      'data-value': value
+	    };
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, valueProp, {
+	        role: "listitem",
+	        className: classes,
+	        onClick: this.handleClick
+	      }, rest), children);
+	    }
+
+	    var iconElement = ListIcon.create(icon, {
+	      autoGenerateKey: false
+	    });
+	    var imageElement = Image.create(image, {
+	      autoGenerateKey: false
+	    }); // See description of `content` prop for explanation about why this is necessary.
+
+	    if (! /*#__PURE__*/react.exports.isValidElement(content) && isPlainObject(content)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, valueProp, {
+	        role: "listitem",
+	        className: classes,
+	        onClick: this.handleClick
+	      }, rest), iconElement || imageElement, ListContent.create(content, {
+	        autoGenerateKey: false,
+	        defaultProps: {
+	          header: header,
+	          description: description
+	        }
+	      }));
+	    }
+
+	    var headerElement = ListHeader.create(header, {
+	      autoGenerateKey: false
+	    });
+	    var descriptionElement = ListDescription.create(description, {
+	      autoGenerateKey: false
+	    });
+
+	    if (iconElement || imageElement) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, valueProp, {
+	        role: "listitem",
+	        className: classes,
+	        onClick: this.handleClick
+	      }, rest), iconElement || imageElement, (content || headerElement || descriptionElement) && /*#__PURE__*/React$1.createElement(ListContent, null, headerElement, descriptionElement, content));
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, valueProp, {
+	      role: "listitem",
+	      className: classes,
+	      onClick: this.handleClick
+	    }, rest), headerElement, descriptionElement, content);
+	  };
+
+	  return ListItem;
+	}(react.exports.Component);
+
+	ListItem.handledProps = ["active", "as", "children", "className", "content", "description", "disabled", "header", "icon", "image", "onClick", "value"];
+	ListItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A list item can active. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /**
+	   * Shorthand for primary content.
+	   *
+	   * Heads up!
+	   *
+	   * This is handled slightly differently than the typical `content` prop since
+	   * the wrapping ListContent is not used when there's no icon or image.
+	   *
+	   * If you pass content as:
+	   * - an element/literal, it's treated as the sibling node to
+	   * header/description (whether wrapped in Item.Content or not).
+	   * - a props object, it forces the presence of Item.Content and passes those
+	   * props to it. If you pass a content prop within that props object, it
+	   * will be treated as the sibling node to header/description.
+	   */
+	  content: itemShorthand,
+
+	  /** Shorthand for ListDescription. */
+	  description: itemShorthand,
+
+	  /** A list item can disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Shorthand for ListHeader. */
+	  header: itemShorthand,
+
+	  /** Shorthand for ListIcon. */
+	  icon: every$1([disallow(['image']), itemShorthand]),
+
+	  /** Shorthand for Image. */
+	  image: every$1([disallow(['icon']), itemShorthand]),
+
+	  /** A ListItem can be clicked */
+	  onClick: propTypes.exports.func,
+
+	  /** A value for an ordered list. */
+	  value: propTypes.exports.string
+	} ;
+	ListItem.create = createShorthandFactory(ListItem, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list can contain a sub list.
+	 */
+
+	function ListList(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var rest = getUnhandledProps(ListList, props);
+	  var ElementType = getElementType(ListList, props);
+	  var classes = cx(useKeyOnly(ElementType !== 'ul' && ElementType !== 'ol', 'list'), className);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ListList.handledProps = ["as", "children", "className", "content"];
+	ListList.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A list can animate to set the current item apart from the list. */
+	  animated: propTypes.exports.bool,
+
+	  /** A list can mark items with a bullet. */
+	  bulleted: propTypes.exports.bool,
+
+	  /** A list can divide its items into cells. */
+	  celled: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A list can show divisions between content. */
+	  divided: propTypes.exports.bool,
+
+	  /** An list can be floated left or right. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** A list can be formatted to have items appear horizontally. */
+	  horizontal: propTypes.exports.bool,
+
+	  /** A list can be inverted to appear on a dark background. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Shorthand array of props for ListItem. */
+	  items: collectionShorthand,
+
+	  /** A list can be specially formatted for navigation links. */
+	  link: propTypes.exports.bool,
+
+	  /**
+	   * onClick handler for ListItem. Mutually exclusive with children.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All item props.
+	   */
+	  onItemClick: every$1([disallow(['children']), propTypes.exports.func]),
+
+	  /** A list can be ordered numerically. */
+	  ordered: propTypes.exports.bool,
+
+	  /** A list can relax its padding to provide more negative space. */
+	  relaxed: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /** A selection list formats list items as possible choices. */
+	  selection: propTypes.exports.bool,
+
+	  /** A list can vary in size. */
+	  size: propTypes.exports.oneOf(SIZES),
+
+	  /** An element inside a list can be vertically aligned. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A loader can be active or visible. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A loader can be disabled or hidden. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A loader can show it's unsure of how long a task will take. */
+	  indeterminate: propTypes.exports.bool,
+
+	  /** Loaders can appear inline with content. */
+	  inline: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['centered'])]),
+
+	  /** Loaders can have their colors inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Loaders can have different sizes. */
+	  size: propTypes.exports.oneOf(SIZES)
+	}) ;
+
+	/**
+	 * A placeholder can contain a header.
+	 */
+
+	function PlaceholderHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      image = props.image;
+	  var classes = cx(useKeyOnly(image, 'image'), 'header', className);
+	  var rest = getUnhandledProps(PlaceholderHeader, props);
+	  var ElementType = getElementType(PlaceholderHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	PlaceholderHeader.handledProps = ["as", "children", "className", "content", "image"];
+	PlaceholderHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A placeholder can contain an image. */
+	  image: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A placeholder can contain an image.
+	 */
+
+	function PlaceholderImage(props) {
+	  var className = props.className,
+	      square = props.square,
+	      rectangular = props.rectangular;
+	  var classes = cx(useKeyOnly(square, 'square'), useKeyOnly(rectangular, 'rectangular'), 'image', className);
+	  var rest = getUnhandledProps(PlaceholderImage, props);
+	  var ElementType = getElementType(PlaceholderImage, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }));
+	}
+
+	PlaceholderImage.handledProps = ["as", "className", "rectangular", "square"];
+	PlaceholderImage.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** An image can modify size correctly with responsive styles. */
+	  square: every$1([disallow(['rectangular']), propTypes.exports.bool]),
+
+	  /** An image can modify size correctly with responsive styles. */
+	  rectangular: every$1([disallow(['square']), propTypes.exports.bool])
+	} ;
+
+	/**
+	 * A placeholder can contain have lines of text.
+	 */
+
+	function PlaceholderLine(props) {
+	  var className = props.className,
+	      length = props.length;
+	  var classes = cx('line', length, className);
+	  var rest = getUnhandledProps(PlaceholderLine, props);
+	  var ElementType = getElementType(PlaceholderLine, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }));
+	}
+
+	PlaceholderLine.handledProps = ["as", "className", "length"];
+	PlaceholderLine.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A line can specify how long its contents should appear. */
+	  length: propTypes.exports.oneOf(['full', 'very long', 'long', 'medium', 'short', 'very short'])
+	} ;
+
+	/**
+	 * A placeholder can contain a paragraph.
+	 */
+
+	function PlaceholderParagraph(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('paragraph', className);
+	  var rest = getUnhandledProps(PlaceholderParagraph, props);
+	  var ElementType = getElementType(PlaceholderParagraph, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	PlaceholderParagraph.handledProps = ["as", "children", "className", "content"];
+	PlaceholderParagraph.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A fluid placeholder takes up the width of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** A placeholder can have their colors inverted. */
+	  inverted: propTypes.exports.bool
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A rail can appear attached to the main viewport. */
+	  attached: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A rail can appear closer to the main viewport. */
+	  close: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A rail can create a division between itself and a container. */
+	  dividing: propTypes.exports.bool,
+
+	  /** A rail can attach itself to the inside of a container. */
+	  internal: propTypes.exports.bool,
+
+	  /** A rail can be presented on the left or right side of a container. */
+	  position: propTypes.exports.oneOf(FLOATS).isRequired,
+
+	  /** A rail can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium'))
+	}) ;
+
+	/**
+	 * A content sub-component for the Reveal.
+	 */
+
+	function RevealContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      hidden = props.hidden,
+	      visible = props.visible;
+	  var classes = cx('ui', useKeyOnly(hidden, 'hidden'), useKeyOnly(visible, 'visible'), 'content', className);
+	  var rest = getUnhandledProps(RevealContent, props);
+	  var ElementType = getElementType(RevealContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	RevealContent.handledProps = ["as", "children", "className", "content", "hidden", "visible"];
+	RevealContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A reveal may contain content that is visible before interaction. */
+	  hidden: propTypes.exports.bool,
+
+	  /** A reveal may contain content that is hidden before user interaction. */
+	  visible: propTypes.exports.bool
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** An active reveal displays its hidden content. */
+	  active: propTypes.exports.bool,
+
+	  /** An animation name that will be applied to Reveal. */
+	  animated: propTypes.exports.oneOf(['fade', 'small fade', 'move', 'move right', 'move up', 'move down', 'rotate', 'rotate left']),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A disabled reveal will not animate when hovered. */
+	  disabled: propTypes.exports.bool,
+
+	  /** An element can show its content without delay. */
+	  instant: propTypes.exports.bool
+	}) ;
+
+	/**
+	 * A group of segments can be formatted to appear together.
+	 */
+
+	function SegmentGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      compact = props.compact,
+	      content = props.content,
+	      horizontal = props.horizontal,
+	      piled = props.piled,
+	      raised = props.raised,
+	      size = props.size,
+	      stacked = props.stacked;
+	  var classes = cx('ui', size, useKeyOnly(compact, 'compact'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(piled, 'piled'), useKeyOnly(raised, 'raised'), useKeyOnly(stacked, 'stacked'), 'segments', className);
+	  var rest = getUnhandledProps(SegmentGroup, props);
+	  var ElementType = getElementType(SegmentGroup, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	SegmentGroup.handledProps = ["as", "children", "className", "compact", "content", "horizontal", "piled", "raised", "size", "stacked"];
+	SegmentGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A segment may take up only as much space as is necessary. */
+	  compact: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Formats content to be aligned horizontally. */
+	  horizontal: propTypes.exports.bool,
+
+	  /** Formatted to look like a pile of pages. */
+	  piled: propTypes.exports.bool,
+
+	  /** A segment group may be formatted to raise above the page. */
+	  raised: propTypes.exports.bool,
+
+	  /** A segment group can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** Formatted to show it contains multiple pages. */
+	  stacked: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A placeholder segment can be inline.
+	 */
+
+	function SegmentInline(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('inline', className);
+	  var rest = getUnhandledProps(SegmentInline, props);
+	  var ElementType = getElementType(SegmentInline, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	SegmentInline.handledProps = ["as", "children", "className", "content"];
+	SegmentInline.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A segment is used to create a grouping of related content.
+	 */
+
+	function Segment(props) {
+	  var attached = props.attached,
+	      basic = props.basic,
+	      children = props.children,
+	      circular = props.circular,
+	      className = props.className,
+	      clearing = props.clearing,
+	      color = props.color,
+	      compact = props.compact,
+	      content = props.content,
+	      disabled = props.disabled,
+	      floated = props.floated,
+	      inverted = props.inverted,
+	      loading = props.loading,
+	      placeholder = props.placeholder,
+	      padded = props.padded,
+	      piled = props.piled,
+	      raised = props.raised,
+	      secondary = props.secondary,
+	      size = props.size,
+	      stacked = props.stacked,
+	      tertiary = props.tertiary,
+	      textAlign = props.textAlign,
+	      vertical = props.vertical;
+	  var classes = cx('ui', color, size, useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(clearing, 'clearing'), useKeyOnly(compact, 'compact'), useKeyOnly(disabled, 'disabled'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(placeholder, 'placeholder'), useKeyOnly(piled, 'piled'), useKeyOnly(raised, 'raised'), useKeyOnly(secondary, 'secondary'), useKeyOnly(stacked, 'stacked'), useKeyOnly(tertiary, 'tertiary'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(padded, 'padded'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), 'segment', className);
+	  var rest = getUnhandledProps(Segment, props);
+	  var ElementType = getElementType(Segment, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	Segment.handledProps = ["as", "attached", "basic", "children", "circular", "className", "clearing", "color", "compact", "content", "disabled", "floated", "inverted", "loading", "padded", "piled", "placeholder", "raised", "secondary", "size", "stacked", "tertiary", "textAlign", "vertical"];
+	Segment.Group = SegmentGroup;
+	Segment.Inline = SegmentInline;
+	Segment.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Attach segment to other content, like a header. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['top', 'bottom'])]),
+
+	  /** A basic segment has no special formatting. */
+	  basic: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** A segment can be circular. */
+	  circular: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A segment can clear floated content. */
+	  clearing: propTypes.exports.bool,
+
+	  /** Segment can be colored. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** A segment may take up only as much space as is necessary. */
+	  compact: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A segment may show its content is disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Segment content can be floated to the left or right. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** A segment can have its colors inverted for contrast. */
+	  inverted: propTypes.exports.bool,
+
+	  /** A segment may show its content is being loaded. */
+	  loading: propTypes.exports.bool,
+
+	  /** A segment can increase its padding. */
+	  padded: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /** A segment can be used to reserve space for conditionally displayed content. */
+	  placeholder: propTypes.exports.bool,
+
+	  /** Formatted to look like a pile of pages. */
+	  piled: propTypes.exports.bool,
+
+	  /** A segment may be formatted to raise above the page. */
+	  raised: propTypes.exports.bool,
+
+	  /** A segment can be formatted to appear less noticeable. */
+	  secondary: propTypes.exports.bool,
+
+	  /** A segment can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** Formatted to show it contains multiple pages. */
+	  stacked: propTypes.exports.bool,
+
+	  /** A segment can be formatted to appear even less noticeable. */
+	  tertiary: propTypes.exports.bool,
+
+	  /** Formats content to be aligned as part of a vertical group. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified')),
+
+	  /** Formats content to be aligned vertically. */
+	  vertical: propTypes.exports.bool
+	} ;
+
+	function StepDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('description', className);
+	  var rest = getUnhandledProps(StepDescription, props);
+	  var ElementType = getElementType(StepDescription, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	StepDescription.handledProps = ["as", "children", "className", "content"];
+	StepDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	StepDescription.create = createShorthandFactory(StepDescription, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A step can contain a title.
+	 */
+
+	function StepTitle(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('title', className);
+	  var rest = getUnhandledProps(StepTitle, props);
+	  var ElementType = getElementType(StepTitle, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	StepTitle.handledProps = ["as", "children", "className", "content"];
+	StepTitle.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	StepTitle.create = createShorthandFactory(StepTitle, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A step can contain a content.
+	 */
+
+	function StepContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      description = props.description,
+	      title = props.title;
+	  var classes = cx('content', className);
+	  var rest = getUnhandledProps(StepContent, props);
+	  var ElementType = getElementType(StepContent, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), StepTitle.create(title, {
+	    autoGenerateKey: false
+	  }), StepDescription.create(description, {
+	    autoGenerateKey: false
+	  }));
+	}
+
+	StepContent.handledProps = ["as", "children", "className", "content", "description", "title"];
+	StepContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for StepDescription. */
+	  description: itemShorthand,
+
+	  /** Shorthand for StepTitle. */
+	  title: itemShorthand
+	} ;
+	StepContent.create = createShorthandFactory(StepContent, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeGetSymbols = Object.getOwnPropertySymbols;
+	/**
+	 * Creates an array of the own and inherited enumerable symbols of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of symbols.
+	 */
+
+	var getSymbolsIn = !nativeGetSymbols ? stubArray : function (object) {
+	  var result = [];
+
+	  while (object) {
+	    arrayPush(result, getSymbols(object));
+	    object = getPrototype(object);
+	  }
+
+	  return result;
+	};
+
+	/**
+	 * This function is like
+	 * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+	 * except that it includes inherited enumerable properties.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function nativeKeysIn(object) {
+	  var result = [];
+
+	  if (object != null) {
+	    for (var key in Object(object)) {
+	      result.push(key);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto$3 = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
+	/**
+	 * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+
+	function baseKeysIn(object) {
+	  if (!isObject$1(object)) {
+	    return nativeKeysIn(object);
+	  }
+
+	  var isProto = isPrototype(object),
+	      result = [];
+
+	  for (var key in object) {
+	    if (!(key == 'constructor' && (isProto || !hasOwnProperty$2.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+
+	function keysIn(object) {
+	  return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+	}
+
+	/**
+	 * Creates an array of own and inherited enumerable property names and
+	 * symbols of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names and symbols.
+	 */
+
+	function getAllKeysIn(object) {
+	  return baseGetAllKeys(object, keysIn, getSymbolsIn);
+	}
+
+	/**
+	 * Creates an object composed of the `object` properties `predicate` returns
+	 * truthy for. The predicate is invoked with two arguments: (value, key).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Object
+	 * @param {Object} object The source object.
+	 * @param {Function} [predicate=_.identity] The function invoked per property.
+	 * @returns {Object} Returns the new object.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': '2', 'c': 3 };
+	 *
+	 * _.pickBy(object, _.isNumber);
+	 * // => { 'a': 1, 'c': 3 }
+	 */
+
+	function pickBy(object, predicate) {
+	  if (object == null) {
+	    return {};
+	  }
+
+	  var props = arrayMap(getAllKeysIn(object), function (prop) {
+	    return [prop];
+	  });
+	  predicate = baseIteratee(predicate);
+	  return basePickBy(object, props, function (value, path) {
+	    return predicate(value, path[0]);
+	  });
+	}
+
+	var numberMap = pickBy(numberToWordMap, function (val, key) {
+	  return key <= 8;
+	}) ;
+	/**
+	 * A set of steps.
+	 */
+
+	function StepGroup(props) {
+	  var attached = props.attached,
+	      children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      fluid = props.fluid,
+	      items = props.items,
+	      ordered = props.ordered,
+	      size = props.size,
+	      stackable = props.stackable,
+	      unstackable = props.unstackable,
+	      vertical = props.vertical,
+	      widths = props.widths;
+	  var classes = cx('ui', size, useKeyOnly(fluid, 'fluid'), useKeyOnly(ordered, 'ordered'), useKeyOnly(unstackable, 'unstackable'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useValueAndKey(stackable, 'stackable'), useWidthProp(widths), 'steps', className);
+	  var rest = getUnhandledProps(StepGroup, props);
+	  var ElementType = getElementType(StepGroup, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), map(items, function (item) {
+	    return Step.create(item);
+	  }));
+	}
+
+	StepGroup.handledProps = ["as", "attached", "children", "className", "content", "fluid", "items", "ordered", "size", "stackable", "unstackable", "vertical", "widths"];
+	StepGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Steps can be attached to other elements. */
+	  attached: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['top', 'bottom'])]),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A fluid step takes up the width of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Shorthand array of props for Step. */
+	  items: collectionShorthand,
+
+	  /** A step can show a ordered sequence of steps. */
+	  ordered: propTypes.exports.bool,
+
+	  /** Steps can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** A step can stack vertically only on smaller screens. */
+	  stackable: propTypes.exports.oneOf(['tablet']),
+
+	  /** A step can prevent itself from stacking on mobile. */
+	  unstackable: propTypes.exports.bool,
+
+	  /** A step can be displayed stacked vertically. */
+	  vertical: propTypes.exports.bool,
+
+	  /** Steps can be divided evenly inside their parent. */
+	  widths: propTypes.exports.oneOf([].concat(keys(numberMap), keys(numberMap).map(Number), values(numberMap)))
+	} ;
+
+	/**
+	 * A step shows the completion status of an activity in a series of activities.
+	 */
+
+	var Step = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Step, _Component);
+
+	  function Step() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.computeElementType = function () {
+	      var onClick = _this.props.onClick;
+	      if (onClick) return 'a';
+	    };
+
+	    _this.handleClick = function (e) {
+	      var disabled = _this.props.disabled;
+	      if (!disabled) invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Step.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        completed = _this$props.completed,
+	        content = _this$props.content,
+	        description = _this$props.description,
+	        disabled = _this$props.disabled,
+	        href = _this$props.href,
+	        icon = _this$props.icon,
+	        link = _this$props.link,
+	        title = _this$props.title;
+	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(completed, 'completed'), useKeyOnly(disabled, 'disabled'), useKeyOnly(link, 'link'), 'step', className);
+	    var rest = getUnhandledProps(Step, this.props);
+	    var ElementType = getElementType(Step, this.props, this.computeElementType);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        href: href,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    if (!isNil$1(content)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        href: href,
+	        onClick: this.handleClick
+	      }), content);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      href: href,
+	      onClick: this.handleClick
+	    }), Icon.create(icon, {
+	      autoGenerateKey: false
+	    }), StepContent.create({
+	      description: description,
+	      title: title
+	    }, {
+	      autoGenerateKey: false
+	    }));
+	  };
+
+	  return Step;
+	}(react.exports.Component);
+
+	Step.handledProps = ["active", "as", "children", "className", "completed", "content", "description", "disabled", "href", "icon", "link", "onClick", "ordered", "title"];
+	Step.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A step can be highlighted as active. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A step can show that a user has completed it. */
+	  completed: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for StepDescription. */
+	  description: itemShorthand,
+
+	  /** Show that the Loader is inactive. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Render as an `a` tag instead of a `div` and adds the href attribute. */
+	  href: propTypes.exports.string,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand,
+
+	  /** A step can be link. */
+	  link: propTypes.exports.bool,
+
+	  /**
+	   * Called on click. When passed, the component will render as an `a`
+	   * tag by default instead of a `div`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /** A step can show a ordered sequence of steps. Passed from StepGroup. */
+	  ordered: propTypes.exports.bool,
+
+	  /** Shorthand for StepTitle. */
+	  title: itemShorthand
+	} ;
+	Step.Content = StepContent;
+	Step.Description = StepDescription;
+	Step.Group = StepGroup;
+	Step.Title = StepTitle;
+	Step.create = createShorthandFactory(Step, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A title sub-component for Accordion component.
+	 */
+
+	var AccordionTitle = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(AccordionTitle, _Component);
+
+	  function AccordionTitle() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      return invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = AccordionTitle.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        icon = _this$props.icon;
+	    var classes = cx(useKeyOnly(active, 'active'), 'title', className);
+	    var rest = getUnhandledProps(AccordionTitle, this.props);
+	    var ElementType = getElementType(AccordionTitle, this.props);
+	    var iconValue = isNil(icon) ? 'dropdown' : icon;
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }), Icon.create(iconValue, {
+	      autoGenerateKey: false
+	    }), content);
+	  };
+
+	  return AccordionTitle;
+	}(react.exports.Component);
+
+	AccordionTitle.handledProps = ["active", "as", "children", "className", "content", "icon", "index", "onClick"];
+	AccordionTitle.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Whether or not the title is in the open state. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand,
+
+	  /** AccordionTitle index inside Accordion. */
+	  index: propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.number]),
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func
+	} ;
+	AccordionTitle.create = createShorthandFactory(AccordionTitle, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A content sub-component for Accordion component.
+	 */
+
+	function AccordionContent(props) {
+	  var active = props.active,
+	      children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('content', useKeyOnly(active, 'active'), className);
+	  var rest = getUnhandledProps(AccordionContent, props);
+	  var ElementType = getElementType(AccordionContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	AccordionContent.handledProps = ["active", "as", "children", "className", "content"];
+	AccordionContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Whether or not the content is visible. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	AccordionContent.create = createShorthandFactory(AccordionContent, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A panel sub-component for Accordion component.
+	 */
+
+	var AccordionPanel = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(AccordionPanel, _Component);
+
+	  function AccordionPanel() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleTitleOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e, titleProps) {
+	          invoke(predefinedProps, 'onClick', e, titleProps);
+
+	          invoke(_this.props, 'onTitleClick', e, titleProps);
+	        }
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = AccordionPanel.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        content = _this$props.content,
+	        index = _this$props.index,
+	        title = _this$props.title;
+	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, AccordionTitle.create(title, {
+	      autoGenerateKey: false,
+	      defaultProps: {
+	        active: active,
+	        index: index
+	      },
+	      overrideProps: this.handleTitleOverrides
+	    }), AccordionContent.create(content, {
+	      autoGenerateKey: false,
+	      defaultProps: {
+	        active: active
+	      }
+	    }));
+	  };
+
+	  return AccordionPanel;
+	}(react.exports.Component);
+
+	AccordionPanel.handledProps = ["active", "content", "index", "onTitleClick", "title"];
+	AccordionPanel.propTypes = {
+	  /** Whether or not the title is in the open state. */
+	  active: propTypes.exports.bool,
+
+	  /** A shorthand for Accordion.Content. */
+	  content: itemShorthand,
+
+	  /** A panel index. */
+	  index: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /**
+	   * Called when a panel title is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All item props.
+	   */
+	  onTitleClick: propTypes.exports.func,
+
+	  /** A shorthand for Accordion.Title. */
+	  title: itemShorthand
+	} ;
+	AccordionPanel.create = createShorthandFactory(AccordionPanel, null);
+
+	var warnIfPropsAreInvalid = function warnIfPropsAreInvalid(props, state) {
+	  var exclusive = props.exclusive;
+	  var activeIndex = state.activeIndex;
+	  /* eslint-disable no-console */
+
+	  if (exclusive && typeof activeIndex !== 'number') {
+	    console.error('`activeIndex` must be a number if `exclusive` is true');
+	  } else if (!exclusive && !isArray(activeIndex)) {
+	    console.error('`activeIndex` must be an array if `exclusive` is false');
+	  }
+	  /* eslint-enable no-console */
+
+	};
+	/**
+	 * An Accordion can contain sub-accordions.
+	 */
+
+
+	var AccordionAccordion = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(AccordionAccordion, _Component);
+
+	  function AccordionAccordion() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.computeNewIndex = function (index) {
+	      var exclusive = _this.props.exclusive;
+	      var activeIndex = _this.state.activeIndex;
+	      if (exclusive) return index === activeIndex ? -1 : index; // check to see if index is in array, and remove it, if not then add it
+
+	      return includes(activeIndex, index) ? without(activeIndex, index) : [].concat(activeIndex, [index]);
+	    };
+
+	    _this.handleTitleClick = function (e, titleProps) {
+	      var index = titleProps.index;
+
+	      _this.setState({
+	        activeIndex: _this.computeNewIndex(index)
+	      });
+
+	      invoke(_this.props, 'onTitleClick', e, titleProps);
+	    };
+
+	    _this.isIndexActive = function (index) {
+	      var exclusive = _this.props.exclusive;
+	      var activeIndex = _this.state.activeIndex;
+	      return exclusive ? activeIndex === index : includes(activeIndex, index);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = AccordionAccordion.prototype;
+
+	  _proto.getInitialAutoControlledState = function getInitialAutoControlledState(_ref) {
+	    var exclusive = _ref.exclusive;
+	    return {
+	      activeIndex: exclusive ? -1 : []
+	    };
+	  };
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    {
+	      warnIfPropsAreInvalid(this.props, this.state);
+	    }
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate() {
+	    {
+	      warnIfPropsAreInvalid(this.props, this.state);
+	    }
+	  };
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props = this.props,
+	        className = _this$props.className,
+	        children = _this$props.children,
+	        panels = _this$props.panels;
+	    var classes = cx('accordion', className);
+	    var rest = getUnhandledProps(AccordionAccordion, this.props);
+	    var ElementType = getElementType(AccordionAccordion, this.props);
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), isNil$1(children) ? map(panels, function (panel, index) {
+	      return AccordionPanel.create(panel, {
+	        defaultProps: {
+	          active: _this2.isIndexActive(index),
+	          index: index,
+	          onTitleClick: _this2.handleTitleClick
+	        }
+	      });
+	    }) : children);
+	  };
+
+	  return AccordionAccordion;
+	}(ModernAutoControlledComponent);
+
+	AccordionAccordion.handledProps = ["activeIndex", "as", "children", "className", "defaultActiveIndex", "exclusive", "onTitleClick", "panels"];
+	AccordionAccordion.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Index of the currently active panel. */
+	  activeIndex: every$1([disallow(['children']), propTypes.exports.oneOfType([propTypes.exports.arrayOf(propTypes.exports.number), propTypes.exports.number])]),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Initial activeIndex value. */
+	  defaultActiveIndex: every$1([disallow(['children']), propTypes.exports.oneOfType([propTypes.exports.arrayOf(propTypes.exports.number), propTypes.exports.number])]),
+
+	  /** Only allow one panel open at a time. */
+	  exclusive: propTypes.exports.bool,
+
+	  /**
+	   * Called when a panel title is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All item props.
+	   */
+	  onTitleClick: every$1([disallow(['children']), propTypes.exports.func]),
+
+	  /** Shorthand array of props for Accordion. */
+	  panels: every$1([disallow(['children']), propTypes.exports.arrayOf(propTypes.exports.shape({
+	    content: itemShorthand,
+	    title: itemShorthand
+	  }))])
+	} ;
+	AccordionAccordion.defaultProps = {
+	  exclusive: true
+	};
+	AccordionAccordion.autoControlledProps = ['activeIndex'];
+	AccordionAccordion.create = createShorthandFactory(AccordionAccordion, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	({
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Format to take up the width of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Format for dark backgrounds. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Adds some basic styling to accordion panels. */
+	  styled: propTypes.exports.bool
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** An embed can be active. */
+	  active: propTypes.exports.bool,
+
+	  /** An embed can specify an alternative aspect ratio. */
+	  aspectRatio: propTypes.exports.oneOf(['4:3', '16:9', '21:9']),
+
+	  /** Setting to true or false will force autoplay. */
+	  autoplay: every$1([demand(['source']), propTypes.exports.bool]),
+
+	  /** Whether to show networks branded UI like title cards, or after video calls to action. */
+	  brandedUI: every$1([demand(['source']), propTypes.exports.bool]),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Specifies a default chrome color with Vimeo or YouTube. */
+	  color: every$1([demand(['source']), propTypes.exports.string]),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Initial value of active. */
+	  defaultActive: propTypes.exports.bool,
+
+	  /** Whether to prefer HD content. */
+	  hd: every$1([demand(['source']), propTypes.exports.bool]),
+
+	  /** Specifies an icon to use with placeholder content. */
+	  icon: itemShorthand,
+
+	  /** Specifies an id for source. */
+	  id: every$1([demand(['source']), propTypes.exports.string]),
+
+	  /** Shorthand for HTML iframe. */
+	  iframe: every$1([demand(['source']), itemShorthand]),
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed value.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /** A placeholder image for embed. */
+	  placeholder: propTypes.exports.string,
+
+	  /** Specifies a source to use. */
+	  source: every$1([disallow(['sourceUrl']), propTypes.exports.oneOf(['youtube', 'vimeo'])]),
+
+	  /** Specifies a url to use for embed. */
+	  url: every$1([disallow(['source']), propTypes.exports.string])
+	}) ;
+
+	/**
+	 * The base implementation of `_.invert` and `_.invertBy` which inverts
+	 * `object` with values transformed by `iteratee` and set by `setter`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} setter The function to set `accumulator` values.
+	 * @param {Function} iteratee The iteratee to transform values.
+	 * @param {Object} accumulator The initial inverted object.
+	 * @returns {Function} Returns `accumulator`.
+	 */
+
+	function baseInverter(object, setter, iteratee, accumulator) {
+	  baseForOwn(object, function (value, key, object) {
+	    setter(accumulator, iteratee(value), key, object);
+	  });
+	  return accumulator;
+	}
+
+	/**
+	 * Creates a function like `_.invertBy`.
+	 *
+	 * @private
+	 * @param {Function} setter The function to set accumulator values.
+	 * @param {Function} toIteratee The function to resolve iteratees.
+	 * @returns {Function} Returns the new inverter function.
+	 */
+
+	function createInverter(setter, toIteratee) {
+	  return function (object, iteratee) {
+	    return baseInverter(object, setter, toIteratee(iteratee), {});
+	  };
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto$2 = Object.prototype;
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+
+	var nativeObjectToString = objectProto$2.toString;
+	/**
+	 * Creates an object composed of the inverted keys and values of `object`.
+	 * If `object` contains duplicate values, subsequent values overwrite
+	 * property assignments of previous values.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.7.0
+	 * @category Object
+	 * @param {Object} object The object to invert.
+	 * @returns {Object} Returns the new inverted object.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': 2, 'c': 1 };
+	 *
+	 * _.invert(object);
+	 * // => { '1': 'c', '2': 'b' }
+	 */
+
+	var invert = createInverter(function (result, value, key) {
+	  if (value != null && typeof value.toString != 'function') {
+	    value = nativeObjectToString.call(value);
+	  }
+
+	  result[value] = key;
+	}, constant(identity));
+
+	var positionsMapping = {
+	  'top center': 'top',
+	  'top left': 'top-start',
+	  'top right': 'top-end',
+	  'bottom center': 'bottom',
+	  'bottom left': 'bottom-start',
+	  'bottom right': 'bottom-end',
+	  'right center': 'right',
+	  'left center': 'left'
+	};
+	var positions = keys(positionsMapping);
+	invert(positionsMapping);
+
+	function _defineProperties(target, props) {
+	  for (var i = 0; i < props.length; i++) {
+	    var descriptor = props[i];
+	    descriptor.enumerable = descriptor.enumerable || false;
+	    descriptor.configurable = true;
+	    if ("value" in descriptor) descriptor.writable = true;
+	    Object.defineProperty(target, descriptor.key, descriptor);
+	  }
+	}
+
+	function _createClass(Constructor, protoProps, staticProps) {
+	  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+	  if (staticProps) _defineProperties(Constructor, staticProps);
+	  Object.defineProperty(Constructor, "prototype", {
+	    writable: false
+	  });
+	  return Constructor;
+	}
+
+	var ReferenceProxy = /*#__PURE__*/function () {
+	  function ReferenceProxy(refObject) {
+	    this.ref = refObject;
+	  }
+
+	  var _proto = ReferenceProxy.prototype;
+
+	  _proto.getBoundingClientRect = function getBoundingClientRect() {
+	    return invoke(this.ref.current, 'getBoundingClientRect') || {};
+	  };
+
+	  _createClass(ReferenceProxy, [{
+	    key: "clientWidth",
+	    get: function get() {
+	      return this.getBoundingClientRect().width;
+	    }
+	  }, {
+	    key: "clientHeight",
+	    get: function get() {
+	      return this.getBoundingClientRect().height;
+	    }
+	  }, {
+	    key: "parentNode",
+	    get: function get() {
+	      return this.ref.current ? this.ref.current.parentNode : undefined;
+	    }
+	  }]);
+
+	  return ReferenceProxy;
+	}();
+	/**
+	 * Popper.js does not support ref objects from `createRef()` as referenceElement. If we will pass
+	 * directly `ref`, `ref.current` will be `null` at the render process. We use memoize to keep the
+	 * same reference between renders.
+	 *
+	 * @see https://popper.js.org/popper-documentation.html#referenceObject
+	 */
+
+
+	memoize(function (reference) {
+	  return new ReferenceProxy(isRefObject$1(reference) ? reference : {
+	    current: reference
+	  });
+	});
+
+	/**
+	 * A PopupContent displays the content body of a Popover.
+	 */
+
+	function PopupContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('content', className);
+	  var rest = getUnhandledProps(PopupContent, props);
+	  var ElementType = getElementType(PopupContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+	PopupContent.handledProps = ["as", "children", "className", "content"];
+	PopupContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** The content of the Popup */
+	  children: propTypes.exports.node,
+
+	  /** Classes to add to the Popup content className. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	PopupContent.create = createShorthandFactory(PopupContent, function (children) {
+	  return {
+	    children: children
+	  };
+	});
+
+	/**
+	 * A PopupHeader displays a header in a Popover.
+	 */
+
+	function PopupHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(PopupHeader, props);
+	  var ElementType = getElementType(PopupHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+	PopupHeader.handledProps = ["as", "children", "className", "content"];
+	PopupHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	PopupHeader.create = createShorthandFactory(PopupHeader, function (children) {
+	  return {
+	    children: children
+	  };
+	});
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Display the popup without the pointing arrow. */
+	  basic: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Simple text content for the popover. */
+	  content: itemShorthand,
+
+	  /** Existing element the pop-up should be bound to. */
+	  context: propTypes.exports.oneOfType([propTypes.exports.object, refObject]),
+
+	  /** A disabled popup only renders its trigger. */
+	  disabled: propTypes.exports.bool,
+
+	  /** Enables the Popper.js event listeners. */
+	  eventsEnabled: propTypes.exports.bool,
+
+	  /** A flowing Popup has no maximum width and continues to flow to fit its content. */
+	  flowing: propTypes.exports.bool,
+
+	  /** Takes up the entire width of its offset container. */
+	  // TODO: implement the Popup fluid layout
+	  // fluid: PropTypes.bool,
+
+	  /** Header displayed above the content in bold. */
+	  header: itemShorthand,
+
+	  /** Hide the Popup when scrolling the window. */
+	  hideOnScroll: propTypes.exports.bool,
+
+	  /** Whether the popup should not close on hover. */
+	  hoverable: propTypes.exports.bool,
+
+	  /** Invert the colors of the Popup. */
+	  inverted: propTypes.exports.bool,
+
+	  /**
+	   * Offset values in px unit to apply to rendered popup. The basic offset accepts an
+	   * array with two numbers in the form [skidding, distance]:
+	   * - `skidding` displaces the Popup along the reference element
+	   * - `distance` displaces the Popup away from, or toward, the reference element in the direction of its placement. A positive number displaces it further away, while a negative number lets it overlap the reference.
+	   *
+	   * @see https://popper.js.org/docs/v2/modifiers/offset/
+	   */
+	  offset: propTypes.exports.oneOfType([propTypes.exports.func, propTypes.exports.arrayOf(propTypes.exports.number)]),
+
+	  /** Events triggering the popup. */
+	  on: propTypes.exports.oneOfType([propTypes.exports.oneOf(['hover', 'click', 'focus']), propTypes.exports.arrayOf(propTypes.exports.oneOf(['hover', 'click', 'focus']))]),
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: propTypes.exports.func,
+
+	  /**
+	   * Called when the portal is mounted on the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onMount: propTypes.exports.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: propTypes.exports.func,
+
+	  /**
+	   * Called when the portal is unmounted from the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUnmount: propTypes.exports.func,
+
+	  /** Disables automatic repositioning of the component, it will always be placed according to the position value. */
+	  pinned: propTypes.exports.bool,
+
+	  /** Position for the popover. */
+	  position: propTypes.exports.oneOf(positions),
+
+	  /** Tells `Popper.js` to use the `position: fixed` strategy to position the popover. */
+	  positionFixed: propTypes.exports.bool,
+
+	  /** A wrapping element for an actual content that will be used for positioning. */
+	  popper: itemShorthand,
+
+	  /** An array containing custom settings for the Popper.js modifiers. */
+	  popperModifiers: propTypes.exports.array,
+
+	  /** A popup can have dependencies which update will schedule a position update. */
+	  popperDependencies: propTypes.exports.array,
+
+	  /** Popup size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium', 'big', 'massive')),
+
+	  /** Custom Popup style. */
+	  style: propTypes.exports.object,
+
+	  /** Element to be rendered in-place where the popup is defined. */
+	  trigger: propTypes.exports.node,
+
+	  /** Popup width. */
+	  wide: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])])
+	}) ;
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	root.isFinite;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A progress bar can show activity. */
+	  active: propTypes.exports.bool,
+
+	  /** A progress bar can attach to and show the progress of an element (i.e. Card or Segment). */
+	  attached: propTypes.exports.oneOf(['top', 'bottom']),
+
+	  /** Whether success state should automatically trigger when progress completes. */
+	  autoSuccess: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A progress bar can have different colors. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A progress bar be disabled. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A progress bar can show a error state. */
+	  error: propTypes.exports.bool,
+
+	  /** An indicating progress bar visually indicates the current level of progress of a task. */
+	  indicating: propTypes.exports.bool,
+
+	  /** A progress bar can have its colors inverted. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Can be set to either to display progress as percent or ratio. */
+	  label: itemShorthand,
+
+	  /** Current percent complete. */
+	  percent: every$1([disallow(['total', 'value']), propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])]),
+
+	  /** Decimal point precision for calculated progress. */
+	  precision: propTypes.exports.number,
+
+	  /** A progress bar can contain a text value indicating current progress. */
+	  progress: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['percent', 'ratio', 'value'])]),
+
+	  /** A progress bar can vary in size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'mini', 'huge', 'massive')),
+
+	  /** A progress bar can show a success state. */
+	  success: propTypes.exports.bool,
+
+	  /** For use with value. Together, these will calculate the percent. Mutually excludes percent. */
+	  total: every$1([demand(['value']), disallow(['percent']), propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])]),
+
+	  /** For use with total. Together, these will calculate the percent. Mutually excludes percent. */
+	  value: every$1([disallow(['percent']), propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string])]),
+
+	  /** A progress bar can show a warning state. */
+	  warning: propTypes.exports.bool
+	}) ;
+
+	/**
+	 * An internal icon sub-component for Rating component
+	 */
+
+	var RatingIcon = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(RatingIcon, _Component);
+
+	  function RatingIcon() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    _this.handleKeyUp = function (e) {
+	      invoke(_this.props, 'onKeyUp', e, _this.props);
+
+	      switch (keyboardKey_1.getCode(e)) {
+	        case keyboardKey_1.Enter:
+	        case keyboardKey_1.Spacebar:
+	          e.preventDefault();
+
+	          invoke(_this.props, 'onClick', e, _this.props);
+
+	          break;
+	      }
+	    };
+
+	    _this.handleMouseEnter = function (e) {
+	      invoke(_this.props, 'onMouseEnter', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = RatingIcon.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        className = _this$props.className,
+	        selected = _this$props.selected;
+	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(selected, 'selected'), 'icon', className);
+	    var rest = getUnhandledProps(RatingIcon, this.props);
+	    var ElementType = getElementType(RatingIcon, this.props);
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick,
+	      onKeyUp: this.handleKeyUp,
+	      onMouseEnter: this.handleMouseEnter,
+	      role: "radio"
+	    }));
+	  };
+
+	  return RatingIcon;
+	}(react.exports.Component);
+
+	RatingIcon.handledProps = ["active", "as", "className", "index", "onClick", "onKeyUp", "onMouseEnter", "selected"];
+	RatingIcon.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Indicates activity of an icon. */
+	  active: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** An index of icon inside Rating. */
+	  index: propTypes.exports.number,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /**
+	   * Called on keyup.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onKeyUp: propTypes.exports.func,
+
+	  /**
+	   * Called on mouseenter.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onMouseEnter: propTypes.exports.func,
+
+	  /** Indicates selection of an icon. */
+	  selected: propTypes.exports.bool
+	} ;
+	RatingIcon.defaultProps = {
+	  as: 'i'
+	};
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /**
+	   * You can clear the rating by clicking on the current start rating.
+	   * By default a rating will be only clearable if there is 1 icon.
+	   * Setting to `true`/`false` will allow or disallow a user to clear their rating.
+	   */
+	  clearable: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['auto'])]),
+
+	  /** The initial rating value. */
+	  defaultRating: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** You can disable or enable interactive rating.  Makes a read-only rating. */
+	  disabled: propTypes.exports.bool,
+
+	  /** A rating can use a set of star or heart icons. */
+	  icon: propTypes.exports.oneOf(['star', 'heart']),
+
+	  /** The total number of icons. */
+	  maxRating: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /**
+	   * Called after user selects a new rating.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed rating.
+	   */
+	  onRate: propTypes.exports.func,
+
+	  /** The current number of active icons. */
+	  rating: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** A progress bar can vary in size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium', 'big'))
+	}) ;
+
+	/** Used to store function metadata. */
+
+	var metaMap = WeakMap$1 && new WeakMap$1();
+
+	/**
+	 * The base implementation of `setData` without support for hot loop shorting.
+	 *
+	 * @private
+	 * @param {Function} func The function to associate metadata with.
+	 * @param {*} data The metadata.
+	 * @returns {Function} Returns `func`.
+	 */
+
+	var baseSetData = !metaMap ? identity : function (func, data) {
+	  metaMap.set(func, data);
+	  return func;
+	};
+
+	/**
+	 * Creates a function that produces an instance of `Ctor` regardless of
+	 * whether it was invoked as part of a `new` expression or by `call` or `apply`.
+	 *
+	 * @private
+	 * @param {Function} Ctor The constructor to wrap.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createCtor(Ctor) {
+	  return function () {
+	    // Use a `switch` statement to work with class constructors. See
+	    // http://ecma-international.org/ecma-262/7.0/#sec-ecmascript-function-objects-call-thisargument-argumentslist
+	    // for more details.
+	    var args = arguments;
+
+	    switch (args.length) {
+	      case 0:
+	        return new Ctor();
+
+	      case 1:
+	        return new Ctor(args[0]);
+
+	      case 2:
+	        return new Ctor(args[0], args[1]);
+
+	      case 3:
+	        return new Ctor(args[0], args[1], args[2]);
+
+	      case 4:
+	        return new Ctor(args[0], args[1], args[2], args[3]);
+
+	      case 5:
+	        return new Ctor(args[0], args[1], args[2], args[3], args[4]);
+
+	      case 6:
+	        return new Ctor(args[0], args[1], args[2], args[3], args[4], args[5]);
+
+	      case 7:
+	        return new Ctor(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+	    }
+
+	    var thisBinding = baseCreate(Ctor.prototype),
+	        result = Ctor.apply(thisBinding, args); // Mimic the constructor's `return` behavior.
+	    // See https://es5.github.io/#x13.2.2 for more details.
+
+	    return isObject$1(result) ? result : thisBinding;
+	  };
+	}
+
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG$6 = 1;
+	/**
+	 * Creates a function that wraps `func` to invoke it with the optional `this`
+	 * binding of `thisArg`.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createBind(func, bitmask, thisArg) {
+	  var isBind = bitmask & WRAP_BIND_FLAG$6,
+	      Ctor = createCtor(func);
+
+	  function wrapper() {
+	    var fn = this && this !== root && this instanceof wrapper ? Ctor : func;
+	    return fn.apply(isBind ? thisArg : this, arguments);
+	  }
+
+	  return wrapper;
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeMax$2 = Math.max;
+	/**
+	 * Creates an array that is the composition of partially applied arguments,
+	 * placeholders, and provided arguments into a single array of arguments.
+	 *
+	 * @private
+	 * @param {Array} args The provided arguments.
+	 * @param {Array} partials The arguments to prepend to those provided.
+	 * @param {Array} holders The `partials` placeholder indexes.
+	 * @params {boolean} [isCurried] Specify composing for a curried function.
+	 * @returns {Array} Returns the new array of composed arguments.
+	 */
+
+	function composeArgs(args, partials, holders, isCurried) {
+	  var argsIndex = -1,
+	      argsLength = args.length,
+	      holdersLength = holders.length,
+	      leftIndex = -1,
+	      leftLength = partials.length,
+	      rangeLength = nativeMax$2(argsLength - holdersLength, 0),
+	      result = Array(leftLength + rangeLength),
+	      isUncurried = !isCurried;
+
+	  while (++leftIndex < leftLength) {
+	    result[leftIndex] = partials[leftIndex];
+	  }
+
+	  while (++argsIndex < holdersLength) {
+	    if (isUncurried || argsIndex < argsLength) {
+	      result[holders[argsIndex]] = args[argsIndex];
+	    }
+	  }
+
+	  while (rangeLength--) {
+	    result[leftIndex++] = args[argsIndex++];
+	  }
+
+	  return result;
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeMax$1 = Math.max;
+	/**
+	 * This function is like `composeArgs` except that the arguments composition
+	 * is tailored for `_.partialRight`.
+	 *
+	 * @private
+	 * @param {Array} args The provided arguments.
+	 * @param {Array} partials The arguments to append to those provided.
+	 * @param {Array} holders The `partials` placeholder indexes.
+	 * @params {boolean} [isCurried] Specify composing for a curried function.
+	 * @returns {Array} Returns the new array of composed arguments.
+	 */
+
+	function composeArgsRight(args, partials, holders, isCurried) {
+	  var argsIndex = -1,
+	      argsLength = args.length,
+	      holdersIndex = -1,
+	      holdersLength = holders.length,
+	      rightIndex = -1,
+	      rightLength = partials.length,
+	      rangeLength = nativeMax$1(argsLength - holdersLength, 0),
+	      result = Array(rangeLength + rightLength),
+	      isUncurried = !isCurried;
+
+	  while (++argsIndex < rangeLength) {
+	    result[argsIndex] = args[argsIndex];
+	  }
+
+	  var offset = argsIndex;
+
+	  while (++rightIndex < rightLength) {
+	    result[offset + rightIndex] = partials[rightIndex];
+	  }
+
+	  while (++holdersIndex < holdersLength) {
+	    if (isUncurried || argsIndex < argsLength) {
+	      result[offset + holders[holdersIndex]] = args[argsIndex++];
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * Gets the number of `placeholder` occurrences in `array`.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} placeholder The placeholder to search for.
+	 * @returns {number} Returns the placeholder count.
+	 */
+	function countHolders(array, placeholder) {
+	  var length = array.length,
+	      result = 0;
+
+	  while (length--) {
+	    if (array[length] === placeholder) {
+	      ++result;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * The function whose prototype chain sequence wrappers inherit from.
+	 *
+	 * @private
+	 */
+	function baseLodash() {// No operation performed.
+	}
+
+	/** Used as references for the maximum length and index of an array. */
+
+	var MAX_ARRAY_LENGTH = 4294967295;
+	/**
+	 * Creates a lazy wrapper object which wraps `value` to enable lazy evaluation.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {*} value The value to wrap.
+	 */
+
+	function LazyWrapper(value) {
+	  this.__wrapped__ = value;
+	  this.__actions__ = [];
+	  this.__dir__ = 1;
+	  this.__filtered__ = false;
+	  this.__iteratees__ = [];
+	  this.__takeCount__ = MAX_ARRAY_LENGTH;
+	  this.__views__ = [];
+	} // Ensure `LazyWrapper` is an instance of `baseLodash`.
+
+
+	LazyWrapper.prototype = baseCreate(baseLodash.prototype);
+	LazyWrapper.prototype.constructor = LazyWrapper;
+
+	/**
+	 * Gets metadata for `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to query.
+	 * @returns {*} Returns the metadata for `func`.
+	 */
+
+	var getData = !metaMap ? noop : function (func) {
+	  return metaMap.get(func);
+	};
+
+	/** Used to lookup unminified function names. */
+	var realNames = {};
+
+	/** Used for built-in method references. */
+
+	var objectProto$1 = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+	/**
+	 * Gets the name of `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to query.
+	 * @returns {string} Returns the function name.
+	 */
+
+	function getFuncName(func) {
+	  var result = func.name + '',
+	      array = realNames[result],
+	      length = hasOwnProperty$1.call(realNames, result) ? array.length : 0;
+
+	  while (length--) {
+	    var data = array[length],
+	        otherFunc = data.func;
+
+	    if (otherFunc == null || otherFunc == func) {
+	      return data.name;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/**
+	 * The base constructor for creating `lodash` wrapper objects.
+	 *
+	 * @private
+	 * @param {*} value The value to wrap.
+	 * @param {boolean} [chainAll] Enable explicit method chain sequences.
+	 */
+
+	function LodashWrapper(value, chainAll) {
+	  this.__wrapped__ = value;
+	  this.__actions__ = [];
+	  this.__chain__ = !!chainAll;
+	  this.__index__ = 0;
+	  this.__values__ = undefined;
+	}
+
+	LodashWrapper.prototype = baseCreate(baseLodash.prototype);
+	LodashWrapper.prototype.constructor = LodashWrapper;
+
+	/**
+	 * Copies the values of `source` to `array`.
+	 *
+	 * @private
+	 * @param {Array} source The array to copy values from.
+	 * @param {Array} [array=[]] The array to copy values to.
+	 * @returns {Array} Returns `array`.
+	 */
+	function copyArray(source, array) {
+	  var index = -1,
+	      length = source.length;
+	  array || (array = Array(length));
+
+	  while (++index < length) {
+	    array[index] = source[index];
+	  }
+
+	  return array;
+	}
+
+	/**
+	 * Creates a clone of `wrapper`.
+	 *
+	 * @private
+	 * @param {Object} wrapper The wrapper to clone.
+	 * @returns {Object} Returns the cloned wrapper.
+	 */
+
+	function wrapperClone(wrapper) {
+	  if (wrapper instanceof LazyWrapper) {
+	    return wrapper.clone();
+	  }
+
+	  var result = new LodashWrapper(wrapper.__wrapped__, wrapper.__chain__);
+	  result.__actions__ = copyArray(wrapper.__actions__);
+	  result.__index__ = wrapper.__index__;
+	  result.__values__ = wrapper.__values__;
+	  return result;
+	}
+
+	/** Used for built-in method references. */
+
+	var objectProto = Object.prototype;
+	/** Used to check objects for own properties. */
+
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	/**
+	 * Creates a `lodash` object which wraps `value` to enable implicit method
+	 * chain sequences. Methods that operate on and return arrays, collections,
+	 * and functions can be chained together. Methods that retrieve a single value
+	 * or may return a primitive value will automatically end the chain sequence
+	 * and return the unwrapped value. Otherwise, the value must be unwrapped
+	 * with `_#value`.
+	 *
+	 * Explicit chain sequences, which must be unwrapped with `_#value`, may be
+	 * enabled using `_.chain`.
+	 *
+	 * The execution of chained methods is lazy, that is, it's deferred until
+	 * `_#value` is implicitly or explicitly called.
+	 *
+	 * Lazy evaluation allows several methods to support shortcut fusion.
+	 * Shortcut fusion is an optimization to merge iteratee calls; this avoids
+	 * the creation of intermediate arrays and can greatly reduce the number of
+	 * iteratee executions. Sections of a chain sequence qualify for shortcut
+	 * fusion if the section is applied to an array and iteratees accept only
+	 * one argument. The heuristic for whether a section qualifies for shortcut
+	 * fusion is subject to change.
+	 *
+	 * Chaining is supported in custom builds as long as the `_#value` method is
+	 * directly or indirectly included in the build.
+	 *
+	 * In addition to lodash methods, wrappers have `Array` and `String` methods.
+	 *
+	 * The wrapper `Array` methods are:
+	 * `concat`, `join`, `pop`, `push`, `shift`, `sort`, `splice`, and `unshift`
+	 *
+	 * The wrapper `String` methods are:
+	 * `replace` and `split`
+	 *
+	 * The wrapper methods that support shortcut fusion are:
+	 * `at`, `compact`, `drop`, `dropRight`, `dropWhile`, `filter`, `find`,
+	 * `findLast`, `head`, `initial`, `last`, `map`, `reject`, `reverse`, `slice`,
+	 * `tail`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, and `toArray`
+	 *
+	 * The chainable wrapper methods are:
+	 * `after`, `ary`, `assign`, `assignIn`, `assignInWith`, `assignWith`, `at`,
+	 * `before`, `bind`, `bindAll`, `bindKey`, `castArray`, `chain`, `chunk`,
+	 * `commit`, `compact`, `concat`, `conforms`, `constant`, `countBy`, `create`,
+	 * `curry`, `debounce`, `defaults`, `defaultsDeep`, `defer`, `delay`,
+	 * `difference`, `differenceBy`, `differenceWith`, `drop`, `dropRight`,
+	 * `dropRightWhile`, `dropWhile`, `extend`, `extendWith`, `fill`, `filter`,
+	 * `flatMap`, `flatMapDeep`, `flatMapDepth`, `flatten`, `flattenDeep`,
+	 * `flattenDepth`, `flip`, `flow`, `flowRight`, `fromPairs`, `functions`,
+	 * `functionsIn`, `groupBy`, `initial`, `intersection`, `intersectionBy`,
+	 * `intersectionWith`, `invert`, `invertBy`, `invokeMap`, `iteratee`, `keyBy`,
+	 * `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`, `matches`, `matchesProperty`,
+	 * `memoize`, `merge`, `mergeWith`, `method`, `methodOf`, `mixin`, `negate`,
+	 * `nthArg`, `omit`, `omitBy`, `once`, `orderBy`, `over`, `overArgs`,
+	 * `overEvery`, `overSome`, `partial`, `partialRight`, `partition`, `pick`,
+	 * `pickBy`, `plant`, `property`, `propertyOf`, `pull`, `pullAll`, `pullAllBy`,
+	 * `pullAllWith`, `pullAt`, `push`, `range`, `rangeRight`, `rearg`, `reject`,
+	 * `remove`, `rest`, `reverse`, `sampleSize`, `set`, `setWith`, `shuffle`,
+	 * `slice`, `sort`, `sortBy`, `splice`, `spread`, `tail`, `take`, `takeRight`,
+	 * `takeRightWhile`, `takeWhile`, `tap`, `throttle`, `thru`, `toArray`,
+	 * `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`, `transform`, `unary`,
+	 * `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`, `uniqWith`, `unset`,
+	 * `unshift`, `unzip`, `unzipWith`, `update`, `updateWith`, `values`,
+	 * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`,
+	 * `zipObject`, `zipObjectDeep`, and `zipWith`
+	 *
+	 * The wrapper methods that are **not** chainable by default are:
+	 * `add`, `attempt`, `camelCase`, `capitalize`, `ceil`, `clamp`, `clone`,
+	 * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `conformsTo`, `deburr`,
+	 * `defaultTo`, `divide`, `each`, `eachRight`, `endsWith`, `eq`, `escape`,
+	 * `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`, `findLast`,
+	 * `findLastIndex`, `findLastKey`, `first`, `floor`, `forEach`, `forEachRight`,
+	 * `forIn`, `forInRight`, `forOwn`, `forOwnRight`, `get`, `gt`, `gte`, `has`,
+	 * `hasIn`, `head`, `identity`, `includes`, `indexOf`, `inRange`, `invoke`,
+	 * `isArguments`, `isArray`, `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`,
+	 * `isBoolean`, `isBuffer`, `isDate`, `isElement`, `isEmpty`, `isEqual`,
+	 * `isEqualWith`, `isError`, `isFinite`, `isFunction`, `isInteger`, `isLength`,
+	 * `isMap`, `isMatch`, `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`,
+	 * `isNumber`, `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`,
+	 * `isSafeInteger`, `isSet`, `isString`, `isUndefined`, `isTypedArray`,
+	 * `isWeakMap`, `isWeakSet`, `join`, `kebabCase`, `last`, `lastIndexOf`,
+	 * `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`,
+	 * `min`, `minBy`, `multiply`, `noConflict`, `noop`, `now`, `nth`, `pad`,
+	 * `padEnd`, `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`,
+	 * `repeat`, `result`, `round`, `runInContext`, `sample`, `shift`, `size`,
+	 * `snakeCase`, `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`,
+	 * `sortedLastIndexBy`, `startCase`, `startsWith`, `stubArray`, `stubFalse`,
+	 * `stubObject`, `stubString`, `stubTrue`, `subtract`, `sum`, `sumBy`,
+	 * `template`, `times`, `toFinite`, `toInteger`, `toJSON`, `toLength`,
+	 * `toLower`, `toNumber`, `toSafeInteger`, `toString`, `toUpper`, `trim`,
+	 * `trimEnd`, `trimStart`, `truncate`, `unescape`, `uniqueId`, `upperCase`,
+	 * `upperFirst`, `value`, and `words`
+	 *
+	 * @name _
+	 * @constructor
+	 * @category Seq
+	 * @param {*} value The value to wrap in a `lodash` instance.
+	 * @returns {Object} Returns the new `lodash` wrapper instance.
+	 * @example
+	 *
+	 * function square(n) {
+	 *   return n * n;
+	 * }
+	 *
+	 * var wrapped = _([1, 2, 3]);
+	 *
+	 * // Returns an unwrapped value.
+	 * wrapped.reduce(_.add);
+	 * // => 6
+	 *
+	 * // Returns a wrapped value.
+	 * var squares = wrapped.map(square);
+	 *
+	 * _.isArray(squares);
+	 * // => false
+	 *
+	 * _.isArray(squares.value());
+	 * // => true
+	 */
+
+	function lodash(value) {
+	  if (isObjectLike(value) && !isArray(value) && !(value instanceof LazyWrapper)) {
+	    if (value instanceof LodashWrapper) {
+	      return value;
+	    }
+
+	    if (hasOwnProperty.call(value, '__wrapped__')) {
+	      return wrapperClone(value);
+	    }
+	  }
+
+	  return new LodashWrapper(value);
+	} // Ensure wrappers are instances of `baseLodash`.
+
+
+	lodash.prototype = baseLodash.prototype;
+	lodash.prototype.constructor = lodash;
+
+	/**
+	 * Checks if `func` has a lazy counterpart.
+	 *
+	 * @private
+	 * @param {Function} func The function to check.
+	 * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
+	 *  else `false`.
+	 */
+
+	function isLaziable(func) {
+	  var funcName = getFuncName(func),
+	      other = lodash[funcName];
+
+	  if (typeof other != 'function' || !(funcName in LazyWrapper.prototype)) {
+	    return false;
+	  }
+
+	  if (func === other) {
+	    return true;
+	  }
+
+	  var data = getData(other);
+	  return !!data && func === data[0];
+	}
+
+	/**
+	 * Sets metadata for `func`.
+	 *
+	 * **Note:** If this function becomes hot, i.e. is invoked a lot in a short
+	 * period of time, it will trip its breaker and transition to an identity
+	 * function to avoid garbage collection pauses in V8. See
+	 * [V8 issue 2070](https://bugs.chromium.org/p/v8/issues/detail?id=2070)
+	 * for more details.
+	 *
+	 * @private
+	 * @param {Function} func The function to associate metadata with.
+	 * @param {*} data The metadata.
+	 * @returns {Function} Returns `func`.
+	 */
+
+	var setData = shortOut(baseSetData);
+
+	/** Used to match wrap detail comments. */
+	var reWrapDetails = /\{\n\/\* \[wrapped with (.+)\] \*/,
+	    reSplitDetails = /,? & /;
+	/**
+	 * Extracts wrapper details from the `source` body comment.
+	 *
+	 * @private
+	 * @param {string} source The source to inspect.
+	 * @returns {Array} Returns the wrapper details.
+	 */
+
+	function getWrapDetails(source) {
+	  var match = source.match(reWrapDetails);
+	  return match ? match[1].split(reSplitDetails) : [];
+	}
+
+	/** Used to match wrap detail comments. */
+	var reWrapComment = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/;
+	/**
+	 * Inserts wrapper `details` in a comment at the top of the `source` body.
+	 *
+	 * @private
+	 * @param {string} source The source to modify.
+	 * @returns {Array} details The details to insert.
+	 * @returns {string} Returns the modified source.
+	 */
+
+	function insertWrapDetails(source, details) {
+	  var length = details.length;
+
+	  if (!length) {
+	    return source;
+	  }
+
+	  var lastIndex = length - 1;
+	  details[lastIndex] = (length > 1 ? '& ' : '') + details[lastIndex];
+	  details = details.join(length > 2 ? ', ' : ' ');
+	  return source.replace(reWrapComment, '{\n/* [wrapped with ' + details + '] */\n');
+	}
+
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG$5 = 1,
+	    WRAP_BIND_KEY_FLAG$4 = 2,
+	    WRAP_CURRY_FLAG$4 = 8,
+	    WRAP_CURRY_RIGHT_FLAG$2 = 16,
+	    WRAP_PARTIAL_FLAG$2 = 32,
+	    WRAP_PARTIAL_RIGHT_FLAG$3 = 64,
+	    WRAP_ARY_FLAG$2 = 128,
+	    WRAP_REARG_FLAG$1 = 256,
+	    WRAP_FLIP_FLAG$1 = 512;
+	/** Used to associate wrap methods with their bit flags. */
+
+	var wrapFlags = [['ary', WRAP_ARY_FLAG$2], ['bind', WRAP_BIND_FLAG$5], ['bindKey', WRAP_BIND_KEY_FLAG$4], ['curry', WRAP_CURRY_FLAG$4], ['curryRight', WRAP_CURRY_RIGHT_FLAG$2], ['flip', WRAP_FLIP_FLAG$1], ['partial', WRAP_PARTIAL_FLAG$2], ['partialRight', WRAP_PARTIAL_RIGHT_FLAG$3], ['rearg', WRAP_REARG_FLAG$1]];
+	/**
+	 * Updates wrapper `details` based on `bitmask` flags.
+	 *
+	 * @private
+	 * @returns {Array} details The details to modify.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @returns {Array} Returns `details`.
+	 */
+
+	function updateWrapDetails(details, bitmask) {
+	  arrayEach(wrapFlags, function (pair) {
+	    var value = '_.' + pair[0];
+
+	    if (bitmask & pair[1] && !arrayIncludes(details, value)) {
+	      details.push(value);
+	    }
+	  });
+	  return details.sort();
+	}
+
+	/**
+	 * Sets the `toString` method of `wrapper` to mimic the source of `reference`
+	 * with wrapper details in a comment at the top of the source body.
+	 *
+	 * @private
+	 * @param {Function} wrapper The function to modify.
+	 * @param {Function} reference The reference function.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @returns {Function} Returns `wrapper`.
+	 */
+
+	function setWrapToString(wrapper, reference, bitmask) {
+	  var source = reference + '';
+	  return setToString(wrapper, insertWrapDetails(source, updateWrapDetails(getWrapDetails(source), bitmask)));
+	}
+
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG$4 = 1,
+	    WRAP_BIND_KEY_FLAG$3 = 2,
+	    WRAP_CURRY_BOUND_FLAG$1 = 4,
+	    WRAP_CURRY_FLAG$3 = 8,
+	    WRAP_PARTIAL_FLAG$1 = 32,
+	    WRAP_PARTIAL_RIGHT_FLAG$2 = 64;
+	/**
+	 * Creates a function that wraps `func` to continue currying.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @param {Function} wrapFunc The function to create the `func` wrapper.
+	 * @param {*} placeholder The placeholder value.
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @param {Array} [partials] The arguments to prepend to those provided to
+	 *  the new function.
+	 * @param {Array} [holders] The `partials` placeholder indexes.
+	 * @param {Array} [argPos] The argument positions of the new function.
+	 * @param {number} [ary] The arity cap of `func`.
+	 * @param {number} [arity] The arity of `func`.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createRecurry(func, bitmask, wrapFunc, placeholder, thisArg, partials, holders, argPos, ary, arity) {
+	  var isCurry = bitmask & WRAP_CURRY_FLAG$3,
+	      newHolders = isCurry ? holders : undefined,
+	      newHoldersRight = isCurry ? undefined : holders,
+	      newPartials = isCurry ? partials : undefined,
+	      newPartialsRight = isCurry ? undefined : partials;
+	  bitmask |= isCurry ? WRAP_PARTIAL_FLAG$1 : WRAP_PARTIAL_RIGHT_FLAG$2;
+	  bitmask &= ~(isCurry ? WRAP_PARTIAL_RIGHT_FLAG$2 : WRAP_PARTIAL_FLAG$1);
+
+	  if (!(bitmask & WRAP_CURRY_BOUND_FLAG$1)) {
+	    bitmask &= ~(WRAP_BIND_FLAG$4 | WRAP_BIND_KEY_FLAG$3);
+	  }
+
+	  var newData = [func, bitmask, thisArg, newPartials, newHolders, newPartialsRight, newHoldersRight, argPos, ary, arity];
+	  var result = wrapFunc.apply(undefined, newData);
+
+	  if (isLaziable(func)) {
+	    setData(result, newData);
+	  }
+
+	  result.placeholder = placeholder;
+	  return setWrapToString(result, func, bitmask);
+	}
+
+	/**
+	 * Gets the argument placeholder value for `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to inspect.
+	 * @returns {*} Returns the placeholder value.
+	 */
+	function getHolder(func) {
+	  var object = func;
+	  return object.placeholder;
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMin$1 = Math.min;
+	/**
+	 * Reorder `array` according to the specified indexes where the element at
+	 * the first index is assigned as the first element, the element at
+	 * the second index is assigned as the second element, and so on.
+	 *
+	 * @private
+	 * @param {Array} array The array to reorder.
+	 * @param {Array} indexes The arranged array indexes.
+	 * @returns {Array} Returns `array`.
+	 */
+
+	function reorder(array, indexes) {
+	  var arrLength = array.length,
+	      length = nativeMin$1(indexes.length, arrLength),
+	      oldArray = copyArray(array);
+
+	  while (length--) {
+	    var index = indexes[length];
+	    array[length] = isIndex(index, arrLength) ? oldArray[index] : undefined;
+	  }
+
+	  return array;
+	}
+
+	/** Used as the internal argument placeholder. */
+	var PLACEHOLDER$1 = '__lodash_placeholder__';
+	/**
+	 * Replaces all `placeholder` elements in `array` with an internal placeholder
+	 * and returns an array of their indexes.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {*} placeholder The placeholder to replace.
+	 * @returns {Array} Returns the new array of placeholder indexes.
+	 */
+
+	function replaceHolders(array, placeholder) {
+	  var index = -1,
+	      length = array.length,
+	      resIndex = 0,
+	      result = [];
+
+	  while (++index < length) {
+	    var value = array[index];
+
+	    if (value === placeholder || value === PLACEHOLDER$1) {
+	      array[index] = PLACEHOLDER$1;
+	      result[resIndex++] = index;
+	    }
+	  }
+
+	  return result;
+	}
+
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG$3 = 1,
+	    WRAP_BIND_KEY_FLAG$2 = 2,
+	    WRAP_CURRY_FLAG$2 = 8,
+	    WRAP_CURRY_RIGHT_FLAG$1 = 16,
+	    WRAP_ARY_FLAG$1 = 128,
+	    WRAP_FLIP_FLAG = 512;
+	/**
+	 * Creates a function that wraps `func` to invoke it with optional `this`
+	 * binding of `thisArg`, partial application, and currying.
+	 *
+	 * @private
+	 * @param {Function|string} func The function or method name to wrap.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @param {Array} [partials] The arguments to prepend to those provided to
+	 *  the new function.
+	 * @param {Array} [holders] The `partials` placeholder indexes.
+	 * @param {Array} [partialsRight] The arguments to append to those provided
+	 *  to the new function.
+	 * @param {Array} [holdersRight] The `partialsRight` placeholder indexes.
+	 * @param {Array} [argPos] The argument positions of the new function.
+	 * @param {number} [ary] The arity cap of `func`.
+	 * @param {number} [arity] The arity of `func`.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createHybrid(func, bitmask, thisArg, partials, holders, partialsRight, holdersRight, argPos, ary, arity) {
+	  var isAry = bitmask & WRAP_ARY_FLAG$1,
+	      isBind = bitmask & WRAP_BIND_FLAG$3,
+	      isBindKey = bitmask & WRAP_BIND_KEY_FLAG$2,
+	      isCurried = bitmask & (WRAP_CURRY_FLAG$2 | WRAP_CURRY_RIGHT_FLAG$1),
+	      isFlip = bitmask & WRAP_FLIP_FLAG,
+	      Ctor = isBindKey ? undefined : createCtor(func);
+
+	  function wrapper() {
+	    var length = arguments.length,
+	        args = Array(length),
+	        index = length;
+
+	    while (index--) {
+	      args[index] = arguments[index];
+	    }
+
+	    if (isCurried) {
+	      var placeholder = getHolder(wrapper),
+	          holdersCount = countHolders(args, placeholder);
+	    }
+
+	    if (partials) {
+	      args = composeArgs(args, partials, holders, isCurried);
+	    }
+
+	    if (partialsRight) {
+	      args = composeArgsRight(args, partialsRight, holdersRight, isCurried);
+	    }
+
+	    length -= holdersCount;
+
+	    if (isCurried && length < arity) {
+	      var newHolders = replaceHolders(args, placeholder);
+	      return createRecurry(func, bitmask, createHybrid, wrapper.placeholder, thisArg, args, newHolders, argPos, ary, arity - length);
+	    }
+
+	    var thisBinding = isBind ? thisArg : this,
+	        fn = isBindKey ? thisBinding[func] : func;
+	    length = args.length;
+
+	    if (argPos) {
+	      args = reorder(args, argPos);
+	    } else if (isFlip && length > 1) {
+	      args.reverse();
+	    }
+
+	    if (isAry && ary < length) {
+	      args.length = ary;
+	    }
+
+	    if (this && this !== root && this instanceof wrapper) {
+	      fn = Ctor || createCtor(fn);
+	    }
+
+	    return fn.apply(thisBinding, args);
+	  }
+
+	  return wrapper;
+	}
+
+	/**
+	 * Creates a function that wraps `func` to enable currying.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @param {number} arity The arity of `func`.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createCurry(func, bitmask, arity) {
+	  var Ctor = createCtor(func);
+
+	  function wrapper() {
+	    var length = arguments.length,
+	        args = Array(length),
+	        index = length,
+	        placeholder = getHolder(wrapper);
+
+	    while (index--) {
+	      args[index] = arguments[index];
+	    }
+
+	    var holders = length < 3 && args[0] !== placeholder && args[length - 1] !== placeholder ? [] : replaceHolders(args, placeholder);
+	    length -= holders.length;
+
+	    if (length < arity) {
+	      return createRecurry(func, bitmask, createHybrid, wrapper.placeholder, undefined, args, holders, undefined, undefined, arity - length);
+	    }
+
+	    var fn = this && this !== root && this instanceof wrapper ? Ctor : func;
+	    return apply(fn, this, args);
+	  }
+
+	  return wrapper;
+	}
+
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG$2 = 1;
+	/**
+	 * Creates a function that wraps `func` to invoke it with the `this` binding
+	 * of `thisArg` and `partials` prepended to the arguments it receives.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {Array} partials The arguments to prepend to those provided to
+	 *  the new function.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createPartial(func, bitmask, thisArg, partials) {
+	  var isBind = bitmask & WRAP_BIND_FLAG$2,
+	      Ctor = createCtor(func);
+
+	  function wrapper() {
+	    var argsIndex = -1,
+	        argsLength = arguments.length,
+	        leftIndex = -1,
+	        leftLength = partials.length,
+	        args = Array(leftLength + argsLength),
+	        fn = this && this !== root && this instanceof wrapper ? Ctor : func;
+
+	    while (++leftIndex < leftLength) {
+	      args[leftIndex] = partials[leftIndex];
+	    }
+
+	    while (argsLength--) {
+	      args[leftIndex++] = arguments[++argsIndex];
+	    }
+
+	    return apply(fn, isBind ? thisArg : this, args);
+	  }
+
+	  return wrapper;
+	}
+
+	/** Used as the internal argument placeholder. */
+
+	var PLACEHOLDER = '__lodash_placeholder__';
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG$1 = 1,
+	    WRAP_BIND_KEY_FLAG$1 = 2,
+	    WRAP_CURRY_BOUND_FLAG = 4,
+	    WRAP_CURRY_FLAG$1 = 8,
+	    WRAP_ARY_FLAG = 128,
+	    WRAP_REARG_FLAG = 256;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMin = Math.min;
+	/**
+	 * Merges the function metadata of `source` into `data`.
+	 *
+	 * Merging metadata reduces the number of wrappers used to invoke a function.
+	 * This is possible because methods like `_.bind`, `_.curry`, and `_.partial`
+	 * may be applied regardless of execution order. Methods like `_.ary` and
+	 * `_.rearg` modify function arguments, making the order in which they are
+	 * executed important, preventing the merging of metadata. However, we make
+	 * an exception for a safe combined case where curried functions have `_.ary`
+	 * and or `_.rearg` applied.
+	 *
+	 * @private
+	 * @param {Array} data The destination metadata.
+	 * @param {Array} source The source metadata.
+	 * @returns {Array} Returns `data`.
+	 */
+
+	function mergeData(data, source) {
+	  var bitmask = data[1],
+	      srcBitmask = source[1],
+	      newBitmask = bitmask | srcBitmask,
+	      isCommon = newBitmask < (WRAP_BIND_FLAG$1 | WRAP_BIND_KEY_FLAG$1 | WRAP_ARY_FLAG);
+	  var isCombo = srcBitmask == WRAP_ARY_FLAG && bitmask == WRAP_CURRY_FLAG$1 || srcBitmask == WRAP_ARY_FLAG && bitmask == WRAP_REARG_FLAG && data[7].length <= source[8] || srcBitmask == (WRAP_ARY_FLAG | WRAP_REARG_FLAG) && source[7].length <= source[8] && bitmask == WRAP_CURRY_FLAG$1; // Exit early if metadata can't be merged.
+
+	  if (!(isCommon || isCombo)) {
+	    return data;
+	  } // Use source `thisArg` if available.
+
+
+	  if (srcBitmask & WRAP_BIND_FLAG$1) {
+	    data[2] = source[2]; // Set when currying a bound function.
+
+	    newBitmask |= bitmask & WRAP_BIND_FLAG$1 ? 0 : WRAP_CURRY_BOUND_FLAG;
+	  } // Compose partial arguments.
+
+
+	  var value = source[3];
+
+	  if (value) {
+	    var partials = data[3];
+	    data[3] = partials ? composeArgs(partials, value, source[4]) : value;
+	    data[4] = partials ? replaceHolders(data[3], PLACEHOLDER) : source[4];
+	  } // Compose partial right arguments.
+
+
+	  value = source[5];
+
+	  if (value) {
+	    partials = data[5];
+	    data[5] = partials ? composeArgsRight(partials, value, source[6]) : value;
+	    data[6] = partials ? replaceHolders(data[5], PLACEHOLDER) : source[6];
+	  } // Use source `argPos` if available.
+
+
+	  value = source[7];
+
+	  if (value) {
+	    data[7] = value;
+	  } // Use source `ary` if it's smaller.
+
+
+	  if (srcBitmask & WRAP_ARY_FLAG) {
+	    data[8] = data[8] == null ? source[8] : nativeMin(data[8], source[8]);
+	  } // Use source `arity` if one is not provided.
+
+
+	  if (data[9] == null) {
+	    data[9] = source[9];
+	  } // Use source `func` and merge bitmasks.
+
+
+	  data[0] = source[0];
+	  data[1] = newBitmask;
+	  return data;
+	}
+
+	/** Error message constants. */
+
+	var FUNC_ERROR_TEXT = 'Expected a function';
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_BIND_FLAG = 1,
+	    WRAP_BIND_KEY_FLAG = 2,
+	    WRAP_CURRY_FLAG = 8,
+	    WRAP_CURRY_RIGHT_FLAG = 16,
+	    WRAP_PARTIAL_FLAG = 32,
+	    WRAP_PARTIAL_RIGHT_FLAG$1 = 64;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+
+	var nativeMax = Math.max;
+	/**
+	 * Creates a function that either curries or invokes `func` with optional
+	 * `this` binding and partially applied arguments.
+	 *
+	 * @private
+	 * @param {Function|string} func The function or method name to wrap.
+	 * @param {number} bitmask The bitmask flags.
+	 *    1 - `_.bind`
+	 *    2 - `_.bindKey`
+	 *    4 - `_.curry` or `_.curryRight` of a bound function
+	 *    8 - `_.curry`
+	 *   16 - `_.curryRight`
+	 *   32 - `_.partial`
+	 *   64 - `_.partialRight`
+	 *  128 - `_.rearg`
+	 *  256 - `_.ary`
+	 *  512 - `_.flip`
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @param {Array} [partials] The arguments to be partially applied.
+	 * @param {Array} [holders] The `partials` placeholder indexes.
+	 * @param {Array} [argPos] The argument positions of the new function.
+	 * @param {number} [ary] The arity cap of `func`.
+	 * @param {number} [arity] The arity of `func`.
+	 * @returns {Function} Returns the new wrapped function.
+	 */
+
+	function createWrap(func, bitmask, thisArg, partials, holders, argPos, ary, arity) {
+	  var isBindKey = bitmask & WRAP_BIND_KEY_FLAG;
+
+	  if (!isBindKey && typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+
+	  var length = partials ? partials.length : 0;
+
+	  if (!length) {
+	    bitmask &= ~(WRAP_PARTIAL_FLAG | WRAP_PARTIAL_RIGHT_FLAG$1);
+	    partials = holders = undefined;
+	  }
+
+	  ary = ary === undefined ? ary : nativeMax(toInteger(ary), 0);
+	  arity = arity === undefined ? arity : toInteger(arity);
+	  length -= holders ? holders.length : 0;
+
+	  if (bitmask & WRAP_PARTIAL_RIGHT_FLAG$1) {
+	    var partialsRight = partials,
+	        holdersRight = holders;
+	    partials = holders = undefined;
+	  }
+
+	  var data = isBindKey ? undefined : getData(func);
+	  var newData = [func, bitmask, thisArg, partials, holders, partialsRight, holdersRight, argPos, ary, arity];
+
+	  if (data) {
+	    mergeData(newData, data);
+	  }
+
+	  func = newData[0];
+	  bitmask = newData[1];
+	  thisArg = newData[2];
+	  partials = newData[3];
+	  holders = newData[4];
+	  arity = newData[9] = newData[9] === undefined ? isBindKey ? 0 : func.length : nativeMax(newData[9] - length, 0);
+
+	  if (!arity && bitmask & (WRAP_CURRY_FLAG | WRAP_CURRY_RIGHT_FLAG)) {
+	    bitmask &= ~(WRAP_CURRY_FLAG | WRAP_CURRY_RIGHT_FLAG);
+	  }
+
+	  if (!bitmask || bitmask == WRAP_BIND_FLAG) {
+	    var result = createBind(func, bitmask, thisArg);
+	  } else if (bitmask == WRAP_CURRY_FLAG || bitmask == WRAP_CURRY_RIGHT_FLAG) {
+	    result = createCurry(func, bitmask, arity);
+	  } else if ((bitmask == WRAP_PARTIAL_FLAG || bitmask == (WRAP_BIND_FLAG | WRAP_PARTIAL_FLAG)) && !holders.length) {
+	    result = createPartial(func, bitmask, thisArg, partials);
+	  } else {
+	    result = createHybrid.apply(undefined, newData);
+	  }
+
+	  var setter = data ? baseSetData : setData;
+	  return setWrapToString(setter(result, newData), func, bitmask);
+	}
+
+	/** Used to compose bitmasks for function metadata. */
+
+	var WRAP_PARTIAL_RIGHT_FLAG = 64;
+	/**
+	 * This method is like `_.partial` except that partially applied arguments
+	 * are appended to the arguments it receives.
+	 *
+	 * The `_.partialRight.placeholder` value, which defaults to `_` in monolithic
+	 * builds, may be used as a placeholder for partially applied arguments.
+	 *
+	 * **Note:** This method doesn't set the "length" property of partially
+	 * applied functions.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 1.0.0
+	 * @category Function
+	 * @param {Function} func The function to partially apply arguments to.
+	 * @param {...*} [partials] The arguments to be partially applied.
+	 * @returns {Function} Returns the new partially applied function.
+	 * @example
+	 *
+	 * function greet(greeting, name) {
+	 *   return greeting + ' ' + name;
+	 * }
+	 *
+	 * var greetFred = _.partialRight(greet, 'fred');
+	 * greetFred('hi');
+	 * // => 'hi fred'
+	 *
+	 * // Partially applied with placeholders.
+	 * var sayHelloTo = _.partialRight(greet, 'hello', _);
+	 * sayHelloTo('fred');
+	 * // => 'hello fred'
+	 */
+
+	var partialRight = baseRest(function (func, partials) {
+	  var holders = replaceHolders(partials, getHolder(partialRight));
+	  return createWrap(func, WRAP_PARTIAL_RIGHT_FLAG, undefined, partials, holders);
+	}); // Assign default placeholders.
+
+	partialRight.placeholder = {};
+
+	function SearchCategoryLayout(props) {
+	  var categoryContent = props.categoryContent,
+	      resultsContent = props.resultsContent;
+	  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
+	    className: "name"
+	  }, categoryContent), /*#__PURE__*/React$1.createElement("div", {
+	    className: "results"
+	  }, resultsContent));
+	}
+
+	SearchCategoryLayout.handledProps = ["categoryContent", "resultsContent"];
+	SearchCategoryLayout.propTypes = {
+	  /** The rendered category content */
+	  categoryContent: propTypes.exports.element.isRequired,
+
+	  /** The rendered results content */
+	  resultsContent: propTypes.exports.element.isRequired
+	} ;
+
+	function SearchCategory(props) {
+	  var active = props.active,
+	      children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      layoutRenderer = props.layoutRenderer,
+	      renderer = props.renderer;
+	  var classes = cx(useKeyOnly(active, 'active'), 'category', className);
+	  var rest = getUnhandledProps(SearchCategory, props);
+	  var ElementType = getElementType(SearchCategory, props);
+	  var categoryContent = renderer(props);
+	  var resultsContent = isNil$1(children) ? content : children;
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), layoutRenderer({
+	    categoryContent: categoryContent,
+	    resultsContent: resultsContent
+	  }));
+	}
+
+	SearchCategory.handledProps = ["active", "as", "children", "className", "content", "layoutRenderer", "name", "renderer", "results"];
+	SearchCategory.defaultProps = {
+	  layoutRenderer: SearchCategoryLayout,
+	  renderer: function renderer(_ref) {
+	    var name = _ref.name;
+	    return name;
+	  }
+	};
+	SearchCategory.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** The item currently selected by keyboard shortcut. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Display name. */
+	  name: propTypes.exports.string,
+
+	  /**
+	   * Renders the category layout contents.
+	   *
+	   * @param {object} props - The SearchCategoryLayout props object.
+	   * @returns {*} - Renderable category layout contents.
+	   */
+	  layoutRenderer: propTypes.exports.func,
+
+	  /**
+	   * Renders the category contents.
+	   *
+	   * @param {object} props - The SearchCategory props object.
+	   * @returns {*} - Renderable category contents.
+	   */
+	  renderer: propTypes.exports.func,
+
+	  /** Array of Search.Result props. */
+	  results: propTypes.exports.array
+	} ;
+
+	// image. However, optionally wrapping it makes this function a lot more
+	// complicated and harder to read. Since always wrapping it doesn't affect
+	// the style in any way let's just do that.
+	//
+	// Note: To avoid requiring a wrapping div, we return an array here so to
+	// prevent rendering issues each node needs a unique key.
+
+	var defaultRenderer = function defaultRenderer(_ref) {
+	  var image = _ref.image,
+	      price = _ref.price,
+	      title = _ref.title,
+	      description = _ref.description;
+	  return [image && /*#__PURE__*/React$1.createElement("div", {
+	    key: "image",
+	    className: "image"
+	  }, createHTMLImage(image, {
+	    autoGenerateKey: false
+	  })), /*#__PURE__*/React$1.createElement("div", {
+	    key: "content",
+	    className: "content"
+	  }, price && /*#__PURE__*/React$1.createElement("div", {
+	    className: "price"
+	  }, price), title && /*#__PURE__*/React$1.createElement("div", {
+	    className: "title"
+	  }, title), description && /*#__PURE__*/React$1.createElement("div", {
+	    className: "description"
+	  }, description))];
+	};
+
+	defaultRenderer.handledProps = [];
+
+	var SearchResult = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(SearchResult, _Component);
+
+	  function SearchResult() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var onClick = _this.props.onClick;
+	      if (onClick) onClick(e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = SearchResult.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        className = _this$props.className,
+	        renderer = _this$props.renderer;
+	    var classes = cx(useKeyOnly(active, 'active'), 'result', className);
+	    var rest = getUnhandledProps(SearchResult, this.props);
+	    var ElementType = getElementType(SearchResult, this.props); // Note: You technically only need the 'content' wrapper when there's an
+	    // image. However, optionally wrapping it makes this function a lot more
+	    // complicated and harder to read. Since always wrapping it doesn't affect
+	    // the style in any way let's just do that.
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }), renderer(this.props));
+	  };
+
+	  return SearchResult;
+	}(react.exports.Component);
+
+	SearchResult.handledProps = ["active", "as", "className", "content", "description", "id", "image", "onClick", "price", "renderer", "title"];
+	SearchResult.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** The item currently selected by keyboard shortcut. */
+	  active: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Additional text with less emphasis. */
+	  description: propTypes.exports.string,
+
+	  /** A unique identifier. */
+	  id: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Add an image to the item. */
+	  image: propTypes.exports.string,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /** Customized text for price. */
+	  price: propTypes.exports.string,
+
+	  /**
+	   * Renders the result contents.
+	   *
+	   * @param {object} props - The SearchResult props object.
+	   * @returns {*} - Renderable result contents.
+	   */
+	  renderer: propTypes.exports.func,
+
+	  /** Display title. */
+	  title: propTypes.exports.string.isRequired
+	} ;
+	SearchResult.defaultProps = {
+	  renderer: defaultRenderer
+	};
+
+	function SearchResults(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('results transition', className);
+	  var rest = getUnhandledProps(SearchResults, props);
+	  var ElementType = getElementType(SearchResults, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	SearchResults.handledProps = ["as", "children", "className", "content"];
+	SearchResults.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+	  // ------------------------------------
+	  // Behavior
+	  // ------------------------------------
+
+	  /** Initial value of open. */
+	  defaultOpen: propTypes.exports.bool,
+
+	  /** Initial value. */
+	  defaultValue: propTypes.exports.string,
+
+	  /** Shorthand for Icon. */
+	  icon: propTypes.exports.oneOfType([propTypes.exports.node, propTypes.exports.object]),
+
+	  /** Minimum characters to query for results */
+	  minCharacters: propTypes.exports.number,
+
+	  /** Additional text for "No Results" message with less emphasis. */
+	  noResultsDescription: propTypes.exports.node,
+
+	  /** Message to display when there are no results. */
+	  noResultsMessage: propTypes.exports.node,
+
+	  /** Controls whether or not the results menu is displayed. */
+	  open: propTypes.exports.bool,
+
+	  /**
+	   * One of:
+	   * - array of Search.Result props e.g. `{ title: '', description: '' }` or
+	   * - object of categories e.g. `{ name: '', results: [{ title: '', description: '' }]`
+	   */
+	  results: propTypes.exports.oneOfType([propTypes.exports.arrayOf(propTypes.exports.shape(SearchResult.propTypes)), propTypes.exports.shape(SearchCategory.propTypes)]),
+
+	  /** Whether the search should automatically select the first result after searching. */
+	  selectFirstResult: propTypes.exports.bool,
+
+	  /** Whether a "no results" message should be shown if no results are found. */
+	  showNoResults: propTypes.exports.bool,
+
+	  /** Current value of the search input. Creates a controlled component. */
+	  value: propTypes.exports.string,
+	  // ------------------------------------
+	  // Rendering
+	  // ------------------------------------
+
+	  /**
+	   * Renders the SearchCategory layout.
+	   *
+	   * @param {object} categoryContent - The Renderable SearchCategory contents.
+	   * @param {object} resultsContent - The Renderable SearchResult contents.
+	   * @returns {*} - Renderable SearchCategory layout.
+	   */
+	  categoryLayoutRenderer: propTypes.exports.func,
+
+	  /**
+	   * Renders the SearchCategory contents.
+	   *
+	   * @param {object} props - The SearchCategory props object.
+	   * @returns {*} - Renderable SearchCategory contents.
+	   */
+	  categoryRenderer: propTypes.exports.func,
+
+	  /**
+	   * Renders the SearchResult contents.
+	   *
+	   * @param {object} props - The SearchResult props object.
+	   * @returns {*} - Renderable SearchResult contents.
+	   */
+	  resultRenderer: propTypes.exports.func,
+	  // ------------------------------------
+	  // Callbacks
+	  // ------------------------------------
+
+	  /**
+	   * Called on blur.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onBlur: propTypes.exports.func,
+
+	  /**
+	   * Called on focus.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onFocus: propTypes.exports.func,
+
+	  /**
+	   * Called on mousedown.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onMouseDown: propTypes.exports.func,
+
+	  /**
+	   * Called when a result is selected.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onResultSelect: propTypes.exports.func,
+
+	  /**
+	   * Called on search input change.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props, includes current value of search input.
+	   */
+	  onSearchChange: propTypes.exports.func,
+
+	  /**
+	   * Called when the active selection index is changed.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onSelectionChange: propTypes.exports.func,
+	  // ------------------------------------
+	  // Style
+	  // ------------------------------------
+
+	  /** A search can have its results aligned to its left or right container edge. */
+	  aligned: propTypes.exports.string,
+
+	  /** A search can display results from remote content ordered by categories. */
+	  category: propTypes.exports.bool,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A search can have its results take up the width of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Shorthand for input element. */
+	  input: itemShorthand,
+
+	  /** A search can show a loading indicator. */
+	  loading: propTypes.exports.bool,
+
+	  /** A search can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** A search can show placeholder text when empty. */
+	  placeholder: propTypes.exports.string
+	}) ;
+
+	/**
+	 * A pushable sub-component for Sidebar.
+	 */
+
+	function SidebarPushable(props) {
+	  var className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx('pushable', className);
+	  var rest = getUnhandledProps(SidebarPushable, props);
+	  var ElementType = getElementType(SidebarPushable, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	SidebarPushable.handledProps = ["as", "children", "className", "content"];
+	SidebarPushable.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A pushable sub-component for Sidebar.
+	 */
+
+	function SidebarPusher(props) {
+	  var className = props.className,
+	      dimmed = props.dimmed,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx('pusher', useKeyOnly(dimmed, 'dimmed'), className);
+	  var rest = getUnhandledProps(SidebarPusher, props);
+	  var ElementType = getElementType(SidebarPusher, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	SidebarPusher.handledProps = ["as", "children", "className", "content", "dimmed"];
+	SidebarPusher.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Controls whether or not the dim is displayed. */
+	  dimmed: propTypes.exports.bool
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Animation style. */
+	  animation: propTypes.exports.oneOf(['overlay', 'push', 'scale down', 'uncover', 'slide out', 'slide along']),
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Direction the sidebar should appear on. */
+	  direction: propTypes.exports.oneOf(['top', 'right', 'bottom', 'left']),
+
+	  /**
+	   * Called before a sidebar begins to animate out.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onHide: propTypes.exports.func,
+
+	  /**
+	   * Called after a sidebar has finished animating out.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onHidden: propTypes.exports.func,
+
+	  /**
+	   * Called when a sidebar has finished animating in.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onShow: propTypes.exports.func,
+
+	  /**
+	   * Called when a sidebar begins animating in.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onVisible: propTypes.exports.func,
+
+	  /** A sidebar can handle clicks on the passed element. */
+	  target: propTypes.exports.oneOfType([domNode, refObject]),
+
+	  /** Controls whether or not the sidebar is visible on the page. */
+	  visible: propTypes.exports.bool,
+
+	  /** Sidebar width. */
+	  width: propTypes.exports.oneOf(['very thin', 'thin', 'wide', 'very wide'])
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A Sticky can be active. */
+	  active: propTypes.exports.bool,
+
+	  /** Offset in pixels from the bottom of the screen when fixing element to viewport. */
+	  bottomOffset: propTypes.exports.number,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Context which sticky element should stick to. */
+	  context: propTypes.exports.oneOfType([domNode, refObject]),
+
+	  /** Offset in pixels from the top of the screen when fixing element to viewport. */
+	  offset: propTypes.exports.number,
+
+	  /**
+	   * Callback when element is bound to bottom of parent container.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onBottom: propTypes.exports.func,
+
+	  /**
+	   * Callback when element is fixed to page.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onStick: propTypes.exports.func,
+
+	  /**
+	   * Callback when element is bound to top of parent container.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onTop: propTypes.exports.func,
+
+	  /**
+	   * Callback when element is unfixed from page.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onUnstick: propTypes.exports.func,
+
+	  /** Whether element should be "pushed" by the viewport, attaching to the bottom of the screen when scrolling up. */
+	  pushing: propTypes.exports.bool,
+
+	  /** Context which sticky should attach onscroll events. */
+	  scrollContext: propTypes.exports.oneOfType([domNode, refObject]),
+
+	  /** Custom style for sticky element. */
+	  styleElement: propTypes.exports.object
+	}) ;
+
+	/**
+	 * A tab pane holds the content of a tab.
+	 */
+
+	function TabPane(props) {
+	  var active = props.active,
+	      children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      loading = props.loading;
+	  var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(loading, 'loading'), 'tab', className);
+	  var rest = getUnhandledProps(TabPane, props);
+	  var ElementType = getElementType(TabPane, props);
+	  var calculatedDefaultProps = {};
+
+	  if (ElementType === Segment) {
+	    calculatedDefaultProps.attached = 'bottom';
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, calculatedDefaultProps, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	TabPane.handledProps = ["active", "as", "children", "className", "content", "loading"];
+	TabPane.defaultProps = {
+	  as: Segment,
+	  active: true
+	};
+	TabPane.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A tab pane can be active. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A Tab.Pane can display a loading indicator. */
+	  loading: propTypes.exports.bool
+	} ;
+	TabPane.create = createShorthandFactory(TabPane, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** The initial activeIndex. */
+	  defaultActiveIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Index of the currently active tab. */
+	  activeIndex: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.string]),
+
+	  /**
+	   * Shorthand props for the Menu.
+	   * tabular, if true, will derive final value from `menuPosition`, otherwise set 'left' or 'right' explicitly.
+	   */
+	  menu: propTypes.exports.object,
+
+	  /** Align vertical menu */
+	  menuPosition: propTypes.exports.oneOf(['left', 'right']),
+
+	  /** Shorthand props for the Grid. Only applicable to vertical menus. */
+	  grid: propTypes.exports.object,
+
+	  /**
+	   * Called on tab change.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed new activeIndex.
+	   * @param {object} data.activeIndex - The new proposed activeIndex.
+	   */
+	  onTabChange: propTypes.exports.func,
+
+	  /**
+	   * Array of objects describing each Menu.Item and Tab.Pane:
+	   * { menuItem: 'Home', render: () => <Tab.Pane /> }
+	   * or
+	   * { menuItem: 'Home', pane: 'Welcome' }
+	   */
+	  panes: propTypes.exports.arrayOf(propTypes.exports.shape({
+	    menuItem: itemShorthand,
+	    pane: itemShorthand,
+	    render: propTypes.exports.func
+	  })),
+
+	  /** A Tab can render only active pane. */
+	  renderActiveOnly: propTypes.exports.bool
+	}) ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Center the advertisement. */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Text to be displayed on the advertisement. */
+	  test: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.number, propTypes.exports.string]),
+
+	  /** Varies the size of the advertisement. */
+	  unit: propTypes.exports.oneOf(['medium rectangle', 'large rectangle', 'vertical rectangle', 'small rectangle', 'mobile banner', 'banner', 'vertical banner', 'top banner', 'half banner', 'button', 'square button', 'small button', 'skyscraper', 'wide skyscraper', 'leaderboard', 'large leaderboard', 'mobile leaderboard', 'billboard', 'panorama', 'netboard', 'half page', 'square', 'small square']).isRequired
+	}) ;
+
+	/**
+	 * A card can contain a description with one or more paragraphs.
+	 */
+
+	function CardDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      textAlign = props.textAlign;
+	  var classes = cx(useTextAlignProp(textAlign), 'description', className);
+	  var rest = getUnhandledProps(CardDescription, props);
+	  var ElementType = getElementType(CardDescription, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CardDescription.handledProps = ["as", "children", "className", "content", "textAlign"];
+	CardDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A card content can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
+	} ;
+
+	/**
+	 * A card can contain a header.
+	 */
+
+	function CardHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      textAlign = props.textAlign;
+	  var classes = cx(useTextAlignProp(textAlign), 'header', className);
+	  var rest = getUnhandledProps(CardHeader, props);
+	  var ElementType = getElementType(CardHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CardHeader.handledProps = ["as", "children", "className", "content", "textAlign"];
+	CardHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A card header can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
+	} ;
+
+	/**
+	 * A card can contain content metadata.
+	 */
+
+	function CardMeta(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      textAlign = props.textAlign;
+	  var classes = cx(useTextAlignProp(textAlign), 'meta', className);
+	  var rest = getUnhandledProps(CardMeta, props);
+	  var ElementType = getElementType(CardMeta, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CardMeta.handledProps = ["as", "children", "className", "content", "textAlign"];
+	CardMeta.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A card meta can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
+	} ;
+
+	/**
+	 * A card can contain blocks of content or extra content meant to be formatted separately from the main content.
+	 */
+
+	function CardContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      description = props.description,
+	      extra = props.extra,
+	      header = props.header,
+	      meta = props.meta,
+	      textAlign = props.textAlign;
+	  var classes = cx(useKeyOnly(extra, 'extra'), useTextAlignProp(textAlign), 'content', className);
+	  var rest = getUnhandledProps(CardContent, props);
+	  var ElementType = getElementType(CardContent, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), createShorthand(CardHeader, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, header, {
+	    autoGenerateKey: false
+	  }), createShorthand(CardMeta, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, meta, {
+	    autoGenerateKey: false
+	  }), createShorthand(CardDescription, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, description, {
+	    autoGenerateKey: false
+	  }));
+	}
+
+	CardContent.handledProps = ["as", "children", "className", "content", "description", "extra", "header", "meta", "textAlign"];
+	CardContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for CardDescription. */
+	  description: itemShorthand,
+
+	  /** A card can contain extra content meant to be formatted separately from the main content. */
+	  extra: propTypes.exports.bool,
+
+	  /** Shorthand for CardHeader. */
+	  header: itemShorthand,
+
+	  /** Shorthand for CardMeta. */
+	  meta: itemShorthand,
+
+	  /** A card content can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
+	} ;
+
+	/**
+	 * A group of cards.
+	 */
+
+	function CardGroup(props) {
+	  var centered = props.centered,
+	      children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      doubling = props.doubling,
+	      items = props.items,
+	      itemsPerRow = props.itemsPerRow,
+	      stackable = props.stackable,
+	      textAlign = props.textAlign;
+	  var classes = cx('ui', useKeyOnly(centered, 'centered'), useKeyOnly(doubling, 'doubling'), useKeyOnly(stackable, 'stackable'), useTextAlignProp(textAlign), useWidthProp(itemsPerRow), 'cards', className);
+	  var rest = getUnhandledProps(CardGroup, props);
+	  var ElementType = getElementType(CardGroup, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  var itemsJSX = map(items, function (item) {
+	    var _item$key;
+
+	    var key = (_item$key = item.key) != null ? _item$key : [item.header, item.description].join('-');
+	    return /*#__PURE__*/React$1.createElement(Card, _extends({
+	      key: key
+	    }, item));
+	  });
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), itemsJSX);
+	}
+
+	CardGroup.handledProps = ["as", "centered", "children", "className", "content", "doubling", "items", "itemsPerRow", "stackable", "textAlign"];
+	CardGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A group of cards can center itself inside its container. */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A group of cards can double its column width for mobile. */
+	  doubling: propTypes.exports.bool,
+
+	  /** Shorthand array of props for Card. */
+	  items: collectionShorthand,
+
+	  /** A group of cards can set how many cards should exist in a row. */
+	  itemsPerRow: propTypes.exports.oneOf(WIDTHS),
+
+	  /** A group of cards can automatically stack rows to a single columns on mobile devices. */
+	  stackable: propTypes.exports.bool,
+
+	  /** A card group can adjust its text alignment. */
+	  textAlign: propTypes.exports.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
+	} ;
+
+	/**
+	 * A card displays site content in a manner similar to a playing card.
+	 */
+
+	var Card = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Card, _Component);
+
+	  function Card() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var onClick = _this.props.onClick;
+	      if (onClick) onClick(e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Card.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        centered = _this$props.centered,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        color = _this$props.color,
+	        content = _this$props.content,
+	        description = _this$props.description,
+	        extra = _this$props.extra,
+	        fluid = _this$props.fluid,
+	        header = _this$props.header,
+	        href = _this$props.href,
+	        image = _this$props.image,
+	        link = _this$props.link,
+	        meta = _this$props.meta,
+	        onClick = _this$props.onClick,
+	        raised = _this$props.raised;
+	    var classes = cx('ui', color, useKeyOnly(centered, 'centered'), useKeyOnly(fluid, 'fluid'), useKeyOnly(link, 'link'), useKeyOnly(raised, 'raised'), 'card', className);
+	    var rest = getUnhandledProps(Card, this.props);
+	    var ElementType = getElementType(Card, this.props, function () {
+	      if (onClick) return 'a';
+	    });
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        href: href,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    if (!isNil$1(content)) {
+	      return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        href: href,
+	        onClick: this.handleClick
+	      }), content);
+	    }
+
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      href: href,
+	      onClick: this.handleClick
+	    }), Image.create(image, {
+	      autoGenerateKey: false,
+	      defaultProps: {
+	        ui: false,
+	        wrapped: true
+	      }
+	    }), (description || header || meta) && /*#__PURE__*/React$1.createElement(CardContent, {
+	      description: description,
+	      header: header,
+	      meta: meta
+	    }), extra && /*#__PURE__*/React$1.createElement(CardContent, {
+	      extra: true
+	    }, extra));
+	  };
+
+	  return Card;
+	}(react.exports.Component);
+
+	Card.handledProps = ["as", "centered", "children", "className", "color", "content", "description", "extra", "fluid", "header", "href", "image", "link", "meta", "onClick", "raised"];
+	Card.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** A Card can center itself inside its container. */
+	  centered: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A Card can be formatted to display different colors. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for CardDescription. */
+	  description: itemShorthand,
+
+	  /** Shorthand for primary content of CardContent. */
+	  extra: contentShorthand,
+
+	  /** A Card can be formatted to take up the width of its container. */
+	  fluid: propTypes.exports.bool,
+
+	  /** Shorthand for CardHeader. */
+	  header: itemShorthand,
+
+	  /** Render as an `a` tag instead of a `div` and adds the href attribute. */
+	  href: propTypes.exports.string,
+
+	  /** A card can contain an Image component. */
+	  image: itemShorthand,
+
+	  /** A card can be formatted to link to other content. */
+	  link: propTypes.exports.bool,
+
+	  /** Shorthand for CardMeta. */
+	  meta: itemShorthand,
+
+	  /**
+	   * Called on click. When passed, the component renders as an `a`
+	   * tag by default instead of a `div`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: propTypes.exports.func,
+
+	  /** A Card can be formatted to raise above the page. */
+	  raised: propTypes.exports.bool
+	} ;
+	Card.Content = CardContent;
+	Card.Description = CardDescription;
+	Card.Group = CardGroup;
+	Card.Header = CardHeader;
+	Card.Meta = CardMeta;
+
+	/**
+	 * A comment can contain an action.
+	 */
+
+	function CommentAction(props) {
+	  var active = props.active,
+	      className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx(useKeyOnly(active, 'active'), className);
+	  var rest = getUnhandledProps(CommentAction, props);
+	  var ElementType = getElementType(CommentAction, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentAction.handledProps = ["active", "as", "children", "className", "content"];
+	CommentAction.defaultProps = {
+	  as: 'a'
+	};
+	CommentAction.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Style as the currently active action. */
+	  active: propTypes.exports.bool,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A comment can contain an list of actions a user may perform related to this comment.
+	 */
+
+	function CommentActions(props) {
+	  var className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx('actions', className);
+	  var rest = getUnhandledProps(CommentActions, props);
+	  var ElementType = getElementType(CommentActions, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentActions.handledProps = ["as", "children", "className", "content"];
+	CommentActions.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A comment can contain an author.
+	 */
+
+	function CommentAuthor(props) {
+	  var className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx('author', className);
+	  var rest = getUnhandledProps(CommentAuthor, props);
+	  var ElementType = getElementType(CommentAuthor, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentAuthor.handledProps = ["as", "children", "className", "content"];
+	CommentAuthor.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A comment can contain an image or avatar.
+	 */
+
+	function CommentAvatar(props) {
+	  var className = props.className,
+	      src = props.src;
+	  var classes = cx('avatar', className);
+	  var rest = getUnhandledProps(CommentAvatar, props);
+
+	  var _partitionHTMLProps = partitionHTMLProps(rest, {
+	    htmlProps: htmlImageProps
+	  }),
+	      imageProps = _partitionHTMLProps[0],
+	      rootProps = _partitionHTMLProps[1];
+
+	  var ElementType = getElementType(CommentAvatar, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rootProps, {
+	    className: classes
+	  }), createHTMLImage(src, {
+	    autoGenerateKey: false,
+	    defaultProps: imageProps
+	  }));
+	}
+
+	CommentAvatar.handledProps = ["as", "className", "src"];
+	CommentAvatar.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Specifies the URL of the image. */
+	  src: propTypes.exports.string
+	} ;
+
+	/**
+	 * A comment can contain content.
+	 */
+
+	function CommentContent(props) {
+	  var className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx(className, 'content');
+	  var rest = getUnhandledProps(CommentContent, props);
+	  var ElementType = getElementType(CommentContent, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentContent.handledProps = ["as", "children", "className", "content"];
+	CommentContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * Comments can be grouped.
+	 */
+
+	function CommentGroup(props) {
+	  var className = props.className,
+	      children = props.children,
+	      collapsed = props.collapsed,
+	      content = props.content,
+	      minimal = props.minimal,
+	      size = props.size,
+	      threaded = props.threaded;
+	  var classes = cx('ui', size, useKeyOnly(collapsed, 'collapsed'), useKeyOnly(minimal, 'minimal'), useKeyOnly(threaded, 'threaded'), 'comments', className);
+	  var rest = getUnhandledProps(CommentGroup, props);
+	  var ElementType = getElementType(CommentGroup, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentGroup.handledProps = ["as", "children", "className", "collapsed", "content", "minimal", "size", "threaded"];
+	CommentGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Comments can be collapsed, or hidden from view. */
+	  collapsed: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Comments can hide extra information unless a user shows intent to interact with a comment. */
+	  minimal: propTypes.exports.bool,
+
+	  /** Comments can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'medium')),
+
+	  /** A comment list can be threaded to showing the relationship between conversations. */
+	  threaded: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A comment can contain metadata about the comment, an arbitrary amount of metadata may be defined.
+	 */
+
+	function CommentMetadata(props) {
+	  var className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx('metadata', className);
+	  var rest = getUnhandledProps(CommentMetadata, props);
+	  var ElementType = getElementType(CommentMetadata, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentMetadata.handledProps = ["as", "children", "className", "content"];
+	CommentMetadata.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A comment can contain text.
+	 */
+
+	function CommentText(props) {
+	  var className = props.className,
+	      children = props.children,
+	      content = props.content;
+	  var classes = cx(className, 'text');
+	  var rest = getUnhandledProps(CommentText, props);
+	  var ElementType = getElementType(CommentText, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	CommentText.handledProps = ["as", "children", "className", "content"];
+	CommentText.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Comment can be collapsed, or hidden from view. */
+	  collapsed: propTypes.exports.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	}) ;
+
+	/**
+	 * An event or an event summary can contain a date.
+	 */
+
+	function FeedDate(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('date', className);
+	  var rest = getUnhandledProps(FeedDate, props);
+	  var ElementType = getElementType(FeedDate, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	FeedDate.handledProps = ["as", "children", "className", "content"];
+	FeedDate.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A feed can contain an extra content.
+	 */
+
+	function FeedExtra(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      images = props.images,
+	      text = props.text;
+	  var classes = cx(useKeyOnly(images, 'images'), useKeyOnly(content || text, 'text'), 'extra', className);
+	  var rest = getUnhandledProps(FeedExtra, props);
+	  var ElementType = getElementType(FeedExtra, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  } // TODO need a "collection factory" to handle creating multiple image elements and their keys
+
+
+	  var imageElements = map(images, function (image, index) {
+	    var key = [index, image].join('-');
+	    return createHTMLImage(image, {
+	      key: key
+	    });
+	  });
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), content, imageElements);
+	}
+
+	FeedExtra.handledProps = ["as", "children", "className", "content", "images", "text"];
+	FeedExtra.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** An event can contain additional information like a set of images. */
+	  images: every$1([disallow(['text']), propTypes.exports.oneOfType([propTypes.exports.bool, collectionShorthand])]),
+
+	  /** An event can contain additional text information. */
+	  text: propTypes.exports.bool
+	} ;
+
+	/**
+	 * A feed can contain a like element.
+	 */
+
+	function FeedLike(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      icon = props.icon;
+	  var classes = cx('like', className);
+	  var rest = getUnhandledProps(FeedLike, props);
+	  var ElementType = getElementType(FeedLike, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), Icon.create(icon, {
+	    autoGenerateKey: false
+	  }), content);
+	}
+
+	FeedLike.handledProps = ["as", "children", "className", "content", "icon"];
+	FeedLike.defaultProps = {
+	  as: 'a'
+	};
+	FeedLike.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for icon. Mutually exclusive with children. */
+	  icon: itemShorthand
+	} ;
+
+	/**
+	 * A feed can contain a meta.
+	 */
+
+	function FeedMeta(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      like = props.like;
+	  var classes = cx('meta', className);
+	  var rest = getUnhandledProps(FeedMeta, props);
+	  var ElementType = getElementType(FeedMeta, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), createShorthand(FeedLike, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, like, {
+	    autoGenerateKey: false
+	  }), content);
+	}
+
+	FeedMeta.handledProps = ["as", "children", "className", "content", "like"];
+	FeedMeta.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for FeedLike. */
+	  like: itemShorthand
+	} ;
+
+	/**
+	 * A feed can contain a user element.
+	 */
+
+	function FeedUser(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('user', className);
+	  var rest = getUnhandledProps(FeedUser, props);
+	  var ElementType = getElementType(FeedUser, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	FeedUser.handledProps = ["as", "children", "className", "content"];
+	FeedUser.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	FeedUser.defaultProps = {
+	  as: 'a'
+	};
+
+	/**
+	 * A feed can contain a summary.
+	 */
+
+	function FeedSummary(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      date = props.date,
+	      user = props.user;
+	  var classes = cx('summary', className);
+	  var rest = getUnhandledProps(FeedSummary, props);
+	  var ElementType = getElementType(FeedSummary, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), createShorthand(FeedUser, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, user, {
+	    autoGenerateKey: false
+	  }), content && ' ', content, content && ' ', createShorthand(FeedDate, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, date, {
+	    autoGenerateKey: false
+	  }));
+	}
+
+	FeedSummary.handledProps = ["as", "children", "className", "content", "date", "user"];
+	FeedSummary.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for FeedDate. */
+	  date: itemShorthand,
+
+	  /** Shorthand for FeedUser. */
+	  user: itemShorthand
+	} ;
+
+	function FeedContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      extraImages = props.extraImages,
+	      extraText = props.extraText,
+	      date = props.date,
+	      meta = props.meta,
+	      summary = props.summary;
+	  var classes = cx('content', className);
+	  var rest = getUnhandledProps(FeedContent, props);
+	  var ElementType = getElementType(FeedContent, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), createShorthand(FeedDate, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, date, {
+	    autoGenerateKey: false
+	  }), createShorthand(FeedSummary, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, summary, {
+	    autoGenerateKey: false
+	  }), content, createShorthand(FeedExtra, function (val) {
+	    return {
+	      text: true,
+	      content: val
+	    };
+	  }, extraText, {
+	    autoGenerateKey: false
+	  }), createShorthand(FeedExtra, function (val) {
+	    return {
+	      images: val
+	    };
+	  }, extraImages, {
+	    autoGenerateKey: false
+	  }), createShorthand(FeedMeta, function (val) {
+	    return {
+	      content: val
+	    };
+	  }, meta, {
+	    autoGenerateKey: false
+	  }));
+	}
+
+	FeedContent.handledProps = ["as", "children", "className", "content", "date", "extraImages", "extraText", "meta", "summary"];
+	FeedContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** An event can contain a date. */
+	  date: itemShorthand,
+
+	  /** Shorthand for FeedExtra with images. */
+	  extraImages: FeedExtra.propTypes.images,
+
+	  /** Shorthand for FeedExtra with text. */
+	  extraText: itemShorthand,
+
+	  /** Shorthand for FeedMeta. */
+	  meta: itemShorthand,
+
+	  /** Shorthand for FeedSummary. */
+	  summary: itemShorthand
+	} ;
+
+	/**
+	 * An event can contain an image or icon label.
+	 */
+
+	function FeedLabel(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      icon = props.icon,
+	      image = props.image;
+	  var classes = cx('label', className);
+	  var rest = getUnhandledProps(FeedLabel, props);
+	  var ElementType = getElementType(FeedLabel, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), content, Icon.create(icon, {
+	    autoGenerateKey: false
+	  }), createHTMLImage(image));
+	}
+
+	FeedLabel.handledProps = ["as", "children", "className", "content", "icon", "image"];
+	FeedLabel.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** An event can contain icon label. */
+	  icon: itemShorthand,
+
+	  /** An event can contain image label. */
+	  image: itemShorthand
+	} ;
+
+	/**
+	 * A feed contains an event.
+	 */
+
+	function FeedEvent(props) {
+	  var content = props.content,
+	      children = props.children,
+	      className = props.className,
+	      date = props.date,
+	      extraImages = props.extraImages,
+	      extraText = props.extraText,
+	      image = props.image,
+	      icon = props.icon,
+	      meta = props.meta,
+	      summary = props.summary;
+	  var classes = cx('event', className);
+	  var rest = getUnhandledProps(FeedEvent, props);
+	  var ElementType = getElementType(FeedEvent, props);
+	  var hasContentProp = content || date || extraImages || extraText || meta || summary;
+	  var contentProps = {
+	    content: content,
+	    date: date,
+	    extraImages: extraImages,
+	    extraText: extraText,
+	    meta: meta,
+	    summary: summary
+	  };
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), createShorthand(FeedLabel, function (val) {
+	    return {
+	      icon: val
+	    };
+	  }, icon, {
+	    autoGenerateKey: false
+	  }), createShorthand(FeedLabel, function (val) {
+	    return {
+	      image: val
+	    };
+	  }, image, {
+	    autoGenerateKey: false
+	  }), hasContentProp && /*#__PURE__*/React$1.createElement(FeedContent, contentProps), children);
+	}
+
+	FeedEvent.handledProps = ["as", "children", "className", "content", "date", "extraImages", "extraText", "icon", "image", "meta", "summary"];
+	FeedEvent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for FeedContent. */
+	  content: itemShorthand,
+
+	  /** Shorthand for FeedDate. */
+	  date: itemShorthand,
+
+	  /** Shorthand for FeedExtra with images. */
+	  extraImages: itemShorthand,
+
+	  /** Shorthand for FeedExtra with content. */
+	  extraText: itemShorthand,
+
+	  /** An event can contain icon label. */
+	  icon: itemShorthand,
+
+	  /** An event can contain image label. */
+	  image: itemShorthand,
+
+	  /** Shorthand for FeedMeta. */
+	  meta: itemShorthand,
+
+	  /** Shorthand for FeedSummary. */
+	  summary: itemShorthand
+	} ;
+
+	({
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand array of props for FeedEvent. */
+	  events: collectionShorthand,
+
+	  /** A feed can have different sizes. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'mini', 'tiny', 'medium', 'big', 'huge', 'massive'))
+	}) ;
+
+	/**
+	 * An item can contain a header.
+	 */
+
+	function ItemHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('header', className);
+	  var rest = getUnhandledProps(ItemHeader, props);
+	  var ElementType = getElementType(ItemHeader, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ItemHeader.handledProps = ["as", "children", "className", "content"];
+	ItemHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ItemHeader.create = createShorthandFactory(ItemHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * An item can contain a description with a single or multiple paragraphs.
+	 */
+
+	function ItemDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('description', className);
+	  var rest = getUnhandledProps(ItemDescription, props);
+	  var ElementType = getElementType(ItemDescription, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ItemDescription.handledProps = ["as", "children", "className", "content"];
+	ItemDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ItemDescription.create = createShorthandFactory(ItemDescription, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * An item can contain extra content meant to be formatted separately from the main content.
+	 */
+
+	function ItemExtra(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('extra', className);
+	  var rest = getUnhandledProps(ItemExtra, props);
+	  var ElementType = getElementType(ItemExtra, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ItemExtra.handledProps = ["as", "children", "className", "content"];
+	ItemExtra.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ItemExtra.create = createShorthandFactory(ItemExtra, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * An item can contain content metadata.
+	 */
+
+	function ItemMeta(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('meta', className);
+	  var rest = getUnhandledProps(ItemMeta, props);
+	  var ElementType = getElementType(ItemMeta, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ItemMeta.handledProps = ["as", "children", "className", "content"];
+	ItemMeta.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ItemMeta.create = createShorthandFactory(ItemMeta, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * An item can contain content.
+	 */
+
+	function ItemContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      description = props.description,
+	      extra = props.extra,
+	      header = props.header,
+	      meta = props.meta,
+	      verticalAlign = props.verticalAlign;
+	  var classes = cx(useVerticalAlignProp(verticalAlign), 'content', className);
+	  var rest = getUnhandledProps(ItemContent, props);
+	  var ElementType = getElementType(ItemContent, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), ItemHeader.create(header, {
+	    autoGenerateKey: false
+	  }), ItemMeta.create(meta, {
+	    autoGenerateKey: false
+	  }), ItemDescription.create(description, {
+	    autoGenerateKey: false
+	  }), ItemExtra.create(extra, {
+	    autoGenerateKey: false
+	  }), content);
+	}
+
+	ItemContent.handledProps = ["as", "children", "className", "content", "description", "extra", "header", "meta", "verticalAlign"];
+	ItemContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for ItemDescription component. */
+	  description: itemShorthand,
+
+	  /** Shorthand for ItemExtra component. */
+	  extra: itemShorthand,
+
+	  /** Shorthand for ItemHeader component. */
+	  header: itemShorthand,
+
+	  /** Shorthand for ItemMeta component. */
+	  meta: itemShorthand,
+
+	  /** Content can specify its vertical alignment. */
+	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+
+	/**
+	 * A group of items.
+	 */
+
+	function ItemGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      divided = props.divided,
+	      items = props.items,
+	      link = props.link,
+	      relaxed = props.relaxed,
+	      unstackable = props.unstackable;
+	  var classes = cx('ui', useKeyOnly(divided, 'divided'), useKeyOnly(link, 'link'), useKeyOnly(unstackable, 'unstackable'), useKeyOrValueAndKey(relaxed, 'relaxed'), 'items', className);
+	  var rest = getUnhandledProps(ItemGroup, props);
+	  var ElementType = getElementType(ItemGroup, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  var itemsJSX = map(items, function (item) {
+	    var childKey = item.childKey,
+	        itemProps = _objectWithoutPropertiesLoose(item, ["childKey"]);
+
+	    var finalKey = childKey != null ? childKey : [itemProps.content, itemProps.description, itemProps.header, itemProps.meta].join('-');
+	    return /*#__PURE__*/React$1.createElement(Item, _extends({}, itemProps, {
+	      key: finalKey
+	    }));
+	  });
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), itemsJSX);
+	}
+
+	ItemGroup.handledProps = ["as", "children", "className", "content", "divided", "items", "link", "relaxed", "unstackable"];
+	ItemGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Items can be divided to better distinguish between grouped content. */
+	  divided: propTypes.exports.bool,
+
+	  /** Shorthand array of props for Item. */
+	  items: collectionShorthand,
+
+	  /** An item can be formatted so that the entire contents link to another page. */
+	  link: propTypes.exports.bool,
+
+	  /** A group of items can relax its padding to provide more negative space. */
+	  relaxed: propTypes.exports.oneOfType([propTypes.exports.bool, propTypes.exports.oneOf(['very'])]),
+
+	  /** Prevent items from stacking on mobile. */
+	  unstackable: propTypes.exports.bool
+	} ;
+
+	/**
+	 * An item can contain an image.
+	 */
+
+	function ItemImage(props) {
+	  var size = props.size;
+	  var rest = getUnhandledProps(ItemImage, props);
+	  return /*#__PURE__*/React$1.createElement(Image, _extends({}, rest, {
+	    size: size,
+	    ui: !!size,
+	    wrapped: true
+	  }));
+	}
+
+	ItemImage.handledProps = ["size"];
+	ItemImage.propTypes = {
+	  /** An image may appear at different sizes. */
+	  size: Image.propTypes.size
+	} ;
+	ItemImage.create = createShorthandFactory(ItemImage, function (src) {
+	  return {
+	    src: src
+	  };
+	});
+
+	/**
+	 * An item view presents large collections of site content for display.
+	 */
+
+	function Item(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      description = props.description,
+	      extra = props.extra,
+	      header = props.header,
+	      image = props.image,
+	      meta = props.meta;
+	  var classes = cx('item', className);
+	  var rest = getUnhandledProps(Item, props);
+	  var ElementType = getElementType(Item, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), ItemImage.create(image, {
+	    autoGenerateKey: false
+	  }), /*#__PURE__*/React$1.createElement(ItemContent, {
+	    content: content,
+	    description: description,
+	    extra: extra,
+	    header: header,
+	    meta: meta
+	  }));
+	}
+
+	Item.handledProps = ["as", "children", "className", "content", "description", "extra", "header", "image", "meta"];
+	Item.Content = ItemContent;
+	Item.Description = ItemDescription;
+	Item.Extra = ItemExtra;
+	Item.Group = ItemGroup;
+	Item.Header = ItemHeader;
+	Item.Image = ItemImage;
+	Item.Meta = ItemMeta;
+	Item.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for ItemContent component. */
+	  content: contentShorthand,
+
+	  /** Shorthand for ItemDescription component. */
+	  description: itemShorthand,
+
+	  /** Shorthand for ItemExtra component. */
+	  extra: itemShorthand,
+
+	  /** Shorthand for ItemHeader component. */
+	  header: itemShorthand,
+
+	  /** Shorthand for ItemImage component. */
+	  image: itemShorthand,
+
+	  /** Shorthand for ItemMeta component. */
+	  meta: itemShorthand
+	} ;
+
+	/**
+	 * A group of statistics.
+	 */
+
+	function StatisticGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      content = props.content,
+	      horizontal = props.horizontal,
+	      inverted = props.inverted,
+	      items = props.items,
+	      size = props.size,
+	      widths = props.widths;
+	  var classes = cx('ui', color, size, useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), useWidthProp(widths), 'statistics', className);
+	  var rest = getUnhandledProps(StatisticGroup, props);
+	  var ElementType = getElementType(StatisticGroup, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), map(items, function (item) {
+	    return Statistic.create(item);
+	  }));
+	}
+
+	StatisticGroup.handledProps = ["as", "children", "className", "color", "content", "horizontal", "inverted", "items", "size", "widths"];
+	StatisticGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A statistic group can be formatted to be different colors. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A statistic group can present its measurement horizontally. */
+	  horizontal: propTypes.exports.bool,
+
+	  /** A statistic group can be formatted to fit on a dark background. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Array of props for Statistic. */
+	  items: collectionShorthand,
+
+	  /** A statistic group can vary in size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'big', 'massive', 'medium')),
+
+	  /** A statistic group can have its items divided evenly. */
+	  widths: propTypes.exports.oneOf(WIDTHS)
+	} ;
+
+	/**
+	 * A statistic can contain a label to help provide context for the presented value.
+	 */
+
+	function StatisticLabel(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = cx('label', className);
+	  var rest = getUnhandledProps(StatisticLabel, props);
+	  var ElementType = getElementType(StatisticLabel, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	StatisticLabel.handledProps = ["as", "children", "className", "content"];
+	StatisticLabel.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	StatisticLabel.create = createShorthandFactory(StatisticLabel, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A statistic can contain a numeric, icon, image, or text value.
+	 */
+
+	function StatisticValue(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      text = props.text;
+	  var classes = cx(useKeyOnly(text, 'text'), 'value', className);
+	  var rest = getUnhandledProps(StatisticValue, props);
+	  var ElementType = getElementType(StatisticValue, props);
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	StatisticValue.handledProps = ["as", "children", "className", "content", "text"];
+	StatisticValue.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Format the value with smaller font size to fit nicely beside number values. */
+	  text: propTypes.exports.bool
+	} ;
+	StatisticValue.create = createShorthandFactory(StatisticValue, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A statistic emphasizes the current value of an attribute.
+	 */
+
+	function Statistic(props) {
+	  var children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      content = props.content,
+	      floated = props.floated,
+	      horizontal = props.horizontal,
+	      inverted = props.inverted,
+	      label = props.label,
+	      size = props.size,
+	      text = props.text,
+	      value = props.value;
+	  var classes = cx('ui', color, size, useValueAndKey(floated, 'floated'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), 'statistic', className);
+	  var rest = getUnhandledProps(Statistic, props);
+	  var ElementType = getElementType(Statistic, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), StatisticValue.create(value, {
+	    defaultProps: {
+	      text: text
+	    },
+	    autoGenerateKey: false
+	  }), StatisticLabel.create(label, {
+	    autoGenerateKey: false
+	  }));
+	}
+
+	Statistic.handledProps = ["as", "children", "className", "color", "content", "floated", "horizontal", "inverted", "label", "size", "text", "value"];
+	Statistic.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: propTypes.exports.elementType,
+
+	  /** Primary content. */
+	  children: propTypes.exports.node,
+
+	  /** Additional classes. */
+	  className: propTypes.exports.string,
+
+	  /** A statistic can be formatted to be different colors. */
+	  color: propTypes.exports.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A statistic can sit to the left or right of other content. */
+	  floated: propTypes.exports.oneOf(FLOATS),
+
+	  /** A statistic can present its measurement horizontally. */
+	  horizontal: propTypes.exports.bool,
+
+	  /** A statistic can be formatted to fit on a dark background. */
+	  inverted: propTypes.exports.bool,
+
+	  /** Label content of the Statistic. */
+	  label: contentShorthand,
+
+	  /** A statistic can vary in size. */
+	  size: propTypes.exports.oneOf(without(SIZES, 'big', 'massive', 'medium')),
+
+	  /** Format the StatisticValue with smaller font size to fit nicely beside number values. */
+	  text: propTypes.exports.bool,
+
+	  /** Value content of the Statistic. */
+	  value: contentShorthand
+	} ;
+	Statistic.Group = StatisticGroup;
+	Statistic.Label = StatisticLabel;
+	Statistic.Value = StatisticValue;
+	Statistic.create = createShorthandFactory(Statistic, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
 	class Feed extends react.exports.Component {
 	  state = {
 	    currency: 'BTC',
@@ -8273,11 +32710,13 @@
 	  };
 
 	  render() {
-	    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, "Price:"), " ", /*#__PURE__*/React.createElement("code", null, this.state.quote.rate)));
+	    return /*#__PURE__*/React$1.createElement("div", {
+	      className: "ui page"
+	    }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("strong", null, "Price:"), " ", /*#__PURE__*/React$1.createElement("code", null, this.state.quote.rate)), /*#__PURE__*/React$1.createElement("hr", null), /*#__PURE__*/React$1.createElement(Card, null, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Label, null, "Price: ", /*#__PURE__*/React$1.createElement(Label.Detail, null, this.state.quote.rate)))));
 	  }
 
 	}
 
-	ReactDOM.render( /*#__PURE__*/React.createElement(Feed, null), document.getElementById('feed'));
+	ReactDOM.render( /*#__PURE__*/React$1.createElement(Feed, null), document.getElementById('feed'));
 
 })();

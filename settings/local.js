@@ -7,6 +7,7 @@ module.exports = {
   },
   interval: 60 * 60 * 1000, // sync every hour, or ~730 calls/month per symbol
   sources: {
+    bitpay: {},
     coinmarketcap: {
       key: 'YOUR_COINMARKETCAP_API_KEY'
     }
