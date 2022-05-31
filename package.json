@@ -7,13 +7,13 @@
     "build": "npm run build:semantic && npm run build:component",
     "build:component": "rollup -c",
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes/default/assets/* ../../assets && cd ../..",
-    "dev": "npm run build:component && npm start",
+    "dev": "npm run watch && npm start",
     "coverage": "nyc npm test",
     "quote": "node scripts/report.js",
     "serve": "http-server assets",
     "start": "node scripts/node.js",
     "test": "mocha tests",
-    "watch": "rollup -c"
+    "watch": "rollup -c -w"
   },
   "repository": {
     "type": "git",
@@ -54,6 +54,7 @@
     "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-serve": "^1.1.0",
+    "rollup-watch": "^4.3.1",
     "semantic-ui-react": "^2.1.2"
   },
   "babelOptions": {
