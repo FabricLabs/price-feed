@@ -7,6 +7,7 @@ const Signer = require('@fabric/core/types/signer');
 const HTTPServer = require('@fabric/http/types/server');
 
 const BitPay = require('./bitpay');
+const Coinbase = require('./coinbase');
 const CoinMarketCap = require('./coinmarketcap');
 
 class Feed extends Service {
@@ -52,6 +53,13 @@ class Feed extends Service {
     // TODO: use subservices architecture
     this.bitpay = new BitPay({
       ...this.settings.sources.bitpay,
+      currency: this.settings.currency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.coinbase = new Coinbase({
+      ...this.settings.sources.coinmarketcap,
       currency: this.settings.currency,
       symbols: this.settings.symbols,
       debug: this.settings.debug
@@ -123,7 +131,8 @@ class Feed extends Service {
 
   async getQuoteForSymbol (symbol) {
     const retrievers = [
-      this.bitpay.getQuoteForSymbol(symbol)
+      this.bitpay.getQuoteForSymbol(symbol),
+      this.coinbase.getQuoteForSymbol(symbol)
     ];
 
     if (this.settings.sources.coinmarketcap.key) {
@@ -134,8 +143,6 @@ class Feed extends Service {
     const quotes = results
       .filter(result => (result.status === 'fulfilled'))
       .map(result => result.value);
-
-    console.log('quotes:', quotes);
 
     return {
       price: this.estimateFromQuotes(quotes)

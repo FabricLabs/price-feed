@@ -26,9 +26,7 @@ class Feed extends Component {
   render () {
     return (
       <div className="ui page">
-        <div><strong>Price:</strong> <code>{this.state.quote.rate}</code></div>
-        <hr />
-        <Card>
+        <Card fluid>
           <Card.Content>
             <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
           </Card.Content>
