@@ -17,9 +17,18 @@ class Feed extends Service {
       currency: 'BTC',
       http: {
         bind: '0.0.0.0',
-        host: 'localhost.localdomain',
+        host: 'localhost',
         port: 3000,
-        secure: false
+        secure: false,
+        resources: {
+          Quote: {
+            name: 'Quote',
+            components: {
+              list: 'QuoteList',
+              view: 'QuoteView'
+            }
+          }
+        }
       },
       interval: 10 * 60 * 1000,
       fabric: null,
@@ -149,13 +158,18 @@ class Feed extends Service {
     if (this.status === 'STARTED') return this;
     this._state.status = 'STARTING';
 
+    // Start HTTP Service
+    await this.http.start();
+
+    // If Fabric enabled, start
+    if (this.settings.fabric) {
+      await this.peer.start();
+    }
+
+    // If sync enabled, start
     if (this.settings.sync) {
       await this._sync();
       this._syncService = setInterval(this._sync.bind(this), this.settings.interval);
-    }
-
-    if (this.settings.fabric) {
-      await this.peer.start();
     }
 
     this._state.status = 'STARTED';

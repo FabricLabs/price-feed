@@ -7,6 +7,7 @@
     "build": "npm run build:semantic && npm run build:component",
     "build:component": "rollup -c",
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes/default/assets/* ../../assets && cd ../..",
+    "dev": "npm run build:component && npm start",
     "coverage": "nyc npm test",
     "quote": "node scripts/report.js",
     "serve": "http-server assets",
@@ -31,7 +32,8 @@
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#security/dependencies",
-    "@fabric/http": "FabricLabs/fabric-http#feature/rollup"
+    "@fabric/http": "FabricLabs/fabric-http#feature/rollup",
+    "@fabric/react": "github:FabricLabs/fabric-react"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.17.12",

@@ -8,6 +8,8 @@ import {
   Label
 } from 'semantic-ui-react';
 
+// import FabricBridge from '@fabric/react';
+
 class Feed extends Component {
   state = {
     currency: 'BTC',
@@ -31,6 +33,7 @@ class Feed extends Component {
             <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
           </Card.Content>
         </Card>
+        {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
       </div>
     );
   }
