@@ -8,7 +8,7 @@
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes/default/assets/* ../../assets && cd ../..",
     "coverage": "nyc npm test",
     "quote": "node scripts/report.js",
-    "serve": "npm run watch",
+    "serve": "http-server assets",
     "start": "node scripts/node.js",
     "test": "mocha tests",
     "watch": "rollup -c"
@@ -52,5 +52,8 @@
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-serve": "^1.1.0",
     "semantic-ui-react": "^2.1.2"
+  },
+  "babelOptions": {
+    "compact": false
   }
 }
