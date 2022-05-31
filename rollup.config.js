@@ -36,6 +36,7 @@ export default [
         presets: ["@babel/preset-react"],
         babelHelpers: 'runtime',
         skipPreflightCheck: true,
+        exclude: '**/node_modules/**',
       }),
       commonjs(),
       /* serve({
