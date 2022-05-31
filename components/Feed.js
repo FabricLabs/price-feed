@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import '../styles/feed.css';
+import '../libraries/fomantic/dist/semantic.css';
+import {
+  Card,
+  Label
+} from 'semantic-ui-react';
 
 class Feed extends Component {
   state = {
@@ -17,8 +23,14 @@ class Feed extends Component {
 
   render () {
     return (
-      <div>
+      <div className="ui page">
         <div><strong>Price:</strong> <code>{this.state.quote.rate}</code></div>
+        <hr />
+        <Card>
+          <Card.Content>
+            <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
+          </Card.Content>
+        </Card>
       </div>
     );
   }

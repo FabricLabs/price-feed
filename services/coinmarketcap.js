@@ -38,6 +38,8 @@ class CoinMarketCap extends Service {
       'latest'
     ].join('/') + `?symbol=${symbol}&convert=${this.currency}&CMC_PRO_API_KEY=${this.settings.key}`);
 
+    if (!result || !result.data) throw new Error('Unable to retrieve result.');
+
     const asset = result.data[symbol];
     const created = Date.parse(asset.last_updated);
     const ageInMS = Date.now() - created;
