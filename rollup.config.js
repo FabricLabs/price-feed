@@ -42,6 +42,11 @@ export default [
         port: 3000
       }) */,
       // livereload({ watch: 'components' })
-    ]
+    ],
+    onwarn(warning, warn) {
+      const { code, importer } = warning;
+      if (code === "CIRCULAR_DEPENDENCY" && importer.includes("semantic-ui-react")) return;
+      warn(warning);
+    },
   }
 ];
