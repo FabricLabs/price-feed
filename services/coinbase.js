@@ -43,7 +43,7 @@ class Coinbase extends Service {
 
     // Request from Coinbase
     const start = new Date();
-    const result = await this.remote._GET(`/v2/prices/${symbol}-${currency}/buy`);
+    const result = await this.remote._GET(`/v2/exchange-rates?currency=${symbol}`);
     const age = Math.log(new Date() - start);
 
     // Return valid Quote
@@ -51,7 +51,7 @@ class Coinbase extends Service {
       age: age,
       created: start,
       currency: currency,
-      price: parseFloat(result.data.amount)
+      price: parseFloat(result.data.rates[currency])
     };
   }
 

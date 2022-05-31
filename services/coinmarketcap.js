@@ -41,13 +41,13 @@ class CoinMarketCap extends Service {
     if (!result || !result.data) throw new Error('Unable to retrieve result.');
 
     const asset = result.data[symbol];
-    const created = Date.parse(asset.last_updated);
+    const created = new Date(asset.last_updated);
     const ageInMS = Date.now() - created;
     const age = Math.log(ageInMS);
 
     return {
       age: age,
-      created: asset.last_updated,
+      created: created,
       currency: this.currency,
       price: asset.quote[this.currency].price
     };
