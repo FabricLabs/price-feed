@@ -32,7 +32,7 @@ export default [
       json(),
       url(),
       babel({
-        presets: ["@babel/preset-react"],
+        presets: ['@babel/preset-react'],
       }),
       commonjs(),
       /* serve({
