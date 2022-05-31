@@ -47,9 +47,9 @@ export default [
       }) */,
       // livereload({ watch: 'components' })
     ],
-    onwarn(warning, warn) {
+    onwarn (warning, warn) {
       const { code, importer } = warning;
-      if (code === "CIRCULAR_DEPENDENCY" && importer.includes("semantic-ui-react")) return;
+      if (code === 'CIRCULAR_DEPENDENCY' && importer.includes('semantic-ui-react')) return;
       warn(warning);
     },
   }
