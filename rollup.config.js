@@ -34,6 +34,8 @@ export default [
       url(),
       babel({
         presets: ["@babel/preset-react"],
+        babelHelpers: 'runtime',
+        skipPreflightCheck: true,
       }),
       commonjs(),
       /* serve({
