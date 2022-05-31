@@ -26,6 +26,7 @@ export default [
         extensions: ['.js']
       }),
       replace({
+        preventAssignment: true,
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }),
       css(),
