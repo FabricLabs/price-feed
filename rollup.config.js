@@ -26,6 +26,7 @@ export default [
         extensions: ['.js']
       }),
       replace({
+        preventAssignment: true,
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }),
       css(),
@@ -33,6 +34,9 @@ export default [
       url(),
       babel({
         presets: ["@babel/preset-react"],
+        babelHelpers: 'runtime',
+        skipPreflightCheck: true,
+        exclude: '**/node_modules/**',
       }),
       commonjs(),
       /* serve({
@@ -42,6 +46,11 @@ export default [
         port: 3000
       }) */,
       // livereload({ watch: 'components' })
-    ]
+    ],
+    onwarn(warning, warn) {
+      const { code, importer } = warning;
+      if (code === "CIRCULAR_DEPENDENCY" && importer.includes("semantic-ui-react")) return;
+      warn(warning);
+    },
   }
 ];
