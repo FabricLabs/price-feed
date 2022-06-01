@@ -50,7 +50,7 @@ export default class Feed extends Component {
 
   render () {
     return (
-      <fabric-content-page className="ui page">
+      <fabric-content-block>
         <Card fluid>
           <Card.Content>
             <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
@@ -62,7 +62,7 @@ export default class Feed extends Component {
           </Card.Content>
         </Card>
         {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
-      </fabric-content-page>
+      </fabric-content-block>
     );
   }
 };

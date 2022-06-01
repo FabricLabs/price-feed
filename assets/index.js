@@ -57103,9 +57103,7 @@
 	  }
 
 	  render() {
-	    return /*#__PURE__*/React$1.createElement("fabric-content-page", {
-	      className: "ui page"
-	    }, /*#__PURE__*/React$1.createElement(Card, {
+	    return /*#__PURE__*/React$1.createElement("fabric-content-block", null, /*#__PURE__*/React$1.createElement(Card, {
 	      fluid: true
 	    }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Label, null, "Price: ", /*#__PURE__*/React$1.createElement(Label.Detail, null, this.state.quote.rate))), /*#__PURE__*/React$1.createElement(Card.Content, {
 	      extra: true
@@ -57152,12 +57150,8 @@
 
 	  render() {
 	    return /*#__PURE__*/React$1.createElement("fabric-content-page", {
-	      className: "ui page"
-	    }, /*#__PURE__*/React$1.createElement(Card, {
-	      fluid: true
-	    }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Feed, null)), /*#__PURE__*/React$1.createElement(Card.Meta, null, /*#__PURE__*/React$1.createElement(Icon, {
-	      name: "linkify"
-	    }))));
+	      class: "ui page"
+	    }, /*#__PURE__*/React$1.createElement(Segment, null, /*#__PURE__*/React$1.createElement(Feed, null)));
 	  }
 
 	}

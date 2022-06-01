@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-
-// import '../styles/feed.css';
+import '../styles/feed.css';
 // import '../libraries/fomantic/dist/semantic.css';
 import {
-  Card,
-  Icon
+  Segment
 } from 'semantic-ui-react';
 
 // import FabricBridge from '@fabric/react';
@@ -48,15 +45,10 @@ export default class FeedMonitor extends Component {
 
   render () {
     return (
-      <fabric-content-page className="ui page">
-        <Card fluid>
-          <Card.Content>
-            <Feed />
-          </Card.Content>
-          <Card.Meta>
-            <Icon name='linkify' />
-          </Card.Meta>
-        </Card>
+      <fabric-content-page class="ui page">
+        <Segment>
+          <Feed />
+        </Segment>
         {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
       </fabric-content-page>
     );
