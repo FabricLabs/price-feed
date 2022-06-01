@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#security/dependencies",
+    "@fabric/core": "FabricLabs/fabric#feature/node-16",
     "@fabric/http": "FabricLabs/fabric-http#feature/rollup",
     "@fabric/react": "github:FabricLabs/fabric-react"
   },
