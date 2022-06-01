@@ -53,6 +53,7 @@
     "rollup": "^2.74.1",
     "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-polyfill-node": "^0.9.0",
     "rollup-plugin-serve": "^1.1.0",
     "semantic-ui-react": "^2.1.2"
   },
