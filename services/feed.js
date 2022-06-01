@@ -1,5 +1,7 @@
 'use strict';
 
+const ESTIMATE_MODE = 'weighted';
+
 const Peer = require('@fabric/core/types/peer');
 const Service = require('@fabric/core/types/service');
 const Hash256 = require('@fabric/core/types/hash256');
@@ -95,11 +97,35 @@ class Feed extends Service {
   }
 
   estimateFromQuotes (quotes) {
-    const average = quotes
-      .map(quote => quote.price)
-      .reduce((sum, value) => sum + value) / quotes.length;
+    if (!quotes || !quotes.length) throw new Error('No quotes provided.');
 
-    return average;
+    let estimate = null;
+
+    switch (ESTIMATE_MODE) {
+      default:
+      case 'weighted':
+        let mass = 0;
+        let sum = 0;
+
+        for (let i = 0; i < quotes.length; i++) {
+          const quote = quotes[i];
+          const weight = 1 / quote.age;
+          const value = weight * quote.price;
+
+          mass += weight;
+          sum += value;
+        }
+
+        estimate = sum / mass;
+        break;
+      case 'average':
+        estimate = quotes
+          .map(quote => quote.price)
+          .reduce((sum, value) => sum + value) / quotes.length;
+        break;
+    }
+
+    return estimate;
   }
 
   async generateReport () {
