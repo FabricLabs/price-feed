@@ -1,6 +1,10 @@
+/**
+ * Live price feed component.
+ */
+// Dependencies
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
+// Styles
 import '../styles/feed.css';
 import '../libraries/fomantic/dist/semantic.css';
 import {
@@ -9,8 +13,10 @@ import {
   Label
 } from 'semantic-ui-react';
 
+// Fabric Components
 // import FabricBridge from '@fabric/react';
 
+// Define our component
 export default class Feed extends Component {
   state = {
     currency: 'BTC',
