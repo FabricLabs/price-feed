@@ -32,8 +32,8 @@
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#feature/node-16",
-    "@fabric/http": "FabricLabs/fabric-http#feature/rollup",
-    "@fabric/react": "github:FabricLabs/fabric-react"
+    "@fabric/http": "FabricLabs/fabric-http#feature/node-16",
+    "@fabric/react": "FabricLabs/fabric-react#feature/node-16"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.17.12",
