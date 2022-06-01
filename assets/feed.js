@@ -1,14 +1,15 @@
-var PortalFeed = (function (React, semanticUiReact, FabricBridge) {
+var PortalFeed = (function (React, semanticUiReact) {
   'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
   var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-  var FabricBridge__default = /*#__PURE__*/_interopDefaultLegacy(FabricBridge);
 
   /**
    * Live price feed component.
    */
+  // import FabricBridge from '@fabric/react';
+  // Define our component
 
   class Feed extends React.Component {
     state = {
@@ -52,15 +53,11 @@ var PortalFeed = (function (React, semanticUiReact, FabricBridge) {
         extra: true
       }, /*#__PURE__*/React__default["default"].createElement("a", null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
         name: "linkify"
-      })))), /*#__PURE__*/React__default["default"].createElement(FabricBridge__default["default"], {
-        host: "localhost",
-        secure: "false",
-        port: "3000"
-      }));
+      })))));
     }
 
   }
 
   return Feed;
 
-})(React, semanticUiReact, FabricBridge);
+})(React, semanticUiReact);

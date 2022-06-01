@@ -55,7 +55,7 @@ export default [
       }
     ],
     plugins: plugins,
-    onwarn: onwarn,
+    onwarn: onwarn
   },
   {
     input: 'components/Feed.js',
@@ -77,6 +77,6 @@ export default [
       }
     ],
     plugins: plugins,
-    onwarn: onwarn,
+    onwarn: onwarn
   }
 ];
