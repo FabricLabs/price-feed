@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 import '../styles/feed.css';
 import '../libraries/fomantic/dist/semantic.css';
@@ -63,7 +62,7 @@ export default class Feed extends Component {
         </Card>
         <FabricBridge host="localhost" secure="false" port="3000" />
         {/* <FabricBridge ref={this.bridge} host={this.state.http.host} port={this.state.http.port} secure={this.state.http.secure} remoteReady={this._handleRemoteReady.bind(this)} onChange={this._handleBridgeChange.bind(this)} /> */}
-      </div>
+      </fabric-content-block>
     );
   }
 };

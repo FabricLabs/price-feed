@@ -1,5 +1,16 @@
-(function () {
+(function (require$$10, require$$11, require$$12, require$$13, require$$14, require$$15) {
 	'use strict';
+
+	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+	var require$$10__default = /*#__PURE__*/_interopDefaultLegacy(require$$10);
+	var require$$11__default = /*#__PURE__*/_interopDefaultLegacy(require$$11);
+	var require$$12__default = /*#__PURE__*/_interopDefaultLegacy(require$$12);
+	var require$$13__default = /*#__PURE__*/_interopDefaultLegacy(require$$13);
+	var require$$14__default = /*#__PURE__*/_interopDefaultLegacy(require$$14);
+	var require$$15__default = /*#__PURE__*/_interopDefaultLegacy(require$$15);
+
+	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 	function getDefaultExportFromCjs (x) {
 		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -33426,7 +33437,7 @@
 	    }
 
 	    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-	    _this.prevNode = void 0;
+	    _this.prevNode = null;
 	    return _this;
 	  }
 
@@ -33488,7 +33499,7 @@
 	    }
 
 	    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-	    _this.currentNode = void 0;
+	    _this.currentNode = null;
 
 	    _this.handleRefOverride = function (node) {
 	      var _this$props = _this.props,
@@ -33524,11 +33535,10 @@
 	  return RefForward;
 	}(react.exports.Component);
 
-	var _excluded = ["children", "innerRef"];
 	var Ref = function Ref(props) {
 	  var children = props.children,
 	      innerRef = props.innerRef,
-	      rest = _objectWithoutPropertiesLoose(props, _excluded);
+	      rest = _objectWithoutPropertiesLoose(props, ["children", "innerRef"]);
 
 	  var child = react.exports.Children.only(children);
 	  var ElementType = reactIs$2.exports.isForwardRef(child) ? RefForward : RefFindNode;
@@ -36447,10 +36457,10 @@
 	var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
 
 	/** Built-in value references. */
-	var Buffer = moduleExports$1 ? root.Buffer : undefined;
+	var Buffer$1 = moduleExports$1 ? root.Buffer : undefined;
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
-	var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+	var nativeIsBuffer = Buffer$1 ? Buffer$1.isBuffer : undefined;
 
 	/**
 	 * Checks if `value` is a buffer.
@@ -42334,8 +42344,7 @@
 
 	var reactIs_development = {};
 
-	/**
-	 * @license React
+	/** @license React v17.0.2
 	 * react-is.development.js
 	 *
 	 * Copyright (c) Facebook, Inc. and its affiliates.
@@ -42347,40 +42356,56 @@
 	{
 	  (function() {
 
-	// -----------------------------------------------------------------------------
+	// ATTENTION
+	// When adding new symbols to this file,
+	// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+	// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+	// nor polyfill, then a plain number is used for performance.
+	var REACT_ELEMENT_TYPE = 0xeac7;
+	var REACT_PORTAL_TYPE = 0xeaca;
+	var REACT_FRAGMENT_TYPE = 0xeacb;
+	var REACT_STRICT_MODE_TYPE = 0xeacc;
+	var REACT_PROFILER_TYPE = 0xead2;
+	var REACT_PROVIDER_TYPE = 0xeacd;
+	var REACT_CONTEXT_TYPE = 0xeace;
+	var REACT_FORWARD_REF_TYPE = 0xead0;
+	var REACT_SUSPENSE_TYPE = 0xead1;
+	var REACT_SUSPENSE_LIST_TYPE = 0xead8;
+	var REACT_MEMO_TYPE = 0xead3;
+	var REACT_LAZY_TYPE = 0xead4;
+	var REACT_BLOCK_TYPE = 0xead9;
+	var REACT_SERVER_BLOCK_TYPE = 0xeada;
+	var REACT_FUNDAMENTAL_TYPE = 0xead5;
+	var REACT_DEBUG_TRACING_MODE_TYPE = 0xeae1;
+	var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
+
+	if (typeof Symbol === 'function' && Symbol.for) {
+	  var symbolFor = Symbol.for;
+	  REACT_ELEMENT_TYPE = symbolFor('react.element');
+	  REACT_PORTAL_TYPE = symbolFor('react.portal');
+	  REACT_FRAGMENT_TYPE = symbolFor('react.fragment');
+	  REACT_STRICT_MODE_TYPE = symbolFor('react.strict_mode');
+	  REACT_PROFILER_TYPE = symbolFor('react.profiler');
+	  REACT_PROVIDER_TYPE = symbolFor('react.provider');
+	  REACT_CONTEXT_TYPE = symbolFor('react.context');
+	  REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
+	  REACT_SUSPENSE_TYPE = symbolFor('react.suspense');
+	  REACT_SUSPENSE_LIST_TYPE = symbolFor('react.suspense_list');
+	  REACT_MEMO_TYPE = symbolFor('react.memo');
+	  REACT_LAZY_TYPE = symbolFor('react.lazy');
+	  REACT_BLOCK_TYPE = symbolFor('react.block');
+	  REACT_SERVER_BLOCK_TYPE = symbolFor('react.server.block');
+	  REACT_FUNDAMENTAL_TYPE = symbolFor('react.fundamental');
+	  symbolFor('react.scope');
+	  symbolFor('react.opaque.id');
+	  REACT_DEBUG_TRACING_MODE_TYPE = symbolFor('react.debug_trace_mode');
+	  symbolFor('react.offscreen');
+	  REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
+	}
+
+	// Filter certain DOM attributes (e.g. src, href) if their values are empty strings.
 
 	var enableScopeAPI = false; // Experimental Create Event Handle API.
-	var enableCacheElement = false;
-	var enableTransitionTracing = false; // No known bugs, but needs performance testing
-
-	var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
-	// stuff. Intended to enable React core members to more easily debug scheduling
-	// issues in DEV builds.
-
-	var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
-
-	// ATTENTION
-
-	var REACT_ELEMENT_TYPE =  Symbol.for('react.element');
-	var REACT_PORTAL_TYPE =  Symbol.for('react.portal');
-	var REACT_FRAGMENT_TYPE =  Symbol.for('react.fragment');
-	var REACT_STRICT_MODE_TYPE =  Symbol.for('react.strict_mode');
-	var REACT_PROFILER_TYPE =  Symbol.for('react.profiler');
-	var REACT_PROVIDER_TYPE =  Symbol.for('react.provider');
-	var REACT_CONTEXT_TYPE =  Symbol.for('react.context');
-	var REACT_SERVER_CONTEXT_TYPE =  Symbol.for('react.server_context');
-	var REACT_FORWARD_REF_TYPE =  Symbol.for('react.forward_ref');
-	var REACT_SUSPENSE_TYPE =  Symbol.for('react.suspense');
-	var REACT_SUSPENSE_LIST_TYPE =  Symbol.for('react.suspense_list');
-	var REACT_MEMO_TYPE =  Symbol.for('react.memo');
-	var REACT_LAZY_TYPE =  Symbol.for('react.lazy');
-	var REACT_OFFSCREEN_TYPE =  Symbol.for('react.offscreen');
-
-	var REACT_MODULE_REFERENCE;
-
-	{
-	  REACT_MODULE_REFERENCE = Symbol.for('react.module.reference');
-	}
 
 	function isValidElementType(type) {
 	  if (typeof type === 'string' || typeof type === 'function') {
@@ -42388,16 +42413,12 @@
 	  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
 
 
-	  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || enableDebugTracing  || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || enableLegacyHidden  || type === REACT_OFFSCREEN_TYPE || enableScopeAPI  || enableCacheElement  || enableTransitionTracing ) {
+	  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_DEBUG_TRACING_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_LEGACY_HIDDEN_TYPE || enableScopeAPI ) {
 	    return true;
 	  }
 
 	  if (typeof type === 'object' && type !== null) {
-	    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || // This needs to include all possible module reference object
-	    // types supported by any Flight configuration anywhere since
-	    // we don't know which Flight build this will end up being used
-	    // with.
-	    type.$$typeof === REACT_MODULE_REFERENCE || type.getModuleId !== undefined) {
+	    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE) {
 	      return true;
 	    }
 	  }
@@ -42425,7 +42446,6 @@
 	            var $$typeofType = type && type.$$typeof;
 
 	            switch ($$typeofType) {
-	              case REACT_SERVER_CONTEXT_TYPE:
 	              case REACT_CONTEXT_TYPE:
 	              case REACT_FORWARD_REF_TYPE:
 	              case REACT_LAZY_TYPE:
@@ -42457,7 +42477,6 @@
 	var Profiler = REACT_PROFILER_TYPE;
 	var StrictMode = REACT_STRICT_MODE_TYPE;
 	var Suspense = REACT_SUSPENSE_TYPE;
-	var SuspenseList = REACT_SUSPENSE_LIST_TYPE;
 	var hasWarnedAboutDeprecatedIsAsyncMode = false;
 	var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
 
@@ -42516,9 +42535,6 @@
 	function isSuspense(object) {
 	  return typeOf(object) === REACT_SUSPENSE_TYPE;
 	}
-	function isSuspenseList(object) {
-	  return typeOf(object) === REACT_SUSPENSE_LIST_TYPE;
-	}
 
 	reactIs_development.ContextConsumer = ContextConsumer;
 	reactIs_development.ContextProvider = ContextProvider;
@@ -42531,7 +42547,6 @@
 	reactIs_development.Profiler = Profiler;
 	reactIs_development.StrictMode = StrictMode;
 	reactIs_development.Suspense = Suspense;
-	reactIs_development.SuspenseList = SuspenseList;
 	reactIs_development.isAsyncMode = isAsyncMode;
 	reactIs_development.isConcurrentMode = isConcurrentMode;
 	reactIs_development.isContextConsumer = isContextConsumer;
@@ -42545,7 +42560,6 @@
 	reactIs_development.isProfiler = isProfiler;
 	reactIs_development.isStrictMode = isStrictMode;
 	reactIs_development.isSuspense = isSuspense;
-	reactIs_development.isSuspenseList = isSuspenseList;
 	reactIs_development.isValidElementType = isValidElementType;
 	reactIs_development.typeOf = typeOf;
 	  })();
@@ -57067,6 +57081,3894 @@
 	  };
 	});
 
+	var fabric_react = {exports: {}};
+
+	(function (module) {
+
+		var React = require$$10__default["default"];
+
+		var semanticUiReact = require$$11__default["default"];
+
+		var Remote = require$$12__default["default"];
+
+		var crypto = require$$13__default["default"];
+
+		var buffer = require$$14__default["default"];
+
+		var TrezorConnect = require$$15__default["default"];
+
+		function _interopDefaultLegacy(e) {
+		  return e && typeof e === 'object' && 'default' in e ? e : {
+		    'default': e
+		  };
+		}
+
+		function _interopNamespace(e) {
+		  if (e && e.__esModule) return e;
+		  var n = Object.create(null);
+
+		  if (e) {
+		    Object.keys(e).forEach(function (k) {
+		      if (k !== 'default') {
+		        var d = Object.getOwnPropertyDescriptor(e, k);
+		        Object.defineProperty(n, k, d.get ? d : {
+		          enumerable: true,
+		          get: function () {
+		            return e[k];
+		          }
+		        });
+		      }
+		    });
+		  }
+
+		  n["default"] = e;
+		  return Object.freeze(n);
+		}
+
+		var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+
+		var Remote__namespace = /*#__PURE__*/_interopNamespace(Remote);
+
+		var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
+
+		var buffer__default = /*#__PURE__*/_interopDefaultLegacy(buffer);
+
+		var TrezorConnect__default = /*#__PURE__*/_interopDefaultLegacy(TrezorConnect);
+
+		function ownKeys(object, enumerableOnly) {
+		  var keys = Object.keys(object);
+
+		  if (Object.getOwnPropertySymbols) {
+		    var symbols = Object.getOwnPropertySymbols(object);
+		    enumerableOnly && (symbols = symbols.filter(function (sym) {
+		      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+		    })), keys.push.apply(keys, symbols);
+		  }
+
+		  return keys;
+		}
+
+		function _objectSpread2(target) {
+		  for (var i = 1; i < arguments.length; i++) {
+		    var source = null != arguments[i] ? arguments[i] : {};
+		    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+		      _defineProperty(target, key, source[key]);
+		    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+		      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+		    });
+		  }
+
+		  return target;
+		}
+
+		function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+		  try {
+		    var info = gen[key](arg);
+		    var value = info.value;
+		  } catch (error) {
+		    reject(error);
+		    return;
+		  }
+
+		  if (info.done) {
+		    resolve(value);
+		  } else {
+		    Promise.resolve(value).then(_next, _throw);
+		  }
+		}
+
+		function _asyncToGenerator(fn) {
+		  return function () {
+		    var self = this,
+		        args = arguments;
+		    return new Promise(function (resolve, reject) {
+		      var gen = fn.apply(self, args);
+
+		      function _next(value) {
+		        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+		      }
+
+		      function _throw(err) {
+		        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+		      }
+
+		      _next(undefined);
+		    });
+		  };
+		}
+
+		function _classCallCheck(instance, Constructor) {
+		  if (!(instance instanceof Constructor)) {
+		    throw new TypeError("Cannot call a class as a function");
+		  }
+		}
+
+		function _defineProperties(target, props) {
+		  for (var i = 0; i < props.length; i++) {
+		    var descriptor = props[i];
+		    descriptor.enumerable = descriptor.enumerable || false;
+		    descriptor.configurable = true;
+		    if ("value" in descriptor) descriptor.writable = true;
+		    Object.defineProperty(target, descriptor.key, descriptor);
+		  }
+		}
+
+		function _createClass(Constructor, protoProps, staticProps) {
+		  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+		  if (staticProps) _defineProperties(Constructor, staticProps);
+		  Object.defineProperty(Constructor, "prototype", {
+		    writable: false
+		  });
+		  return Constructor;
+		}
+
+		function _defineProperty(obj, key, value) {
+		  if (key in obj) {
+		    Object.defineProperty(obj, key, {
+		      value: value,
+		      enumerable: true,
+		      configurable: true,
+		      writable: true
+		    });
+		  } else {
+		    obj[key] = value;
+		  }
+
+		  return obj;
+		}
+
+		function _inherits(subClass, superClass) {
+		  if (typeof superClass !== "function" && superClass !== null) {
+		    throw new TypeError("Super expression must either be null or a function");
+		  }
+
+		  subClass.prototype = Object.create(superClass && superClass.prototype, {
+		    constructor: {
+		      value: subClass,
+		      writable: true,
+		      configurable: true
+		    }
+		  });
+		  Object.defineProperty(subClass, "prototype", {
+		    writable: false
+		  });
+		  if (superClass) _setPrototypeOf(subClass, superClass);
+		}
+
+		function _getPrototypeOf(o) {
+		  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+		    return o.__proto__ || Object.getPrototypeOf(o);
+		  };
+		  return _getPrototypeOf(o);
+		}
+
+		function _setPrototypeOf(o, p) {
+		  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+		    o.__proto__ = p;
+		    return o;
+		  };
+
+		  return _setPrototypeOf(o, p);
+		}
+
+		function _isNativeReflectConstruct() {
+		  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+		  if (Reflect.construct.sham) return false;
+		  if (typeof Proxy === "function") return true;
+
+		  try {
+		    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+		    return true;
+		  } catch (e) {
+		    return false;
+		  }
+		}
+
+		function _assertThisInitialized(self) {
+		  if (self === void 0) {
+		    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+		  }
+
+		  return self;
+		}
+
+		function _possibleConstructorReturn(self, call) {
+		  if (call && (typeof call === "object" || typeof call === "function")) {
+		    return call;
+		  } else if (call !== void 0) {
+		    throw new TypeError("Derived constructors may only return object or undefined");
+		  }
+
+		  return _assertThisInitialized(self);
+		}
+
+		function _createSuper(Derived) {
+		  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+		  return function _createSuperInternal() {
+		    var Super = _getPrototypeOf(Derived),
+		        result;
+
+		    if (hasNativeReflectConstruct) {
+		      var NewTarget = _getPrototypeOf(this).constructor;
+
+		      result = Reflect.construct(Super, arguments, NewTarget);
+		    } else {
+		      result = Super.apply(this, arguments);
+		    }
+
+		    return _possibleConstructorReturn(this, result);
+		  };
+		}
+
+		var name = "@network/playnet";
+		var network = "testnet";
+		var anchor = "BTC";
+		var peers = ["02de546951cee477c90c36d38615a338123a7e1fe190f3c117b028f60359b5bc7e@hub.fabric.pub:7777", "02512b88b368b43c93eeb725439df33fa6e30a2b40e22bba7844bc22f675afc76a@54.193.117.227:7777", "02a1933ff21f2d588285f4dc759402e02ae2ad15840243ce79fbb213eaca2b3724@95.217.115.29:7777"];
+		var mode = "rpc";
+		var servers = ["http://YOUR_USERNAME:YOUR_PASSWORD@localhost:18443"];
+		var currencies = [{
+		  name: "BTCA",
+		  symbol: "BTCA",
+		  service: "btca"
+		}, {
+		  name: "BTCB",
+		  symbol: "BTCB",
+		  service: "btcb"
+		}];
+		var bitcoin = {
+		  address: "bcrt1qr26ree4yhcnxsn7rdxj5hgwf6awz2jmwe8t9q6"
+		};
+		var btca = {
+		  name: "BTCA",
+		  mode: "rpc",
+		  servers: ["http://YOUR_USERNAME:YOUR_PASSWORD@localhost:18443"]
+		};
+		var btcb = {
+		  name: "BTCB",
+		  mode: "rpc",
+		  servers: ["http://YOUR_USERNAME:YOUR_PASSWORD@localhost:19443"]
+		};
+		var key = {
+		  seed: "letter drastic census knock shield matter crime demand gloom echo romance lizard zebra deliver baby key tackle fire update please sketch coconut balance able",
+		  "public": "0223cffd5e94da3c8915c6b868f06d15183c1aeffad8ddf58fcb35a428e3158e71",
+		  xprv: "xprv9s21ZrQH143K2jKS8iCu5QQg34zf7k5h1nfJZbuWQxDDSRmyLxt6BmJARp1SwfGtMAwPNEeQmUJpD5DosB4f3YxaJZiUS2wq6TzsNzFiEjJ",
+		  xpub: "xpub661MyMwAqRbcFDPuEjjuSYMQb6q9XCoYP1auMzK7yHkCKE77tWCLjZceH4xFT1ZCc3FKpeMnii9JMLHp7n9dvDvz8MJ1CYge2digpGRjk7D"
+		};
+		var playnet$1 = {
+		  name: name,
+		  network: network,
+		  anchor: anchor,
+		  peers: peers,
+		  mode: mode,
+		  servers: servers,
+		  currencies: currencies,
+		  bitcoin: bitcoin,
+		  btca: btca,
+		  btcb: btcb,
+		  key: key
+		};
+		var playnet$2 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  name: name,
+		  network: network,
+		  anchor: anchor,
+		  peers: peers,
+		  mode: mode,
+		  servers: servers,
+		  currencies: currencies,
+		  bitcoin: bitcoin,
+		  btca: btca,
+		  btcb: btcb,
+		  key: key,
+		  'default': playnet$1
+		});
+		var commonjsGlobal$1 = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : typeof self !== 'undefined' ? self : {};
+
+		function unwrapExports(x) {
+		  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+		}
+
+		function createCommonjsModule(fn, module) {
+		  return module = {
+		    exports: {}
+		  }, fn(module, module.exports), module.exports;
+		}
+
+		function getCjsExportFromNamespace(n) {
+		  return n && n['default'] || n;
+		}
+
+		var playnet = getCjsExportFromNamespace(playnet$2);
+		var state = {
+		  seed: null,
+		  status: 'PAUSED',
+		  balances: [{
+		    asset: 'Bitcoin',
+		    symbol: 'BTC',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'Liquid BTC (LBTC)',
+		    symbol: 'BTC',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'Shyft',
+		    symbol: 'SHFT',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'Bitcoin (testnet)',
+		    symbol: 'TBTC',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'Bitcoin (regtest)',
+		    symbol: 'RBTC',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'BTC A',
+		    symbol: 'BTCA',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'BTC B',
+		    symbol: 'BTCB',
+		    confirmed: 0,
+		    type: 'confirmed'
+		  }, {
+		    asset: 'Lightning BTC',
+		    symbol: 'BTC',
+		    confirmed: 0.001,
+		    type: 'outbound'
+		  }, {
+		    asset: 'Lightning BTC',
+		    symbol: 'BTC',
+		    confirmed: 0.001,
+		    type: 'inbound'
+		  }],
+		  chains: [{
+		    name: 'Fabric (playnet)',
+		    asset: 'PFAB',
+		    tip: '???'
+		  }, {
+		    name: 'Bitcoin (mainnet)',
+		    asset: 'BTC',
+		    tip: '???',
+		    genesis: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f'
+		  }, {
+		    name: 'Bitcoin (regtest)',
+		    asset: 'RBTC',
+		    tip: '???'
+		  }, {
+		    name: 'Bitcoin (testnet)',
+		    asset: 'TBTC',
+		    tip: '???'
+		  }, {
+		    name: 'BTC A (regtest)',
+		    asset: 'BTCA',
+		    tip: '???'
+		  }, {
+		    name: 'BTC B (regtest)',
+		    asset: 'BTCB',
+		    tip: '???'
+		  }, {
+		    name: 'Ethereum (Ropsten)',
+		    asset: 'ETHR',
+		    tip: '???'
+		  }],
+		  channels: [],
+		  keys: [],
+		  http: {
+		    host: 'localhost',
+		    port: 8080,
+		    secure: false
+		  },
+		  identity: {
+		    id: '',
+		    seed: playnet.key.seed
+		  },
+		  nodes: [
+		  /**/
+		  'localhost:9977', // BTC   `                                              /**/
+
+		  /**/
+		  'localhost:9978', // BTCA   \___                                          /**/
+
+		  /**/
+		  'localhost:9979', // BTCB   /    }- Together these are the first 3 chains /**/\
+		  'localhost:9980', // Liquid
+		  'localhost:9981' // Shyft
+		  ],
+		  orders: [],
+		  peers: [{
+		    id: '???',
+		    alias: 'NUEVO',
+		    host: 'localhost',
+		    port: '7777',
+		    asset: 'BTC'
+		  }],
+		  transactions: []
+		};
+		var state_1 = state.seed;
+		var state_2 = state.status;
+		var state_3 = state.balances;
+		var state_4 = state.chains;
+		var state_5 = state.channels;
+		var state_6 = state.keys;
+		var state_7 = state.http;
+		var state_8 = state.identity;
+		var state_9 = state.nodes;
+		var state_10 = state.orders;
+		var state_11 = state.peers;
+		var state_12 = state.transactions;
+		var defaults = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': state,
+		  __moduleExports: state,
+		  seed: state_1,
+		  status: state_2,
+		  balances: state_3,
+		  chains: state_4,
+		  channels: state_5,
+		  keys: state_6,
+		  http: state_7,
+		  identity: state_8,
+		  nodes: state_9,
+		  orders: state_10,
+		  peers: state_11,
+		  transactions: state_12
+		});
+		var lodash_merge = createCommonjsModule(function (module, exports) {
+		  /**
+		   * Lodash (Custom Build) <https://lodash.com/>
+		   * Build: `lodash modularize exports="npm" -o ./`
+		   * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+		   * Released under MIT license <https://lodash.com/license>
+		   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+		   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+		   */
+
+		  /** Used as the size to enable large array optimizations. */
+		  var LARGE_ARRAY_SIZE = 200;
+		  /** Used to stand-in for `undefined` hash values. */
+
+		  var HASH_UNDEFINED = '__lodash_hash_undefined__';
+		  /** Used to detect hot functions by number of calls within a span of milliseconds. */
+
+		  var HOT_COUNT = 800,
+		      HOT_SPAN = 16;
+		  /** Used as references for various `Number` constants. */
+
+		  var MAX_SAFE_INTEGER = 9007199254740991;
+		  /** `Object#toString` result references. */
+
+		  var argsTag = '[object Arguments]',
+		      arrayTag = '[object Array]',
+		      asyncTag = '[object AsyncFunction]',
+		      boolTag = '[object Boolean]',
+		      dateTag = '[object Date]',
+		      errorTag = '[object Error]',
+		      funcTag = '[object Function]',
+		      genTag = '[object GeneratorFunction]',
+		      mapTag = '[object Map]',
+		      numberTag = '[object Number]',
+		      nullTag = '[object Null]',
+		      objectTag = '[object Object]',
+		      proxyTag = '[object Proxy]',
+		      regexpTag = '[object RegExp]',
+		      setTag = '[object Set]',
+		      stringTag = '[object String]',
+		      undefinedTag = '[object Undefined]',
+		      weakMapTag = '[object WeakMap]';
+		  var arrayBufferTag = '[object ArrayBuffer]',
+		      dataViewTag = '[object DataView]',
+		      float32Tag = '[object Float32Array]',
+		      float64Tag = '[object Float64Array]',
+		      int8Tag = '[object Int8Array]',
+		      int16Tag = '[object Int16Array]',
+		      int32Tag = '[object Int32Array]',
+		      uint8Tag = '[object Uint8Array]',
+		      uint8ClampedTag = '[object Uint8ClampedArray]',
+		      uint16Tag = '[object Uint16Array]',
+		      uint32Tag = '[object Uint32Array]';
+		  /**
+		   * Used to match `RegExp`
+		   * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+		   */
+
+		  var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+		  /** Used to detect host constructors (Safari). */
+
+		  var reIsHostCtor = /^\[object .+?Constructor\]$/;
+		  /** Used to detect unsigned integer values. */
+
+		  var reIsUint = /^(?:0|[1-9]\d*)$/;
+		  /** Used to identify `toStringTag` values of typed arrays. */
+
+		  var typedArrayTags = {};
+		  typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+		  typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+		  /** Detect free variable `global` from Node.js. */
+
+		  var freeGlobal = typeof commonjsGlobal$1 == 'object' && commonjsGlobal$1 && commonjsGlobal$1.Object === Object && commonjsGlobal$1;
+		  /** Detect free variable `self`. */
+
+		  var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+		  /** Used as a reference to the global object. */
+
+		  var root = freeGlobal || freeSelf || Function('return this')();
+		  /** Detect free variable `exports`. */
+
+		  var freeExports = exports && !exports.nodeType && exports;
+		  /** Detect free variable `module`. */
+
+		  var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+		  /** Detect the popular CommonJS extension `module.exports`. */
+
+		  var moduleExports = freeModule && freeModule.exports === freeExports;
+		  /** Detect free variable `process` from Node.js. */
+
+		  var freeProcess = moduleExports && freeGlobal.process;
+		  /** Used to access faster Node.js helpers. */
+
+		  var nodeUtil = function () {
+		    try {
+		      // Use `util.types` for Node.js 10+.
+		      var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+		      if (types) {
+		        return types;
+		      } // Legacy `process.binding('util')` for Node.js < 10.
+
+
+		      return freeProcess && freeProcess.binding && freeProcess.binding('util');
+		    } catch (e) {}
+		  }();
+		  /* Node.js helper references. */
+
+
+		  var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+		  /**
+		   * A faster alternative to `Function#apply`, this function invokes `func`
+		   * with the `this` binding of `thisArg` and the arguments of `args`.
+		   *
+		   * @private
+		   * @param {Function} func The function to invoke.
+		   * @param {*} thisArg The `this` binding of `func`.
+		   * @param {Array} args The arguments to invoke `func` with.
+		   * @returns {*} Returns the result of `func`.
+		   */
+
+		  function apply(func, thisArg, args) {
+		    switch (args.length) {
+		      case 0:
+		        return func.call(thisArg);
+
+		      case 1:
+		        return func.call(thisArg, args[0]);
+
+		      case 2:
+		        return func.call(thisArg, args[0], args[1]);
+
+		      case 3:
+		        return func.call(thisArg, args[0], args[1], args[2]);
+		    }
+
+		    return func.apply(thisArg, args);
+		  }
+		  /**
+		   * The base implementation of `_.times` without support for iteratee shorthands
+		   * or max array length checks.
+		   *
+		   * @private
+		   * @param {number} n The number of times to invoke `iteratee`.
+		   * @param {Function} iteratee The function invoked per iteration.
+		   * @returns {Array} Returns the array of results.
+		   */
+
+
+		  function baseTimes(n, iteratee) {
+		    var index = -1,
+		        result = Array(n);
+
+		    while (++index < n) {
+		      result[index] = iteratee(index);
+		    }
+
+		    return result;
+		  }
+		  /**
+		   * The base implementation of `_.unary` without support for storing metadata.
+		   *
+		   * @private
+		   * @param {Function} func The function to cap arguments for.
+		   * @returns {Function} Returns the new capped function.
+		   */
+
+
+		  function baseUnary(func) {
+		    return function (value) {
+		      return func(value);
+		    };
+		  }
+		  /**
+		   * Gets the value at `key` of `object`.
+		   *
+		   * @private
+		   * @param {Object} [object] The object to query.
+		   * @param {string} key The key of the property to get.
+		   * @returns {*} Returns the property value.
+		   */
+
+
+		  function getValue(object, key) {
+		    return object == null ? undefined : object[key];
+		  }
+		  /**
+		   * Creates a unary function that invokes `func` with its argument transformed.
+		   *
+		   * @private
+		   * @param {Function} func The function to wrap.
+		   * @param {Function} transform The argument transform.
+		   * @returns {Function} Returns the new function.
+		   */
+
+
+		  function overArg(func, transform) {
+		    return function (arg) {
+		      return func(transform(arg));
+		    };
+		  }
+		  /** Used for built-in method references. */
+
+
+		  var arrayProto = Array.prototype,
+		      funcProto = Function.prototype,
+		      objectProto = Object.prototype;
+		  /** Used to detect overreaching core-js shims. */
+
+		  var coreJsData = root['__core-js_shared__'];
+		  /** Used to resolve the decompiled source of functions. */
+
+		  var funcToString = funcProto.toString;
+		  /** Used to check objects for own properties. */
+
+		  var hasOwnProperty = objectProto.hasOwnProperty;
+		  /** Used to detect methods masquerading as native. */
+
+		  var maskSrcKey = function () {
+		    var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+		    return uid ? 'Symbol(src)_1.' + uid : '';
+		  }();
+		  /**
+		   * Used to resolve the
+		   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+		   * of values.
+		   */
+
+
+		  var nativeObjectToString = objectProto.toString;
+		  /** Used to infer the `Object` constructor. */
+
+		  var objectCtorString = funcToString.call(Object);
+		  /** Used to detect if a method is native. */
+
+		  var reIsNative = RegExp('^' + funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+		  /** Built-in value references. */
+
+		  var Buffer = moduleExports ? root.Buffer : undefined,
+		      Symbol = root.Symbol,
+		      Uint8Array = root.Uint8Array,
+		      allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined,
+		      getPrototype = overArg(Object.getPrototypeOf, Object),
+		      objectCreate = Object.create,
+		      propertyIsEnumerable = objectProto.propertyIsEnumerable,
+		      splice = arrayProto.splice,
+		      symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+		  var defineProperty = function () {
+		    try {
+		      var func = getNative(Object, 'defineProperty');
+		      func({}, '', {});
+		      return func;
+		    } catch (e) {}
+		  }();
+		  /* Built-in method references for those with the same name as other `lodash` methods. */
+
+
+		  var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined,
+		      nativeMax = Math.max,
+		      nativeNow = Date.now;
+		  /* Built-in method references that are verified to be native. */
+
+		  var Map = getNative(root, 'Map'),
+		      nativeCreate = getNative(Object, 'create');
+		  /**
+		   * The base implementation of `_.create` without support for assigning
+		   * properties to the created object.
+		   *
+		   * @private
+		   * @param {Object} proto The object to inherit from.
+		   * @returns {Object} Returns the new object.
+		   */
+
+		  var baseCreate = function () {
+		    function object() {}
+
+		    return function (proto) {
+		      if (!isObject(proto)) {
+		        return {};
+		      }
+
+		      if (objectCreate) {
+		        return objectCreate(proto);
+		      }
+
+		      object.prototype = proto;
+		      var result = new object();
+		      object.prototype = undefined;
+		      return result;
+		    };
+		  }();
+		  /**
+		   * Creates a hash object.
+		   *
+		   * @private
+		   * @constructor
+		   * @param {Array} [entries] The key-value pairs to cache.
+		   */
+
+
+		  function Hash(entries) {
+		    var index = -1,
+		        length = entries == null ? 0 : entries.length;
+		    this.clear();
+
+		    while (++index < length) {
+		      var entry = entries[index];
+		      this.set(entry[0], entry[1]);
+		    }
+		  }
+		  /**
+		   * Removes all key-value entries from the hash.
+		   *
+		   * @private
+		   * @name clear
+		   * @memberOf Hash
+		   */
+
+
+		  function hashClear() {
+		    this.__data__ = nativeCreate ? nativeCreate(null) : {};
+		    this.size = 0;
+		  }
+		  /**
+		   * Removes `key` and its value from the hash.
+		   *
+		   * @private
+		   * @name delete
+		   * @memberOf Hash
+		   * @param {Object} hash The hash to modify.
+		   * @param {string} key The key of the value to remove.
+		   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+		   */
+
+
+		  function hashDelete(key) {
+		    var result = this.has(key) && delete this.__data__[key];
+		    this.size -= result ? 1 : 0;
+		    return result;
+		  }
+		  /**
+		   * Gets the hash value for `key`.
+		   *
+		   * @private
+		   * @name get
+		   * @memberOf Hash
+		   * @param {string} key The key of the value to get.
+		   * @returns {*} Returns the entry value.
+		   */
+
+
+		  function hashGet(key) {
+		    var data = this.__data__;
+
+		    if (nativeCreate) {
+		      var result = data[key];
+		      return result === HASH_UNDEFINED ? undefined : result;
+		    }
+
+		    return hasOwnProperty.call(data, key) ? data[key] : undefined;
+		  }
+		  /**
+		   * Checks if a hash value for `key` exists.
+		   *
+		   * @private
+		   * @name has
+		   * @memberOf Hash
+		   * @param {string} key The key of the entry to check.
+		   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+		   */
+
+
+		  function hashHas(key) {
+		    var data = this.__data__;
+		    return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+		  }
+		  /**
+		   * Sets the hash `key` to `value`.
+		   *
+		   * @private
+		   * @name set
+		   * @memberOf Hash
+		   * @param {string} key The key of the value to set.
+		   * @param {*} value The value to set.
+		   * @returns {Object} Returns the hash instance.
+		   */
+
+
+		  function hashSet(key, value) {
+		    var data = this.__data__;
+		    this.size += this.has(key) ? 0 : 1;
+		    data[key] = nativeCreate && value === undefined ? HASH_UNDEFINED : value;
+		    return this;
+		  } // Add methods to `Hash`.
+
+
+		  Hash.prototype.clear = hashClear;
+		  Hash.prototype['delete'] = hashDelete;
+		  Hash.prototype.get = hashGet;
+		  Hash.prototype.has = hashHas;
+		  Hash.prototype.set = hashSet;
+		  /**
+		   * Creates an list cache object.
+		   *
+		   * @private
+		   * @constructor
+		   * @param {Array} [entries] The key-value pairs to cache.
+		   */
+
+		  function ListCache(entries) {
+		    var index = -1,
+		        length = entries == null ? 0 : entries.length;
+		    this.clear();
+
+		    while (++index < length) {
+		      var entry = entries[index];
+		      this.set(entry[0], entry[1]);
+		    }
+		  }
+		  /**
+		   * Removes all key-value entries from the list cache.
+		   *
+		   * @private
+		   * @name clear
+		   * @memberOf ListCache
+		   */
+
+
+		  function listCacheClear() {
+		    this.__data__ = [];
+		    this.size = 0;
+		  }
+		  /**
+		   * Removes `key` and its value from the list cache.
+		   *
+		   * @private
+		   * @name delete
+		   * @memberOf ListCache
+		   * @param {string} key The key of the value to remove.
+		   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+		   */
+
+
+		  function listCacheDelete(key) {
+		    var data = this.__data__,
+		        index = assocIndexOf(data, key);
+
+		    if (index < 0) {
+		      return false;
+		    }
+
+		    var lastIndex = data.length - 1;
+
+		    if (index == lastIndex) {
+		      data.pop();
+		    } else {
+		      splice.call(data, index, 1);
+		    }
+
+		    --this.size;
+		    return true;
+		  }
+		  /**
+		   * Gets the list cache value for `key`.
+		   *
+		   * @private
+		   * @name get
+		   * @memberOf ListCache
+		   * @param {string} key The key of the value to get.
+		   * @returns {*} Returns the entry value.
+		   */
+
+
+		  function listCacheGet(key) {
+		    var data = this.__data__,
+		        index = assocIndexOf(data, key);
+		    return index < 0 ? undefined : data[index][1];
+		  }
+		  /**
+		   * Checks if a list cache value for `key` exists.
+		   *
+		   * @private
+		   * @name has
+		   * @memberOf ListCache
+		   * @param {string} key The key of the entry to check.
+		   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+		   */
+
+
+		  function listCacheHas(key) {
+		    return assocIndexOf(this.__data__, key) > -1;
+		  }
+		  /**
+		   * Sets the list cache `key` to `value`.
+		   *
+		   * @private
+		   * @name set
+		   * @memberOf ListCache
+		   * @param {string} key The key of the value to set.
+		   * @param {*} value The value to set.
+		   * @returns {Object} Returns the list cache instance.
+		   */
+
+
+		  function listCacheSet(key, value) {
+		    var data = this.__data__,
+		        index = assocIndexOf(data, key);
+
+		    if (index < 0) {
+		      ++this.size;
+		      data.push([key, value]);
+		    } else {
+		      data[index][1] = value;
+		    }
+
+		    return this;
+		  } // Add methods to `ListCache`.
+
+
+		  ListCache.prototype.clear = listCacheClear;
+		  ListCache.prototype['delete'] = listCacheDelete;
+		  ListCache.prototype.get = listCacheGet;
+		  ListCache.prototype.has = listCacheHas;
+		  ListCache.prototype.set = listCacheSet;
+		  /**
+		   * Creates a map cache object to store key-value pairs.
+		   *
+		   * @private
+		   * @constructor
+		   * @param {Array} [entries] The key-value pairs to cache.
+		   */
+
+		  function MapCache(entries) {
+		    var index = -1,
+		        length = entries == null ? 0 : entries.length;
+		    this.clear();
+
+		    while (++index < length) {
+		      var entry = entries[index];
+		      this.set(entry[0], entry[1]);
+		    }
+		  }
+		  /**
+		   * Removes all key-value entries from the map.
+		   *
+		   * @private
+		   * @name clear
+		   * @memberOf MapCache
+		   */
+
+
+		  function mapCacheClear() {
+		    this.size = 0;
+		    this.__data__ = {
+		      'hash': new Hash(),
+		      'map': new (Map || ListCache)(),
+		      'string': new Hash()
+		    };
+		  }
+		  /**
+		   * Removes `key` and its value from the map.
+		   *
+		   * @private
+		   * @name delete
+		   * @memberOf MapCache
+		   * @param {string} key The key of the value to remove.
+		   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+		   */
+
+
+		  function mapCacheDelete(key) {
+		    var result = getMapData(this, key)['delete'](key);
+		    this.size -= result ? 1 : 0;
+		    return result;
+		  }
+		  /**
+		   * Gets the map value for `key`.
+		   *
+		   * @private
+		   * @name get
+		   * @memberOf MapCache
+		   * @param {string} key The key of the value to get.
+		   * @returns {*} Returns the entry value.
+		   */
+
+
+		  function mapCacheGet(key) {
+		    return getMapData(this, key).get(key);
+		  }
+		  /**
+		   * Checks if a map value for `key` exists.
+		   *
+		   * @private
+		   * @name has
+		   * @memberOf MapCache
+		   * @param {string} key The key of the entry to check.
+		   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+		   */
+
+
+		  function mapCacheHas(key) {
+		    return getMapData(this, key).has(key);
+		  }
+		  /**
+		   * Sets the map `key` to `value`.
+		   *
+		   * @private
+		   * @name set
+		   * @memberOf MapCache
+		   * @param {string} key The key of the value to set.
+		   * @param {*} value The value to set.
+		   * @returns {Object} Returns the map cache instance.
+		   */
+
+
+		  function mapCacheSet(key, value) {
+		    var data = getMapData(this, key),
+		        size = data.size;
+		    data.set(key, value);
+		    this.size += data.size == size ? 0 : 1;
+		    return this;
+		  } // Add methods to `MapCache`.
+
+
+		  MapCache.prototype.clear = mapCacheClear;
+		  MapCache.prototype['delete'] = mapCacheDelete;
+		  MapCache.prototype.get = mapCacheGet;
+		  MapCache.prototype.has = mapCacheHas;
+		  MapCache.prototype.set = mapCacheSet;
+		  /**
+		   * Creates a stack cache object to store key-value pairs.
+		   *
+		   * @private
+		   * @constructor
+		   * @param {Array} [entries] The key-value pairs to cache.
+		   */
+
+		  function Stack(entries) {
+		    var data = this.__data__ = new ListCache(entries);
+		    this.size = data.size;
+		  }
+		  /**
+		   * Removes all key-value entries from the stack.
+		   *
+		   * @private
+		   * @name clear
+		   * @memberOf Stack
+		   */
+
+
+		  function stackClear() {
+		    this.__data__ = new ListCache();
+		    this.size = 0;
+		  }
+		  /**
+		   * Removes `key` and its value from the stack.
+		   *
+		   * @private
+		   * @name delete
+		   * @memberOf Stack
+		   * @param {string} key The key of the value to remove.
+		   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+		   */
+
+
+		  function stackDelete(key) {
+		    var data = this.__data__,
+		        result = data['delete'](key);
+		    this.size = data.size;
+		    return result;
+		  }
+		  /**
+		   * Gets the stack value for `key`.
+		   *
+		   * @private
+		   * @name get
+		   * @memberOf Stack
+		   * @param {string} key The key of the value to get.
+		   * @returns {*} Returns the entry value.
+		   */
+
+
+		  function stackGet(key) {
+		    return this.__data__.get(key);
+		  }
+		  /**
+		   * Checks if a stack value for `key` exists.
+		   *
+		   * @private
+		   * @name has
+		   * @memberOf Stack
+		   * @param {string} key The key of the entry to check.
+		   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+		   */
+
+
+		  function stackHas(key) {
+		    return this.__data__.has(key);
+		  }
+		  /**
+		   * Sets the stack `key` to `value`.
+		   *
+		   * @private
+		   * @name set
+		   * @memberOf Stack
+		   * @param {string} key The key of the value to set.
+		   * @param {*} value The value to set.
+		   * @returns {Object} Returns the stack cache instance.
+		   */
+
+
+		  function stackSet(key, value) {
+		    var data = this.__data__;
+
+		    if (data instanceof ListCache) {
+		      var pairs = data.__data__;
+
+		      if (!Map || pairs.length < LARGE_ARRAY_SIZE - 1) {
+		        pairs.push([key, value]);
+		        this.size = ++data.size;
+		        return this;
+		      }
+
+		      data = this.__data__ = new MapCache(pairs);
+		    }
+
+		    data.set(key, value);
+		    this.size = data.size;
+		    return this;
+		  } // Add methods to `Stack`.
+
+
+		  Stack.prototype.clear = stackClear;
+		  Stack.prototype['delete'] = stackDelete;
+		  Stack.prototype.get = stackGet;
+		  Stack.prototype.has = stackHas;
+		  Stack.prototype.set = stackSet;
+		  /**
+		   * Creates an array of the enumerable property names of the array-like `value`.
+		   *
+		   * @private
+		   * @param {*} value The value to query.
+		   * @param {boolean} inherited Specify returning inherited property names.
+		   * @returns {Array} Returns the array of property names.
+		   */
+
+		  function arrayLikeKeys(value, inherited) {
+		    var isArr = isArray(value),
+		        isArg = !isArr && isArguments(value),
+		        isBuff = !isArr && !isArg && isBuffer(value),
+		        isType = !isArr && !isArg && !isBuff && isTypedArray(value),
+		        skipIndexes = isArr || isArg || isBuff || isType,
+		        result = skipIndexes ? baseTimes(value.length, String) : [],
+		        length = result.length;
+
+		    for (var key in value) {
+		      if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && ( // Safari 9 has enumerable `arguments.length` in strict mode.
+		      key == 'length' || // Node.js 0.10 has enumerable non-index properties on buffers.
+		      isBuff && (key == 'offset' || key == 'parent') || // PhantomJS 2 has enumerable non-index properties on typed arrays.
+		      isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset') || // Skip index properties.
+		      isIndex(key, length)))) {
+		        result.push(key);
+		      }
+		    }
+
+		    return result;
+		  }
+		  /**
+		   * This function is like `assignValue` except that it doesn't assign
+		   * `undefined` values.
+		   *
+		   * @private
+		   * @param {Object} object The object to modify.
+		   * @param {string} key The key of the property to assign.
+		   * @param {*} value The value to assign.
+		   */
+
+
+		  function assignMergeValue(object, key, value) {
+		    if (value !== undefined && !eq(object[key], value) || value === undefined && !(key in object)) {
+		      baseAssignValue(object, key, value);
+		    }
+		  }
+		  /**
+		   * Assigns `value` to `key` of `object` if the existing value is not equivalent
+		   * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+		   * for equality comparisons.
+		   *
+		   * @private
+		   * @param {Object} object The object to modify.
+		   * @param {string} key The key of the property to assign.
+		   * @param {*} value The value to assign.
+		   */
+
+
+		  function assignValue(object, key, value) {
+		    var objValue = object[key];
+
+		    if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) || value === undefined && !(key in object)) {
+		      baseAssignValue(object, key, value);
+		    }
+		  }
+		  /**
+		   * Gets the index at which the `key` is found in `array` of key-value pairs.
+		   *
+		   * @private
+		   * @param {Array} array The array to inspect.
+		   * @param {*} key The key to search for.
+		   * @returns {number} Returns the index of the matched value, else `-1`.
+		   */
+
+
+		  function assocIndexOf(array, key) {
+		    var length = array.length;
+
+		    while (length--) {
+		      if (eq(array[length][0], key)) {
+		        return length;
+		      }
+		    }
+
+		    return -1;
+		  }
+		  /**
+		   * The base implementation of `assignValue` and `assignMergeValue` without
+		   * value checks.
+		   *
+		   * @private
+		   * @param {Object} object The object to modify.
+		   * @param {string} key The key of the property to assign.
+		   * @param {*} value The value to assign.
+		   */
+
+
+		  function baseAssignValue(object, key, value) {
+		    if (key == '__proto__' && defineProperty) {
+		      defineProperty(object, key, {
+		        'configurable': true,
+		        'enumerable': true,
+		        'value': value,
+		        'writable': true
+		      });
+		    } else {
+		      object[key] = value;
+		    }
+		  }
+		  /**
+		   * The base implementation of `baseForOwn` which iterates over `object`
+		   * properties returned by `keysFunc` and invokes `iteratee` for each property.
+		   * Iteratee functions may exit iteration early by explicitly returning `false`.
+		   *
+		   * @private
+		   * @param {Object} object The object to iterate over.
+		   * @param {Function} iteratee The function invoked per iteration.
+		   * @param {Function} keysFunc The function to get the keys of `object`.
+		   * @returns {Object} Returns `object`.
+		   */
+
+
+		  var baseFor = createBaseFor();
+		  /**
+		   * The base implementation of `getTag` without fallbacks for buggy environments.
+		   *
+		   * @private
+		   * @param {*} value The value to query.
+		   * @returns {string} Returns the `toStringTag`.
+		   */
+
+		  function baseGetTag(value) {
+		    if (value == null) {
+		      return value === undefined ? undefinedTag : nullTag;
+		    }
+
+		    return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+		  }
+		  /**
+		   * The base implementation of `_.isArguments`.
+		   *
+		   * @private
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+		   */
+
+
+		  function baseIsArguments(value) {
+		    return isObjectLike(value) && baseGetTag(value) == argsTag;
+		  }
+		  /**
+		   * The base implementation of `_.isNative` without bad shim checks.
+		   *
+		   * @private
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a native function,
+		   *  else `false`.
+		   */
+
+
+		  function baseIsNative(value) {
+		    if (!isObject(value) || isMasked(value)) {
+		      return false;
+		    }
+
+		    var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+		    return pattern.test(toSource(value));
+		  }
+		  /**
+		   * The base implementation of `_.isTypedArray` without Node.js optimizations.
+		   *
+		   * @private
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+		   */
+
+
+		  function baseIsTypedArray(value) {
+		    return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
+		  }
+		  /**
+		   * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+		   *
+		   * @private
+		   * @param {Object} object The object to query.
+		   * @returns {Array} Returns the array of property names.
+		   */
+
+
+		  function baseKeysIn(object) {
+		    if (!isObject(object)) {
+		      return nativeKeysIn(object);
+		    }
+
+		    var isProto = isPrototype(object),
+		        result = [];
+
+		    for (var key in object) {
+		      if (!(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+		        result.push(key);
+		      }
+		    }
+
+		    return result;
+		  }
+		  /**
+		   * The base implementation of `_.merge` without support for multiple sources.
+		   *
+		   * @private
+		   * @param {Object} object The destination object.
+		   * @param {Object} source The source object.
+		   * @param {number} srcIndex The index of `source`.
+		   * @param {Function} [customizer] The function to customize merged values.
+		   * @param {Object} [stack] Tracks traversed source values and their merged
+		   *  counterparts.
+		   */
+
+
+		  function baseMerge(object, source, srcIndex, customizer, stack) {
+		    if (object === source) {
+		      return;
+		    }
+
+		    baseFor(source, function (srcValue, key) {
+		      stack || (stack = new Stack());
+
+		      if (isObject(srcValue)) {
+		        baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+		      } else {
+		        var newValue = customizer ? customizer(safeGet(object, key), srcValue, key + '', object, source, stack) : undefined;
+
+		        if (newValue === undefined) {
+		          newValue = srcValue;
+		        }
+
+		        assignMergeValue(object, key, newValue);
+		      }
+		    }, keysIn);
+		  }
+		  /**
+		   * A specialized version of `baseMerge` for arrays and objects which performs
+		   * deep merges and tracks traversed objects enabling objects with circular
+		   * references to be merged.
+		   *
+		   * @private
+		   * @param {Object} object The destination object.
+		   * @param {Object} source The source object.
+		   * @param {string} key The key of the value to merge.
+		   * @param {number} srcIndex The index of `source`.
+		   * @param {Function} mergeFunc The function to merge values.
+		   * @param {Function} [customizer] The function to customize assigned values.
+		   * @param {Object} [stack] Tracks traversed source values and their merged
+		   *  counterparts.
+		   */
+
+
+		  function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+		    var objValue = safeGet(object, key),
+		        srcValue = safeGet(source, key),
+		        stacked = stack.get(srcValue);
+
+		    if (stacked) {
+		      assignMergeValue(object, key, stacked);
+		      return;
+		    }
+
+		    var newValue = customizer ? customizer(objValue, srcValue, key + '', object, source, stack) : undefined;
+		    var isCommon = newValue === undefined;
+
+		    if (isCommon) {
+		      var isArr = isArray(srcValue),
+		          isBuff = !isArr && isBuffer(srcValue),
+		          isTyped = !isArr && !isBuff && isTypedArray(srcValue);
+		      newValue = srcValue;
+
+		      if (isArr || isBuff || isTyped) {
+		        if (isArray(objValue)) {
+		          newValue = objValue;
+		        } else if (isArrayLikeObject(objValue)) {
+		          newValue = copyArray(objValue);
+		        } else if (isBuff) {
+		          isCommon = false;
+		          newValue = cloneBuffer(srcValue, true);
+		        } else if (isTyped) {
+		          isCommon = false;
+		          newValue = cloneTypedArray(srcValue, true);
+		        } else {
+		          newValue = [];
+		        }
+		      } else if (isPlainObject(srcValue) || isArguments(srcValue)) {
+		        newValue = objValue;
+
+		        if (isArguments(objValue)) {
+		          newValue = toPlainObject(objValue);
+		        } else if (!isObject(objValue) || isFunction(objValue)) {
+		          newValue = initCloneObject(srcValue);
+		        }
+		      } else {
+		        isCommon = false;
+		      }
+		    }
+
+		    if (isCommon) {
+		      // Recursively merge objects and arrays (susceptible to call stack limits).
+		      stack.set(srcValue, newValue);
+		      mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+		      stack['delete'](srcValue);
+		    }
+
+		    assignMergeValue(object, key, newValue);
+		  }
+		  /**
+		   * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+		   *
+		   * @private
+		   * @param {Function} func The function to apply a rest parameter to.
+		   * @param {number} [start=func.length-1] The start position of the rest parameter.
+		   * @returns {Function} Returns the new function.
+		   */
+
+
+		  function baseRest(func, start) {
+		    return setToString(overRest(func, start, identity), func + '');
+		  }
+		  /**
+		   * The base implementation of `setToString` without support for hot loop shorting.
+		   *
+		   * @private
+		   * @param {Function} func The function to modify.
+		   * @param {Function} string The `toString` result.
+		   * @returns {Function} Returns `func`.
+		   */
+
+
+		  var baseSetToString = !defineProperty ? identity : function (func, string) {
+		    return defineProperty(func, 'toString', {
+		      'configurable': true,
+		      'enumerable': false,
+		      'value': constant(string),
+		      'writable': true
+		    });
+		  };
+		  /**
+		   * Creates a clone of  `buffer`.
+		   *
+		   * @private
+		   * @param {Buffer} buffer The buffer to clone.
+		   * @param {boolean} [isDeep] Specify a deep clone.
+		   * @returns {Buffer} Returns the cloned buffer.
+		   */
+
+		  function cloneBuffer(buffer, isDeep) {
+		    if (isDeep) {
+		      return buffer.slice();
+		    }
+
+		    var length = buffer.length,
+		        result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+		    buffer.copy(result);
+		    return result;
+		  }
+		  /**
+		   * Creates a clone of `arrayBuffer`.
+		   *
+		   * @private
+		   * @param {ArrayBuffer} arrayBuffer The array buffer to clone.
+		   * @returns {ArrayBuffer} Returns the cloned array buffer.
+		   */
+
+
+		  function cloneArrayBuffer(arrayBuffer) {
+		    var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+		    new Uint8Array(result).set(new Uint8Array(arrayBuffer));
+		    return result;
+		  }
+		  /**
+		   * Creates a clone of `typedArray`.
+		   *
+		   * @private
+		   * @param {Object} typedArray The typed array to clone.
+		   * @param {boolean} [isDeep] Specify a deep clone.
+		   * @returns {Object} Returns the cloned typed array.
+		   */
+
+
+		  function cloneTypedArray(typedArray, isDeep) {
+		    var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+		    return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+		  }
+		  /**
+		   * Copies the values of `source` to `array`.
+		   *
+		   * @private
+		   * @param {Array} source The array to copy values from.
+		   * @param {Array} [array=[]] The array to copy values to.
+		   * @returns {Array} Returns `array`.
+		   */
+
+
+		  function copyArray(source, array) {
+		    var index = -1,
+		        length = source.length;
+		    array || (array = Array(length));
+
+		    while (++index < length) {
+		      array[index] = source[index];
+		    }
+
+		    return array;
+		  }
+		  /**
+		   * Copies properties of `source` to `object`.
+		   *
+		   * @private
+		   * @param {Object} source The object to copy properties from.
+		   * @param {Array} props The property identifiers to copy.
+		   * @param {Object} [object={}] The object to copy properties to.
+		   * @param {Function} [customizer] The function to customize copied values.
+		   * @returns {Object} Returns `object`.
+		   */
+
+
+		  function copyObject(source, props, object, customizer) {
+		    var isNew = !object;
+		    object || (object = {});
+		    var index = -1,
+		        length = props.length;
+
+		    while (++index < length) {
+		      var key = props[index];
+		      var newValue = customizer ? customizer(object[key], source[key], key, object, source) : undefined;
+
+		      if (newValue === undefined) {
+		        newValue = source[key];
+		      }
+
+		      if (isNew) {
+		        baseAssignValue(object, key, newValue);
+		      } else {
+		        assignValue(object, key, newValue);
+		      }
+		    }
+
+		    return object;
+		  }
+		  /**
+		   * Creates a function like `_.assign`.
+		   *
+		   * @private
+		   * @param {Function} assigner The function to assign values.
+		   * @returns {Function} Returns the new assigner function.
+		   */
+
+
+		  function createAssigner(assigner) {
+		    return baseRest(function (object, sources) {
+		      var index = -1,
+		          length = sources.length,
+		          customizer = length > 1 ? sources[length - 1] : undefined,
+		          guard = length > 2 ? sources[2] : undefined;
+		      customizer = assigner.length > 3 && typeof customizer == 'function' ? (length--, customizer) : undefined;
+
+		      if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+		        customizer = length < 3 ? undefined : customizer;
+		        length = 1;
+		      }
+
+		      object = Object(object);
+
+		      while (++index < length) {
+		        var source = sources[index];
+
+		        if (source) {
+		          assigner(object, source, index, customizer);
+		        }
+		      }
+
+		      return object;
+		    });
+		  }
+		  /**
+		   * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+		   *
+		   * @private
+		   * @param {boolean} [fromRight] Specify iterating from right to left.
+		   * @returns {Function} Returns the new base function.
+		   */
+
+
+		  function createBaseFor(fromRight) {
+		    return function (object, iteratee, keysFunc) {
+		      var index = -1,
+		          iterable = Object(object),
+		          props = keysFunc(object),
+		          length = props.length;
+
+		      while (length--) {
+		        var key = props[fromRight ? length : ++index];
+
+		        if (iteratee(iterable[key], key, iterable) === false) {
+		          break;
+		        }
+		      }
+
+		      return object;
+		    };
+		  }
+		  /**
+		   * Gets the data for `map`.
+		   *
+		   * @private
+		   * @param {Object} map The map to query.
+		   * @param {string} key The reference key.
+		   * @returns {*} Returns the map data.
+		   */
+
+
+		  function getMapData(map, key) {
+		    var data = map.__data__;
+		    return isKeyable(key) ? data[typeof key == 'string' ? 'string' : 'hash'] : data.map;
+		  }
+		  /**
+		   * Gets the native function at `key` of `object`.
+		   *
+		   * @private
+		   * @param {Object} object The object to query.
+		   * @param {string} key The key of the method to get.
+		   * @returns {*} Returns the function if it's native, else `undefined`.
+		   */
+
+
+		  function getNative(object, key) {
+		    var value = getValue(object, key);
+		    return baseIsNative(value) ? value : undefined;
+		  }
+		  /**
+		   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+		   *
+		   * @private
+		   * @param {*} value The value to query.
+		   * @returns {string} Returns the raw `toStringTag`.
+		   */
+
+
+		  function getRawTag(value) {
+		    var isOwn = hasOwnProperty.call(value, symToStringTag),
+		        tag = value[symToStringTag];
+
+		    try {
+		      value[symToStringTag] = undefined;
+		      var unmasked = true;
+		    } catch (e) {}
+
+		    var result = nativeObjectToString.call(value);
+
+		    if (unmasked) {
+		      if (isOwn) {
+		        value[symToStringTag] = tag;
+		      } else {
+		        delete value[symToStringTag];
+		      }
+		    }
+
+		    return result;
+		  }
+		  /**
+		   * Initializes an object clone.
+		   *
+		   * @private
+		   * @param {Object} object The object to clone.
+		   * @returns {Object} Returns the initialized clone.
+		   */
+
+
+		  function initCloneObject(object) {
+		    return typeof object.constructor == 'function' && !isPrototype(object) ? baseCreate(getPrototype(object)) : {};
+		  }
+		  /**
+		   * Checks if `value` is a valid array-like index.
+		   *
+		   * @private
+		   * @param {*} value The value to check.
+		   * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+		   * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+		   */
+
+
+		  function isIndex(value, length) {
+		    var type = typeof value;
+		    length = length == null ? MAX_SAFE_INTEGER : length;
+		    return !!length && (type == 'number' || type != 'symbol' && reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+		  }
+		  /**
+		   * Checks if the given arguments are from an iteratee call.
+		   *
+		   * @private
+		   * @param {*} value The potential iteratee value argument.
+		   * @param {*} index The potential iteratee index or key argument.
+		   * @param {*} object The potential iteratee object argument.
+		   * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+		   *  else `false`.
+		   */
+
+
+		  function isIterateeCall(value, index, object) {
+		    if (!isObject(object)) {
+		      return false;
+		    }
+
+		    var type = typeof index;
+
+		    if (type == 'number' ? isArrayLike(object) && isIndex(index, object.length) : type == 'string' && index in object) {
+		      return eq(object[index], value);
+		    }
+
+		    return false;
+		  }
+		  /**
+		   * Checks if `value` is suitable for use as unique object key.
+		   *
+		   * @private
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+		   */
+
+
+		  function isKeyable(value) {
+		    var type = typeof value;
+		    return type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean' ? value !== '__proto__' : value === null;
+		  }
+		  /**
+		   * Checks if `func` has its source masked.
+		   *
+		   * @private
+		   * @param {Function} func The function to check.
+		   * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+		   */
+
+
+		  function isMasked(func) {
+		    return !!maskSrcKey && maskSrcKey in func;
+		  }
+		  /**
+		   * Checks if `value` is likely a prototype object.
+		   *
+		   * @private
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+		   */
+
+
+		  function isPrototype(value) {
+		    var Ctor = value && value.constructor,
+		        proto = typeof Ctor == 'function' && Ctor.prototype || objectProto;
+		    return value === proto;
+		  }
+		  /**
+		   * This function is like
+		   * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+		   * except that it includes inherited enumerable properties.
+		   *
+		   * @private
+		   * @param {Object} object The object to query.
+		   * @returns {Array} Returns the array of property names.
+		   */
+
+
+		  function nativeKeysIn(object) {
+		    var result = [];
+
+		    if (object != null) {
+		      for (var key in Object(object)) {
+		        result.push(key);
+		      }
+		    }
+
+		    return result;
+		  }
+		  /**
+		   * Converts `value` to a string using `Object.prototype.toString`.
+		   *
+		   * @private
+		   * @param {*} value The value to convert.
+		   * @returns {string} Returns the converted string.
+		   */
+
+
+		  function objectToString(value) {
+		    return nativeObjectToString.call(value);
+		  }
+		  /**
+		   * A specialized version of `baseRest` which transforms the rest array.
+		   *
+		   * @private
+		   * @param {Function} func The function to apply a rest parameter to.
+		   * @param {number} [start=func.length-1] The start position of the rest parameter.
+		   * @param {Function} transform The rest array transform.
+		   * @returns {Function} Returns the new function.
+		   */
+
+
+		  function overRest(func, start, transform) {
+		    start = nativeMax(start === undefined ? func.length - 1 : start, 0);
+		    return function () {
+		      var args = arguments,
+		          index = -1,
+		          length = nativeMax(args.length - start, 0),
+		          array = Array(length);
+
+		      while (++index < length) {
+		        array[index] = args[start + index];
+		      }
+
+		      index = -1;
+		      var otherArgs = Array(start + 1);
+
+		      while (++index < start) {
+		        otherArgs[index] = args[index];
+		      }
+
+		      otherArgs[start] = transform(array);
+		      return apply(func, this, otherArgs);
+		    };
+		  }
+		  /**
+		   * Gets the value at `key`, unless `key` is "__proto__" or "constructor".
+		   *
+		   * @private
+		   * @param {Object} object The object to query.
+		   * @param {string} key The key of the property to get.
+		   * @returns {*} Returns the property value.
+		   */
+
+
+		  function safeGet(object, key) {
+		    if (key === 'constructor' && typeof object[key] === 'function') {
+		      return;
+		    }
+
+		    if (key == '__proto__') {
+		      return;
+		    }
+
+		    return object[key];
+		  }
+		  /**
+		   * Sets the `toString` method of `func` to return `string`.
+		   *
+		   * @private
+		   * @param {Function} func The function to modify.
+		   * @param {Function} string The `toString` result.
+		   * @returns {Function} Returns `func`.
+		   */
+
+
+		  var setToString = shortOut(baseSetToString);
+		  /**
+		   * Creates a function that'll short out and invoke `identity` instead
+		   * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+		   * milliseconds.
+		   *
+		   * @private
+		   * @param {Function} func The function to restrict.
+		   * @returns {Function} Returns the new shortable function.
+		   */
+
+		  function shortOut(func) {
+		    var count = 0,
+		        lastCalled = 0;
+		    return function () {
+		      var stamp = nativeNow(),
+		          remaining = HOT_SPAN - (stamp - lastCalled);
+		      lastCalled = stamp;
+
+		      if (remaining > 0) {
+		        if (++count >= HOT_COUNT) {
+		          return arguments[0];
+		        }
+		      } else {
+		        count = 0;
+		      }
+
+		      return func.apply(undefined, arguments);
+		    };
+		  }
+		  /**
+		   * Converts `func` to its source code.
+		   *
+		   * @private
+		   * @param {Function} func The function to convert.
+		   * @returns {string} Returns the source code.
+		   */
+
+
+		  function toSource(func) {
+		    if (func != null) {
+		      try {
+		        return funcToString.call(func);
+		      } catch (e) {}
+
+		      try {
+		        return func + '';
+		      } catch (e) {}
+		    }
+
+		    return '';
+		  }
+		  /**
+		   * Performs a
+		   * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+		   * comparison between two values to determine if they are equivalent.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.0.0
+		   * @category Lang
+		   * @param {*} value The value to compare.
+		   * @param {*} other The other value to compare.
+		   * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+		   * @example
+		   *
+		   * var object = { 'a': 1 };
+		   * var other = { 'a': 1 };
+		   *
+		   * _.eq(object, object);
+		   * // => true
+		   *
+		   * _.eq(object, other);
+		   * // => false
+		   *
+		   * _.eq('a', 'a');
+		   * // => true
+		   *
+		   * _.eq('a', Object('a'));
+		   * // => false
+		   *
+		   * _.eq(NaN, NaN);
+		   * // => true
+		   */
+
+
+		  function eq(value, other) {
+		    return value === other || value !== value && other !== other;
+		  }
+		  /**
+		   * Checks if `value` is likely an `arguments` object.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 0.1.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+		   *  else `false`.
+		   * @example
+		   *
+		   * _.isArguments(function() { return arguments; }());
+		   * // => true
+		   *
+		   * _.isArguments([1, 2, 3]);
+		   * // => false
+		   */
+
+
+		  var isArguments = baseIsArguments(function () {
+		    return arguments;
+		  }()) ? baseIsArguments : function (value) {
+		    return isObjectLike(value) && hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+		  };
+		  /**
+		   * Checks if `value` is classified as an `Array` object.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 0.1.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+		   * @example
+		   *
+		   * _.isArray([1, 2, 3]);
+		   * // => true
+		   *
+		   * _.isArray(document.body.children);
+		   * // => false
+		   *
+		   * _.isArray('abc');
+		   * // => false
+		   *
+		   * _.isArray(_.noop);
+		   * // => false
+		   */
+
+		  var isArray = Array.isArray;
+		  /**
+		   * Checks if `value` is array-like. A value is considered array-like if it's
+		   * not a function and has a `value.length` that's an integer greater than or
+		   * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.0.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+		   * @example
+		   *
+		   * _.isArrayLike([1, 2, 3]);
+		   * // => true
+		   *
+		   * _.isArrayLike(document.body.children);
+		   * // => true
+		   *
+		   * _.isArrayLike('abc');
+		   * // => true
+		   *
+		   * _.isArrayLike(_.noop);
+		   * // => false
+		   */
+
+		  function isArrayLike(value) {
+		    return value != null && isLength(value.length) && !isFunction(value);
+		  }
+		  /**
+		   * This method is like `_.isArrayLike` except that it also checks if `value`
+		   * is an object.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.0.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is an array-like object,
+		   *  else `false`.
+		   * @example
+		   *
+		   * _.isArrayLikeObject([1, 2, 3]);
+		   * // => true
+		   *
+		   * _.isArrayLikeObject(document.body.children);
+		   * // => true
+		   *
+		   * _.isArrayLikeObject('abc');
+		   * // => false
+		   *
+		   * _.isArrayLikeObject(_.noop);
+		   * // => false
+		   */
+
+
+		  function isArrayLikeObject(value) {
+		    return isObjectLike(value) && isArrayLike(value);
+		  }
+		  /**
+		   * Checks if `value` is a buffer.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.3.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+		   * @example
+		   *
+		   * _.isBuffer(new Buffer(2));
+		   * // => true
+		   *
+		   * _.isBuffer(new Uint8Array(2));
+		   * // => false
+		   */
+
+
+		  var isBuffer = nativeIsBuffer || stubFalse;
+		  /**
+		   * Checks if `value` is classified as a `Function` object.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 0.1.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+		   * @example
+		   *
+		   * _.isFunction(_);
+		   * // => true
+		   *
+		   * _.isFunction(/abc/);
+		   * // => false
+		   */
+
+		  function isFunction(value) {
+		    if (!isObject(value)) {
+		      return false;
+		    } // The use of `Object#toString` avoids issues with the `typeof` operator
+		    // in Safari 9 which returns 'object' for typed arrays and other constructors.
+
+
+		    var tag = baseGetTag(value);
+		    return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+		  }
+		  /**
+		   * Checks if `value` is a valid array-like length.
+		   *
+		   * **Note:** This method is loosely based on
+		   * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.0.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+		   * @example
+		   *
+		   * _.isLength(3);
+		   * // => true
+		   *
+		   * _.isLength(Number.MIN_VALUE);
+		   * // => false
+		   *
+		   * _.isLength(Infinity);
+		   * // => false
+		   *
+		   * _.isLength('3');
+		   * // => false
+		   */
+
+
+		  function isLength(value) {
+		    return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+		  }
+		  /**
+		   * Checks if `value` is the
+		   * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+		   * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 0.1.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+		   * @example
+		   *
+		   * _.isObject({});
+		   * // => true
+		   *
+		   * _.isObject([1, 2, 3]);
+		   * // => true
+		   *
+		   * _.isObject(_.noop);
+		   * // => true
+		   *
+		   * _.isObject(null);
+		   * // => false
+		   */
+
+
+		  function isObject(value) {
+		    var type = typeof value;
+		    return value != null && (type == 'object' || type == 'function');
+		  }
+		  /**
+		   * Checks if `value` is object-like. A value is object-like if it's not `null`
+		   * and has a `typeof` result of "object".
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.0.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+		   * @example
+		   *
+		   * _.isObjectLike({});
+		   * // => true
+		   *
+		   * _.isObjectLike([1, 2, 3]);
+		   * // => true
+		   *
+		   * _.isObjectLike(_.noop);
+		   * // => false
+		   *
+		   * _.isObjectLike(null);
+		   * // => false
+		   */
+
+
+		  function isObjectLike(value) {
+		    return value != null && typeof value == 'object';
+		  }
+		  /**
+		   * Checks if `value` is a plain object, that is, an object created by the
+		   * `Object` constructor or one with a `[[Prototype]]` of `null`.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 0.8.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+		   * @example
+		   *
+		   * function Foo() {
+		   *   this.a = 1;
+		   * }
+		   *
+		   * _.isPlainObject(new Foo);
+		   * // => false
+		   *
+		   * _.isPlainObject([1, 2, 3]);
+		   * // => false
+		   *
+		   * _.isPlainObject({ 'x': 0, 'y': 0 });
+		   * // => true
+		   *
+		   * _.isPlainObject(Object.create(null));
+		   * // => true
+		   */
+
+
+		  function isPlainObject(value) {
+		    if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
+		      return false;
+		    }
+
+		    var proto = getPrototype(value);
+
+		    if (proto === null) {
+		      return true;
+		    }
+
+		    var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+		    return typeof Ctor == 'function' && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
+		  }
+		  /**
+		   * Checks if `value` is classified as a typed array.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 3.0.0
+		   * @category Lang
+		   * @param {*} value The value to check.
+		   * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+		   * @example
+		   *
+		   * _.isTypedArray(new Uint8Array);
+		   * // => true
+		   *
+		   * _.isTypedArray([]);
+		   * // => false
+		   */
+
+
+		  var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+		  /**
+		   * Converts `value` to a plain object flattening inherited enumerable string
+		   * keyed properties of `value` to own properties of the plain object.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 3.0.0
+		   * @category Lang
+		   * @param {*} value The value to convert.
+		   * @returns {Object} Returns the converted plain object.
+		   * @example
+		   *
+		   * function Foo() {
+		   *   this.b = 2;
+		   * }
+		   *
+		   * Foo.prototype.c = 3;
+		   *
+		   * _.assign({ 'a': 1 }, new Foo);
+		   * // => { 'a': 1, 'b': 2 }
+		   *
+		   * _.assign({ 'a': 1 }, _.toPlainObject(new Foo));
+		   * // => { 'a': 1, 'b': 2, 'c': 3 }
+		   */
+
+		  function toPlainObject(value) {
+		    return copyObject(value, keysIn(value));
+		  }
+		  /**
+		   * Creates an array of the own and inherited enumerable property names of `object`.
+		   *
+		   * **Note:** Non-object values are coerced to objects.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 3.0.0
+		   * @category Object
+		   * @param {Object} object The object to query.
+		   * @returns {Array} Returns the array of property names.
+		   * @example
+		   *
+		   * function Foo() {
+		   *   this.a = 1;
+		   *   this.b = 2;
+		   * }
+		   *
+		   * Foo.prototype.c = 3;
+		   *
+		   * _.keysIn(new Foo);
+		   * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+		   */
+
+
+		  function keysIn(object) {
+		    return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+		  }
+		  /**
+		   * This method is like `_.assign` except that it recursively merges own and
+		   * inherited enumerable string keyed properties of source objects into the
+		   * destination object. Source properties that resolve to `undefined` are
+		   * skipped if a destination value exists. Array and plain object properties
+		   * are merged recursively. Other objects and value types are overridden by
+		   * assignment. Source objects are applied from left to right. Subsequent
+		   * sources overwrite property assignments of previous sources.
+		   *
+		   * **Note:** This method mutates `object`.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 0.5.0
+		   * @category Object
+		   * @param {Object} object The destination object.
+		   * @param {...Object} [sources] The source objects.
+		   * @returns {Object} Returns `object`.
+		   * @example
+		   *
+		   * var object = {
+		   *   'a': [{ 'b': 2 }, { 'd': 4 }]
+		   * };
+		   *
+		   * var other = {
+		   *   'a': [{ 'c': 3 }, { 'e': 5 }]
+		   * };
+		   *
+		   * _.merge(object, other);
+		   * // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
+		   */
+
+
+		  var merge = createAssigner(function (object, source, srcIndex) {
+		    baseMerge(object, source, srcIndex);
+		  });
+		  /**
+		   * Creates a function that returns `value`.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 2.4.0
+		   * @category Util
+		   * @param {*} value The value to return from the new function.
+		   * @returns {Function} Returns the new constant function.
+		   * @example
+		   *
+		   * var objects = _.times(2, _.constant({ 'a': 1 }));
+		   *
+		   * console.log(objects);
+		   * // => [{ 'a': 1 }, { 'a': 1 }]
+		   *
+		   * console.log(objects[0] === objects[1]);
+		   * // => true
+		   */
+
+		  function constant(value) {
+		    return function () {
+		      return value;
+		    };
+		  }
+		  /**
+		   * This method returns the first argument it receives.
+		   *
+		   * @static
+		   * @since 0.1.0
+		   * @memberOf _
+		   * @category Util
+		   * @param {*} value Any value.
+		   * @returns {*} Returns `value`.
+		   * @example
+		   *
+		   * var object = { 'a': 1 };
+		   *
+		   * console.log(_.identity(object) === object);
+		   * // => true
+		   */
+
+
+		  function identity(value) {
+		    return value;
+		  }
+		  /**
+		   * This method returns `false`.
+		   *
+		   * @static
+		   * @memberOf _
+		   * @since 4.13.0
+		   * @category Util
+		   * @returns {boolean} Returns `false`.
+		   * @example
+		   *
+		   * _.times(2, _.stubFalse);
+		   * // => [false, false]
+		   */
+
+
+		  function stubFalse() {
+		    return false;
+		  }
+
+		  module.exports = merge;
+		});
+
+		var FabricBridge = /*#__PURE__*/function (_Component) {
+		  _inherits(FabricBridge, _Component);
+
+		  var _super = _createSuper(FabricBridge);
+
+		  function FabricBridge(props) {
+		    var _this;
+
+		    _classCallCheck(this, FabricBridge);
+
+		    _this = _super.call(this, props);
+		    _this.settings = Object.assign({
+		      host: 'localhost',
+		      port: 9999,
+		      secure: false
+		    }, defaults, props);
+		    _this.state = lodash_merge({
+		      integrity: 'sha256-deadbeefbabe',
+		      status: 'disconnected',
+		      messages: [],
+		      meta: {
+		        messages: {
+		          count: 0
+		        }
+		      }
+		    }, _this.settings);
+		    console.log('bridge settings:', _this.settings);
+		    _this.remote = new Remote__namespace({
+		      host: _this.settings.host,
+		      port: _this.settings.port,
+		      secure: _this.settings.secure
+		    });
+		    /* this.agent = new Worker({
+		      service: main,
+		      settings: settings
+		    }); */
+
+		    return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
+		  }
+
+		  _createClass(FabricBridge, [{
+		    key: "_handleRemoteMessage",
+		    value: function _handleRemoteMessage(message) {
+		      console.log('Remote message:', message);
+
+		      this._syncState();
+		    }
+		  }, {
+		    key: "_handleRemoteError",
+		    value: function _handleRemoteError(error) {
+		      console.log('Remote error:', error);
+		    }
+		  }, {
+		    key: "_syncState",
+		    value: function _syncState() {
+		      this.setState({
+		        status: this.remote._state.status,
+		        messages: this.remote._state.messages,
+		        meta: this.remote._state.meta
+		      });
+		    }
+		  }, {
+		    key: "componentDidMount",
+		    value: function componentDidMount() {
+		      console.log('bridge mounted! starting...'); // this.agent.executeMethod('connect');
+		      // this.process.executeMethod('connect');
+
+		      this.start();
+		    }
+		  }, {
+		    key: "connect",
+		    value: function connect() {
+		      this._syncState();
+
+		      this.remote.connect();
+
+		      this._syncState();
+		    }
+		  }, {
+		    key: "executeMethod",
+		    value: function executeMethod(name, params) {
+		      return this.remote.executeMethod(name, params);
+		    }
+		  }, {
+		    key: "ping",
+		    value: function ping() {
+		      this.remote.ping();
+		    }
+		  }, {
+		    key: "render",
+		    value: function render() {
+		      return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card, {
+		        fluid: true
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Content, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button.Group, {
+		        floated: "right"
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, {
+		        onClick: this.ping.bind(this)
+		      }, "Ping ", /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "info"
+		      })), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, {
+		        onClick: this.connect.bind(this)
+		      }, "Connect ", /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "lightning"
+		      }))), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Header, {
+		        as: "h3"
+		      }, "Bridge")), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Content, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Feed, null, this.state.messages.map(function (message, i) {
+		        return /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Feed.Event, {
+		          size: "small",
+		          key: i,
+		          style: {
+		            fontSize: '0.8em',
+		            fontFamily: 'monospace'
+		          }
+		        }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Feed.Content, null, /*#__PURE__*/React__default["default"].createElement("div", {
+		          style: {
+		            color: 'black'
+		          }
+		        }, JSON.stringify(message, null, '  '))));
+		      }))), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Content, {
+		        extra: true
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Label, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "info"
+		      }), " ", this.remote._state.status), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Label, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "mail"
+		      }), " ", this.remote._state.meta.messages.count))));
+		    }
+		  }, {
+		    key: "send",
+		    value: function () {
+		      var _send = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(message) {
+		        return regeneratorRuntime.wrap(function _callee$(_context) {
+		          while (1) {
+		            switch (_context.prev = _context.next) {
+		              case 0:
+		                return _context.abrupt("return", this.remote.send(message));
+
+		              case 1:
+		              case "end":
+		                return _context.stop();
+		            }
+		          }
+		        }, _callee, this);
+		      }));
+
+		      function send(_x) {
+		        return _send.apply(this, arguments);
+		      }
+
+		      return send;
+		    }()
+		  }, {
+		    key: "start",
+		    value: function () {
+		      var _start = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+		        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+		          while (1) {
+		            switch (_context2.prev = _context2.next) {
+		              case 0:
+		                this.remote.on('ready', this.props.remoteReady.bind(this));
+		                this.remote.on('message', this._handleRemoteMessage.bind(this));
+		                this.remote.on('error', this._handleRemoteError.bind(this));
+		                this.connect();
+
+		              case 4:
+		              case "end":
+		                return _context2.stop();
+		            }
+		          }
+		        }, _callee2, this);
+		      }));
+
+		      function start() {
+		        return _start.apply(this, arguments);
+		      }
+
+		      return start;
+		    }()
+		  }]);
+
+		  return FabricBridge;
+		}(React.Component);
+
+		var createHash = crypto__default["default"].createHash;
+		var MAX_ALLOC = Math.pow(2, 30) - 1; // default in iojs
+
+		var precondition = function (iterations, keylen) {
+		  if (typeof iterations !== 'number') {
+		    throw new TypeError('Iterations not a number');
+		  }
+
+		  if (iterations < 0) {
+		    throw new TypeError('Bad iterations');
+		  }
+
+		  if (typeof keylen !== 'number') {
+		    throw new TypeError('Key length not a number');
+		  }
+
+		  if (keylen < 0 || keylen > MAX_ALLOC || keylen !== keylen) {
+		    /* eslint no-self-compare: 0 */
+		    throw new TypeError('Bad key length');
+		  }
+		};
+
+		var defaultEncoding;
+		/* istanbul ignore next */
+
+		if (commonjsGlobal$1.process && commonjsGlobal$1.process.browser) {
+		  defaultEncoding = 'utf-8';
+		} else if (commonjsGlobal$1.process && commonjsGlobal$1.process.version) {
+		  var pVersionMajor = parseInt(process.version.split('.')[0].slice(1), 10);
+		  defaultEncoding = pVersionMajor >= 6 ? 'utf-8' : 'binary';
+		} else {
+		  defaultEncoding = 'utf-8';
+		}
+
+		var defaultEncoding_1 = defaultEncoding;
+		var safeBuffer = createCommonjsModule(function (module, exports) {
+		  /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+		  /* eslint-disable node/no-deprecated-api */
+		  var Buffer = buffer__default["default"].Buffer; // alternative to using Object.keys for old browsers
+
+		  function copyProps(src, dst) {
+		    for (var key in src) {
+		      dst[key] = src[key];
+		    }
+		  }
+
+		  if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+		    module.exports = buffer__default["default"];
+		  } else {
+		    // Copy properties from require('buffer')
+		    copyProps(buffer__default["default"], exports);
+		    exports.Buffer = SafeBuffer;
+		  }
+
+		  function SafeBuffer(arg, encodingOrOffset, length) {
+		    return Buffer(arg, encodingOrOffset, length);
+		  }
+
+		  SafeBuffer.prototype = Object.create(Buffer.prototype); // Copy static methods from Buffer
+
+		  copyProps(Buffer, SafeBuffer);
+
+		  SafeBuffer.from = function (arg, encodingOrOffset, length) {
+		    if (typeof arg === 'number') {
+		      throw new TypeError('Argument must not be a number');
+		    }
+
+		    return Buffer(arg, encodingOrOffset, length);
+		  };
+
+		  SafeBuffer.alloc = function (size, fill, encoding) {
+		    if (typeof size !== 'number') {
+		      throw new TypeError('Argument must be a number');
+		    }
+
+		    var buf = Buffer(size);
+
+		    if (fill !== undefined) {
+		      if (typeof encoding === 'string') {
+		        buf.fill(fill, encoding);
+		      } else {
+		        buf.fill(fill);
+		      }
+		    } else {
+		      buf.fill(0);
+		    }
+
+		    return buf;
+		  };
+
+		  SafeBuffer.allocUnsafe = function (size) {
+		    if (typeof size !== 'number') {
+		      throw new TypeError('Argument must be a number');
+		    }
+
+		    return Buffer(size);
+		  };
+
+		  SafeBuffer.allocUnsafeSlow = function (size) {
+		    if (typeof size !== 'number') {
+		      throw new TypeError('Argument must be a number');
+		    }
+
+		    return buffer__default["default"].SlowBuffer(size);
+		  };
+		});
+		safeBuffer.Buffer;
+		var Buffer$3 = safeBuffer.Buffer;
+
+		var toBuffer = function (thing, encoding, name) {
+		  if (Buffer$3.isBuffer(thing)) {
+		    return thing;
+		  } else if (typeof thing === 'string') {
+		    return Buffer$3.from(thing, encoding);
+		  } else if (ArrayBuffer.isView(thing)) {
+		    return Buffer$3.from(thing.buffer);
+		  } else {
+		    throw new TypeError(name + ' must be a string, a Buffer, a typed array or a DataView');
+		  }
+		};
+
+		var createHmac = crypto__default["default"].createHmac;
+		var sizes = {
+		  md5: 16,
+		  sha1: 20,
+		  sha224: 28,
+		  sha256: 32,
+		  sha384: 48,
+		  sha512: 64,
+		  rmd160: 20,
+		  ripemd160: 20
+		};
+		var Buffer$2 = safeBuffer.Buffer;
+
+		function pbkdf2$1(password, salt, iterations, keylen, digest) {
+		  precondition(iterations, keylen);
+		  password = toBuffer(password, defaultEncoding_1, 'Password');
+		  salt = toBuffer(salt, defaultEncoding_1, 'Salt');
+		  digest = digest || 'sha1';
+		  var DK = Buffer$2.allocUnsafe(keylen);
+		  var block1 = Buffer$2.allocUnsafe(salt.length + 4);
+		  salt.copy(block1, 0, 0, salt.length);
+		  var destPos = 0;
+		  var hLen = sizes[digest];
+		  var l = Math.ceil(keylen / hLen);
+
+		  for (var i = 1; i <= l; i++) {
+		    block1.writeUInt32BE(i, salt.length);
+		    var T = createHmac(digest, password).update(block1).digest();
+		    var U = T;
+
+		    for (var j = 1; j < iterations; j++) {
+		      U = createHmac(digest, password).update(U).digest();
+
+		      for (var k = 0; k < hLen; k++) T[k] ^= U[k];
+		    }
+
+		    T.copy(DK, destPos);
+		    destPos += hLen;
+		  }
+
+		  return DK;
+		}
+
+		var sync = pbkdf2$1;
+		var Buffer$1 = safeBuffer.Buffer;
+		var ZERO_BUF;
+		var subtle = commonjsGlobal$1.crypto && commonjsGlobal$1.crypto.subtle;
+		var toBrowser = {
+		  sha: 'SHA-1',
+		  'sha-1': 'SHA-1',
+		  sha1: 'SHA-1',
+		  sha256: 'SHA-256',
+		  'sha-256': 'SHA-256',
+		  sha384: 'SHA-384',
+		  'sha-384': 'SHA-384',
+		  'sha-512': 'SHA-512',
+		  sha512: 'SHA-512'
+		};
+		var checks = [];
+
+		function checkNative(algo) {
+		  if (commonjsGlobal$1.process && !commonjsGlobal$1.process.browser) {
+		    return Promise.resolve(false);
+		  }
+
+		  if (!subtle || !subtle.importKey || !subtle.deriveBits) {
+		    return Promise.resolve(false);
+		  }
+
+		  if (checks[algo] !== undefined) {
+		    return checks[algo];
+		  }
+
+		  ZERO_BUF = ZERO_BUF || Buffer$1.alloc(8);
+		  var prom = browserPbkdf2(ZERO_BUF, ZERO_BUF, 10, 128, algo).then(function () {
+		    return true;
+		  }).catch(function () {
+		    return false;
+		  });
+		  checks[algo] = prom;
+		  return prom;
+		}
+
+		var nextTick;
+
+		function getNextTick() {
+		  if (nextTick) {
+		    return nextTick;
+		  }
+
+		  if (commonjsGlobal$1.process && commonjsGlobal$1.process.nextTick) {
+		    nextTick = commonjsGlobal$1.process.nextTick;
+		  } else if (commonjsGlobal$1.queueMicrotask) {
+		    nextTick = commonjsGlobal$1.queueMicrotask;
+		  } else if (commonjsGlobal$1.setImmediate) {
+		    nextTick = commonjsGlobal$1.setImmediate;
+		  } else {
+		    nextTick = commonjsGlobal$1.setTimeout;
+		  }
+
+		  return nextTick;
+		}
+
+		function browserPbkdf2(password, salt, iterations, length, algo) {
+		  return subtle.importKey('raw', password, {
+		    name: 'PBKDF2'
+		  }, false, ['deriveBits']).then(function (key) {
+		    return subtle.deriveBits({
+		      name: 'PBKDF2',
+		      salt: salt,
+		      iterations: iterations,
+		      hash: {
+		        name: algo
+		      }
+		    }, key, length << 3);
+		  }).then(function (res) {
+		    return Buffer$1.from(res);
+		  });
+		}
+
+		function resolvePromise(promise, callback) {
+		  promise.then(function (out) {
+		    getNextTick()(function () {
+		      callback(null, out);
+		    });
+		  }, function (e) {
+		    getNextTick()(function () {
+		      callback(e);
+		    });
+		  });
+		}
+
+		var async = function (password, salt, iterations, keylen, digest, callback) {
+		  if (typeof digest === 'function') {
+		    callback = digest;
+		    digest = undefined;
+		  }
+
+		  digest = digest || 'sha1';
+		  var algo = toBrowser[digest.toLowerCase()];
+
+		  if (!algo || typeof commonjsGlobal$1.Promise !== 'function') {
+		    getNextTick()(function () {
+		      var out;
+
+		      try {
+		        out = sync(password, salt, iterations, keylen, digest);
+		      } catch (e) {
+		        return callback(e);
+		      }
+
+		      callback(null, out);
+		    });
+		    return;
+		  }
+
+		  precondition(iterations, keylen);
+		  password = toBuffer(password, defaultEncoding_1, 'Password');
+		  salt = toBuffer(salt, defaultEncoding_1, 'Salt');
+		  if (typeof callback !== 'function') throw new Error('No callback provided to pbkdf2');
+		  resolvePromise(checkNative(algo).then(function (resp) {
+		    if (resp) return browserPbkdf2(password, salt, iterations, keylen, algo);
+		    return sync(password, salt, iterations, keylen, digest);
+		  }), callback);
+		};
+
+		var pbkdf2 = createCommonjsModule(function (module, exports) {
+		  function nativePBKDF2(password, salt, iterations, keylen, digest, callback) {
+		    precondition(iterations, keylen);
+		    password = toBuffer(password, defaultEncoding_1, 'Password');
+		    salt = toBuffer(salt, defaultEncoding_1, 'Salt');
+
+		    if (typeof digest === 'function') {
+		      callback = digest;
+		      digest = 'sha1';
+		    }
+
+		    if (typeof callback !== 'function') throw new Error('No callback provided to pbkdf2');
+		    return crypto__default["default"].pbkdf2(password, salt, iterations, keylen, digest, callback);
+		  }
+
+		  function nativePBKDF2Sync(password, salt, iterations, keylen, digest) {
+		    precondition(iterations, keylen);
+		    password = toBuffer(password, defaultEncoding_1, 'Password');
+		    salt = toBuffer(salt, defaultEncoding_1, 'Salt');
+		    digest = digest || 'sha1';
+		    return crypto__default["default"].pbkdf2Sync(password, salt, iterations, keylen, digest);
+		  }
+		  /* istanbul ignore next */
+
+
+		  if (!crypto__default["default"].pbkdf2Sync || crypto__default["default"].pbkdf2Sync.toString().indexOf('keylen, digest') === -1) {
+		    exports.pbkdf2Sync = sync;
+		    exports.pbkdf2 = async; // native
+		  } else {
+		    exports.pbkdf2Sync = nativePBKDF2Sync;
+		    exports.pbkdf2 = nativePBKDF2;
+		  }
+		});
+		pbkdf2.pbkdf2Sync;
+		pbkdf2.pbkdf2;
+		var randombytes = crypto__default["default"].randomBytes;
+		var czech = ["abdikace", "abeceda", "adresa", "agrese", "akce", "aktovka", "alej", "alkohol", "amputace", "ananas", "andulka", "anekdota", "anketa", "antika", "anulovat", "archa", "arogance", "asfalt", "asistent", "aspirace", "astma", "astronom", "atlas", "atletika", "atol", "autobus", "azyl", "babka", "bachor", "bacil", "baculka", "badatel", "bageta", "bagr", "bahno", "bakterie", "balada", "baletka", "balkon", "balonek", "balvan", "balza", "bambus", "bankomat", "barbar", "baret", "barman", "baroko", "barva", "baterka", "batoh", "bavlna", "bazalka", "bazilika", "bazuka", "bedna", "beran", "beseda", "bestie", "beton", "bezinka", "bezmoc", "beztak", "bicykl", "bidlo", "biftek", "bikiny", "bilance", "biograf", "biolog", "bitva", "bizon", "blahobyt", "blatouch", "blecha", "bledule", "blesk", "blikat", "blizna", "blokovat", "bloudit", "blud", "bobek", "bobr", "bodlina", "bodnout", "bohatost", "bojkot", "bojovat", "bokorys", "bolest", "borec", "borovice", "bota", "boubel", "bouchat", "bouda", "boule", "bourat", "boxer", "bradavka", "brambora", "branka", "bratr", "brepta", "briketa", "brko", "brloh", "bronz", "broskev", "brunetka", "brusinka", "brzda", "brzy", "bublina", "bubnovat", "buchta", "buditel", "budka", "budova", "bufet", "bujarost", "bukvice", "buldok", "bulva", "bunda", "bunkr", "burza", "butik", "buvol", "buzola", "bydlet", "bylina", "bytovka", "bzukot", "capart", "carevna", "cedr", "cedule", "cejch", "cejn", "cela", "celer", "celkem", "celnice", "cenina", "cennost", "cenovka", "centrum", "cenzor", "cestopis", "cetka", "chalupa", "chapadlo", "charita", "chata", "chechtat", "chemie", "chichot", "chirurg", "chlad", "chleba", "chlubit", "chmel", "chmura", "chobot", "chochol", "chodba", "cholera", "chomout", "chopit", "choroba", "chov", "chrapot", "chrlit", "chrt", "chrup", "chtivost", "chudina", "chutnat", "chvat", "chvilka", "chvost", "chyba", "chystat", "chytit", "cibule", "cigareta", "cihelna", "cihla", "cinkot", "cirkus", "cisterna", "citace", "citrus", "cizinec", "cizost", "clona", "cokoliv", "couvat", "ctitel", "ctnost", "cudnost", "cuketa", "cukr", "cupot", "cvaknout", "cval", "cvik", "cvrkot", "cyklista", "daleko", "dareba", "datel", "datum", "dcera", "debata", "dechovka", "decibel", "deficit", "deflace", "dekl", "dekret", "demokrat", "deprese", "derby", "deska", "detektiv", "dikobraz", "diktovat", "dioda", "diplom", "disk", "displej", "divadlo", "divoch", "dlaha", "dlouho", "dluhopis", "dnes", "dobro", "dobytek", "docent", "dochutit", "dodnes", "dohled", "dohoda", "dohra", "dojem", "dojnice", "doklad", "dokola", "doktor", "dokument", "dolar", "doleva", "dolina", "doma", "dominant", "domluvit", "domov", "donutit", "dopad", "dopis", "doplnit", "doposud", "doprovod", "dopustit", "dorazit", "dorost", "dort", "dosah", "doslov", "dostatek", "dosud", "dosyta", "dotaz", "dotek", "dotknout", "doufat", "doutnat", "dovozce", "dozadu", "doznat", "dozorce", "drahota", "drak", "dramatik", "dravec", "draze", "drdol", "drobnost", "drogerie", "drozd", "drsnost", "drtit", "drzost", "duben", "duchovno", "dudek", "duha", "duhovka", "dusit", "dusno", "dutost", "dvojice", "dvorec", "dynamit", "ekolog", "ekonomie", "elektron", "elipsa", "email", "emise", "emoce", "empatie", "epizoda", "epocha", "epopej", "epos", "esej", "esence", "eskorta", "eskymo", "etiketa", "euforie", "evoluce", "exekuce", "exkurze", "expedice", "exploze", "export", "extrakt", "facka", "fajfka", "fakulta", "fanatik", "fantazie", "farmacie", "favorit", "fazole", "federace", "fejeton", "fenka", "fialka", "figurant", "filozof", "filtr", "finance", "finta", "fixace", "fjord", "flanel", "flirt", "flotila", "fond", "fosfor", "fotbal", "fotka", "foton", "frakce", "freska", "fronta", "fukar", "funkce", "fyzika", "galeje", "garant", "genetika", "geolog", "gilotina", "glazura", "glejt", "golem", "golfista", "gotika", "graf", "gramofon", "granule", "grep", "gril", "grog", "groteska", "guma", "hadice", "hadr", "hala", "halenka", "hanba", "hanopis", "harfa", "harpuna", "havran", "hebkost", "hejkal", "hejno", "hejtman", "hektar", "helma", "hematom", "herec", "herna", "heslo", "hezky", "historik", "hladovka", "hlasivky", "hlava", "hledat", "hlen", "hlodavec", "hloh", "hloupost", "hltat", "hlubina", "hluchota", "hmat", "hmota", "hmyz", "hnis", "hnojivo", "hnout", "hoblina", "hoboj", "hoch", "hodiny", "hodlat", "hodnota", "hodovat", "hojnost", "hokej", "holinka", "holka", "holub", "homole", "honitba", "honorace", "horal", "horda", "horizont", "horko", "horlivec", "hormon", "hornina", "horoskop", "horstvo", "hospoda", "hostina", "hotovost", "houba", "houf", "houpat", "houska", "hovor", "hradba", "hranice", "hravost", "hrazda", "hrbolek", "hrdina", "hrdlo", "hrdost", "hrnek", "hrobka", "hromada", "hrot", "hrouda", "hrozen", "hrstka", "hrubost", "hryzat", "hubenost", "hubnout", "hudba", "hukot", "humr", "husita", "hustota", "hvozd", "hybnost", "hydrant", "hygiena", "hymna", "hysterik", "idylka", "ihned", "ikona", "iluze", "imunita", "infekce", "inflace", "inkaso", "inovace", "inspekce", "internet", "invalida", "investor", "inzerce", "ironie", "jablko", "jachta", "jahoda", "jakmile", "jakost", "jalovec", "jantar", "jarmark", "jaro", "jasan", "jasno", "jatka", "javor", "jazyk", "jedinec", "jedle", "jednatel", "jehlan", "jekot", "jelen", "jelito", "jemnost", "jenom", "jepice", "jeseter", "jevit", "jezdec", "jezero", "jinak", "jindy", "jinoch", "jiskra", "jistota", "jitrnice", "jizva", "jmenovat", "jogurt", "jurta", "kabaret", "kabel", "kabinet", "kachna", "kadet", "kadidlo", "kahan", "kajak", "kajuta", "kakao", "kaktus", "kalamita", "kalhoty", "kalibr", "kalnost", "kamera", "kamkoliv", "kamna", "kanibal", "kanoe", "kantor", "kapalina", "kapela", "kapitola", "kapka", "kaple", "kapota", "kapr", "kapusta", "kapybara", "karamel", "karotka", "karton", "kasa", "katalog", "katedra", "kauce", "kauza", "kavalec", "kazajka", "kazeta", "kazivost", "kdekoliv", "kdesi", "kedluben", "kemp", "keramika", "kino", "klacek", "kladivo", "klam", "klapot", "klasika", "klaun", "klec", "klenba", "klepat", "klesnout", "klid", "klima", "klisna", "klobouk", "klokan", "klopa", "kloub", "klubovna", "klusat", "kluzkost", "kmen", "kmitat", "kmotr", "kniha", "knot", "koalice", "koberec", "kobka", "kobliha", "kobyla", "kocour", "kohout", "kojenec", "kokos", "koktejl", "kolaps", "koleda", "kolize", "kolo", "komando", "kometa", "komik", "komnata", "komora", "kompas", "komunita", "konat", "koncept", "kondice", "konec", "konfese", "kongres", "konina", "konkurs", "kontakt", "konzerva", "kopanec", "kopie", "kopnout", "koprovka", "korbel", "korektor", "kormidlo", "koroptev", "korpus", "koruna", "koryto", "korzet", "kosatec", "kostka", "kotel", "kotleta", "kotoul", "koukat", "koupelna", "kousek", "kouzlo", "kovboj", "koza", "kozoroh", "krabice", "krach", "krajina", "kralovat", "krasopis", "kravata", "kredit", "krejcar", "kresba", "kreveta", "kriket", "kritik", "krize", "krkavec", "krmelec", "krmivo", "krocan", "krok", "kronika", "kropit", "kroupa", "krovka", "krtek", "kruhadlo", "krupice", "krutost", "krvinka", "krychle", "krypta", "krystal", "kryt", "kudlanka", "kufr", "kujnost", "kukla", "kulajda", "kulich", "kulka", "kulomet", "kultura", "kuna", "kupodivu", "kurt", "kurzor", "kutil", "kvalita", "kvasinka", "kvestor", "kynolog", "kyselina", "kytara", "kytice", "kytka", "kytovec", "kyvadlo", "labrador", "lachtan", "ladnost", "laik", "lakomec", "lamela", "lampa", "lanovka", "lasice", "laso", "lastura", "latinka", "lavina", "lebka", "leckdy", "leden", "lednice", "ledovka", "ledvina", "legenda", "legie", "legrace", "lehce", "lehkost", "lehnout", "lektvar", "lenochod", "lentilka", "lepenka", "lepidlo", "letadlo", "letec", "letmo", "letokruh", "levhart", "levitace", "levobok", "libra", "lichotka", "lidojed", "lidskost", "lihovina", "lijavec", "lilek", "limetka", "linie", "linka", "linoleum", "listopad", "litina", "litovat", "lobista", "lodivod", "logika", "logoped", "lokalita", "loket", "lomcovat", "lopata", "lopuch", "lord", "losos", "lotr", "loudal", "louh", "louka", "louskat", "lovec", "lstivost", "lucerna", "lucifer", "lump", "lusk", "lustrace", "lvice", "lyra", "lyrika", "lysina", "madam", "madlo", "magistr", "mahagon", "majetek", "majitel", "majorita", "makak", "makovice", "makrela", "malba", "malina", "malovat", "malvice", "maminka", "mandle", "manko", "marnost", "masakr", "maskot", "masopust", "matice", "matrika", "maturita", "mazanec", "mazivo", "mazlit", "mazurka", "mdloba", "mechanik", "meditace", "medovina", "melasa", "meloun", "mentolka", "metla", "metoda", "metr", "mezera", "migrace", "mihnout", "mihule", "mikina", "mikrofon", "milenec", "milimetr", "milost", "mimika", "mincovna", "minibar", "minomet", "minulost", "miska", "mistr", "mixovat", "mladost", "mlha", "mlhovina", "mlok", "mlsat", "mluvit", "mnich", "mnohem", "mobil", "mocnost", "modelka", "modlitba", "mohyla", "mokro", "molekula", "momentka", "monarcha", "monokl", "monstrum", "montovat", "monzun", "mosaz", "moskyt", "most", "motivace", "motorka", "motyka", "moucha", "moudrost", "mozaika", "mozek", "mozol", "mramor", "mravenec", "mrkev", "mrtvola", "mrzet", "mrzutost", "mstitel", "mudrc", "muflon", "mulat", "mumie", "munice", "muset", "mutace", "muzeum", "muzikant", "myslivec", "mzda", "nabourat", "nachytat", "nadace", "nadbytek", "nadhoz", "nadobro", "nadpis", "nahlas", "nahnat", "nahodile", "nahradit", "naivita", "najednou", "najisto", "najmout", "naklonit", "nakonec", "nakrmit", "nalevo", "namazat", "namluvit", "nanometr", "naoko", "naopak", "naostro", "napadat", "napevno", "naplnit", "napnout", "naposled", "naprosto", "narodit", "naruby", "narychlo", "nasadit", "nasekat", "naslepo", "nastat", "natolik", "navenek", "navrch", "navzdory", "nazvat", "nebe", "nechat", "necky", "nedaleko", "nedbat", "neduh", "negace", "nehet", "nehoda", "nejen", "nejprve", "neklid", "nelibost", "nemilost", "nemoc", "neochota", "neonka", "nepokoj", "nerost", "nerv", "nesmysl", "nesoulad", "netvor", "neuron", "nevina", "nezvykle", "nicota", "nijak", "nikam", "nikdy", "nikl", "nikterak", "nitro", "nocleh", "nohavice", "nominace", "nora", "norek", "nositel", "nosnost", "nouze", "noviny", "novota", "nozdra", "nuda", "nudle", "nuget", "nutit", "nutnost", "nutrie", "nymfa", "obal", "obarvit", "obava", "obdiv", "obec", "obehnat", "obejmout", "obezita", "obhajoba", "obilnice", "objasnit", "objekt", "obklopit", "oblast", "oblek", "obliba", "obloha", "obluda", "obnos", "obohatit", "obojek", "obout", "obrazec", "obrna", "obruba", "obrys", "obsah", "obsluha", "obstarat", "obuv", "obvaz", "obvinit", "obvod", "obvykle", "obyvatel", "obzor", "ocas", "ocel", "ocenit", "ochladit", "ochota", "ochrana", "ocitnout", "odboj", "odbyt", "odchod", "odcizit", "odebrat", "odeslat", "odevzdat", "odezva", "odhadce", "odhodit", "odjet", "odjinud", "odkaz", "odkoupit", "odliv", "odluka", "odmlka", "odolnost", "odpad", "odpis", "odplout", "odpor", "odpustit", "odpykat", "odrazka", "odsoudit", "odstup", "odsun", "odtok", "odtud", "odvaha", "odveta", "odvolat", "odvracet", "odznak", "ofina", "ofsajd", "ohlas", "ohnisko", "ohrada", "ohrozit", "ohryzek", "okap", "okenice", "oklika", "okno", "okouzlit", "okovy", "okrasa", "okres", "okrsek", "okruh", "okupant", "okurka", "okusit", "olejnina", "olizovat", "omak", "omeleta", "omezit", "omladina", "omlouvat", "omluva", "omyl", "onehdy", "opakovat", "opasek", "operace", "opice", "opilost", "opisovat", "opora", "opozice", "opravdu", "oproti", "orbital", "orchestr", "orgie", "orlice", "orloj", "ortel", "osada", "oschnout", "osika", "osivo", "oslava", "oslepit", "oslnit", "oslovit", "osnova", "osoba", "osolit", "ospalec", "osten", "ostraha", "ostuda", "ostych", "osvojit", "oteplit", "otisk", "otop", "otrhat", "otrlost", "otrok", "otruby", "otvor", "ovanout", "ovar", "oves", "ovlivnit", "ovoce", "oxid", "ozdoba", "pachatel", "pacient", "padouch", "pahorek", "pakt", "palanda", "palec", "palivo", "paluba", "pamflet", "pamlsek", "panenka", "panika", "panna", "panovat", "panstvo", "pantofle", "paprika", "parketa", "parodie", "parta", "paruka", "paryba", "paseka", "pasivita", "pastelka", "patent", "patrona", "pavouk", "pazneht", "pazourek", "pecka", "pedagog", "pejsek", "peklo", "peloton", "penalta", "pendrek", "penze", "periskop", "pero", "pestrost", "petarda", "petice", "petrolej", "pevnina", "pexeso", "pianista", "piha", "pijavice", "pikle", "piknik", "pilina", "pilnost", "pilulka", "pinzeta", "pipeta", "pisatel", "pistole", "pitevna", "pivnice", "pivovar", "placenta", "plakat", "plamen", "planeta", "plastika", "platit", "plavidlo", "plaz", "plech", "plemeno", "plenta", "ples", "pletivo", "plevel", "plivat", "plnit", "plno", "plocha", "plodina", "plomba", "plout", "pluk", "plyn", "pobavit", "pobyt", "pochod", "pocit", "poctivec", "podat", "podcenit", "podepsat", "podhled", "podivit", "podklad", "podmanit", "podnik", "podoba", "podpora", "podraz", "podstata", "podvod", "podzim", "poezie", "pohanka", "pohnutka", "pohovor", "pohroma", "pohyb", "pointa", "pojistka", "pojmout", "pokazit", "pokles", "pokoj", "pokrok", "pokuta", "pokyn", "poledne", "polibek", "polknout", "poloha", "polynom", "pomalu", "pominout", "pomlka", "pomoc", "pomsta", "pomyslet", "ponechat", "ponorka", "ponurost", "popadat", "popel", "popisek", "poplach", "poprosit", "popsat", "popud", "poradce", "porce", "porod", "porucha", "poryv", "posadit", "posed", "posila", "poskok", "poslanec", "posoudit", "pospolu", "postava", "posudek", "posyp", "potah", "potkan", "potlesk", "potomek", "potrava", "potupa", "potvora", "poukaz", "pouto", "pouzdro", "povaha", "povidla", "povlak", "povoz", "povrch", "povstat", "povyk", "povzdech", "pozdrav", "pozemek", "poznatek", "pozor", "pozvat", "pracovat", "prahory", "praktika", "prales", "praotec", "praporek", "prase", "pravda", "princip", "prkno", "probudit", "procento", "prodej", "profese", "prohra", "projekt", "prolomit", "promile", "pronikat", "propad", "prorok", "prosba", "proton", "proutek", "provaz", "prskavka", "prsten", "prudkost", "prut", "prvek", "prvohory", "psanec", "psovod", "pstruh", "ptactvo", "puberta", "puch", "pudl", "pukavec", "puklina", "pukrle", "pult", "pumpa", "punc", "pupen", "pusa", "pusinka", "pustina", "putovat", "putyka", "pyramida", "pysk", "pytel", "racek", "rachot", "radiace", "radnice", "radon", "raft", "ragby", "raketa", "rakovina", "rameno", "rampouch", "rande", "rarach", "rarita", "rasovna", "rastr", "ratolest", "razance", "razidlo", "reagovat", "reakce", "recept", "redaktor", "referent", "reflex", "rejnok", "reklama", "rekord", "rekrut", "rektor", "reputace", "revize", "revma", "revolver", "rezerva", "riskovat", "riziko", "robotika", "rodokmen", "rohovka", "rokle", "rokoko", "romaneto", "ropovod", "ropucha", "rorejs", "rosol", "rostlina", "rotmistr", "rotoped", "rotunda", "roubenka", "roucho", "roup", "roura", "rovina", "rovnice", "rozbor", "rozchod", "rozdat", "rozeznat", "rozhodce", "rozinka", "rozjezd", "rozkaz", "rozloha", "rozmar", "rozpad", "rozruch", "rozsah", "roztok", "rozum", "rozvod", "rubrika", "ruchadlo", "rukavice", "rukopis", "ryba", "rybolov", "rychlost", "rydlo", "rypadlo", "rytina", "ryzost", "sadista", "sahat", "sako", "samec", "samizdat", "samota", "sanitka", "sardinka", "sasanka", "satelit", "sazba", "sazenice", "sbor", "schovat", "sebranka", "secese", "sedadlo", "sediment", "sedlo", "sehnat", "sejmout", "sekera", "sekta", "sekunda", "sekvoje", "semeno", "seno", "servis", "sesadit", "seshora", "seskok", "seslat", "sestra", "sesuv", "sesypat", "setba", "setina", "setkat", "setnout", "setrvat", "sever", "seznam", "shoda", "shrnout", "sifon", "silnice", "sirka", "sirotek", "sirup", "situace", "skafandr", "skalisko", "skanzen", "skaut", "skeptik", "skica", "skladba", "sklenice", "sklo", "skluz", "skoba", "skokan", "skoro", "skripta", "skrz", "skupina", "skvost", "skvrna", "slabika", "sladidlo", "slanina", "slast", "slavnost", "sledovat", "slepec", "sleva", "slezina", "slib", "slina", "sliznice", "slon", "sloupek", "slovo", "sluch", "sluha", "slunce", "slupka", "slza", "smaragd", "smetana", "smilstvo", "smlouva", "smog", "smrad", "smrk", "smrtka", "smutek", "smysl", "snad", "snaha", "snob", "sobota", "socha", "sodovka", "sokol", "sopka", "sotva", "souboj", "soucit", "soudce", "souhlas", "soulad", "soumrak", "souprava", "soused", "soutok", "souviset", "spalovna", "spasitel", "spis", "splav", "spodek", "spojenec", "spolu", "sponzor", "spornost", "spousta", "sprcha", "spustit", "sranda", "sraz", "srdce", "srna", "srnec", "srovnat", "srpen", "srst", "srub", "stanice", "starosta", "statika", "stavba", "stehno", "stezka", "stodola", "stolek", "stopa", "storno", "stoupat", "strach", "stres", "strhnout", "strom", "struna", "studna", "stupnice", "stvol", "styk", "subjekt", "subtropy", "suchar", "sudost", "sukno", "sundat", "sunout", "surikata", "surovina", "svah", "svalstvo", "svetr", "svatba", "svazek", "svisle", "svitek", "svoboda", "svodidlo", "svorka", "svrab", "sykavka", "sykot", "synek", "synovec", "sypat", "sypkost", "syrovost", "sysel", "sytost", "tabletka", "tabule", "tahoun", "tajemno", "tajfun", "tajga", "tajit", "tajnost", "taktika", "tamhle", "tampon", "tancovat", "tanec", "tanker", "tapeta", "tavenina", "tazatel", "technika", "tehdy", "tekutina", "telefon", "temnota", "tendence", "tenista", "tenor", "teplota", "tepna", "teprve", "terapie", "termoska", "textil", "ticho", "tiskopis", "titulek", "tkadlec", "tkanina", "tlapka", "tleskat", "tlukot", "tlupa", "tmel", "toaleta", "topinka", "topol", "torzo", "touha", "toulec", "tradice", "traktor", "tramp", "trasa", "traverza", "trefit", "trest", "trezor", "trhavina", "trhlina", "trochu", "trojice", "troska", "trouba", "trpce", "trpitel", "trpkost", "trubec", "truchlit", "truhlice", "trus", "trvat", "tudy", "tuhnout", "tuhost", "tundra", "turista", "turnaj", "tuzemsko", "tvaroh", "tvorba", "tvrdost", "tvrz", "tygr", "tykev", "ubohost", "uboze", "ubrat", "ubrousek", "ubrus", "ubytovna", "ucho", "uctivost", "udivit", "uhradit", "ujednat", "ujistit", "ujmout", "ukazatel", "uklidnit", "uklonit", "ukotvit", "ukrojit", "ulice", "ulita", "ulovit", "umyvadlo", "unavit", "uniforma", "uniknout", "upadnout", "uplatnit", "uplynout", "upoutat", "upravit", "uran", "urazit", "usednout", "usilovat", "usmrtit", "usnadnit", "usnout", "usoudit", "ustlat", "ustrnout", "utahovat", "utkat", "utlumit", "utonout", "utopenec", "utrousit", "uvalit", "uvolnit", "uvozovka", "uzdravit", "uzel", "uzenina", "uzlina", "uznat", "vagon", "valcha", "valoun", "vana", "vandal", "vanilka", "varan", "varhany", "varovat", "vcelku", "vchod", "vdova", "vedro", "vegetace", "vejce", "velbloud", "veletrh", "velitel", "velmoc", "velryba", "venkov", "veranda", "verze", "veselka", "veskrze", "vesnice", "vespodu", "vesta", "veterina", "veverka", "vibrace", "vichr", "videohra", "vidina", "vidle", "vila", "vinice", "viset", "vitalita", "vize", "vizitka", "vjezd", "vklad", "vkus", "vlajka", "vlak", "vlasec", "vlevo", "vlhkost", "vliv", "vlnovka", "vloupat", "vnucovat", "vnuk", "voda", "vodivost", "vodoznak", "vodstvo", "vojensky", "vojna", "vojsko", "volant", "volba", "volit", "volno", "voskovka", "vozidlo", "vozovna", "vpravo", "vrabec", "vracet", "vrah", "vrata", "vrba", "vrcholek", "vrhat", "vrstva", "vrtule", "vsadit", "vstoupit", "vstup", "vtip", "vybavit", "vybrat", "vychovat", "vydat", "vydra", "vyfotit", "vyhledat", "vyhnout", "vyhodit", "vyhradit", "vyhubit", "vyjasnit", "vyjet", "vyjmout", "vyklopit", "vykonat", "vylekat", "vymazat", "vymezit", "vymizet", "vymyslet", "vynechat", "vynikat", "vynutit", "vypadat", "vyplatit", "vypravit", "vypustit", "vyrazit", "vyrovnat", "vyrvat", "vyslovit", "vysoko", "vystavit", "vysunout", "vysypat", "vytasit", "vytesat", "vytratit", "vyvinout", "vyvolat", "vyvrhel", "vyzdobit", "vyznat", "vzadu", "vzbudit", "vzchopit", "vzdor", "vzduch", "vzdychat", "vzestup", "vzhledem", "vzkaz", "vzlykat", "vznik", "vzorek", "vzpoura", "vztah", "vztek", "xylofon", "zabrat", "zabydlet", "zachovat", "zadarmo", "zadusit", "zafoukat", "zahltit", "zahodit", "zahrada", "zahynout", "zajatec", "zajet", "zajistit", "zaklepat", "zakoupit", "zalepit", "zamezit", "zamotat", "zamyslet", "zanechat", "zanikat", "zaplatit", "zapojit", "zapsat", "zarazit", "zastavit", "zasunout", "zatajit", "zatemnit", "zatknout", "zaujmout", "zavalit", "zavelet", "zavinit", "zavolat", "zavrtat", "zazvonit", "zbavit", "zbrusu", "zbudovat", "zbytek", "zdaleka", "zdarma", "zdatnost", "zdivo", "zdobit", "zdroj", "zdvih", "zdymadlo", "zelenina", "zeman", "zemina", "zeptat", "zezadu", "zezdola", "zhatit", "zhltnout", "zhluboka", "zhotovit", "zhruba", "zima", "zimnice", "zjemnit", "zklamat", "zkoumat", "zkratka", "zkumavka", "zlato", "zlehka", "zloba", "zlom", "zlost", "zlozvyk", "zmapovat", "zmar", "zmatek", "zmije", "zmizet", "zmocnit", "zmodrat", "zmrzlina", "zmutovat", "znak", "znalost", "znamenat", "znovu", "zobrazit", "zotavit", "zoubek", "zoufale", "zplodit", "zpomalit", "zprava", "zprostit", "zprudka", "zprvu", "zrada", "zranit", "zrcadlo", "zrnitost", "zrno", "zrovna", "zrychlit", "zrzavost", "zticha", "ztratit", "zubovina", "zubr", "zvednout", "zvenku", "zvesela", "zvon", "zvrat", "zvukovod", "zvyk"];
+		var czech$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': czech
+		});
+		var chinese_simplified = ["的", "一", "是", "在", "不", "了", "有", "和", "人", "这", "中", "大", "为", "上", "个", "国", "我", "以", "要", "他", "时", "来", "用", "们", "生", "到", "作", "地", "于", "出", "就", "分", "对", "成", "会", "可", "主", "发", "年", "动", "同", "工", "也", "能", "下", "过", "子", "说", "产", "种", "面", "而", "方", "后", "多", "定", "行", "学", "法", "所", "民", "得", "经", "十", "三", "之", "进", "着", "等", "部", "度", "家", "电", "力", "里", "如", "水", "化", "高", "自", "二", "理", "起", "小", "物", "现", "实", "加", "量", "都", "两", "体", "制", "机", "当", "使", "点", "从", "业", "本", "去", "把", "性", "好", "应", "开", "它", "合", "还", "因", "由", "其", "些", "然", "前", "外", "天", "政", "四", "日", "那", "社", "义", "事", "平", "形", "相", "全", "表", "间", "样", "与", "关", "各", "重", "新", "线", "内", "数", "正", "心", "反", "你", "明", "看", "原", "又", "么", "利", "比", "或", "但", "质", "气", "第", "向", "道", "命", "此", "变", "条", "只", "没", "结", "解", "问", "意", "建", "月", "公", "无", "系", "军", "很", "情", "者", "最", "立", "代", "想", "已", "通", "并", "提", "直", "题", "党", "程", "展", "五", "果", "料", "象", "员", "革", "位", "入", "常", "文", "总", "次", "品", "式", "活", "设", "及", "管", "特", "件", "长", "求", "老", "头", "基", "资", "边", "流", "路", "级", "少", "图", "山", "统", "接", "知", "较", "将", "组", "见", "计", "别", "她", "手", "角", "期", "根", "论", "运", "农", "指", "几", "九", "区", "强", "放", "决", "西", "被", "干", "做", "必", "战", "先", "回", "则", "任", "取", "据", "处", "队", "南", "给", "色", "光", "门", "即", "保", "治", "北", "造", "百", "规", "热", "领", "七", "海", "口", "东", "导", "器", "压", "志", "世", "金", "增", "争", "济", "阶", "油", "思", "术", "极", "交", "受", "联", "什", "认", "六", "共", "权", "收", "证", "改", "清", "美", "再", "采", "转", "更", "单", "风", "切", "打", "白", "教", "速", "花", "带", "安", "场", "身", "车", "例", "真", "务", "具", "万", "每", "目", "至", "达", "走", "积", "示", "议", "声", "报", "斗", "完", "类", "八", "离", "华", "名", "确", "才", "科", "张", "信", "马", "节", "话", "米", "整", "空", "元", "况", "今", "集", "温", "传", "土", "许", "步", "群", "广", "石", "记", "需", "段", "研", "界", "拉", "林", "律", "叫", "且", "究", "观", "越", "织", "装", "影", "算", "低", "持", "音", "众", "书", "布", "复", "容", "儿", "须", "际", "商", "非", "验", "连", "断", "深", "难", "近", "矿", "千", "周", "委", "素", "技", "备", "半", "办", "青", "省", "列", "习", "响", "约", "支", "般", "史", "感", "劳", "便", "团", "往", "酸", "历", "市", "克", "何", "除", "消", "构", "府", "称", "太", "准", "精", "值", "号", "率", "族", "维", "划", "选", "标", "写", "存", "候", "毛", "亲", "快", "效", "斯", "院", "查", "江", "型", "眼", "王", "按", "格", "养", "易", "置", "派", "层", "片", "始", "却", "专", "状", "育", "厂", "京", "识", "适", "属", "圆", "包", "火", "住", "调", "满", "县", "局", "照", "参", "红", "细", "引", "听", "该", "铁", "价", "严", "首", "底", "液", "官", "德", "随", "病", "苏", "失", "尔", "死", "讲", "配", "女", "黄", "推", "显", "谈", "罪", "神", "艺", "呢", "席", "含", "企", "望", "密", "批", "营", "项", "防", "举", "球", "英", "氧", "势", "告", "李", "台", "落", "木", "帮", "轮", "破", "亚", "师", "围", "注", "远", "字", "材", "排", "供", "河", "态", "封", "另", "施", "减", "树", "溶", "怎", "止", "案", "言", "士", "均", "武", "固", "叶", "鱼", "波", "视", "仅", "费", "紧", "爱", "左", "章", "早", "朝", "害", "续", "轻", "服", "试", "食", "充", "兵", "源", "判", "护", "司", "足", "某", "练", "差", "致", "板", "田", "降", "黑", "犯", "负", "击", "范", "继", "兴", "似", "余", "坚", "曲", "输", "修", "故", "城", "夫", "够", "送", "笔", "船", "占", "右", "财", "吃", "富", "春", "职", "觉", "汉", "画", "功", "巴", "跟", "虽", "杂", "飞", "检", "吸", "助", "升", "阳", "互", "初", "创", "抗", "考", "投", "坏", "策", "古", "径", "换", "未", "跑", "留", "钢", "曾", "端", "责", "站", "简", "述", "钱", "副", "尽", "帝", "射", "草", "冲", "承", "独", "令", "限", "阿", "宣", "环", "双", "请", "超", "微", "让", "控", "州", "良", "轴", "找", "否", "纪", "益", "依", "优", "顶", "础", "载", "倒", "房", "突", "坐", "粉", "敌", "略", "客", "袁", "冷", "胜", "绝", "析", "块", "剂", "测", "丝", "协", "诉", "念", "陈", "仍", "罗", "盐", "友", "洋", "错", "苦", "夜", "刑", "移", "频", "逐", "靠", "混", "母", "短", "皮", "终", "聚", "汽", "村", "云", "哪", "既", "距", "卫", "停", "烈", "央", "察", "烧", "迅", "境", "若", "印", "洲", "刻", "括", "激", "孔", "搞", "甚", "室", "待", "核", "校", "散", "侵", "吧", "甲", "游", "久", "菜", "味", "旧", "模", "湖", "货", "损", "预", "阻", "毫", "普", "稳", "乙", "妈", "植", "息", "扩", "银", "语", "挥", "酒", "守", "拿", "序", "纸", "医", "缺", "雨", "吗", "针", "刘", "啊", "急", "唱", "误", "训", "愿", "审", "附", "获", "茶", "鲜", "粮", "斤", "孩", "脱", "硫", "肥", "善", "龙", "演", "父", "渐", "血", "欢", "械", "掌", "歌", "沙", "刚", "攻", "谓", "盾", "讨", "晚", "粒", "乱", "燃", "矛", "乎", "杀", "药", "宁", "鲁", "贵", "钟", "煤", "读", "班", "伯", "香", "介", "迫", "句", "丰", "培", "握", "兰", "担", "弦", "蛋", "沉", "假", "穿", "执", "答", "乐", "谁", "顺", "烟", "缩", "征", "脸", "喜", "松", "脚", "困", "异", "免", "背", "星", "福", "买", "染", "井", "概", "慢", "怕", "磁", "倍", "祖", "皇", "促", "静", "补", "评", "翻", "肉", "践", "尼", "衣", "宽", "扬", "棉", "希", "伤", "操", "垂", "秋", "宜", "氢", "套", "督", "振", "架", "亮", "末", "宪", "庆", "编", "牛", "触", "映", "雷", "销", "诗", "座", "居", "抓", "裂", "胞", "呼", "娘", "景", "威", "绿", "晶", "厚", "盟", "衡", "鸡", "孙", "延", "危", "胶", "屋", "乡", "临", "陆", "顾", "掉", "呀", "灯", "岁", "措", "束", "耐", "剧", "玉", "赵", "跳", "哥", "季", "课", "凯", "胡", "额", "款", "绍", "卷", "齐", "伟", "蒸", "殖", "永", "宗", "苗", "川", "炉", "岩", "弱", "零", "杨", "奏", "沿", "露", "杆", "探", "滑", "镇", "饭", "浓", "航", "怀", "赶", "库", "夺", "伊", "灵", "税", "途", "灭", "赛", "归", "召", "鼓", "播", "盘", "裁", "险", "康", "唯", "录", "菌", "纯", "借", "糖", "盖", "横", "符", "私", "努", "堂", "域", "枪", "润", "幅", "哈", "竟", "熟", "虫", "泽", "脑", "壤", "碳", "欧", "遍", "侧", "寨", "敢", "彻", "虑", "斜", "薄", "庭", "纳", "弹", "饲", "伸", "折", "麦", "湿", "暗", "荷", "瓦", "塞", "床", "筑", "恶", "户", "访", "塔", "奇", "透", "梁", "刀", "旋", "迹", "卡", "氯", "遇", "份", "毒", "泥", "退", "洗", "摆", "灰", "彩", "卖", "耗", "夏", "择", "忙", "铜", "献", "硬", "予", "繁", "圈", "雪", "函", "亦", "抽", "篇", "阵", "阴", "丁", "尺", "追", "堆", "雄", "迎", "泛", "爸", "楼", "避", "谋", "吨", "野", "猪", "旗", "累", "偏", "典", "馆", "索", "秦", "脂", "潮", "爷", "豆", "忽", "托", "惊", "塑", "遗", "愈", "朱", "替", "纤", "粗", "倾", "尚", "痛", "楚", "谢", "奋", "购", "磨", "君", "池", "旁", "碎", "骨", "监", "捕", "弟", "暴", "割", "贯", "殊", "释", "词", "亡", "壁", "顿", "宝", "午", "尘", "闻", "揭", "炮", "残", "冬", "桥", "妇", "警", "综", "招", "吴", "付", "浮", "遭", "徐", "您", "摇", "谷", "赞", "箱", "隔", "订", "男", "吹", "园", "纷", "唐", "败", "宋", "玻", "巨", "耕", "坦", "荣", "闭", "湾", "键", "凡", "驻", "锅", "救", "恩", "剥", "凝", "碱", "齿", "截", "炼", "麻", "纺", "禁", "废", "盛", "版", "缓", "净", "睛", "昌", "婚", "涉", "筒", "嘴", "插", "岸", "朗", "庄", "街", "藏", "姑", "贸", "腐", "奴", "啦", "惯", "乘", "伙", "恢", "匀", "纱", "扎", "辩", "耳", "彪", "臣", "亿", "璃", "抵", "脉", "秀", "萨", "俄", "网", "舞", "店", "喷", "纵", "寸", "汗", "挂", "洪", "贺", "闪", "柬", "爆", "烯", "津", "稻", "墙", "软", "勇", "像", "滚", "厘", "蒙", "芳", "肯", "坡", "柱", "荡", "腿", "仪", "旅", "尾", "轧", "冰", "贡", "登", "黎", "削", "钻", "勒", "逃", "障", "氨", "郭", "峰", "币", "港", "伏", "轨", "亩", "毕", "擦", "莫", "刺", "浪", "秘", "援", "株", "健", "售", "股", "岛", "甘", "泡", "睡", "童", "铸", "汤", "阀", "休", "汇", "舍", "牧", "绕", "炸", "哲", "磷", "绩", "朋", "淡", "尖", "启", "陷", "柴", "呈", "徒", "颜", "泪", "稍", "忘", "泵", "蓝", "拖", "洞", "授", "镜", "辛", "壮", "锋", "贫", "虚", "弯", "摩", "泰", "幼", "廷", "尊", "窗", "纲", "弄", "隶", "疑", "氏", "宫", "姐", "震", "瑞", "怪", "尤", "琴", "循", "描", "膜", "违", "夹", "腰", "缘", "珠", "穷", "森", "枝", "竹", "沟", "催", "绳", "忆", "邦", "剩", "幸", "浆", "栏", "拥", "牙", "贮", "礼", "滤", "钠", "纹", "罢", "拍", "咱", "喊", "袖", "埃", "勤", "罚", "焦", "潜", "伍", "墨", "欲", "缝", "姓", "刊", "饱", "仿", "奖", "铝", "鬼", "丽", "跨", "默", "挖", "链", "扫", "喝", "袋", "炭", "污", "幕", "诸", "弧", "励", "梅", "奶", "洁", "灾", "舟", "鉴", "苯", "讼", "抱", "毁", "懂", "寒", "智", "埔", "寄", "届", "跃", "渡", "挑", "丹", "艰", "贝", "碰", "拔", "爹", "戴", "码", "梦", "芽", "熔", "赤", "渔", "哭", "敬", "颗", "奔", "铅", "仲", "虎", "稀", "妹", "乏", "珍", "申", "桌", "遵", "允", "隆", "螺", "仓", "魏", "锐", "晓", "氮", "兼", "隐", "碍", "赫", "拨", "忠", "肃", "缸", "牵", "抢", "博", "巧", "壳", "兄", "杜", "讯", "诚", "碧", "祥", "柯", "页", "巡", "矩", "悲", "灌", "龄", "伦", "票", "寻", "桂", "铺", "圣", "恐", "恰", "郑", "趣", "抬", "荒", "腾", "贴", "柔", "滴", "猛", "阔", "辆", "妻", "填", "撤", "储", "签", "闹", "扰", "紫", "砂", "递", "戏", "吊", "陶", "伐", "喂", "疗", "瓶", "婆", "抚", "臂", "摸", "忍", "虾", "蜡", "邻", "胸", "巩", "挤", "偶", "弃", "槽", "劲", "乳", "邓", "吉", "仁", "烂", "砖", "租", "乌", "舰", "伴", "瓜", "浅", "丙", "暂", "燥", "橡", "柳", "迷", "暖", "牌", "秧", "胆", "详", "簧", "踏", "瓷", "谱", "呆", "宾", "糊", "洛", "辉", "愤", "竞", "隙", "怒", "粘", "乃", "绪", "肩", "籍", "敏", "涂", "熙", "皆", "侦", "悬", "掘", "享", "纠", "醒", "狂", "锁", "淀", "恨", "牲", "霸", "爬", "赏", "逆", "玩", "陵", "祝", "秒", "浙", "貌", "役", "彼", "悉", "鸭", "趋", "凤", "晨", "畜", "辈", "秩", "卵", "署", "梯", "炎", "滩", "棋", "驱", "筛", "峡", "冒", "啥", "寿", "译", "浸", "泉", "帽", "迟", "硅", "疆", "贷", "漏", "稿", "冠", "嫩", "胁", "芯", "牢", "叛", "蚀", "奥", "鸣", "岭", "羊", "凭", "串", "塘", "绘", "酵", "融", "盆", "锡", "庙", "筹", "冻", "辅", "摄", "袭", "筋", "拒", "僚", "旱", "钾", "鸟", "漆", "沈", "眉", "疏", "添", "棒", "穗", "硝", "韩", "逼", "扭", "侨", "凉", "挺", "碗", "栽", "炒", "杯", "患", "馏", "劝", "豪", "辽", "勃", "鸿", "旦", "吏", "拜", "狗", "埋", "辊", "掩", "饮", "搬", "骂", "辞", "勾", "扣", "估", "蒋", "绒", "雾", "丈", "朵", "姆", "拟", "宇", "辑", "陕", "雕", "偿", "蓄", "崇", "剪", "倡", "厅", "咬", "驶", "薯", "刷", "斥", "番", "赋", "奉", "佛", "浇", "漫", "曼", "扇", "钙", "桃", "扶", "仔", "返", "俗", "亏", "腔", "鞋", "棱", "覆", "框", "悄", "叔", "撞", "骗", "勘", "旺", "沸", "孤", "吐", "孟", "渠", "屈", "疾", "妙", "惜", "仰", "狠", "胀", "谐", "抛", "霉", "桑", "岗", "嘛", "衰", "盗", "渗", "脏", "赖", "涌", "甜", "曹", "阅", "肌", "哩", "厉", "烃", "纬", "毅", "昨", "伪", "症", "煮", "叹", "钉", "搭", "茎", "笼", "酷", "偷", "弓", "锥", "恒", "杰", "坑", "鼻", "翼", "纶", "叙", "狱", "逮", "罐", "络", "棚", "抑", "膨", "蔬", "寺", "骤", "穆", "冶", "枯", "册", "尸", "凸", "绅", "坯", "牺", "焰", "轰", "欣", "晋", "瘦", "御", "锭", "锦", "丧", "旬", "锻", "垄", "搜", "扑", "邀", "亭", "酯", "迈", "舒", "脆", "酶", "闲", "忧", "酚", "顽", "羽", "涨", "卸", "仗", "陪", "辟", "惩", "杭", "姚", "肚", "捉", "飘", "漂", "昆", "欺", "吾", "郎", "烷", "汁", "呵", "饰", "萧", "雅", "邮", "迁", "燕", "撒", "姻", "赴", "宴", "烦", "债", "帐", "斑", "铃", "旨", "醇", "董", "饼", "雏", "姿", "拌", "傅", "腹", "妥", "揉", "贤", "拆", "歪", "葡", "胺", "丢", "浩", "徽", "昂", "垫", "挡", "览", "贪", "慰", "缴", "汪", "慌", "冯", "诺", "姜", "谊", "凶", "劣", "诬", "耀", "昏", "躺", "盈", "骑", "乔", "溪", "丛", "卢", "抹", "闷", "咨", "刮", "驾", "缆", "悟", "摘", "铒", "掷", "颇", "幻", "柄", "惠", "惨", "佳", "仇", "腊", "窝", "涤", "剑", "瞧", "堡", "泼", "葱", "罩", "霍", "捞", "胎", "苍", "滨", "俩", "捅", "湘", "砍", "霞", "邵", "萄", "疯", "淮", "遂", "熊", "粪", "烘", "宿", "档", "戈", "驳", "嫂", "裕", "徙", "箭", "捐", "肠", "撑", "晒", "辨", "殿", "莲", "摊", "搅", "酱", "屏", "疫", "哀", "蔡", "堵", "沫", "皱", "畅", "叠", "阁", "莱", "敲", "辖", "钩", "痕", "坝", "巷", "饿", "祸", "丘", "玄", "溜", "曰", "逻", "彭", "尝", "卿", "妨", "艇", "吞", "韦", "怨", "矮", "歇"];
+		var chinese_simplified$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': chinese_simplified
+		});
+		var chinese_traditional = ["的", "一", "是", "在", "不", "了", "有", "和", "人", "這", "中", "大", "為", "上", "個", "國", "我", "以", "要", "他", "時", "來", "用", "們", "生", "到", "作", "地", "於", "出", "就", "分", "對", "成", "會", "可", "主", "發", "年", "動", "同", "工", "也", "能", "下", "過", "子", "說", "產", "種", "面", "而", "方", "後", "多", "定", "行", "學", "法", "所", "民", "得", "經", "十", "三", "之", "進", "著", "等", "部", "度", "家", "電", "力", "裡", "如", "水", "化", "高", "自", "二", "理", "起", "小", "物", "現", "實", "加", "量", "都", "兩", "體", "制", "機", "當", "使", "點", "從", "業", "本", "去", "把", "性", "好", "應", "開", "它", "合", "還", "因", "由", "其", "些", "然", "前", "外", "天", "政", "四", "日", "那", "社", "義", "事", "平", "形", "相", "全", "表", "間", "樣", "與", "關", "各", "重", "新", "線", "內", "數", "正", "心", "反", "你", "明", "看", "原", "又", "麼", "利", "比", "或", "但", "質", "氣", "第", "向", "道", "命", "此", "變", "條", "只", "沒", "結", "解", "問", "意", "建", "月", "公", "無", "系", "軍", "很", "情", "者", "最", "立", "代", "想", "已", "通", "並", "提", "直", "題", "黨", "程", "展", "五", "果", "料", "象", "員", "革", "位", "入", "常", "文", "總", "次", "品", "式", "活", "設", "及", "管", "特", "件", "長", "求", "老", "頭", "基", "資", "邊", "流", "路", "級", "少", "圖", "山", "統", "接", "知", "較", "將", "組", "見", "計", "別", "她", "手", "角", "期", "根", "論", "運", "農", "指", "幾", "九", "區", "強", "放", "決", "西", "被", "幹", "做", "必", "戰", "先", "回", "則", "任", "取", "據", "處", "隊", "南", "給", "色", "光", "門", "即", "保", "治", "北", "造", "百", "規", "熱", "領", "七", "海", "口", "東", "導", "器", "壓", "志", "世", "金", "增", "爭", "濟", "階", "油", "思", "術", "極", "交", "受", "聯", "什", "認", "六", "共", "權", "收", "證", "改", "清", "美", "再", "採", "轉", "更", "單", "風", "切", "打", "白", "教", "速", "花", "帶", "安", "場", "身", "車", "例", "真", "務", "具", "萬", "每", "目", "至", "達", "走", "積", "示", "議", "聲", "報", "鬥", "完", "類", "八", "離", "華", "名", "確", "才", "科", "張", "信", "馬", "節", "話", "米", "整", "空", "元", "況", "今", "集", "溫", "傳", "土", "許", "步", "群", "廣", "石", "記", "需", "段", "研", "界", "拉", "林", "律", "叫", "且", "究", "觀", "越", "織", "裝", "影", "算", "低", "持", "音", "眾", "書", "布", "复", "容", "兒", "須", "際", "商", "非", "驗", "連", "斷", "深", "難", "近", "礦", "千", "週", "委", "素", "技", "備", "半", "辦", "青", "省", "列", "習", "響", "約", "支", "般", "史", "感", "勞", "便", "團", "往", "酸", "歷", "市", "克", "何", "除", "消", "構", "府", "稱", "太", "準", "精", "值", "號", "率", "族", "維", "劃", "選", "標", "寫", "存", "候", "毛", "親", "快", "效", "斯", "院", "查", "江", "型", "眼", "王", "按", "格", "養", "易", "置", "派", "層", "片", "始", "卻", "專", "狀", "育", "廠", "京", "識", "適", "屬", "圓", "包", "火", "住", "調", "滿", "縣", "局", "照", "參", "紅", "細", "引", "聽", "該", "鐵", "價", "嚴", "首", "底", "液", "官", "德", "隨", "病", "蘇", "失", "爾", "死", "講", "配", "女", "黃", "推", "顯", "談", "罪", "神", "藝", "呢", "席", "含", "企", "望", "密", "批", "營", "項", "防", "舉", "球", "英", "氧", "勢", "告", "李", "台", "落", "木", "幫", "輪", "破", "亞", "師", "圍", "注", "遠", "字", "材", "排", "供", "河", "態", "封", "另", "施", "減", "樹", "溶", "怎", "止", "案", "言", "士", "均", "武", "固", "葉", "魚", "波", "視", "僅", "費", "緊", "愛", "左", "章", "早", "朝", "害", "續", "輕", "服", "試", "食", "充", "兵", "源", "判", "護", "司", "足", "某", "練", "差", "致", "板", "田", "降", "黑", "犯", "負", "擊", "范", "繼", "興", "似", "餘", "堅", "曲", "輸", "修", "故", "城", "夫", "夠", "送", "筆", "船", "佔", "右", "財", "吃", "富", "春", "職", "覺", "漢", "畫", "功", "巴", "跟", "雖", "雜", "飛", "檢", "吸", "助", "昇", "陽", "互", "初", "創", "抗", "考", "投", "壞", "策", "古", "徑", "換", "未", "跑", "留", "鋼", "曾", "端", "責", "站", "簡", "述", "錢", "副", "盡", "帝", "射", "草", "衝", "承", "獨", "令", "限", "阿", "宣", "環", "雙", "請", "超", "微", "讓", "控", "州", "良", "軸", "找", "否", "紀", "益", "依", "優", "頂", "礎", "載", "倒", "房", "突", "坐", "粉", "敵", "略", "客", "袁", "冷", "勝", "絕", "析", "塊", "劑", "測", "絲", "協", "訴", "念", "陳", "仍", "羅", "鹽", "友", "洋", "錯", "苦", "夜", "刑", "移", "頻", "逐", "靠", "混", "母", "短", "皮", "終", "聚", "汽", "村", "雲", "哪", "既", "距", "衛", "停", "烈", "央", "察", "燒", "迅", "境", "若", "印", "洲", "刻", "括", "激", "孔", "搞", "甚", "室", "待", "核", "校", "散", "侵", "吧", "甲", "遊", "久", "菜", "味", "舊", "模", "湖", "貨", "損", "預", "阻", "毫", "普", "穩", "乙", "媽", "植", "息", "擴", "銀", "語", "揮", "酒", "守", "拿", "序", "紙", "醫", "缺", "雨", "嗎", "針", "劉", "啊", "急", "唱", "誤", "訓", "願", "審", "附", "獲", "茶", "鮮", "糧", "斤", "孩", "脫", "硫", "肥", "善", "龍", "演", "父", "漸", "血", "歡", "械", "掌", "歌", "沙", "剛", "攻", "謂", "盾", "討", "晚", "粒", "亂", "燃", "矛", "乎", "殺", "藥", "寧", "魯", "貴", "鐘", "煤", "讀", "班", "伯", "香", "介", "迫", "句", "豐", "培", "握", "蘭", "擔", "弦", "蛋", "沉", "假", "穿", "執", "答", "樂", "誰", "順", "煙", "縮", "徵", "臉", "喜", "松", "腳", "困", "異", "免", "背", "星", "福", "買", "染", "井", "概", "慢", "怕", "磁", "倍", "祖", "皇", "促", "靜", "補", "評", "翻", "肉", "踐", "尼", "衣", "寬", "揚", "棉", "希", "傷", "操", "垂", "秋", "宜", "氫", "套", "督", "振", "架", "亮", "末", "憲", "慶", "編", "牛", "觸", "映", "雷", "銷", "詩", "座", "居", "抓", "裂", "胞", "呼", "娘", "景", "威", "綠", "晶", "厚", "盟", "衡", "雞", "孫", "延", "危", "膠", "屋", "鄉", "臨", "陸", "顧", "掉", "呀", "燈", "歲", "措", "束", "耐", "劇", "玉", "趙", "跳", "哥", "季", "課", "凱", "胡", "額", "款", "紹", "卷", "齊", "偉", "蒸", "殖", "永", "宗", "苗", "川", "爐", "岩", "弱", "零", "楊", "奏", "沿", "露", "桿", "探", "滑", "鎮", "飯", "濃", "航", "懷", "趕", "庫", "奪", "伊", "靈", "稅", "途", "滅", "賽", "歸", "召", "鼓", "播", "盤", "裁", "險", "康", "唯", "錄", "菌", "純", "借", "糖", "蓋", "橫", "符", "私", "努", "堂", "域", "槍", "潤", "幅", "哈", "竟", "熟", "蟲", "澤", "腦", "壤", "碳", "歐", "遍", "側", "寨", "敢", "徹", "慮", "斜", "薄", "庭", "納", "彈", "飼", "伸", "折", "麥", "濕", "暗", "荷", "瓦", "塞", "床", "築", "惡", "戶", "訪", "塔", "奇", "透", "梁", "刀", "旋", "跡", "卡", "氯", "遇", "份", "毒", "泥", "退", "洗", "擺", "灰", "彩", "賣", "耗", "夏", "擇", "忙", "銅", "獻", "硬", "予", "繁", "圈", "雪", "函", "亦", "抽", "篇", "陣", "陰", "丁", "尺", "追", "堆", "雄", "迎", "泛", "爸", "樓", "避", "謀", "噸", "野", "豬", "旗", "累", "偏", "典", "館", "索", "秦", "脂", "潮", "爺", "豆", "忽", "托", "驚", "塑", "遺", "愈", "朱", "替", "纖", "粗", "傾", "尚", "痛", "楚", "謝", "奮", "購", "磨", "君", "池", "旁", "碎", "骨", "監", "捕", "弟", "暴", "割", "貫", "殊", "釋", "詞", "亡", "壁", "頓", "寶", "午", "塵", "聞", "揭", "炮", "殘", "冬", "橋", "婦", "警", "綜", "招", "吳", "付", "浮", "遭", "徐", "您", "搖", "谷", "贊", "箱", "隔", "訂", "男", "吹", "園", "紛", "唐", "敗", "宋", "玻", "巨", "耕", "坦", "榮", "閉", "灣", "鍵", "凡", "駐", "鍋", "救", "恩", "剝", "凝", "鹼", "齒", "截", "煉", "麻", "紡", "禁", "廢", "盛", "版", "緩", "淨", "睛", "昌", "婚", "涉", "筒", "嘴", "插", "岸", "朗", "莊", "街", "藏", "姑", "貿", "腐", "奴", "啦", "慣", "乘", "夥", "恢", "勻", "紗", "扎", "辯", "耳", "彪", "臣", "億", "璃", "抵", "脈", "秀", "薩", "俄", "網", "舞", "店", "噴", "縱", "寸", "汗", "掛", "洪", "賀", "閃", "柬", "爆", "烯", "津", "稻", "牆", "軟", "勇", "像", "滾", "厘", "蒙", "芳", "肯", "坡", "柱", "盪", "腿", "儀", "旅", "尾", "軋", "冰", "貢", "登", "黎", "削", "鑽", "勒", "逃", "障", "氨", "郭", "峰", "幣", "港", "伏", "軌", "畝", "畢", "擦", "莫", "刺", "浪", "秘", "援", "株", "健", "售", "股", "島", "甘", "泡", "睡", "童", "鑄", "湯", "閥", "休", "匯", "舍", "牧", "繞", "炸", "哲", "磷", "績", "朋", "淡", "尖", "啟", "陷", "柴", "呈", "徒", "顏", "淚", "稍", "忘", "泵", "藍", "拖", "洞", "授", "鏡", "辛", "壯", "鋒", "貧", "虛", "彎", "摩", "泰", "幼", "廷", "尊", "窗", "綱", "弄", "隸", "疑", "氏", "宮", "姐", "震", "瑞", "怪", "尤", "琴", "循", "描", "膜", "違", "夾", "腰", "緣", "珠", "窮", "森", "枝", "竹", "溝", "催", "繩", "憶", "邦", "剩", "幸", "漿", "欄", "擁", "牙", "貯", "禮", "濾", "鈉", "紋", "罷", "拍", "咱", "喊", "袖", "埃", "勤", "罰", "焦", "潛", "伍", "墨", "欲", "縫", "姓", "刊", "飽", "仿", "獎", "鋁", "鬼", "麗", "跨", "默", "挖", "鏈", "掃", "喝", "袋", "炭", "污", "幕", "諸", "弧", "勵", "梅", "奶", "潔", "災", "舟", "鑑", "苯", "訟", "抱", "毀", "懂", "寒", "智", "埔", "寄", "屆", "躍", "渡", "挑", "丹", "艱", "貝", "碰", "拔", "爹", "戴", "碼", "夢", "芽", "熔", "赤", "漁", "哭", "敬", "顆", "奔", "鉛", "仲", "虎", "稀", "妹", "乏", "珍", "申", "桌", "遵", "允", "隆", "螺", "倉", "魏", "銳", "曉", "氮", "兼", "隱", "礙", "赫", "撥", "忠", "肅", "缸", "牽", "搶", "博", "巧", "殼", "兄", "杜", "訊", "誠", "碧", "祥", "柯", "頁", "巡", "矩", "悲", "灌", "齡", "倫", "票", "尋", "桂", "鋪", "聖", "恐", "恰", "鄭", "趣", "抬", "荒", "騰", "貼", "柔", "滴", "猛", "闊", "輛", "妻", "填", "撤", "儲", "簽", "鬧", "擾", "紫", "砂", "遞", "戲", "吊", "陶", "伐", "餵", "療", "瓶", "婆", "撫", "臂", "摸", "忍", "蝦", "蠟", "鄰", "胸", "鞏", "擠", "偶", "棄", "槽", "勁", "乳", "鄧", "吉", "仁", "爛", "磚", "租", "烏", "艦", "伴", "瓜", "淺", "丙", "暫", "燥", "橡", "柳", "迷", "暖", "牌", "秧", "膽", "詳", "簧", "踏", "瓷", "譜", "呆", "賓", "糊", "洛", "輝", "憤", "競", "隙", "怒", "粘", "乃", "緒", "肩", "籍", "敏", "塗", "熙", "皆", "偵", "懸", "掘", "享", "糾", "醒", "狂", "鎖", "淀", "恨", "牲", "霸", "爬", "賞", "逆", "玩", "陵", "祝", "秒", "浙", "貌", "役", "彼", "悉", "鴨", "趨", "鳳", "晨", "畜", "輩", "秩", "卵", "署", "梯", "炎", "灘", "棋", "驅", "篩", "峽", "冒", "啥", "壽", "譯", "浸", "泉", "帽", "遲", "矽", "疆", "貸", "漏", "稿", "冠", "嫩", "脅", "芯", "牢", "叛", "蝕", "奧", "鳴", "嶺", "羊", "憑", "串", "塘", "繪", "酵", "融", "盆", "錫", "廟", "籌", "凍", "輔", "攝", "襲", "筋", "拒", "僚", "旱", "鉀", "鳥", "漆", "沈", "眉", "疏", "添", "棒", "穗", "硝", "韓", "逼", "扭", "僑", "涼", "挺", "碗", "栽", "炒", "杯", "患", "餾", "勸", "豪", "遼", "勃", "鴻", "旦", "吏", "拜", "狗", "埋", "輥", "掩", "飲", "搬", "罵", "辭", "勾", "扣", "估", "蔣", "絨", "霧", "丈", "朵", "姆", "擬", "宇", "輯", "陝", "雕", "償", "蓄", "崇", "剪", "倡", "廳", "咬", "駛", "薯", "刷", "斥", "番", "賦", "奉", "佛", "澆", "漫", "曼", "扇", "鈣", "桃", "扶", "仔", "返", "俗", "虧", "腔", "鞋", "棱", "覆", "框", "悄", "叔", "撞", "騙", "勘", "旺", "沸", "孤", "吐", "孟", "渠", "屈", "疾", "妙", "惜", "仰", "狠", "脹", "諧", "拋", "黴", "桑", "崗", "嘛", "衰", "盜", "滲", "臟", "賴", "湧", "甜", "曹", "閱", "肌", "哩", "厲", "烴", "緯", "毅", "昨", "偽", "症", "煮", "嘆", "釘", "搭", "莖", "籠", "酷", "偷", "弓", "錐", "恆", "傑", "坑", "鼻", "翼", "綸", "敘", "獄", "逮", "罐", "絡", "棚", "抑", "膨", "蔬", "寺", "驟", "穆", "冶", "枯", "冊", "屍", "凸", "紳", "坯", "犧", "焰", "轟", "欣", "晉", "瘦", "禦", "錠", "錦", "喪", "旬", "鍛", "壟", "搜", "撲", "邀", "亭", "酯", "邁", "舒", "脆", "酶", "閒", "憂", "酚", "頑", "羽", "漲", "卸", "仗", "陪", "闢", "懲", "杭", "姚", "肚", "捉", "飄", "漂", "昆", "欺", "吾", "郎", "烷", "汁", "呵", "飾", "蕭", "雅", "郵", "遷", "燕", "撒", "姻", "赴", "宴", "煩", "債", "帳", "斑", "鈴", "旨", "醇", "董", "餅", "雛", "姿", "拌", "傅", "腹", "妥", "揉", "賢", "拆", "歪", "葡", "胺", "丟", "浩", "徽", "昂", "墊", "擋", "覽", "貪", "慰", "繳", "汪", "慌", "馮", "諾", "姜", "誼", "兇", "劣", "誣", "耀", "昏", "躺", "盈", "騎", "喬", "溪", "叢", "盧", "抹", "悶", "諮", "刮", "駕", "纜", "悟", "摘", "鉺", "擲", "頗", "幻", "柄", "惠", "慘", "佳", "仇", "臘", "窩", "滌", "劍", "瞧", "堡", "潑", "蔥", "罩", "霍", "撈", "胎", "蒼", "濱", "倆", "捅", "湘", "砍", "霞", "邵", "萄", "瘋", "淮", "遂", "熊", "糞", "烘", "宿", "檔", "戈", "駁", "嫂", "裕", "徙", "箭", "捐", "腸", "撐", "曬", "辨", "殿", "蓮", "攤", "攪", "醬", "屏", "疫", "哀", "蔡", "堵", "沫", "皺", "暢", "疊", "閣", "萊", "敲", "轄", "鉤", "痕", "壩", "巷", "餓", "禍", "丘", "玄", "溜", "曰", "邏", "彭", "嘗", "卿", "妨", "艇", "吞", "韋", "怨", "矮", "歇"];
+		var chinese_traditional$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': chinese_traditional
+		});
+		var korean = ["가격", "가끔", "가난", "가능", "가득", "가르침", "가뭄", "가방", "가상", "가슴", "가운데", "가을", "가이드", "가입", "가장", "가정", "가족", "가죽", "각오", "각자", "간격", "간부", "간섭", "간장", "간접", "간판", "갈등", "갈비", "갈색", "갈증", "감각", "감기", "감소", "감수성", "감자", "감정", "갑자기", "강남", "강당", "강도", "강력히", "강변", "강북", "강사", "강수량", "강아지", "강원도", "강의", "강제", "강조", "같이", "개구리", "개나리", "개방", "개별", "개선", "개성", "개인", "객관적", "거실", "거액", "거울", "거짓", "거품", "걱정", "건강", "건물", "건설", "건조", "건축", "걸음", "검사", "검토", "게시판", "게임", "겨울", "견해", "결과", "결국", "결론", "결석", "결승", "결심", "결정", "결혼", "경계", "경고", "경기", "경력", "경복궁", "경비", "경상도", "경영", "경우", "경쟁", "경제", "경주", "경찰", "경치", "경향", "경험", "계곡", "계단", "계란", "계산", "계속", "계약", "계절", "계층", "계획", "고객", "고구려", "고궁", "고급", "고등학생", "고무신", "고민", "고양이", "고장", "고전", "고집", "고춧가루", "고통", "고향", "곡식", "골목", "골짜기", "골프", "공간", "공개", "공격", "공군", "공급", "공기", "공동", "공무원", "공부", "공사", "공식", "공업", "공연", "공원", "공장", "공짜", "공책", "공통", "공포", "공항", "공휴일", "과목", "과일", "과장", "과정", "과학", "관객", "관계", "관광", "관념", "관람", "관련", "관리", "관습", "관심", "관점", "관찰", "광경", "광고", "광장", "광주", "괴로움", "굉장히", "교과서", "교문", "교복", "교실", "교양", "교육", "교장", "교직", "교통", "교환", "교훈", "구경", "구름", "구멍", "구별", "구분", "구석", "구성", "구속", "구역", "구입", "구청", "구체적", "국가", "국기", "국내", "국립", "국물", "국민", "국수", "국어", "국왕", "국적", "국제", "국회", "군대", "군사", "군인", "궁극적", "권리", "권위", "권투", "귀국", "귀신", "규정", "규칙", "균형", "그날", "그냥", "그늘", "그러나", "그룹", "그릇", "그림", "그제서야", "그토록", "극복", "극히", "근거", "근교", "근래", "근로", "근무", "근본", "근원", "근육", "근처", "글씨", "글자", "금강산", "금고", "금년", "금메달", "금액", "금연", "금요일", "금지", "긍정적", "기간", "기관", "기념", "기능", "기독교", "기둥", "기록", "기름", "기법", "기본", "기분", "기쁨", "기숙사", "기술", "기억", "기업", "기온", "기운", "기원", "기적", "기준", "기침", "기혼", "기획", "긴급", "긴장", "길이", "김밥", "김치", "김포공항", "깍두기", "깜빡", "깨달음", "깨소금", "껍질", "꼭대기", "꽃잎", "나들이", "나란히", "나머지", "나물", "나침반", "나흘", "낙엽", "난방", "날개", "날씨", "날짜", "남녀", "남대문", "남매", "남산", "남자", "남편", "남학생", "낭비", "낱말", "내년", "내용", "내일", "냄비", "냄새", "냇물", "냉동", "냉면", "냉방", "냉장고", "넥타이", "넷째", "노동", "노란색", "노력", "노인", "녹음", "녹차", "녹화", "논리", "논문", "논쟁", "놀이", "농구", "농담", "농민", "농부", "농업", "농장", "농촌", "높이", "눈동자", "눈물", "눈썹", "뉴욕", "느낌", "늑대", "능동적", "능력", "다방", "다양성", "다음", "다이어트", "다행", "단계", "단골", "단독", "단맛", "단순", "단어", "단위", "단점", "단체", "단추", "단편", "단풍", "달걀", "달러", "달력", "달리", "닭고기", "담당", "담배", "담요", "담임", "답변", "답장", "당근", "당분간", "당연히", "당장", "대규모", "대낮", "대단히", "대답", "대도시", "대략", "대량", "대륙", "대문", "대부분", "대신", "대응", "대장", "대전", "대접", "대중", "대책", "대출", "대충", "대통령", "대학", "대한민국", "대합실", "대형", "덩어리", "데이트", "도대체", "도덕", "도둑", "도망", "도서관", "도심", "도움", "도입", "도자기", "도저히", "도전", "도중", "도착", "독감", "독립", "독서", "독일", "독창적", "동화책", "뒷모습", "뒷산", "딸아이", "마누라", "마늘", "마당", "마라톤", "마련", "마무리", "마사지", "마약", "마요네즈", "마을", "마음", "마이크", "마중", "마지막", "마찬가지", "마찰", "마흔", "막걸리", "막내", "막상", "만남", "만두", "만세", "만약", "만일", "만점", "만족", "만화", "많이", "말기", "말씀", "말투", "맘대로", "망원경", "매년", "매달", "매력", "매번", "매스컴", "매일", "매장", "맥주", "먹이", "먼저", "먼지", "멀리", "메일", "며느리", "며칠", "면담", "멸치", "명단", "명령", "명예", "명의", "명절", "명칭", "명함", "모금", "모니터", "모델", "모든", "모범", "모습", "모양", "모임", "모조리", "모집", "모퉁이", "목걸이", "목록", "목사", "목소리", "목숨", "목적", "목표", "몰래", "몸매", "몸무게", "몸살", "몸속", "몸짓", "몸통", "몹시", "무관심", "무궁화", "무더위", "무덤", "무릎", "무슨", "무엇", "무역", "무용", "무조건", "무지개", "무척", "문구", "문득", "문법", "문서", "문제", "문학", "문화", "물가", "물건", "물결", "물고기", "물론", "물리학", "물음", "물질", "물체", "미국", "미디어", "미사일", "미술", "미역", "미용실", "미움", "미인", "미팅", "미혼", "민간", "민족", "민주", "믿음", "밀가루", "밀리미터", "밑바닥", "바가지", "바구니", "바나나", "바늘", "바닥", "바닷가", "바람", "바이러스", "바탕", "박물관", "박사", "박수", "반대", "반드시", "반말", "반발", "반성", "반응", "반장", "반죽", "반지", "반찬", "받침", "발가락", "발걸음", "발견", "발달", "발레", "발목", "발바닥", "발생", "발음", "발자국", "발전", "발톱", "발표", "밤하늘", "밥그릇", "밥맛", "밥상", "밥솥", "방금", "방면", "방문", "방바닥", "방법", "방송", "방식", "방안", "방울", "방지", "방학", "방해", "방향", "배경", "배꼽", "배달", "배드민턴", "백두산", "백색", "백성", "백인", "백제", "백화점", "버릇", "버섯", "버튼", "번개", "번역", "번지", "번호", "벌금", "벌레", "벌써", "범위", "범인", "범죄", "법률", "법원", "법적", "법칙", "베이징", "벨트", "변경", "변동", "변명", "변신", "변호사", "변화", "별도", "별명", "별일", "병실", "병아리", "병원", "보관", "보너스", "보라색", "보람", "보름", "보상", "보안", "보자기", "보장", "보전", "보존", "보통", "보편적", "보험", "복도", "복사", "복숭아", "복습", "볶음", "본격적", "본래", "본부", "본사", "본성", "본인", "본질", "볼펜", "봉사", "봉지", "봉투", "부근", "부끄러움", "부담", "부동산", "부문", "부분", "부산", "부상", "부엌", "부인", "부작용", "부장", "부정", "부족", "부지런히", "부친", "부탁", "부품", "부회장", "북부", "북한", "분노", "분량", "분리", "분명", "분석", "분야", "분위기", "분필", "분홍색", "불고기", "불과", "불교", "불꽃", "불만", "불법", "불빛", "불안", "불이익", "불행", "브랜드", "비극", "비난", "비닐", "비둘기", "비디오", "비로소", "비만", "비명", "비밀", "비바람", "비빔밥", "비상", "비용", "비율", "비중", "비타민", "비판", "빌딩", "빗물", "빗방울", "빗줄기", "빛깔", "빨간색", "빨래", "빨리", "사건", "사계절", "사나이", "사냥", "사람", "사랑", "사립", "사모님", "사물", "사방", "사상", "사생활", "사설", "사슴", "사실", "사업", "사용", "사월", "사장", "사전", "사진", "사촌", "사춘기", "사탕", "사투리", "사흘", "산길", "산부인과", "산업", "산책", "살림", "살인", "살짝", "삼계탕", "삼국", "삼십", "삼월", "삼촌", "상관", "상금", "상대", "상류", "상반기", "상상", "상식", "상업", "상인", "상자", "상점", "상처", "상추", "상태", "상표", "상품", "상황", "새벽", "색깔", "색연필", "생각", "생명", "생물", "생방송", "생산", "생선", "생신", "생일", "생활", "서랍", "서른", "서명", "서민", "서비스", "서양", "서울", "서적", "서점", "서쪽", "서클", "석사", "석유", "선거", "선물", "선배", "선생", "선수", "선원", "선장", "선전", "선택", "선풍기", "설거지", "설날", "설렁탕", "설명", "설문", "설사", "설악산", "설치", "설탕", "섭씨", "성공", "성당", "성명", "성별", "성인", "성장", "성적", "성질", "성함", "세금", "세미나", "세상", "세월", "세종대왕", "세탁", "센터", "센티미터", "셋째", "소규모", "소극적", "소금", "소나기", "소년", "소득", "소망", "소문", "소설", "소속", "소아과", "소용", "소원", "소음", "소중히", "소지품", "소질", "소풍", "소형", "속담", "속도", "속옷", "손가락", "손길", "손녀", "손님", "손등", "손목", "손뼉", "손실", "손질", "손톱", "손해", "솔직히", "솜씨", "송아지", "송이", "송편", "쇠고기", "쇼핑", "수건", "수년", "수단", "수돗물", "수동적", "수면", "수명", "수박", "수상", "수석", "수술", "수시로", "수업", "수염", "수영", "수입", "수준", "수집", "수출", "수컷", "수필", "수학", "수험생", "수화기", "숙녀", "숙소", "숙제", "순간", "순서", "순수", "순식간", "순위", "숟가락", "술병", "술집", "숫자", "스님", "스물", "스스로", "스승", "스웨터", "스위치", "스케이트", "스튜디오", "스트레스", "스포츠", "슬쩍", "슬픔", "습관", "습기", "승객", "승리", "승부", "승용차", "승진", "시각", "시간", "시골", "시금치", "시나리오", "시댁", "시리즈", "시멘트", "시민", "시부모", "시선", "시설", "시스템", "시아버지", "시어머니", "시월", "시인", "시일", "시작", "시장", "시절", "시점", "시중", "시즌", "시집", "시청", "시합", "시험", "식구", "식기", "식당", "식량", "식료품", "식물", "식빵", "식사", "식생활", "식초", "식탁", "식품", "신고", "신규", "신념", "신문", "신발", "신비", "신사", "신세", "신용", "신제품", "신청", "신체", "신화", "실감", "실내", "실력", "실례", "실망", "실수", "실습", "실시", "실장", "실정", "실질적", "실천", "실체", "실컷", "실태", "실패", "실험", "실현", "심리", "심부름", "심사", "심장", "심정", "심판", "쌍둥이", "씨름", "씨앗", "아가씨", "아나운서", "아드님", "아들", "아쉬움", "아스팔트", "아시아", "아울러", "아저씨", "아줌마", "아직", "아침", "아파트", "아프리카", "아픔", "아홉", "아흔", "악기", "악몽", "악수", "안개", "안경", "안과", "안내", "안녕", "안동", "안방", "안부", "안주", "알루미늄", "알코올", "암시", "암컷", "압력", "앞날", "앞문", "애인", "애정", "액수", "앨범", "야간", "야단", "야옹", "약간", "약국", "약속", "약수", "약점", "약품", "약혼녀", "양념", "양력", "양말", "양배추", "양주", "양파", "어둠", "어려움", "어른", "어젯밤", "어쨌든", "어쩌다가", "어쩐지", "언니", "언덕", "언론", "언어", "얼굴", "얼른", "얼음", "얼핏", "엄마", "업무", "업종", "업체", "엉덩이", "엉망", "엉터리", "엊그제", "에너지", "에어컨", "엔진", "여건", "여고생", "여관", "여군", "여권", "여대생", "여덟", "여동생", "여든", "여론", "여름", "여섯", "여성", "여왕", "여인", "여전히", "여직원", "여학생", "여행", "역사", "역시", "역할", "연결", "연구", "연극", "연기", "연락", "연설", "연세", "연속", "연습", "연애", "연예인", "연인", "연장", "연주", "연출", "연필", "연합", "연휴", "열기", "열매", "열쇠", "열심히", "열정", "열차", "열흘", "염려", "엽서", "영국", "영남", "영상", "영양", "영역", "영웅", "영원히", "영하", "영향", "영혼", "영화", "옆구리", "옆방", "옆집", "예감", "예금", "예방", "예산", "예상", "예선", "예술", "예습", "예식장", "예약", "예전", "예절", "예정", "예컨대", "옛날", "오늘", "오락", "오랫동안", "오렌지", "오로지", "오른발", "오븐", "오십", "오염", "오월", "오전", "오직", "오징어", "오페라", "오피스텔", "오히려", "옥상", "옥수수", "온갖", "온라인", "온몸", "온종일", "온통", "올가을", "올림픽", "올해", "옷차림", "와이셔츠", "와인", "완성", "완전", "왕비", "왕자", "왜냐하면", "왠지", "외갓집", "외국", "외로움", "외삼촌", "외출", "외침", "외할머니", "왼발", "왼손", "왼쪽", "요금", "요일", "요즘", "요청", "용기", "용서", "용어", "우산", "우선", "우승", "우연히", "우정", "우체국", "우편", "운동", "운명", "운반", "운전", "운행", "울산", "울음", "움직임", "웃어른", "웃음", "워낙", "원고", "원래", "원서", "원숭이", "원인", "원장", "원피스", "월급", "월드컵", "월세", "월요일", "웨이터", "위반", "위법", "위성", "위원", "위험", "위협", "윗사람", "유난히", "유럽", "유명", "유물", "유산", "유적", "유치원", "유학", "유행", "유형", "육군", "육상", "육십", "육체", "은행", "음력", "음료", "음반", "음성", "음식", "음악", "음주", "의견", "의논", "의문", "의복", "의식", "의심", "의외로", "의욕", "의원", "의학", "이것", "이곳", "이념", "이놈", "이달", "이대로", "이동", "이렇게", "이력서", "이론적", "이름", "이민", "이발소", "이별", "이불", "이빨", "이상", "이성", "이슬", "이야기", "이용", "이웃", "이월", "이윽고", "이익", "이전", "이중", "이튿날", "이틀", "이혼", "인간", "인격", "인공", "인구", "인근", "인기", "인도", "인류", "인물", "인생", "인쇄", "인연", "인원", "인재", "인종", "인천", "인체", "인터넷", "인하", "인형", "일곱", "일기", "일단", "일대", "일등", "일반", "일본", "일부", "일상", "일생", "일손", "일요일", "일월", "일정", "일종", "일주일", "일찍", "일체", "일치", "일행", "일회용", "임금", "임무", "입대", "입력", "입맛", "입사", "입술", "입시", "입원", "입장", "입학", "자가용", "자격", "자극", "자동", "자랑", "자부심", "자식", "자신", "자연", "자원", "자율", "자전거", "자정", "자존심", "자판", "작가", "작년", "작성", "작업", "작용", "작은딸", "작품", "잔디", "잔뜩", "잔치", "잘못", "잠깐", "잠수함", "잠시", "잠옷", "잠자리", "잡지", "장관", "장군", "장기간", "장래", "장례", "장르", "장마", "장면", "장모", "장미", "장비", "장사", "장소", "장식", "장애인", "장인", "장점", "장차", "장학금", "재능", "재빨리", "재산", "재생", "재작년", "재정", "재채기", "재판", "재학", "재활용", "저것", "저고리", "저곳", "저녁", "저런", "저렇게", "저번", "저울", "저절로", "저축", "적극", "적당히", "적성", "적용", "적응", "전개", "전공", "전기", "전달", "전라도", "전망", "전문", "전반", "전부", "전세", "전시", "전용", "전자", "전쟁", "전주", "전철", "전체", "전통", "전혀", "전후", "절대", "절망", "절반", "절약", "절차", "점검", "점수", "점심", "점원", "점점", "점차", "접근", "접시", "접촉", "젓가락", "정거장", "정도", "정류장", "정리", "정말", "정면", "정문", "정반대", "정보", "정부", "정비", "정상", "정성", "정오", "정원", "정장", "정지", "정치", "정확히", "제공", "제과점", "제대로", "제목", "제발", "제법", "제삿날", "제안", "제일", "제작", "제주도", "제출", "제품", "제한", "조각", "조건", "조금", "조깅", "조명", "조미료", "조상", "조선", "조용히", "조절", "조정", "조직", "존댓말", "존재", "졸업", "졸음", "종교", "종로", "종류", "종소리", "종업원", "종종", "종합", "좌석", "죄인", "주관적", "주름", "주말", "주머니", "주먹", "주문", "주민", "주방", "주변", "주식", "주인", "주일", "주장", "주전자", "주택", "준비", "줄거리", "줄기", "줄무늬", "중간", "중계방송", "중국", "중년", "중단", "중독", "중반", "중부", "중세", "중소기업", "중순", "중앙", "중요", "중학교", "즉석", "즉시", "즐거움", "증가", "증거", "증권", "증상", "증세", "지각", "지갑", "지경", "지극히", "지금", "지급", "지능", "지름길", "지리산", "지방", "지붕", "지식", "지역", "지우개", "지원", "지적", "지점", "지진", "지출", "직선", "직업", "직원", "직장", "진급", "진동", "진로", "진료", "진리", "진짜", "진찰", "진출", "진통", "진행", "질문", "질병", "질서", "짐작", "집단", "집안", "집중", "짜증", "찌꺼기", "차남", "차라리", "차량", "차림", "차별", "차선", "차츰", "착각", "찬물", "찬성", "참가", "참기름", "참새", "참석", "참여", "참외", "참조", "찻잔", "창가", "창고", "창구", "창문", "창밖", "창작", "창조", "채널", "채점", "책가방", "책방", "책상", "책임", "챔피언", "처벌", "처음", "천국", "천둥", "천장", "천재", "천천히", "철도", "철저히", "철학", "첫날", "첫째", "청년", "청바지", "청소", "청춘", "체계", "체력", "체온", "체육", "체중", "체험", "초등학생", "초반", "초밥", "초상화", "초순", "초여름", "초원", "초저녁", "초점", "초청", "초콜릿", "촛불", "총각", "총리", "총장", "촬영", "최근", "최상", "최선", "최신", "최악", "최종", "추석", "추억", "추진", "추천", "추측", "축구", "축소", "축제", "축하", "출근", "출발", "출산", "출신", "출연", "출입", "출장", "출판", "충격", "충고", "충돌", "충분히", "충청도", "취업", "취직", "취향", "치약", "친구", "친척", "칠십", "칠월", "칠판", "침대", "침묵", "침실", "칫솔", "칭찬", "카메라", "카운터", "칼국수", "캐릭터", "캠퍼스", "캠페인", "커튼", "컨디션", "컬러", "컴퓨터", "코끼리", "코미디", "콘서트", "콜라", "콤플렉스", "콩나물", "쾌감", "쿠데타", "크림", "큰길", "큰딸", "큰소리", "큰아들", "큰어머니", "큰일", "큰절", "클래식", "클럽", "킬로", "타입", "타자기", "탁구", "탁자", "탄생", "태권도", "태양", "태풍", "택시", "탤런트", "터널", "터미널", "테니스", "테스트", "테이블", "텔레비전", "토론", "토마토", "토요일", "통계", "통과", "통로", "통신", "통역", "통일", "통장", "통제", "통증", "통합", "통화", "퇴근", "퇴원", "퇴직금", "튀김", "트럭", "특급", "특별", "특성", "특수", "특징", "특히", "튼튼히", "티셔츠", "파란색", "파일", "파출소", "판결", "판단", "판매", "판사", "팔십", "팔월", "팝송", "패션", "팩스", "팩시밀리", "팬티", "퍼센트", "페인트", "편견", "편의", "편지", "편히", "평가", "평균", "평생", "평소", "평양", "평일", "평화", "포스터", "포인트", "포장", "포함", "표면", "표정", "표준", "표현", "품목", "품질", "풍경", "풍속", "풍습", "프랑스", "프린터", "플라스틱", "피곤", "피망", "피아노", "필름", "필수", "필요", "필자", "필통", "핑계", "하느님", "하늘", "하드웨어", "하룻밤", "하반기", "하숙집", "하순", "하여튼", "하지만", "하천", "하품", "하필", "학과", "학교", "학급", "학기", "학년", "학력", "학번", "학부모", "학비", "학생", "학술", "학습", "학용품", "학원", "학위", "학자", "학점", "한계", "한글", "한꺼번에", "한낮", "한눈", "한동안", "한때", "한라산", "한마디", "한문", "한번", "한복", "한식", "한여름", "한쪽", "할머니", "할아버지", "할인", "함께", "함부로", "합격", "합리적", "항공", "항구", "항상", "항의", "해결", "해군", "해답", "해당", "해물", "해석", "해설", "해수욕장", "해안", "핵심", "핸드백", "햄버거", "햇볕", "햇살", "행동", "행복", "행사", "행운", "행위", "향기", "향상", "향수", "허락", "허용", "헬기", "현관", "현금", "현대", "현상", "현실", "현장", "현재", "현지", "혈액", "협력", "형부", "형사", "형수", "형식", "형제", "형태", "형편", "혜택", "호기심", "호남", "호랑이", "호박", "호텔", "호흡", "혹시", "홀로", "홈페이지", "홍보", "홍수", "홍차", "화면", "화분", "화살", "화요일", "화장", "화학", "확보", "확인", "확장", "확정", "환갑", "환경", "환영", "환율", "환자", "활기", "활동", "활발히", "활용", "활짝", "회견", "회관", "회복", "회색", "회원", "회장", "회전", "횟수", "횡단보도", "효율적", "후반", "후춧가루", "훈련", "훨씬", "휴식", "휴일", "흉내", "흐름", "흑백", "흑인", "흔적", "흔히", "흥미", "흥분", "희곡", "희망", "희생", "흰색", "힘껏"];
+		var korean$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': korean
+		});
+		var french = ["abaisser", "abandon", "abdiquer", "abeille", "abolir", "aborder", "aboutir", "aboyer", "abrasif", "abreuver", "abriter", "abroger", "abrupt", "absence", "absolu", "absurde", "abusif", "abyssal", "académie", "acajou", "acarien", "accabler", "accepter", "acclamer", "accolade", "accroche", "accuser", "acerbe", "achat", "acheter", "aciduler", "acier", "acompte", "acquérir", "acronyme", "acteur", "actif", "actuel", "adepte", "adéquat", "adhésif", "adjectif", "adjuger", "admettre", "admirer", "adopter", "adorer", "adoucir", "adresse", "adroit", "adulte", "adverbe", "aérer", "aéronef", "affaire", "affecter", "affiche", "affreux", "affubler", "agacer", "agencer", "agile", "agiter", "agrafer", "agréable", "agrume", "aider", "aiguille", "ailier", "aimable", "aisance", "ajouter", "ajuster", "alarmer", "alchimie", "alerte", "algèbre", "algue", "aliéner", "aliment", "alléger", "alliage", "allouer", "allumer", "alourdir", "alpaga", "altesse", "alvéole", "amateur", "ambigu", "ambre", "aménager", "amertume", "amidon", "amiral", "amorcer", "amour", "amovible", "amphibie", "ampleur", "amusant", "analyse", "anaphore", "anarchie", "anatomie", "ancien", "anéantir", "angle", "angoisse", "anguleux", "animal", "annexer", "annonce", "annuel", "anodin", "anomalie", "anonyme", "anormal", "antenne", "antidote", "anxieux", "apaiser", "apéritif", "aplanir", "apologie", "appareil", "appeler", "apporter", "appuyer", "aquarium", "aqueduc", "arbitre", "arbuste", "ardeur", "ardoise", "argent", "arlequin", "armature", "armement", "armoire", "armure", "arpenter", "arracher", "arriver", "arroser", "arsenic", "artériel", "article", "aspect", "asphalte", "aspirer", "assaut", "asservir", "assiette", "associer", "assurer", "asticot", "astre", "astuce", "atelier", "atome", "atrium", "atroce", "attaque", "attentif", "attirer", "attraper", "aubaine", "auberge", "audace", "audible", "augurer", "aurore", "automne", "autruche", "avaler", "avancer", "avarice", "avenir", "averse", "aveugle", "aviateur", "avide", "avion", "aviser", "avoine", "avouer", "avril", "axial", "axiome", "badge", "bafouer", "bagage", "baguette", "baignade", "balancer", "balcon", "baleine", "balisage", "bambin", "bancaire", "bandage", "banlieue", "bannière", "banquier", "barbier", "baril", "baron", "barque", "barrage", "bassin", "bastion", "bataille", "bateau", "batterie", "baudrier", "bavarder", "belette", "bélier", "belote", "bénéfice", "berceau", "berger", "berline", "bermuda", "besace", "besogne", "bétail", "beurre", "biberon", "bicycle", "bidule", "bijou", "bilan", "bilingue", "billard", "binaire", "biologie", "biopsie", "biotype", "biscuit", "bison", "bistouri", "bitume", "bizarre", "blafard", "blague", "blanchir", "blessant", "blinder", "blond", "bloquer", "blouson", "bobard", "bobine", "boire", "boiser", "bolide", "bonbon", "bondir", "bonheur", "bonifier", "bonus", "bordure", "borne", "botte", "boucle", "boueux", "bougie", "boulon", "bouquin", "bourse", "boussole", "boutique", "boxeur", "branche", "brasier", "brave", "brebis", "brèche", "breuvage", "bricoler", "brigade", "brillant", "brioche", "brique", "brochure", "broder", "bronzer", "brousse", "broyeur", "brume", "brusque", "brutal", "bruyant", "buffle", "buisson", "bulletin", "bureau", "burin", "bustier", "butiner", "butoir", "buvable", "buvette", "cabanon", "cabine", "cachette", "cadeau", "cadre", "caféine", "caillou", "caisson", "calculer", "calepin", "calibre", "calmer", "calomnie", "calvaire", "camarade", "caméra", "camion", "campagne", "canal", "caneton", "canon", "cantine", "canular", "capable", "caporal", "caprice", "capsule", "capter", "capuche", "carabine", "carbone", "caresser", "caribou", "carnage", "carotte", "carreau", "carton", "cascade", "casier", "casque", "cassure", "causer", "caution", "cavalier", "caverne", "caviar", "cédille", "ceinture", "céleste", "cellule", "cendrier", "censurer", "central", "cercle", "cérébral", "cerise", "cerner", "cerveau", "cesser", "chagrin", "chaise", "chaleur", "chambre", "chance", "chapitre", "charbon", "chasseur", "chaton", "chausson", "chavirer", "chemise", "chenille", "chéquier", "chercher", "cheval", "chien", "chiffre", "chignon", "chimère", "chiot", "chlorure", "chocolat", "choisir", "chose", "chouette", "chrome", "chute", "cigare", "cigogne", "cimenter", "cinéma", "cintrer", "circuler", "cirer", "cirque", "citerne", "citoyen", "citron", "civil", "clairon", "clameur", "claquer", "classe", "clavier", "client", "cligner", "climat", "clivage", "cloche", "clonage", "cloporte", "cobalt", "cobra", "cocasse", "cocotier", "coder", "codifier", "coffre", "cogner", "cohésion", "coiffer", "coincer", "colère", "colibri", "colline", "colmater", "colonel", "combat", "comédie", "commande", "compact", "concert", "conduire", "confier", "congeler", "connoter", "consonne", "contact", "convexe", "copain", "copie", "corail", "corbeau", "cordage", "corniche", "corpus", "correct", "cortège", "cosmique", "costume", "coton", "coude", "coupure", "courage", "couteau", "couvrir", "coyote", "crabe", "crainte", "cravate", "crayon", "créature", "créditer", "crémeux", "creuser", "crevette", "cribler", "crier", "cristal", "critère", "croire", "croquer", "crotale", "crucial", "cruel", "crypter", "cubique", "cueillir", "cuillère", "cuisine", "cuivre", "culminer", "cultiver", "cumuler", "cupide", "curatif", "curseur", "cyanure", "cycle", "cylindre", "cynique", "daigner", "damier", "danger", "danseur", "dauphin", "débattre", "débiter", "déborder", "débrider", "débutant", "décaler", "décembre", "déchirer", "décider", "déclarer", "décorer", "décrire", "décupler", "dédale", "déductif", "déesse", "défensif", "défiler", "défrayer", "dégager", "dégivrer", "déglutir", "dégrafer", "déjeuner", "délice", "déloger", "demander", "demeurer", "démolir", "dénicher", "dénouer", "dentelle", "dénuder", "départ", "dépenser", "déphaser", "déplacer", "déposer", "déranger", "dérober", "désastre", "descente", "désert", "désigner", "désobéir", "dessiner", "destrier", "détacher", "détester", "détourer", "détresse", "devancer", "devenir", "deviner", "devoir", "diable", "dialogue", "diamant", "dicter", "différer", "digérer", "digital", "digne", "diluer", "dimanche", "diminuer", "dioxyde", "directif", "diriger", "discuter", "disposer", "dissiper", "distance", "divertir", "diviser", "docile", "docteur", "dogme", "doigt", "domaine", "domicile", "dompter", "donateur", "donjon", "donner", "dopamine", "dortoir", "dorure", "dosage", "doseur", "dossier", "dotation", "douanier", "double", "douceur", "douter", "doyen", "dragon", "draper", "dresser", "dribbler", "droiture", "duperie", "duplexe", "durable", "durcir", "dynastie", "éblouir", "écarter", "écharpe", "échelle", "éclairer", "éclipse", "éclore", "écluse", "école", "économie", "écorce", "écouter", "écraser", "écrémer", "écrivain", "écrou", "écume", "écureuil", "édifier", "éduquer", "effacer", "effectif", "effigie", "effort", "effrayer", "effusion", "égaliser", "égarer", "éjecter", "élaborer", "élargir", "électron", "élégant", "éléphant", "élève", "éligible", "élitisme", "éloge", "élucider", "éluder", "emballer", "embellir", "embryon", "émeraude", "émission", "emmener", "émotion", "émouvoir", "empereur", "employer", "emporter", "emprise", "émulsion", "encadrer", "enchère", "enclave", "encoche", "endiguer", "endosser", "endroit", "enduire", "énergie", "enfance", "enfermer", "enfouir", "engager", "engin", "englober", "énigme", "enjamber", "enjeu", "enlever", "ennemi", "ennuyeux", "enrichir", "enrobage", "enseigne", "entasser", "entendre", "entier", "entourer", "entraver", "énumérer", "envahir", "enviable", "envoyer", "enzyme", "éolien", "épaissir", "épargne", "épatant", "épaule", "épicerie", "épidémie", "épier", "épilogue", "épine", "épisode", "épitaphe", "époque", "épreuve", "éprouver", "épuisant", "équerre", "équipe", "ériger", "érosion", "erreur", "éruption", "escalier", "espadon", "espèce", "espiègle", "espoir", "esprit", "esquiver", "essayer", "essence", "essieu", "essorer", "estime", "estomac", "estrade", "étagère", "étaler", "étanche", "étatique", "éteindre", "étendoir", "éternel", "éthanol", "éthique", "ethnie", "étirer", "étoffer", "étoile", "étonnant", "étourdir", "étrange", "étroit", "étude", "euphorie", "évaluer", "évasion", "éventail", "évidence", "éviter", "évolutif", "évoquer", "exact", "exagérer", "exaucer", "exceller", "excitant", "exclusif", "excuse", "exécuter", "exemple", "exercer", "exhaler", "exhorter", "exigence", "exiler", "exister", "exotique", "expédier", "explorer", "exposer", "exprimer", "exquis", "extensif", "extraire", "exulter", "fable", "fabuleux", "facette", "facile", "facture", "faiblir", "falaise", "fameux", "famille", "farceur", "farfelu", "farine", "farouche", "fasciner", "fatal", "fatigue", "faucon", "fautif", "faveur", "favori", "fébrile", "féconder", "fédérer", "félin", "femme", "fémur", "fendoir", "féodal", "fermer", "féroce", "ferveur", "festival", "feuille", "feutre", "février", "fiasco", "ficeler", "fictif", "fidèle", "figure", "filature", "filetage", "filière", "filleul", "filmer", "filou", "filtrer", "financer", "finir", "fiole", "firme", "fissure", "fixer", "flairer", "flamme", "flasque", "flatteur", "fléau", "flèche", "fleur", "flexion", "flocon", "flore", "fluctuer", "fluide", "fluvial", "folie", "fonderie", "fongible", "fontaine", "forcer", "forgeron", "formuler", "fortune", "fossile", "foudre", "fougère", "fouiller", "foulure", "fourmi", "fragile", "fraise", "franchir", "frapper", "frayeur", "frégate", "freiner", "frelon", "frémir", "frénésie", "frère", "friable", "friction", "frisson", "frivole", "froid", "fromage", "frontal", "frotter", "fruit", "fugitif", "fuite", "fureur", "furieux", "furtif", "fusion", "futur", "gagner", "galaxie", "galerie", "gambader", "garantir", "gardien", "garnir", "garrigue", "gazelle", "gazon", "géant", "gélatine", "gélule", "gendarme", "général", "génie", "genou", "gentil", "géologie", "géomètre", "géranium", "germe", "gestuel", "geyser", "gibier", "gicler", "girafe", "givre", "glace", "glaive", "glisser", "globe", "gloire", "glorieux", "golfeur", "gomme", "gonfler", "gorge", "gorille", "goudron", "gouffre", "goulot", "goupille", "gourmand", "goutte", "graduel", "graffiti", "graine", "grand", "grappin", "gratuit", "gravir", "grenat", "griffure", "griller", "grimper", "grogner", "gronder", "grotte", "groupe", "gruger", "grutier", "gruyère", "guépard", "guerrier", "guide", "guimauve", "guitare", "gustatif", "gymnaste", "gyrostat", "habitude", "hachoir", "halte", "hameau", "hangar", "hanneton", "haricot", "harmonie", "harpon", "hasard", "hélium", "hématome", "herbe", "hérisson", "hermine", "héron", "hésiter", "heureux", "hiberner", "hibou", "hilarant", "histoire", "hiver", "homard", "hommage", "homogène", "honneur", "honorer", "honteux", "horde", "horizon", "horloge", "hormone", "horrible", "houleux", "housse", "hublot", "huileux", "humain", "humble", "humide", "humour", "hurler", "hydromel", "hygiène", "hymne", "hypnose", "idylle", "ignorer", "iguane", "illicite", "illusion", "image", "imbiber", "imiter", "immense", "immobile", "immuable", "impact", "impérial", "implorer", "imposer", "imprimer", "imputer", "incarner", "incendie", "incident", "incliner", "incolore", "indexer", "indice", "inductif", "inédit", "ineptie", "inexact", "infini", "infliger", "informer", "infusion", "ingérer", "inhaler", "inhiber", "injecter", "injure", "innocent", "inoculer", "inonder", "inscrire", "insecte", "insigne", "insolite", "inspirer", "instinct", "insulter", "intact", "intense", "intime", "intrigue", "intuitif", "inutile", "invasion", "inventer", "inviter", "invoquer", "ironique", "irradier", "irréel", "irriter", "isoler", "ivoire", "ivresse", "jaguar", "jaillir", "jambe", "janvier", "jardin", "jauger", "jaune", "javelot", "jetable", "jeton", "jeudi", "jeunesse", "joindre", "joncher", "jongler", "joueur", "jouissif", "journal", "jovial", "joyau", "joyeux", "jubiler", "jugement", "junior", "jupon", "juriste", "justice", "juteux", "juvénile", "kayak", "kimono", "kiosque", "label", "labial", "labourer", "lacérer", "lactose", "lagune", "laine", "laisser", "laitier", "lambeau", "lamelle", "lampe", "lanceur", "langage", "lanterne", "lapin", "largeur", "larme", "laurier", "lavabo", "lavoir", "lecture", "légal", "léger", "légume", "lessive", "lettre", "levier", "lexique", "lézard", "liasse", "libérer", "libre", "licence", "licorne", "liège", "lièvre", "ligature", "ligoter", "ligue", "limer", "limite", "limonade", "limpide", "linéaire", "lingot", "lionceau", "liquide", "lisière", "lister", "lithium", "litige", "littoral", "livreur", "logique", "lointain", "loisir", "lombric", "loterie", "louer", "lourd", "loutre", "louve", "loyal", "lubie", "lucide", "lucratif", "lueur", "lugubre", "luisant", "lumière", "lunaire", "lundi", "luron", "lutter", "luxueux", "machine", "magasin", "magenta", "magique", "maigre", "maillon", "maintien", "mairie", "maison", "majorer", "malaxer", "maléfice", "malheur", "malice", "mallette", "mammouth", "mandater", "maniable", "manquant", "manteau", "manuel", "marathon", "marbre", "marchand", "mardi", "maritime", "marqueur", "marron", "marteler", "mascotte", "massif", "matériel", "matière", "matraque", "maudire", "maussade", "mauve", "maximal", "méchant", "méconnu", "médaille", "médecin", "méditer", "méduse", "meilleur", "mélange", "mélodie", "membre", "mémoire", "menacer", "mener", "menhir", "mensonge", "mentor", "mercredi", "mérite", "merle", "messager", "mesure", "métal", "météore", "méthode", "métier", "meuble", "miauler", "microbe", "miette", "mignon", "migrer", "milieu", "million", "mimique", "mince", "minéral", "minimal", "minorer", "minute", "miracle", "miroiter", "missile", "mixte", "mobile", "moderne", "moelleux", "mondial", "moniteur", "monnaie", "monotone", "monstre", "montagne", "monument", "moqueur", "morceau", "morsure", "mortier", "moteur", "motif", "mouche", "moufle", "moulin", "mousson", "mouton", "mouvant", "multiple", "munition", "muraille", "murène", "murmure", "muscle", "muséum", "musicien", "mutation", "muter", "mutuel", "myriade", "myrtille", "mystère", "mythique", "nageur", "nappe", "narquois", "narrer", "natation", "nation", "nature", "naufrage", "nautique", "navire", "nébuleux", "nectar", "néfaste", "négation", "négliger", "négocier", "neige", "nerveux", "nettoyer", "neurone", "neutron", "neveu", "niche", "nickel", "nitrate", "niveau", "noble", "nocif", "nocturne", "noirceur", "noisette", "nomade", "nombreux", "nommer", "normatif", "notable", "notifier", "notoire", "nourrir", "nouveau", "novateur", "novembre", "novice", "nuage", "nuancer", "nuire", "nuisible", "numéro", "nuptial", "nuque", "nutritif", "obéir", "objectif", "obliger", "obscur", "observer", "obstacle", "obtenir", "obturer", "occasion", "occuper", "océan", "octobre", "octroyer", "octupler", "oculaire", "odeur", "odorant", "offenser", "officier", "offrir", "ogive", "oiseau", "oisillon", "olfactif", "olivier", "ombrage", "omettre", "onctueux", "onduler", "onéreux", "onirique", "opale", "opaque", "opérer", "opinion", "opportun", "opprimer", "opter", "optique", "orageux", "orange", "orbite", "ordonner", "oreille", "organe", "orgueil", "orifice", "ornement", "orque", "ortie", "osciller", "osmose", "ossature", "otarie", "ouragan", "ourson", "outil", "outrager", "ouvrage", "ovation", "oxyde", "oxygène", "ozone", "paisible", "palace", "palmarès", "palourde", "palper", "panache", "panda", "pangolin", "paniquer", "panneau", "panorama", "pantalon", "papaye", "papier", "papoter", "papyrus", "paradoxe", "parcelle", "paresse", "parfumer", "parler", "parole", "parrain", "parsemer", "partager", "parure", "parvenir", "passion", "pastèque", "paternel", "patience", "patron", "pavillon", "pavoiser", "payer", "paysage", "peigne", "peintre", "pelage", "pélican", "pelle", "pelouse", "peluche", "pendule", "pénétrer", "pénible", "pensif", "pénurie", "pépite", "péplum", "perdrix", "perforer", "période", "permuter", "perplexe", "persil", "perte", "peser", "pétale", "petit", "pétrir", "peuple", "pharaon", "phobie", "phoque", "photon", "phrase", "physique", "piano", "pictural", "pièce", "pierre", "pieuvre", "pilote", "pinceau", "pipette", "piquer", "pirogue", "piscine", "piston", "pivoter", "pixel", "pizza", "placard", "plafond", "plaisir", "planer", "plaque", "plastron", "plateau", "pleurer", "plexus", "pliage", "plomb", "plonger", "pluie", "plumage", "pochette", "poésie", "poète", "pointe", "poirier", "poisson", "poivre", "polaire", "policier", "pollen", "polygone", "pommade", "pompier", "ponctuel", "pondérer", "poney", "portique", "position", "posséder", "posture", "potager", "poteau", "potion", "pouce", "poulain", "poumon", "pourpre", "poussin", "pouvoir", "prairie", "pratique", "précieux", "prédire", "préfixe", "prélude", "prénom", "présence", "prétexte", "prévoir", "primitif", "prince", "prison", "priver", "problème", "procéder", "prodige", "profond", "progrès", "proie", "projeter", "prologue", "promener", "propre", "prospère", "protéger", "prouesse", "proverbe", "prudence", "pruneau", "psychose", "public", "puceron", "puiser", "pulpe", "pulsar", "punaise", "punitif", "pupitre", "purifier", "puzzle", "pyramide", "quasar", "querelle", "question", "quiétude", "quitter", "quotient", "racine", "raconter", "radieux", "ragondin", "raideur", "raisin", "ralentir", "rallonge", "ramasser", "rapide", "rasage", "ratisser", "ravager", "ravin", "rayonner", "réactif", "réagir", "réaliser", "réanimer", "recevoir", "réciter", "réclamer", "récolter", "recruter", "reculer", "recycler", "rédiger", "redouter", "refaire", "réflexe", "réformer", "refrain", "refuge", "régalien", "région", "réglage", "régulier", "réitérer", "rejeter", "rejouer", "relatif", "relever", "relief", "remarque", "remède", "remise", "remonter", "remplir", "remuer", "renard", "renfort", "renifler", "renoncer", "rentrer", "renvoi", "replier", "reporter", "reprise", "reptile", "requin", "réserve", "résineux", "résoudre", "respect", "rester", "résultat", "rétablir", "retenir", "réticule", "retomber", "retracer", "réunion", "réussir", "revanche", "revivre", "révolte", "révulsif", "richesse", "rideau", "rieur", "rigide", "rigoler", "rincer", "riposter", "risible", "risque", "rituel", "rival", "rivière", "rocheux", "romance", "rompre", "ronce", "rondin", "roseau", "rosier", "rotatif", "rotor", "rotule", "rouge", "rouille", "rouleau", "routine", "royaume", "ruban", "rubis", "ruche", "ruelle", "rugueux", "ruiner", "ruisseau", "ruser", "rustique", "rythme", "sabler", "saboter", "sabre", "sacoche", "safari", "sagesse", "saisir", "salade", "salive", "salon", "saluer", "samedi", "sanction", "sanglier", "sarcasme", "sardine", "saturer", "saugrenu", "saumon", "sauter", "sauvage", "savant", "savonner", "scalpel", "scandale", "scélérat", "scénario", "sceptre", "schéma", "science", "scinder", "score", "scrutin", "sculpter", "séance", "sécable", "sécher", "secouer", "sécréter", "sédatif", "séduire", "seigneur", "séjour", "sélectif", "semaine", "sembler", "semence", "séminal", "sénateur", "sensible", "sentence", "séparer", "séquence", "serein", "sergent", "sérieux", "serrure", "sérum", "service", "sésame", "sévir", "sevrage", "sextuple", "sidéral", "siècle", "siéger", "siffler", "sigle", "signal", "silence", "silicium", "simple", "sincère", "sinistre", "siphon", "sirop", "sismique", "situer", "skier", "social", "socle", "sodium", "soigneux", "soldat", "soleil", "solitude", "soluble", "sombre", "sommeil", "somnoler", "sonde", "songeur", "sonnette", "sonore", "sorcier", "sortir", "sosie", "sottise", "soucieux", "soudure", "souffle", "soulever", "soupape", "source", "soutirer", "souvenir", "spacieux", "spatial", "spécial", "sphère", "spiral", "stable", "station", "sternum", "stimulus", "stipuler", "strict", "studieux", "stupeur", "styliste", "sublime", "substrat", "subtil", "subvenir", "succès", "sucre", "suffixe", "suggérer", "suiveur", "sulfate", "superbe", "supplier", "surface", "suricate", "surmener", "surprise", "sursaut", "survie", "suspect", "syllabe", "symbole", "symétrie", "synapse", "syntaxe", "système", "tabac", "tablier", "tactile", "tailler", "talent", "talisman", "talonner", "tambour", "tamiser", "tangible", "tapis", "taquiner", "tarder", "tarif", "tartine", "tasse", "tatami", "tatouage", "taupe", "taureau", "taxer", "témoin", "temporel", "tenaille", "tendre", "teneur", "tenir", "tension", "terminer", "terne", "terrible", "tétine", "texte", "thème", "théorie", "thérapie", "thorax", "tibia", "tiède", "timide", "tirelire", "tiroir", "tissu", "titane", "titre", "tituber", "toboggan", "tolérant", "tomate", "tonique", "tonneau", "toponyme", "torche", "tordre", "tornade", "torpille", "torrent", "torse", "tortue", "totem", "toucher", "tournage", "tousser", "toxine", "traction", "trafic", "tragique", "trahir", "train", "trancher", "travail", "trèfle", "tremper", "trésor", "treuil", "triage", "tribunal", "tricoter", "trilogie", "triomphe", "tripler", "triturer", "trivial", "trombone", "tronc", "tropical", "troupeau", "tuile", "tulipe", "tumulte", "tunnel", "turbine", "tuteur", "tutoyer", "tuyau", "tympan", "typhon", "typique", "tyran", "ubuesque", "ultime", "ultrason", "unanime", "unifier", "union", "unique", "unitaire", "univers", "uranium", "urbain", "urticant", "usage", "usine", "usuel", "usure", "utile", "utopie", "vacarme", "vaccin", "vagabond", "vague", "vaillant", "vaincre", "vaisseau", "valable", "valise", "vallon", "valve", "vampire", "vanille", "vapeur", "varier", "vaseux", "vassal", "vaste", "vecteur", "vedette", "végétal", "véhicule", "veinard", "véloce", "vendredi", "vénérer", "venger", "venimeux", "ventouse", "verdure", "vérin", "vernir", "verrou", "verser", "vertu", "veston", "vétéran", "vétuste", "vexant", "vexer", "viaduc", "viande", "victoire", "vidange", "vidéo", "vignette", "vigueur", "vilain", "village", "vinaigre", "violon", "vipère", "virement", "virtuose", "virus", "visage", "viseur", "vision", "visqueux", "visuel", "vital", "vitesse", "viticole", "vitrine", "vivace", "vivipare", "vocation", "voguer", "voile", "voisin", "voiture", "volaille", "volcan", "voltiger", "volume", "vorace", "vortex", "voter", "vouloir", "voyage", "voyelle", "wagon", "xénon", "yacht", "zèbre", "zénith", "zeste", "zoologie"];
+		var french$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': french
+		});
+		var italian = ["abaco", "abbaglio", "abbinato", "abete", "abisso", "abolire", "abrasivo", "abrogato", "accadere", "accenno", "accusato", "acetone", "achille", "acido", "acqua", "acre", "acrilico", "acrobata", "acuto", "adagio", "addebito", "addome", "adeguato", "aderire", "adipe", "adottare", "adulare", "affabile", "affetto", "affisso", "affranto", "aforisma", "afoso", "africano", "agave", "agente", "agevole", "aggancio", "agire", "agitare", "agonismo", "agricolo", "agrumeto", "aguzzo", "alabarda", "alato", "albatro", "alberato", "albo", "albume", "alce", "alcolico", "alettone", "alfa", "algebra", "aliante", "alibi", "alimento", "allagato", "allegro", "allievo", "allodola", "allusivo", "almeno", "alogeno", "alpaca", "alpestre", "altalena", "alterno", "alticcio", "altrove", "alunno", "alveolo", "alzare", "amalgama", "amanita", "amarena", "ambito", "ambrato", "ameba", "america", "ametista", "amico", "ammasso", "ammenda", "ammirare", "ammonito", "amore", "ampio", "ampliare", "amuleto", "anacardo", "anagrafe", "analista", "anarchia", "anatra", "anca", "ancella", "ancora", "andare", "andrea", "anello", "angelo", "angolare", "angusto", "anima", "annegare", "annidato", "anno", "annuncio", "anonimo", "anticipo", "anzi", "apatico", "apertura", "apode", "apparire", "appetito", "appoggio", "approdo", "appunto", "aprile", "arabica", "arachide", "aragosta", "araldica", "arancio", "aratura", "arazzo", "arbitro", "archivio", "ardito", "arenile", "argento", "argine", "arguto", "aria", "armonia", "arnese", "arredato", "arringa", "arrosto", "arsenico", "arso", "artefice", "arzillo", "asciutto", "ascolto", "asepsi", "asettico", "asfalto", "asino", "asola", "aspirato", "aspro", "assaggio", "asse", "assoluto", "assurdo", "asta", "astenuto", "astice", "astratto", "atavico", "ateismo", "atomico", "atono", "attesa", "attivare", "attorno", "attrito", "attuale", "ausilio", "austria", "autista", "autonomo", "autunno", "avanzato", "avere", "avvenire", "avviso", "avvolgere", "azione", "azoto", "azzimo", "azzurro", "babele", "baccano", "bacino", "baco", "badessa", "badilata", "bagnato", "baita", "balcone", "baldo", "balena", "ballata", "balzano", "bambino", "bandire", "baraonda", "barbaro", "barca", "baritono", "barlume", "barocco", "basilico", "basso", "batosta", "battuto", "baule", "bava", "bavosa", "becco", "beffa", "belgio", "belva", "benda", "benevole", "benigno", "benzina", "bere", "berlina", "beta", "bibita", "bici", "bidone", "bifido", "biga", "bilancia", "bimbo", "binocolo", "biologo", "bipede", "bipolare", "birbante", "birra", "biscotto", "bisesto", "bisnonno", "bisonte", "bisturi", "bizzarro", "blando", "blatta", "bollito", "bonifico", "bordo", "bosco", "botanico", "bottino", "bozzolo", "braccio", "bradipo", "brama", "branca", "bravura", "bretella", "brevetto", "brezza", "briglia", "brillante", "brindare", "broccolo", "brodo", "bronzina", "brullo", "bruno", "bubbone", "buca", "budino", "buffone", "buio", "bulbo", "buono", "burlone", "burrasca", "bussola", "busta", "cadetto", "caduco", "calamaro", "calcolo", "calesse", "calibro", "calmo", "caloria", "cambusa", "camerata", "camicia", "cammino", "camola", "campale", "canapa", "candela", "cane", "canino", "canotto", "cantina", "capace", "capello", "capitolo", "capogiro", "cappero", "capra", "capsula", "carapace", "carcassa", "cardo", "carisma", "carovana", "carretto", "cartolina", "casaccio", "cascata", "caserma", "caso", "cassone", "castello", "casuale", "catasta", "catena", "catrame", "cauto", "cavillo", "cedibile", "cedrata", "cefalo", "celebre", "cellulare", "cena", "cenone", "centesimo", "ceramica", "cercare", "certo", "cerume", "cervello", "cesoia", "cespo", "ceto", "chela", "chiaro", "chicca", "chiedere", "chimera", "china", "chirurgo", "chitarra", "ciao", "ciclismo", "cifrare", "cigno", "cilindro", "ciottolo", "circa", "cirrosi", "citrico", "cittadino", "ciuffo", "civetta", "civile", "classico", "clinica", "cloro", "cocco", "codardo", "codice", "coerente", "cognome", "collare", "colmato", "colore", "colposo", "coltivato", "colza", "coma", "cometa", "commando", "comodo", "computer", "comune", "conciso", "condurre", "conferma", "congelare", "coniuge", "connesso", "conoscere", "consumo", "continuo", "convegno", "coperto", "copione", "coppia", "copricapo", "corazza", "cordata", "coricato", "cornice", "corolla", "corpo", "corredo", "corsia", "cortese", "cosmico", "costante", "cottura", "covato", "cratere", "cravatta", "creato", "credere", "cremoso", "crescita", "creta", "criceto", "crinale", "crisi", "critico", "croce", "cronaca", "crostata", "cruciale", "crusca", "cucire", "cuculo", "cugino", "cullato", "cupola", "curatore", "cursore", "curvo", "cuscino", "custode", "dado", "daino", "dalmata", "damerino", "daniela", "dannoso", "danzare", "datato", "davanti", "davvero", "debutto", "decennio", "deciso", "declino", "decollo", "decreto", "dedicato", "definito", "deforme", "degno", "delegare", "delfino", "delirio", "delta", "demenza", "denotato", "dentro", "deposito", "derapata", "derivare", "deroga", "descritto", "deserto", "desiderio", "desumere", "detersivo", "devoto", "diametro", "dicembre", "diedro", "difeso", "diffuso", "digerire", "digitale", "diluvio", "dinamico", "dinnanzi", "dipinto", "diploma", "dipolo", "diradare", "dire", "dirotto", "dirupo", "disagio", "discreto", "disfare", "disgelo", "disposto", "distanza", "disumano", "dito", "divano", "divelto", "dividere", "divorato", "doblone", "docente", "doganale", "dogma", "dolce", "domato", "domenica", "dominare", "dondolo", "dono", "dormire", "dote", "dottore", "dovuto", "dozzina", "drago", "druido", "dubbio", "dubitare", "ducale", "duna", "duomo", "duplice", "duraturo", "ebano", "eccesso", "ecco", "eclissi", "economia", "edera", "edicola", "edile", "editoria", "educare", "egemonia", "egli", "egoismo", "egregio", "elaborato", "elargire", "elegante", "elencato", "eletto", "elevare", "elfico", "elica", "elmo", "elsa", "eluso", "emanato", "emblema", "emesso", "emiro", "emotivo", "emozione", "empirico", "emulo", "endemico", "enduro", "energia", "enfasi", "enoteca", "entrare", "enzima", "epatite", "epilogo", "episodio", "epocale", "eppure", "equatore", "erario", "erba", "erboso", "erede", "eremita", "erigere", "ermetico", "eroe", "erosivo", "errante", "esagono", "esame", "esanime", "esaudire", "esca", "esempio", "esercito", "esibito", "esigente", "esistere", "esito", "esofago", "esortato", "esoso", "espanso", "espresso", "essenza", "esso", "esteso", "estimare", "estonia", "estroso", "esultare", "etilico", "etnico", "etrusco", "etto", "euclideo", "europa", "evaso", "evidenza", "evitato", "evoluto", "evviva", "fabbrica", "faccenda", "fachiro", "falco", "famiglia", "fanale", "fanfara", "fango", "fantasma", "fare", "farfalla", "farinoso", "farmaco", "fascia", "fastoso", "fasullo", "faticare", "fato", "favoloso", "febbre", "fecola", "fede", "fegato", "felpa", "feltro", "femmina", "fendere", "fenomeno", "fermento", "ferro", "fertile", "fessura", "festivo", "fetta", "feudo", "fiaba", "fiducia", "fifa", "figurato", "filo", "finanza", "finestra", "finire", "fiore", "fiscale", "fisico", "fiume", "flacone", "flamenco", "flebo", "flemma", "florido", "fluente", "fluoro", "fobico", "focaccia", "focoso", "foderato", "foglio", "folata", "folclore", "folgore", "fondente", "fonetico", "fonia", "fontana", "forbito", "forchetta", "foresta", "formica", "fornaio", "foro", "fortezza", "forzare", "fosfato", "fosso", "fracasso", "frana", "frassino", "fratello", "freccetta", "frenata", "fresco", "frigo", "frollino", "fronde", "frugale", "frutta", "fucilata", "fucsia", "fuggente", "fulmine", "fulvo", "fumante", "fumetto", "fumoso", "fune", "funzione", "fuoco", "furbo", "furgone", "furore", "fuso", "futile", "gabbiano", "gaffe", "galateo", "gallina", "galoppo", "gambero", "gamma", "garanzia", "garbo", "garofano", "garzone", "gasdotto", "gasolio", "gastrico", "gatto", "gaudio", "gazebo", "gazzella", "geco", "gelatina", "gelso", "gemello", "gemmato", "gene", "genitore", "gennaio", "genotipo", "gergo", "ghepardo", "ghiaccio", "ghisa", "giallo", "gilda", "ginepro", "giocare", "gioiello", "giorno", "giove", "girato", "girone", "gittata", "giudizio", "giurato", "giusto", "globulo", "glutine", "gnomo", "gobba", "golf", "gomito", "gommone", "gonfio", "gonna", "governo", "gracile", "grado", "grafico", "grammo", "grande", "grattare", "gravoso", "grazia", "greca", "gregge", "grifone", "grigio", "grinza", "grotta", "gruppo", "guadagno", "guaio", "guanto", "guardare", "gufo", "guidare", "ibernato", "icona", "identico", "idillio", "idolo", "idra", "idrico", "idrogeno", "igiene", "ignaro", "ignorato", "ilare", "illeso", "illogico", "illudere", "imballo", "imbevuto", "imbocco", "imbuto", "immane", "immerso", "immolato", "impacco", "impeto", "impiego", "importo", "impronta", "inalare", "inarcare", "inattivo", "incanto", "incendio", "inchino", "incisivo", "incluso", "incontro", "incrocio", "incubo", "indagine", "india", "indole", "inedito", "infatti", "infilare", "inflitto", "ingaggio", "ingegno", "inglese", "ingordo", "ingrosso", "innesco", "inodore", "inoltrare", "inondato", "insano", "insetto", "insieme", "insonnia", "insulina", "intasato", "intero", "intonaco", "intuito", "inumidire", "invalido", "invece", "invito", "iperbole", "ipnotico", "ipotesi", "ippica", "iride", "irlanda", "ironico", "irrigato", "irrorare", "isolato", "isotopo", "isterico", "istituto", "istrice", "italia", "iterare", "labbro", "labirinto", "lacca", "lacerato", "lacrima", "lacuna", "laddove", "lago", "lampo", "lancetta", "lanterna", "lardoso", "larga", "laringe", "lastra", "latenza", "latino", "lattuga", "lavagna", "lavoro", "legale", "leggero", "lembo", "lentezza", "lenza", "leone", "lepre", "lesivo", "lessato", "lesto", "letterale", "leva", "levigato", "libero", "lido", "lievito", "lilla", "limatura", "limitare", "limpido", "lineare", "lingua", "liquido", "lira", "lirica", "lisca", "lite", "litigio", "livrea", "locanda", "lode", "logica", "lombare", "londra", "longevo", "loquace", "lorenzo", "loto", "lotteria", "luce", "lucidato", "lumaca", "luminoso", "lungo", "lupo", "luppolo", "lusinga", "lusso", "lutto", "macabro", "macchina", "macero", "macinato", "madama", "magico", "maglia", "magnete", "magro", "maiolica", "malafede", "malgrado", "malinteso", "malsano", "malto", "malumore", "mana", "mancia", "mandorla", "mangiare", "manifesto", "mannaro", "manovra", "mansarda", "mantide", "manubrio", "mappa", "maratona", "marcire", "maretta", "marmo", "marsupio", "maschera", "massaia", "mastino", "materasso", "matricola", "mattone", "maturo", "mazurca", "meandro", "meccanico", "mecenate", "medesimo", "meditare", "mega", "melassa", "melis", "melodia", "meninge", "meno", "mensola", "mercurio", "merenda", "merlo", "meschino", "mese", "messere", "mestolo", "metallo", "metodo", "mettere", "miagolare", "mica", "micelio", "michele", "microbo", "midollo", "miele", "migliore", "milano", "milite", "mimosa", "minerale", "mini", "minore", "mirino", "mirtillo", "miscela", "missiva", "misto", "misurare", "mitezza", "mitigare", "mitra", "mittente", "mnemonico", "modello", "modifica", "modulo", "mogano", "mogio", "mole", "molosso", "monastero", "monco", "mondina", "monetario", "monile", "monotono", "monsone", "montato", "monviso", "mora", "mordere", "morsicato", "mostro", "motivato", "motosega", "motto", "movenza", "movimento", "mozzo", "mucca", "mucosa", "muffa", "mughetto", "mugnaio", "mulatto", "mulinello", "multiplo", "mummia", "munto", "muovere", "murale", "musa", "muscolo", "musica", "mutevole", "muto", "nababbo", "nafta", "nanometro", "narciso", "narice", "narrato", "nascere", "nastrare", "naturale", "nautica", "naviglio", "nebulosa", "necrosi", "negativo", "negozio", "nemmeno", "neofita", "neretto", "nervo", "nessuno", "nettuno", "neutrale", "neve", "nevrotico", "nicchia", "ninfa", "nitido", "nobile", "nocivo", "nodo", "nome", "nomina", "nordico", "normale", "norvegese", "nostrano", "notare", "notizia", "notturno", "novella", "nucleo", "nulla", "numero", "nuovo", "nutrire", "nuvola", "nuziale", "oasi", "obbedire", "obbligo", "obelisco", "oblio", "obolo", "obsoleto", "occasione", "occhio", "occidente", "occorrere", "occultare", "ocra", "oculato", "odierno", "odorare", "offerta", "offrire", "offuscato", "oggetto", "oggi", "ognuno", "olandese", "olfatto", "oliato", "oliva", "ologramma", "oltre", "omaggio", "ombelico", "ombra", "omega", "omissione", "ondoso", "onere", "onice", "onnivoro", "onorevole", "onta", "operato", "opinione", "opposto", "oracolo", "orafo", "ordine", "orecchino", "orefice", "orfano", "organico", "origine", "orizzonte", "orma", "ormeggio", "ornativo", "orologio", "orrendo", "orribile", "ortensia", "ortica", "orzata", "orzo", "osare", "oscurare", "osmosi", "ospedale", "ospite", "ossa", "ossidare", "ostacolo", "oste", "otite", "otre", "ottagono", "ottimo", "ottobre", "ovale", "ovest", "ovino", "oviparo", "ovocito", "ovunque", "ovviare", "ozio", "pacchetto", "pace", "pacifico", "padella", "padrone", "paese", "paga", "pagina", "palazzina", "palesare", "pallido", "palo", "palude", "pandoro", "pannello", "paolo", "paonazzo", "paprica", "parabola", "parcella", "parere", "pargolo", "pari", "parlato", "parola", "partire", "parvenza", "parziale", "passivo", "pasticca", "patacca", "patologia", "pattume", "pavone", "peccato", "pedalare", "pedonale", "peggio", "peloso", "penare", "pendice", "penisola", "pennuto", "penombra", "pensare", "pentola", "pepe", "pepita", "perbene", "percorso", "perdonato", "perforare", "pergamena", "periodo", "permesso", "perno", "perplesso", "persuaso", "pertugio", "pervaso", "pesatore", "pesista", "peso", "pestifero", "petalo", "pettine", "petulante", "pezzo", "piacere", "pianta", "piattino", "piccino", "picozza", "piega", "pietra", "piffero", "pigiama", "pigolio", "pigro", "pila", "pilifero", "pillola", "pilota", "pimpante", "pineta", "pinna", "pinolo", "pioggia", "piombo", "piramide", "piretico", "pirite", "pirolisi", "pitone", "pizzico", "placebo", "planare", "plasma", "platano", "plenario", "pochezza", "poderoso", "podismo", "poesia", "poggiare", "polenta", "poligono", "pollice", "polmonite", "polpetta", "polso", "poltrona", "polvere", "pomice", "pomodoro", "ponte", "popoloso", "porfido", "poroso", "porpora", "porre", "portata", "posa", "positivo", "possesso", "postulato", "potassio", "potere", "pranzo", "prassi", "pratica", "precluso", "predica", "prefisso", "pregiato", "prelievo", "premere", "prenotare", "preparato", "presenza", "pretesto", "prevalso", "prima", "principe", "privato", "problema", "procura", "produrre", "profumo", "progetto", "prolunga", "promessa", "pronome", "proposta", "proroga", "proteso", "prova", "prudente", "prugna", "prurito", "psiche", "pubblico", "pudica", "pugilato", "pugno", "pulce", "pulito", "pulsante", "puntare", "pupazzo", "pupilla", "puro", "quadro", "qualcosa", "quasi", "querela", "quota", "raccolto", "raddoppio", "radicale", "radunato", "raffica", "ragazzo", "ragione", "ragno", "ramarro", "ramingo", "ramo", "randagio", "rantolare", "rapato", "rapina", "rappreso", "rasatura", "raschiato", "rasente", "rassegna", "rastrello", "rata", "ravveduto", "reale", "recepire", "recinto", "recluta", "recondito", "recupero", "reddito", "redimere", "regalato", "registro", "regola", "regresso", "relazione", "remare", "remoto", "renna", "replica", "reprimere", "reputare", "resa", "residente", "responso", "restauro", "rete", "retina", "retorica", "rettifica", "revocato", "riassunto", "ribadire", "ribelle", "ribrezzo", "ricarica", "ricco", "ricevere", "riciclato", "ricordo", "ricreduto", "ridicolo", "ridurre", "rifasare", "riflesso", "riforma", "rifugio", "rigare", "rigettato", "righello", "rilassato", "rilevato", "rimanere", "rimbalzo", "rimedio", "rimorchio", "rinascita", "rincaro", "rinforzo", "rinnovo", "rinomato", "rinsavito", "rintocco", "rinuncia", "rinvenire", "riparato", "ripetuto", "ripieno", "riportare", "ripresa", "ripulire", "risata", "rischio", "riserva", "risibile", "riso", "rispetto", "ristoro", "risultato", "risvolto", "ritardo", "ritegno", "ritmico", "ritrovo", "riunione", "riva", "riverso", "rivincita", "rivolto", "rizoma", "roba", "robotico", "robusto", "roccia", "roco", "rodaggio", "rodere", "roditore", "rogito", "rollio", "romantico", "rompere", "ronzio", "rosolare", "rospo", "rotante", "rotondo", "rotula", "rovescio", "rubizzo", "rubrica", "ruga", "rullino", "rumine", "rumoroso", "ruolo", "rupe", "russare", "rustico", "sabato", "sabbiare", "sabotato", "sagoma", "salasso", "saldatura", "salgemma", "salivare", "salmone", "salone", "saltare", "saluto", "salvo", "sapere", "sapido", "saporito", "saraceno", "sarcasmo", "sarto", "sassoso", "satellite", "satira", "satollo", "saturno", "savana", "savio", "saziato", "sbadiglio", "sbalzo", "sbancato", "sbarra", "sbattere", "sbavare", "sbendare", "sbirciare", "sbloccato", "sbocciato", "sbrinare", "sbruffone", "sbuffare", "scabroso", "scadenza", "scala", "scambiare", "scandalo", "scapola", "scarso", "scatenare", "scavato", "scelto", "scenico", "scettro", "scheda", "schiena", "sciarpa", "scienza", "scindere", "scippo", "sciroppo", "scivolo", "sclerare", "scodella", "scolpito", "scomparto", "sconforto", "scoprire", "scorta", "scossone", "scozzese", "scriba", "scrollare", "scrutinio", "scuderia", "scultore", "scuola", "scuro", "scusare", "sdebitare", "sdoganare", "seccatura", "secondo", "sedano", "seggiola", "segnalato", "segregato", "seguito", "selciato", "selettivo", "sella", "selvaggio", "semaforo", "sembrare", "seme", "seminato", "sempre", "senso", "sentire", "sepolto", "sequenza", "serata", "serbato", "sereno", "serio", "serpente", "serraglio", "servire", "sestina", "setola", "settimana", "sfacelo", "sfaldare", "sfamato", "sfarzoso", "sfaticato", "sfera", "sfida", "sfilato", "sfinge", "sfocato", "sfoderare", "sfogo", "sfoltire", "sforzato", "sfratto", "sfruttato", "sfuggito", "sfumare", "sfuso", "sgabello", "sgarbato", "sgonfiare", "sgorbio", "sgrassato", "sguardo", "sibilo", "siccome", "sierra", "sigla", "signore", "silenzio", "sillaba", "simbolo", "simpatico", "simulato", "sinfonia", "singolo", "sinistro", "sino", "sintesi", "sinusoide", "sipario", "sisma", "sistole", "situato", "slitta", "slogatura", "sloveno", "smarrito", "smemorato", "smentito", "smeraldo", "smilzo", "smontare", "smottato", "smussato", "snellire", "snervato", "snodo", "sobbalzo", "sobrio", "soccorso", "sociale", "sodale", "soffitto", "sogno", "soldato", "solenne", "solido", "sollazzo", "solo", "solubile", "solvente", "somatico", "somma", "sonda", "sonetto", "sonnifero", "sopire", "soppeso", "sopra", "sorgere", "sorpasso", "sorriso", "sorso", "sorteggio", "sorvolato", "sospiro", "sosta", "sottile", "spada", "spalla", "spargere", "spatola", "spavento", "spazzola", "specie", "spedire", "spegnere", "spelatura", "speranza", "spessore", "spettrale", "spezzato", "spia", "spigoloso", "spillato", "spinoso", "spirale", "splendido", "sportivo", "sposo", "spranga", "sprecare", "spronato", "spruzzo", "spuntino", "squillo", "sradicare", "srotolato", "stabile", "stacco", "staffa", "stagnare", "stampato", "stantio", "starnuto", "stasera", "statuto", "stelo", "steppa", "sterzo", "stiletto", "stima", "stirpe", "stivale", "stizzoso", "stonato", "storico", "strappo", "stregato", "stridulo", "strozzare", "strutto", "stuccare", "stufo", "stupendo", "subentro", "succoso", "sudore", "suggerito", "sugo", "sultano", "suonare", "superbo", "supporto", "surgelato", "surrogato", "sussurro", "sutura", "svagare", "svedese", "sveglio", "svelare", "svenuto", "svezia", "sviluppo", "svista", "svizzera", "svolta", "svuotare", "tabacco", "tabulato", "tacciare", "taciturno", "tale", "talismano", "tampone", "tannino", "tara", "tardivo", "targato", "tariffa", "tarpare", "tartaruga", "tasto", "tattico", "taverna", "tavolata", "tazza", "teca", "tecnico", "telefono", "temerario", "tempo", "temuto", "tendone", "tenero", "tensione", "tentacolo", "teorema", "terme", "terrazzo", "terzetto", "tesi", "tesserato", "testato", "tetro", "tettoia", "tifare", "tigella", "timbro", "tinto", "tipico", "tipografo", "tiraggio", "tiro", "titanio", "titolo", "titubante", "tizio", "tizzone", "toccare", "tollerare", "tolto", "tombola", "tomo", "tonfo", "tonsilla", "topazio", "topologia", "toppa", "torba", "tornare", "torrone", "tortora", "toscano", "tossire", "tostatura", "totano", "trabocco", "trachea", "trafila", "tragedia", "tralcio", "tramonto", "transito", "trapano", "trarre", "trasloco", "trattato", "trave", "treccia", "tremolio", "trespolo", "tributo", "tricheco", "trifoglio", "trillo", "trincea", "trio", "tristezza", "triturato", "trivella", "tromba", "trono", "troppo", "trottola", "trovare", "truccato", "tubatura", "tuffato", "tulipano", "tumulto", "tunisia", "turbare", "turchino", "tuta", "tutela", "ubicato", "uccello", "uccisore", "udire", "uditivo", "uffa", "ufficio", "uguale", "ulisse", "ultimato", "umano", "umile", "umorismo", "uncinetto", "ungere", "ungherese", "unicorno", "unificato", "unisono", "unitario", "unte", "uovo", "upupa", "uragano", "urgenza", "urlo", "usanza", "usato", "uscito", "usignolo", "usuraio", "utensile", "utilizzo", "utopia", "vacante", "vaccinato", "vagabondo", "vagliato", "valanga", "valgo", "valico", "valletta", "valoroso", "valutare", "valvola", "vampata", "vangare", "vanitoso", "vano", "vantaggio", "vanvera", "vapore", "varano", "varcato", "variante", "vasca", "vedetta", "vedova", "veduto", "vegetale", "veicolo", "velcro", "velina", "velluto", "veloce", "venato", "vendemmia", "vento", "verace", "verbale", "vergogna", "verifica", "vero", "verruca", "verticale", "vescica", "vessillo", "vestale", "veterano", "vetrina", "vetusto", "viandante", "vibrante", "vicenda", "vichingo", "vicinanza", "vidimare", "vigilia", "vigneto", "vigore", "vile", "villano", "vimini", "vincitore", "viola", "vipera", "virgola", "virologo", "virulento", "viscoso", "visione", "vispo", "vissuto", "visura", "vita", "vitello", "vittima", "vivanda", "vivido", "viziare", "voce", "voga", "volatile", "volere", "volpe", "voragine", "vulcano", "zampogna", "zanna", "zappato", "zattera", "zavorra", "zefiro", "zelante", "zelo", "zenzero", "zerbino", "zibetto", "zinco", "zircone", "zitto", "zolla", "zotico", "zucchero", "zufolo", "zulu", "zuppa"];
+		var italian$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': italian
+		});
+		var spanish = ["ábaco", "abdomen", "abeja", "abierto", "abogado", "abono", "aborto", "abrazo", "abrir", "abuelo", "abuso", "acabar", "academia", "acceso", "acción", "aceite", "acelga", "acento", "aceptar", "ácido", "aclarar", "acné", "acoger", "acoso", "activo", "acto", "actriz", "actuar", "acudir", "acuerdo", "acusar", "adicto", "admitir", "adoptar", "adorno", "aduana", "adulto", "aéreo", "afectar", "afición", "afinar", "afirmar", "ágil", "agitar", "agonía", "agosto", "agotar", "agregar", "agrio", "agua", "agudo", "águila", "aguja", "ahogo", "ahorro", "aire", "aislar", "ajedrez", "ajeno", "ajuste", "alacrán", "alambre", "alarma", "alba", "álbum", "alcalde", "aldea", "alegre", "alejar", "alerta", "aleta", "alfiler", "alga", "algodón", "aliado", "aliento", "alivio", "alma", "almeja", "almíbar", "altar", "alteza", "altivo", "alto", "altura", "alumno", "alzar", "amable", "amante", "amapola", "amargo", "amasar", "ámbar", "ámbito", "ameno", "amigo", "amistad", "amor", "amparo", "amplio", "ancho", "anciano", "ancla", "andar", "andén", "anemia", "ángulo", "anillo", "ánimo", "anís", "anotar", "antena", "antiguo", "antojo", "anual", "anular", "anuncio", "añadir", "añejo", "año", "apagar", "aparato", "apetito", "apio", "aplicar", "apodo", "aporte", "apoyo", "aprender", "aprobar", "apuesta", "apuro", "arado", "araña", "arar", "árbitro", "árbol", "arbusto", "archivo", "arco", "arder", "ardilla", "arduo", "área", "árido", "aries", "armonía", "arnés", "aroma", "arpa", "arpón", "arreglo", "arroz", "arruga", "arte", "artista", "asa", "asado", "asalto", "ascenso", "asegurar", "aseo", "asesor", "asiento", "asilo", "asistir", "asno", "asombro", "áspero", "astilla", "astro", "astuto", "asumir", "asunto", "atajo", "ataque", "atar", "atento", "ateo", "ático", "atleta", "átomo", "atraer", "atroz", "atún", "audaz", "audio", "auge", "aula", "aumento", "ausente", "autor", "aval", "avance", "avaro", "ave", "avellana", "avena", "avestruz", "avión", "aviso", "ayer", "ayuda", "ayuno", "azafrán", "azar", "azote", "azúcar", "azufre", "azul", "baba", "babor", "bache", "bahía", "baile", "bajar", "balanza", "balcón", "balde", "bambú", "banco", "banda", "baño", "barba", "barco", "barniz", "barro", "báscula", "bastón", "basura", "batalla", "batería", "batir", "batuta", "baúl", "bazar", "bebé", "bebida", "bello", "besar", "beso", "bestia", "bicho", "bien", "bingo", "blanco", "bloque", "blusa", "boa", "bobina", "bobo", "boca", "bocina", "boda", "bodega", "boina", "bola", "bolero", "bolsa", "bomba", "bondad", "bonito", "bono", "bonsái", "borde", "borrar", "bosque", "bote", "botín", "bóveda", "bozal", "bravo", "brazo", "brecha", "breve", "brillo", "brinco", "brisa", "broca", "broma", "bronce", "brote", "bruja", "brusco", "bruto", "buceo", "bucle", "bueno", "buey", "bufanda", "bufón", "búho", "buitre", "bulto", "burbuja", "burla", "burro", "buscar", "butaca", "buzón", "caballo", "cabeza", "cabina", "cabra", "cacao", "cadáver", "cadena", "caer", "café", "caída", "caimán", "caja", "cajón", "cal", "calamar", "calcio", "caldo", "calidad", "calle", "calma", "calor", "calvo", "cama", "cambio", "camello", "camino", "campo", "cáncer", "candil", "canela", "canguro", "canica", "canto", "caña", "cañón", "caoba", "caos", "capaz", "capitán", "capote", "captar", "capucha", "cara", "carbón", "cárcel", "careta", "carga", "cariño", "carne", "carpeta", "carro", "carta", "casa", "casco", "casero", "caspa", "castor", "catorce", "catre", "caudal", "causa", "cazo", "cebolla", "ceder", "cedro", "celda", "célebre", "celoso", "célula", "cemento", "ceniza", "centro", "cerca", "cerdo", "cereza", "cero", "cerrar", "certeza", "césped", "cetro", "chacal", "chaleco", "champú", "chancla", "chapa", "charla", "chico", "chiste", "chivo", "choque", "choza", "chuleta", "chupar", "ciclón", "ciego", "cielo", "cien", "cierto", "cifra", "cigarro", "cima", "cinco", "cine", "cinta", "ciprés", "circo", "ciruela", "cisne", "cita", "ciudad", "clamor", "clan", "claro", "clase", "clave", "cliente", "clima", "clínica", "cobre", "cocción", "cochino", "cocina", "coco", "código", "codo", "cofre", "coger", "cohete", "cojín", "cojo", "cola", "colcha", "colegio", "colgar", "colina", "collar", "colmo", "columna", "combate", "comer", "comida", "cómodo", "compra", "conde", "conejo", "conga", "conocer", "consejo", "contar", "copa", "copia", "corazón", "corbata", "corcho", "cordón", "corona", "correr", "coser", "cosmos", "costa", "cráneo", "cráter", "crear", "crecer", "creído", "crema", "cría", "crimen", "cripta", "crisis", "cromo", "crónica", "croqueta", "crudo", "cruz", "cuadro", "cuarto", "cuatro", "cubo", "cubrir", "cuchara", "cuello", "cuento", "cuerda", "cuesta", "cueva", "cuidar", "culebra", "culpa", "culto", "cumbre", "cumplir", "cuna", "cuneta", "cuota", "cupón", "cúpula", "curar", "curioso", "curso", "curva", "cutis", "dama", "danza", "dar", "dardo", "dátil", "deber", "débil", "década", "decir", "dedo", "defensa", "definir", "dejar", "delfín", "delgado", "delito", "demora", "denso", "dental", "deporte", "derecho", "derrota", "desayuno", "deseo", "desfile", "desnudo", "destino", "desvío", "detalle", "detener", "deuda", "día", "diablo", "diadema", "diamante", "diana", "diario", "dibujo", "dictar", "diente", "dieta", "diez", "difícil", "digno", "dilema", "diluir", "dinero", "directo", "dirigir", "disco", "diseño", "disfraz", "diva", "divino", "doble", "doce", "dolor", "domingo", "don", "donar", "dorado", "dormir", "dorso", "dos", "dosis", "dragón", "droga", "ducha", "duda", "duelo", "dueño", "dulce", "dúo", "duque", "durar", "dureza", "duro", "ébano", "ebrio", "echar", "eco", "ecuador", "edad", "edición", "edificio", "editor", "educar", "efecto", "eficaz", "eje", "ejemplo", "elefante", "elegir", "elemento", "elevar", "elipse", "élite", "elixir", "elogio", "eludir", "embudo", "emitir", "emoción", "empate", "empeño", "empleo", "empresa", "enano", "encargo", "enchufe", "encía", "enemigo", "enero", "enfado", "enfermo", "engaño", "enigma", "enlace", "enorme", "enredo", "ensayo", "enseñar", "entero", "entrar", "envase", "envío", "época", "equipo", "erizo", "escala", "escena", "escolar", "escribir", "escudo", "esencia", "esfera", "esfuerzo", "espada", "espejo", "espía", "esposa", "espuma", "esquí", "estar", "este", "estilo", "estufa", "etapa", "eterno", "ética", "etnia", "evadir", "evaluar", "evento", "evitar", "exacto", "examen", "exceso", "excusa", "exento", "exigir", "exilio", "existir", "éxito", "experto", "explicar", "exponer", "extremo", "fábrica", "fábula", "fachada", "fácil", "factor", "faena", "faja", "falda", "fallo", "falso", "faltar", "fama", "familia", "famoso", "faraón", "farmacia", "farol", "farsa", "fase", "fatiga", "fauna", "favor", "fax", "febrero", "fecha", "feliz", "feo", "feria", "feroz", "fértil", "fervor", "festín", "fiable", "fianza", "fiar", "fibra", "ficción", "ficha", "fideo", "fiebre", "fiel", "fiera", "fiesta", "figura", "fijar", "fijo", "fila", "filete", "filial", "filtro", "fin", "finca", "fingir", "finito", "firma", "flaco", "flauta", "flecha", "flor", "flota", "fluir", "flujo", "flúor", "fobia", "foca", "fogata", "fogón", "folio", "folleto", "fondo", "forma", "forro", "fortuna", "forzar", "fosa", "foto", "fracaso", "frágil", "franja", "frase", "fraude", "freír", "freno", "fresa", "frío", "frito", "fruta", "fuego", "fuente", "fuerza", "fuga", "fumar", "función", "funda", "furgón", "furia", "fusil", "fútbol", "futuro", "gacela", "gafas", "gaita", "gajo", "gala", "galería", "gallo", "gamba", "ganar", "gancho", "ganga", "ganso", "garaje", "garza", "gasolina", "gastar", "gato", "gavilán", "gemelo", "gemir", "gen", "género", "genio", "gente", "geranio", "gerente", "germen", "gesto", "gigante", "gimnasio", "girar", "giro", "glaciar", "globo", "gloria", "gol", "golfo", "goloso", "golpe", "goma", "gordo", "gorila", "gorra", "gota", "goteo", "gozar", "grada", "gráfico", "grano", "grasa", "gratis", "grave", "grieta", "grillo", "gripe", "gris", "grito", "grosor", "grúa", "grueso", "grumo", "grupo", "guante", "guapo", "guardia", "guerra", "guía", "guiño", "guion", "guiso", "guitarra", "gusano", "gustar", "haber", "hábil", "hablar", "hacer", "hacha", "hada", "hallar", "hamaca", "harina", "haz", "hazaña", "hebilla", "hebra", "hecho", "helado", "helio", "hembra", "herir", "hermano", "héroe", "hervir", "hielo", "hierro", "hígado", "higiene", "hijo", "himno", "historia", "hocico", "hogar", "hoguera", "hoja", "hombre", "hongo", "honor", "honra", "hora", "hormiga", "horno", "hostil", "hoyo", "hueco", "huelga", "huerta", "hueso", "huevo", "huida", "huir", "humano", "húmedo", "humilde", "humo", "hundir", "huracán", "hurto", "icono", "ideal", "idioma", "ídolo", "iglesia", "iglú", "igual", "ilegal", "ilusión", "imagen", "imán", "imitar", "impar", "imperio", "imponer", "impulso", "incapaz", "índice", "inerte", "infiel", "informe", "ingenio", "inicio", "inmenso", "inmune", "innato", "insecto", "instante", "interés", "íntimo", "intuir", "inútil", "invierno", "ira", "iris", "ironía", "isla", "islote", "jabalí", "jabón", "jamón", "jarabe", "jardín", "jarra", "jaula", "jazmín", "jefe", "jeringa", "jinete", "jornada", "joroba", "joven", "joya", "juerga", "jueves", "juez", "jugador", "jugo", "juguete", "juicio", "junco", "jungla", "junio", "juntar", "júpiter", "jurar", "justo", "juvenil", "juzgar", "kilo", "koala", "labio", "lacio", "lacra", "lado", "ladrón", "lagarto", "lágrima", "laguna", "laico", "lamer", "lámina", "lámpara", "lana", "lancha", "langosta", "lanza", "lápiz", "largo", "larva", "lástima", "lata", "látex", "latir", "laurel", "lavar", "lazo", "leal", "lección", "leche", "lector", "leer", "legión", "legumbre", "lejano", "lengua", "lento", "leña", "león", "leopardo", "lesión", "letal", "letra", "leve", "leyenda", "libertad", "libro", "licor", "líder", "lidiar", "lienzo", "liga", "ligero", "lima", "límite", "limón", "limpio", "lince", "lindo", "línea", "lingote", "lino", "linterna", "líquido", "liso", "lista", "litera", "litio", "litro", "llaga", "llama", "llanto", "llave", "llegar", "llenar", "llevar", "llorar", "llover", "lluvia", "lobo", "loción", "loco", "locura", "lógica", "logro", "lombriz", "lomo", "lonja", "lote", "lucha", "lucir", "lugar", "lujo", "luna", "lunes", "lupa", "lustro", "luto", "luz", "maceta", "macho", "madera", "madre", "maduro", "maestro", "mafia", "magia", "mago", "maíz", "maldad", "maleta", "malla", "malo", "mamá", "mambo", "mamut", "manco", "mando", "manejar", "manga", "maniquí", "manjar", "mano", "manso", "manta", "mañana", "mapa", "máquina", "mar", "marco", "marea", "marfil", "margen", "marido", "mármol", "marrón", "martes", "marzo", "masa", "máscara", "masivo", "matar", "materia", "matiz", "matriz", "máximo", "mayor", "mazorca", "mecha", "medalla", "medio", "médula", "mejilla", "mejor", "melena", "melón", "memoria", "menor", "mensaje", "mente", "menú", "mercado", "merengue", "mérito", "mes", "mesón", "meta", "meter", "método", "metro", "mezcla", "miedo", "miel", "miembro", "miga", "mil", "milagro", "militar", "millón", "mimo", "mina", "minero", "mínimo", "minuto", "miope", "mirar", "misa", "miseria", "misil", "mismo", "mitad", "mito", "mochila", "moción", "moda", "modelo", "moho", "mojar", "molde", "moler", "molino", "momento", "momia", "monarca", "moneda", "monja", "monto", "moño", "morada", "morder", "moreno", "morir", "morro", "morsa", "mortal", "mosca", "mostrar", "motivo", "mover", "móvil", "mozo", "mucho", "mudar", "mueble", "muela", "muerte", "muestra", "mugre", "mujer", "mula", "muleta", "multa", "mundo", "muñeca", "mural", "muro", "músculo", "museo", "musgo", "música", "muslo", "nácar", "nación", "nadar", "naipe", "naranja", "nariz", "narrar", "nasal", "natal", "nativo", "natural", "náusea", "naval", "nave", "navidad", "necio", "néctar", "negar", "negocio", "negro", "neón", "nervio", "neto", "neutro", "nevar", "nevera", "nicho", "nido", "niebla", "nieto", "niñez", "niño", "nítido", "nivel", "nobleza", "noche", "nómina", "noria", "norma", "norte", "nota", "noticia", "novato", "novela", "novio", "nube", "nuca", "núcleo", "nudillo", "nudo", "nuera", "nueve", "nuez", "nulo", "número", "nutria", "oasis", "obeso", "obispo", "objeto", "obra", "obrero", "observar", "obtener", "obvio", "oca", "ocaso", "océano", "ochenta", "ocho", "ocio", "ocre", "octavo", "octubre", "oculto", "ocupar", "ocurrir", "odiar", "odio", "odisea", "oeste", "ofensa", "oferta", "oficio", "ofrecer", "ogro", "oído", "oír", "ojo", "ola", "oleada", "olfato", "olivo", "olla", "olmo", "olor", "olvido", "ombligo", "onda", "onza", "opaco", "opción", "ópera", "opinar", "oponer", "optar", "óptica", "opuesto", "oración", "orador", "oral", "órbita", "orca", "orden", "oreja", "órgano", "orgía", "orgullo", "oriente", "origen", "orilla", "oro", "orquesta", "oruga", "osadía", "oscuro", "osezno", "oso", "ostra", "otoño", "otro", "oveja", "óvulo", "óxido", "oxígeno", "oyente", "ozono", "pacto", "padre", "paella", "página", "pago", "país", "pájaro", "palabra", "palco", "paleta", "pálido", "palma", "paloma", "palpar", "pan", "panal", "pánico", "pantera", "pañuelo", "papá", "papel", "papilla", "paquete", "parar", "parcela", "pared", "parir", "paro", "párpado", "parque", "párrafo", "parte", "pasar", "paseo", "pasión", "paso", "pasta", "pata", "patio", "patria", "pausa", "pauta", "pavo", "payaso", "peatón", "pecado", "pecera", "pecho", "pedal", "pedir", "pegar", "peine", "pelar", "peldaño", "pelea", "peligro", "pellejo", "pelo", "peluca", "pena", "pensar", "peñón", "peón", "peor", "pepino", "pequeño", "pera", "percha", "perder", "pereza", "perfil", "perico", "perla", "permiso", "perro", "persona", "pesa", "pesca", "pésimo", "pestaña", "pétalo", "petróleo", "pez", "pezuña", "picar", "pichón", "pie", "piedra", "pierna", "pieza", "pijama", "pilar", "piloto", "pimienta", "pino", "pintor", "pinza", "piña", "piojo", "pipa", "pirata", "pisar", "piscina", "piso", "pista", "pitón", "pizca", "placa", "plan", "plata", "playa", "plaza", "pleito", "pleno", "plomo", "pluma", "plural", "pobre", "poco", "poder", "podio", "poema", "poesía", "poeta", "polen", "policía", "pollo", "polvo", "pomada", "pomelo", "pomo", "pompa", "poner", "porción", "portal", "posada", "poseer", "posible", "poste", "potencia", "potro", "pozo", "prado", "precoz", "pregunta", "premio", "prensa", "preso", "previo", "primo", "príncipe", "prisión", "privar", "proa", "probar", "proceso", "producto", "proeza", "profesor", "programa", "prole", "promesa", "pronto", "propio", "próximo", "prueba", "público", "puchero", "pudor", "pueblo", "puerta", "puesto", "pulga", "pulir", "pulmón", "pulpo", "pulso", "puma", "punto", "puñal", "puño", "pupa", "pupila", "puré", "quedar", "queja", "quemar", "querer", "queso", "quieto", "química", "quince", "quitar", "rábano", "rabia", "rabo", "ración", "radical", "raíz", "rama", "rampa", "rancho", "rango", "rapaz", "rápido", "rapto", "rasgo", "raspa", "rato", "rayo", "raza", "razón", "reacción", "realidad", "rebaño", "rebote", "recaer", "receta", "rechazo", "recoger", "recreo", "recto", "recurso", "red", "redondo", "reducir", "reflejo", "reforma", "refrán", "refugio", "regalo", "regir", "regla", "regreso", "rehén", "reino", "reír", "reja", "relato", "relevo", "relieve", "relleno", "reloj", "remar", "remedio", "remo", "rencor", "rendir", "renta", "reparto", "repetir", "reposo", "reptil", "res", "rescate", "resina", "respeto", "resto", "resumen", "retiro", "retorno", "retrato", "reunir", "revés", "revista", "rey", "rezar", "rico", "riego", "rienda", "riesgo", "rifa", "rígido", "rigor", "rincón", "riñón", "río", "riqueza", "risa", "ritmo", "rito", "rizo", "roble", "roce", "rociar", "rodar", "rodeo", "rodilla", "roer", "rojizo", "rojo", "romero", "romper", "ron", "ronco", "ronda", "ropa", "ropero", "rosa", "rosca", "rostro", "rotar", "rubí", "rubor", "rudo", "rueda", "rugir", "ruido", "ruina", "ruleta", "rulo", "rumbo", "rumor", "ruptura", "ruta", "rutina", "sábado", "saber", "sabio", "sable", "sacar", "sagaz", "sagrado", "sala", "saldo", "salero", "salir", "salmón", "salón", "salsa", "salto", "salud", "salvar", "samba", "sanción", "sandía", "sanear", "sangre", "sanidad", "sano", "santo", "sapo", "saque", "sardina", "sartén", "sastre", "satán", "sauna", "saxofón", "sección", "seco", "secreto", "secta", "sed", "seguir", "seis", "sello", "selva", "semana", "semilla", "senda", "sensor", "señal", "señor", "separar", "sepia", "sequía", "ser", "serie", "sermón", "servir", "sesenta", "sesión", "seta", "setenta", "severo", "sexo", "sexto", "sidra", "siesta", "siete", "siglo", "signo", "sílaba", "silbar", "silencio", "silla", "símbolo", "simio", "sirena", "sistema", "sitio", "situar", "sobre", "socio", "sodio", "sol", "solapa", "soldado", "soledad", "sólido", "soltar", "solución", "sombra", "sondeo", "sonido", "sonoro", "sonrisa", "sopa", "soplar", "soporte", "sordo", "sorpresa", "sorteo", "sostén", "sótano", "suave", "subir", "suceso", "sudor", "suegra", "suelo", "sueño", "suerte", "sufrir", "sujeto", "sultán", "sumar", "superar", "suplir", "suponer", "supremo", "sur", "surco", "sureño", "surgir", "susto", "sutil", "tabaco", "tabique", "tabla", "tabú", "taco", "tacto", "tajo", "talar", "talco", "talento", "talla", "talón", "tamaño", "tambor", "tango", "tanque", "tapa", "tapete", "tapia", "tapón", "taquilla", "tarde", "tarea", "tarifa", "tarjeta", "tarot", "tarro", "tarta", "tatuaje", "tauro", "taza", "tazón", "teatro", "techo", "tecla", "técnica", "tejado", "tejer", "tejido", "tela", "teléfono", "tema", "temor", "templo", "tenaz", "tender", "tener", "tenis", "tenso", "teoría", "terapia", "terco", "término", "ternura", "terror", "tesis", "tesoro", "testigo", "tetera", "texto", "tez", "tibio", "tiburón", "tiempo", "tienda", "tierra", "tieso", "tigre", "tijera", "tilde", "timbre", "tímido", "timo", "tinta", "tío", "típico", "tipo", "tira", "tirón", "titán", "títere", "título", "tiza", "toalla", "tobillo", "tocar", "tocino", "todo", "toga", "toldo", "tomar", "tono", "tonto", "topar", "tope", "toque", "tórax", "torero", "tormenta", "torneo", "toro", "torpedo", "torre", "torso", "tortuga", "tos", "tosco", "toser", "tóxico", "trabajo", "tractor", "traer", "tráfico", "trago", "traje", "tramo", "trance", "trato", "trauma", "trazar", "trébol", "tregua", "treinta", "tren", "trepar", "tres", "tribu", "trigo", "tripa", "triste", "triunfo", "trofeo", "trompa", "tronco", "tropa", "trote", "trozo", "truco", "trueno", "trufa", "tubería", "tubo", "tuerto", "tumba", "tumor", "túnel", "túnica", "turbina", "turismo", "turno", "tutor", "ubicar", "úlcera", "umbral", "unidad", "unir", "universo", "uno", "untar", "uña", "urbano", "urbe", "urgente", "urna", "usar", "usuario", "útil", "utopía", "uva", "vaca", "vacío", "vacuna", "vagar", "vago", "vaina", "vajilla", "vale", "válido", "valle", "valor", "válvula", "vampiro", "vara", "variar", "varón", "vaso", "vecino", "vector", "vehículo", "veinte", "vejez", "vela", "velero", "veloz", "vena", "vencer", "venda", "veneno", "vengar", "venir", "venta", "venus", "ver", "verano", "verbo", "verde", "vereda", "verja", "verso", "verter", "vía", "viaje", "vibrar", "vicio", "víctima", "vida", "vídeo", "vidrio", "viejo", "viernes", "vigor", "vil", "villa", "vinagre", "vino", "viñedo", "violín", "viral", "virgo", "virtud", "visor", "víspera", "vista", "vitamina", "viudo", "vivaz", "vivero", "vivir", "vivo", "volcán", "volumen", "volver", "voraz", "votar", "voto", "voz", "vuelo", "vulgar", "yacer", "yate", "yegua", "yema", "yerno", "yeso", "yodo", "yoga", "yogur", "zafiro", "zanja", "zapato", "zarza", "zona", "zorro", "zumo", "zurdo"];
+		var spanish$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': spanish
+		});
+		var japanese = ["あいこくしん", "あいさつ", "あいだ", "あおぞら", "あかちゃん", "あきる", "あけがた", "あける", "あこがれる", "あさい", "あさひ", "あしあと", "あじわう", "あずかる", "あずき", "あそぶ", "あたえる", "あたためる", "あたりまえ", "あたる", "あつい", "あつかう", "あっしゅく", "あつまり", "あつめる", "あてな", "あてはまる", "あひる", "あぶら", "あぶる", "あふれる", "あまい", "あまど", "あまやかす", "あまり", "あみもの", "あめりか", "あやまる", "あゆむ", "あらいぐま", "あらし", "あらすじ", "あらためる", "あらゆる", "あらわす", "ありがとう", "あわせる", "あわてる", "あんい", "あんがい", "あんこ", "あんぜん", "あんてい", "あんない", "あんまり", "いいだす", "いおん", "いがい", "いがく", "いきおい", "いきなり", "いきもの", "いきる", "いくじ", "いくぶん", "いけばな", "いけん", "いこう", "いこく", "いこつ", "いさましい", "いさん", "いしき", "いじゅう", "いじょう", "いじわる", "いずみ", "いずれ", "いせい", "いせえび", "いせかい", "いせき", "いぜん", "いそうろう", "いそがしい", "いだい", "いだく", "いたずら", "いたみ", "いたりあ", "いちおう", "いちじ", "いちど", "いちば", "いちぶ", "いちりゅう", "いつか", "いっしゅん", "いっせい", "いっそう", "いったん", "いっち", "いってい", "いっぽう", "いてざ", "いてん", "いどう", "いとこ", "いない", "いなか", "いねむり", "いのち", "いのる", "いはつ", "いばる", "いはん", "いびき", "いひん", "いふく", "いへん", "いほう", "いみん", "いもうと", "いもたれ", "いもり", "いやがる", "いやす", "いよかん", "いよく", "いらい", "いらすと", "いりぐち", "いりょう", "いれい", "いれもの", "いれる", "いろえんぴつ", "いわい", "いわう", "いわかん", "いわば", "いわゆる", "いんげんまめ", "いんさつ", "いんしょう", "いんよう", "うえき", "うえる", "うおざ", "うがい", "うかぶ", "うかべる", "うきわ", "うくらいな", "うくれれ", "うけたまわる", "うけつけ", "うけとる", "うけもつ", "うける", "うごかす", "うごく", "うこん", "うさぎ", "うしなう", "うしろがみ", "うすい", "うすぎ", "うすぐらい", "うすめる", "うせつ", "うちあわせ", "うちがわ", "うちき", "うちゅう", "うっかり", "うつくしい", "うったえる", "うつる", "うどん", "うなぎ", "うなじ", "うなずく", "うなる", "うねる", "うのう", "うぶげ", "うぶごえ", "うまれる", "うめる", "うもう", "うやまう", "うよく", "うらがえす", "うらぐち", "うらない", "うりあげ", "うりきれ", "うるさい", "うれしい", "うれゆき", "うれる", "うろこ", "うわき", "うわさ", "うんこう", "うんちん", "うんてん", "うんどう", "えいえん", "えいが", "えいきょう", "えいご", "えいせい", "えいぶん", "えいよう", "えいわ", "えおり", "えがお", "えがく", "えきたい", "えくせる", "えしゃく", "えすて", "えつらん", "えのぐ", "えほうまき", "えほん", "えまき", "えもじ", "えもの", "えらい", "えらぶ", "えりあ", "えんえん", "えんかい", "えんぎ", "えんげき", "えんしゅう", "えんぜつ", "えんそく", "えんちょう", "えんとつ", "おいかける", "おいこす", "おいしい", "おいつく", "おうえん", "おうさま", "おうじ", "おうせつ", "おうたい", "おうふく", "おうべい", "おうよう", "おえる", "おおい", "おおう", "おおどおり", "おおや", "おおよそ", "おかえり", "おかず", "おがむ", "おかわり", "おぎなう", "おきる", "おくさま", "おくじょう", "おくりがな", "おくる", "おくれる", "おこす", "おこなう", "おこる", "おさえる", "おさない", "おさめる", "おしいれ", "おしえる", "おじぎ", "おじさん", "おしゃれ", "おそらく", "おそわる", "おたがい", "おたく", "おだやか", "おちつく", "おっと", "おつり", "おでかけ", "おとしもの", "おとなしい", "おどり", "おどろかす", "おばさん", "おまいり", "おめでとう", "おもいで", "おもう", "おもたい", "おもちゃ", "おやつ", "おやゆび", "およぼす", "おらんだ", "おろす", "おんがく", "おんけい", "おんしゃ", "おんせん", "おんだん", "おんちゅう", "おんどけい", "かあつ", "かいが", "がいき", "がいけん", "がいこう", "かいさつ", "かいしゃ", "かいすいよく", "かいぜん", "かいぞうど", "かいつう", "かいてん", "かいとう", "かいふく", "がいへき", "かいほう", "かいよう", "がいらい", "かいわ", "かえる", "かおり", "かかえる", "かがく", "かがし", "かがみ", "かくご", "かくとく", "かざる", "がぞう", "かたい", "かたち", "がちょう", "がっきゅう", "がっこう", "がっさん", "がっしょう", "かなざわし", "かのう", "がはく", "かぶか", "かほう", "かほご", "かまう", "かまぼこ", "かめれおん", "かゆい", "かようび", "からい", "かるい", "かろう", "かわく", "かわら", "がんか", "かんけい", "かんこう", "かんしゃ", "かんそう", "かんたん", "かんち", "がんばる", "きあい", "きあつ", "きいろ", "ぎいん", "きうい", "きうん", "きえる", "きおう", "きおく", "きおち", "きおん", "きかい", "きかく", "きかんしゃ", "ききて", "きくばり", "きくらげ", "きけんせい", "きこう", "きこえる", "きこく", "きさい", "きさく", "きさま", "きさらぎ", "ぎじかがく", "ぎしき", "ぎじたいけん", "ぎじにってい", "ぎじゅつしゃ", "きすう", "きせい", "きせき", "きせつ", "きそう", "きぞく", "きぞん", "きたえる", "きちょう", "きつえん", "ぎっちり", "きつつき", "きつね", "きてい", "きどう", "きどく", "きない", "きなが", "きなこ", "きぬごし", "きねん", "きのう", "きのした", "きはく", "きびしい", "きひん", "きふく", "きぶん", "きぼう", "きほん", "きまる", "きみつ", "きむずかしい", "きめる", "きもだめし", "きもち", "きもの", "きゃく", "きやく", "ぎゅうにく", "きよう", "きょうりゅう", "きらい", "きらく", "きりん", "きれい", "きれつ", "きろく", "ぎろん", "きわめる", "ぎんいろ", "きんかくじ", "きんじょ", "きんようび", "ぐあい", "くいず", "くうかん", "くうき", "くうぐん", "くうこう", "ぐうせい", "くうそう", "ぐうたら", "くうふく", "くうぼ", "くかん", "くきょう", "くげん", "ぐこう", "くさい", "くさき", "くさばな", "くさる", "くしゃみ", "くしょう", "くすのき", "くすりゆび", "くせげ", "くせん", "ぐたいてき", "くださる", "くたびれる", "くちこみ", "くちさき", "くつした", "ぐっすり", "くつろぐ", "くとうてん", "くどく", "くなん", "くねくね", "くのう", "くふう", "くみあわせ", "くみたてる", "くめる", "くやくしょ", "くらす", "くらべる", "くるま", "くれる", "くろう", "くわしい", "ぐんかん", "ぐんしょく", "ぐんたい", "ぐんて", "けあな", "けいかく", "けいけん", "けいこ", "けいさつ", "げいじゅつ", "けいたい", "げいのうじん", "けいれき", "けいろ", "けおとす", "けおりもの", "げきか", "げきげん", "げきだん", "げきちん", "げきとつ", "げきは", "げきやく", "げこう", "げこくじょう", "げざい", "けさき", "げざん", "けしき", "けしごむ", "けしょう", "げすと", "けたば", "けちゃっぷ", "けちらす", "けつあつ", "けつい", "けつえき", "けっこん", "けつじょ", "けっせき", "けってい", "けつまつ", "げつようび", "げつれい", "けつろん", "げどく", "けとばす", "けとる", "けなげ", "けなす", "けなみ", "けぬき", "げねつ", "けねん", "けはい", "げひん", "けぶかい", "げぼく", "けまり", "けみかる", "けむし", "けむり", "けもの", "けらい", "けろけろ", "けわしい", "けんい", "けんえつ", "けんお", "けんか", "げんき", "けんげん", "けんこう", "けんさく", "けんしゅう", "けんすう", "げんそう", "けんちく", "けんてい", "けんとう", "けんない", "けんにん", "げんぶつ", "けんま", "けんみん", "けんめい", "けんらん", "けんり", "こあくま", "こいぬ", "こいびと", "ごうい", "こうえん", "こうおん", "こうかん", "ごうきゅう", "ごうけい", "こうこう", "こうさい", "こうじ", "こうすい", "ごうせい", "こうそく", "こうたい", "こうちゃ", "こうつう", "こうてい", "こうどう", "こうない", "こうはい", "ごうほう", "ごうまん", "こうもく", "こうりつ", "こえる", "こおり", "ごかい", "ごがつ", "ごかん", "こくご", "こくさい", "こくとう", "こくない", "こくはく", "こぐま", "こけい", "こける", "ここのか", "こころ", "こさめ", "こしつ", "こすう", "こせい", "こせき", "こぜん", "こそだて", "こたい", "こたえる", "こたつ", "こちょう", "こっか", "こつこつ", "こつばん", "こつぶ", "こてい", "こてん", "ことがら", "ことし", "ことば", "ことり", "こなごな", "こねこね", "このまま", "このみ", "このよ", "ごはん", "こひつじ", "こふう", "こふん", "こぼれる", "ごまあぶら", "こまかい", "ごますり", "こまつな", "こまる", "こむぎこ", "こもじ", "こもち", "こもの", "こもん", "こやく", "こやま", "こゆう", "こゆび", "こよい", "こよう", "こりる", "これくしょん", "ころっけ", "こわもて", "こわれる", "こんいん", "こんかい", "こんき", "こんしゅう", "こんすい", "こんだて", "こんとん", "こんなん", "こんびに", "こんぽん", "こんまけ", "こんや", "こんれい", "こんわく", "ざいえき", "さいかい", "さいきん", "ざいげん", "ざいこ", "さいしょ", "さいせい", "ざいたく", "ざいちゅう", "さいてき", "ざいりょう", "さうな", "さかいし", "さがす", "さかな", "さかみち", "さがる", "さぎょう", "さくし", "さくひん", "さくら", "さこく", "さこつ", "さずかる", "ざせき", "さたん", "さつえい", "ざつおん", "ざっか", "ざつがく", "さっきょく", "ざっし", "さつじん", "ざっそう", "さつたば", "さつまいも", "さてい", "さといも", "さとう", "さとおや", "さとし", "さとる", "さのう", "さばく", "さびしい", "さべつ", "さほう", "さほど", "さます", "さみしい", "さみだれ", "さむけ", "さめる", "さやえんどう", "さゆう", "さよう", "さよく", "さらだ", "ざるそば", "さわやか", "さわる", "さんいん", "さんか", "さんきゃく", "さんこう", "さんさい", "ざんしょ", "さんすう", "さんせい", "さんそ", "さんち", "さんま", "さんみ", "さんらん", "しあい", "しあげ", "しあさって", "しあわせ", "しいく", "しいん", "しうち", "しえい", "しおけ", "しかい", "しかく", "じかん", "しごと", "しすう", "じだい", "したうけ", "したぎ", "したて", "したみ", "しちょう", "しちりん", "しっかり", "しつじ", "しつもん", "してい", "してき", "してつ", "じてん", "じどう", "しなぎれ", "しなもの", "しなん", "しねま", "しねん", "しのぐ", "しのぶ", "しはい", "しばかり", "しはつ", "しはらい", "しはん", "しひょう", "しふく", "じぶん", "しへい", "しほう", "しほん", "しまう", "しまる", "しみん", "しむける", "じむしょ", "しめい", "しめる", "しもん", "しゃいん", "しゃうん", "しゃおん", "じゃがいも", "しやくしょ", "しゃくほう", "しゃけん", "しゃこ", "しゃざい", "しゃしん", "しゃせん", "しゃそう", "しゃたい", "しゃちょう", "しゃっきん", "じゃま", "しゃりん", "しゃれい", "じゆう", "じゅうしょ", "しゅくはく", "じゅしん", "しゅっせき", "しゅみ", "しゅらば", "じゅんばん", "しょうかい", "しょくたく", "しょっけん", "しょどう", "しょもつ", "しらせる", "しらべる", "しんか", "しんこう", "じんじゃ", "しんせいじ", "しんちく", "しんりん", "すあげ", "すあし", "すあな", "ずあん", "すいえい", "すいか", "すいとう", "ずいぶん", "すいようび", "すうがく", "すうじつ", "すうせん", "すおどり", "すきま", "すくう", "すくない", "すける", "すごい", "すこし", "ずさん", "すずしい", "すすむ", "すすめる", "すっかり", "ずっしり", "ずっと", "すてき", "すてる", "すねる", "すのこ", "すはだ", "すばらしい", "ずひょう", "ずぶぬれ", "すぶり", "すふれ", "すべて", "すべる", "ずほう", "すぼん", "すまい", "すめし", "すもう", "すやき", "すらすら", "するめ", "すれちがう", "すろっと", "すわる", "すんぜん", "すんぽう", "せあぶら", "せいかつ", "せいげん", "せいじ", "せいよう", "せおう", "せかいかん", "せきにん", "せきむ", "せきゆ", "せきらんうん", "せけん", "せこう", "せすじ", "せたい", "せたけ", "せっかく", "せっきゃく", "ぜっく", "せっけん", "せっこつ", "せっさたくま", "せつぞく", "せつだん", "せつでん", "せっぱん", "せつび", "せつぶん", "せつめい", "せつりつ", "せなか", "せのび", "せはば", "せびろ", "せぼね", "せまい", "せまる", "せめる", "せもたれ", "せりふ", "ぜんあく", "せんい", "せんえい", "せんか", "せんきょ", "せんく", "せんげん", "ぜんご", "せんさい", "せんしゅ", "せんすい", "せんせい", "せんぞ", "せんたく", "せんちょう", "せんてい", "せんとう", "せんぬき", "せんねん", "せんぱい", "ぜんぶ", "ぜんぽう", "せんむ", "せんめんじょ", "せんもん", "せんやく", "せんゆう", "せんよう", "ぜんら", "ぜんりゃく", "せんれい", "せんろ", "そあく", "そいとげる", "そいね", "そうがんきょう", "そうき", "そうご", "そうしん", "そうだん", "そうなん", "そうび", "そうめん", "そうり", "そえもの", "そえん", "そがい", "そげき", "そこう", "そこそこ", "そざい", "そしな", "そせい", "そせん", "そそぐ", "そだてる", "そつう", "そつえん", "そっかん", "そつぎょう", "そっけつ", "そっこう", "そっせん", "そっと", "そとがわ", "そとづら", "そなえる", "そなた", "そふぼ", "そぼく", "そぼろ", "そまつ", "そまる", "そむく", "そむりえ", "そめる", "そもそも", "そよかぜ", "そらまめ", "そろう", "そんかい", "そんけい", "そんざい", "そんしつ", "そんぞく", "そんちょう", "ぞんび", "ぞんぶん", "そんみん", "たあい", "たいいん", "たいうん", "たいえき", "たいおう", "だいがく", "たいき", "たいぐう", "たいけん", "たいこ", "たいざい", "だいじょうぶ", "だいすき", "たいせつ", "たいそう", "だいたい", "たいちょう", "たいてい", "だいどころ", "たいない", "たいねつ", "たいのう", "たいはん", "だいひょう", "たいふう", "たいへん", "たいほ", "たいまつばな", "たいみんぐ", "たいむ", "たいめん", "たいやき", "たいよう", "たいら", "たいりょく", "たいる", "たいわん", "たうえ", "たえる", "たおす", "たおる", "たおれる", "たかい", "たかね", "たきび", "たくさん", "たこく", "たこやき", "たさい", "たしざん", "だじゃれ", "たすける", "たずさわる", "たそがれ", "たたかう", "たたく", "ただしい", "たたみ", "たちばな", "だっかい", "だっきゃく", "だっこ", "だっしゅつ", "だったい", "たてる", "たとえる", "たなばた", "たにん", "たぬき", "たのしみ", "たはつ", "たぶん", "たべる", "たぼう", "たまご", "たまる", "だむる", "ためいき", "ためす", "ためる", "たもつ", "たやすい", "たよる", "たらす", "たりきほんがん", "たりょう", "たりる", "たると", "たれる", "たれんと", "たろっと", "たわむれる", "だんあつ", "たんい", "たんおん", "たんか", "たんき", "たんけん", "たんご", "たんさん", "たんじょうび", "だんせい", "たんそく", "たんたい", "だんち", "たんてい", "たんとう", "だんな", "たんにん", "だんねつ", "たんのう", "たんぴん", "だんぼう", "たんまつ", "たんめい", "だんれつ", "だんろ", "だんわ", "ちあい", "ちあん", "ちいき", "ちいさい", "ちえん", "ちかい", "ちから", "ちきゅう", "ちきん", "ちけいず", "ちけん", "ちこく", "ちさい", "ちしき", "ちしりょう", "ちせい", "ちそう", "ちたい", "ちたん", "ちちおや", "ちつじょ", "ちてき", "ちてん", "ちぬき", "ちぬり", "ちのう", "ちひょう", "ちへいせん", "ちほう", "ちまた", "ちみつ", "ちみどろ", "ちめいど", "ちゃんこなべ", "ちゅうい", "ちゆりょく", "ちょうし", "ちょさくけん", "ちらし", "ちらみ", "ちりがみ", "ちりょう", "ちるど", "ちわわ", "ちんたい", "ちんもく", "ついか", "ついたち", "つうか", "つうじょう", "つうはん", "つうわ", "つかう", "つかれる", "つくね", "つくる", "つけね", "つける", "つごう", "つたえる", "つづく", "つつじ", "つつむ", "つとめる", "つながる", "つなみ", "つねづね", "つのる", "つぶす", "つまらない", "つまる", "つみき", "つめたい", "つもり", "つもる", "つよい", "つるぼ", "つるみく", "つわもの", "つわり", "てあし", "てあて", "てあみ", "ていおん", "ていか", "ていき", "ていけい", "ていこく", "ていさつ", "ていし", "ていせい", "ていたい", "ていど", "ていねい", "ていひょう", "ていへん", "ていぼう", "てうち", "ておくれ", "てきとう", "てくび", "でこぼこ", "てさぎょう", "てさげ", "てすり", "てそう", "てちがい", "てちょう", "てつがく", "てつづき", "でっぱ", "てつぼう", "てつや", "でぬかえ", "てぬき", "てぬぐい", "てのひら", "てはい", "てぶくろ", "てふだ", "てほどき", "てほん", "てまえ", "てまきずし", "てみじか", "てみやげ", "てらす", "てれび", "てわけ", "てわたし", "でんあつ", "てんいん", "てんかい", "てんき", "てんぐ", "てんけん", "てんごく", "てんさい", "てんし", "てんすう", "でんち", "てんてき", "てんとう", "てんない", "てんぷら", "てんぼうだい", "てんめつ", "てんらんかい", "でんりょく", "でんわ", "どあい", "といれ", "どうかん", "とうきゅう", "どうぐ", "とうし", "とうむぎ", "とおい", "とおか", "とおく", "とおす", "とおる", "とかい", "とかす", "ときおり", "ときどき", "とくい", "とくしゅう", "とくてん", "とくに", "とくべつ", "とけい", "とける", "とこや", "とさか", "としょかん", "とそう", "とたん", "とちゅう", "とっきゅう", "とっくん", "とつぜん", "とつにゅう", "とどける", "ととのえる", "とない", "となえる", "となり", "とのさま", "とばす", "どぶがわ", "とほう", "とまる", "とめる", "ともだち", "ともる", "どようび", "とらえる", "とんかつ", "どんぶり", "ないかく", "ないこう", "ないしょ", "ないす", "ないせん", "ないそう", "なおす", "ながい", "なくす", "なげる", "なこうど", "なさけ", "なたでここ", "なっとう", "なつやすみ", "ななおし", "なにごと", "なにもの", "なにわ", "なのか", "なふだ", "なまいき", "なまえ", "なまみ", "なみだ", "なめらか", "なめる", "なやむ", "ならう", "ならび", "ならぶ", "なれる", "なわとび", "なわばり", "にあう", "にいがた", "にうけ", "におい", "にかい", "にがて", "にきび", "にくしみ", "にくまん", "にげる", "にさんかたんそ", "にしき", "にせもの", "にちじょう", "にちようび", "にっか", "にっき", "にっけい", "にっこう", "にっさん", "にっしょく", "にっすう", "にっせき", "にってい", "になう", "にほん", "にまめ", "にもつ", "にやり", "にゅういん", "にりんしゃ", "にわとり", "にんい", "にんか", "にんき", "にんげん", "にんしき", "にんずう", "にんそう", "にんたい", "にんち", "にんてい", "にんにく", "にんぷ", "にんまり", "にんむ", "にんめい", "にんよう", "ぬいくぎ", "ぬかす", "ぬぐいとる", "ぬぐう", "ぬくもり", "ぬすむ", "ぬまえび", "ぬめり", "ぬらす", "ぬんちゃく", "ねあげ", "ねいき", "ねいる", "ねいろ", "ねぐせ", "ねくたい", "ねくら", "ねこぜ", "ねこむ", "ねさげ", "ねすごす", "ねそべる", "ねだん", "ねつい", "ねっしん", "ねつぞう", "ねったいぎょ", "ねぶそく", "ねふだ", "ねぼう", "ねほりはほり", "ねまき", "ねまわし", "ねみみ", "ねむい", "ねむたい", "ねもと", "ねらう", "ねわざ", "ねんいり", "ねんおし", "ねんかん", "ねんきん", "ねんぐ", "ねんざ", "ねんし", "ねんちゃく", "ねんど", "ねんぴ", "ねんぶつ", "ねんまつ", "ねんりょう", "ねんれい", "のいず", "のおづま", "のがす", "のきなみ", "のこぎり", "のこす", "のこる", "のせる", "のぞく", "のぞむ", "のたまう", "のちほど", "のっく", "のばす", "のはら", "のべる", "のぼる", "のみもの", "のやま", "のらいぬ", "のらねこ", "のりもの", "のりゆき", "のれん", "のんき", "ばあい", "はあく", "ばあさん", "ばいか", "ばいく", "はいけん", "はいご", "はいしん", "はいすい", "はいせん", "はいそう", "はいち", "ばいばい", "はいれつ", "はえる", "はおる", "はかい", "ばかり", "はかる", "はくしゅ", "はけん", "はこぶ", "はさみ", "はさん", "はしご", "ばしょ", "はしる", "はせる", "ぱそこん", "はそん", "はたん", "はちみつ", "はつおん", "はっかく", "はづき", "はっきり", "はっくつ", "はっけん", "はっこう", "はっさん", "はっしん", "はったつ", "はっちゅう", "はってん", "はっぴょう", "はっぽう", "はなす", "はなび", "はにかむ", "はぶらし", "はみがき", "はむかう", "はめつ", "はやい", "はやし", "はらう", "はろうぃん", "はわい", "はんい", "はんえい", "はんおん", "はんかく", "はんきょう", "ばんぐみ", "はんこ", "はんしゃ", "はんすう", "はんだん", "ぱんち", "ぱんつ", "はんてい", "はんとし", "はんのう", "はんぱ", "はんぶん", "はんぺん", "はんぼうき", "はんめい", "はんらん", "はんろん", "ひいき", "ひうん", "ひえる", "ひかく", "ひかり", "ひかる", "ひかん", "ひくい", "ひけつ", "ひこうき", "ひこく", "ひさい", "ひさしぶり", "ひさん", "びじゅつかん", "ひしょ", "ひそか", "ひそむ", "ひたむき", "ひだり", "ひたる", "ひつぎ", "ひっこし", "ひっし", "ひつじゅひん", "ひっす", "ひつぜん", "ぴったり", "ぴっちり", "ひつよう", "ひてい", "ひとごみ", "ひなまつり", "ひなん", "ひねる", "ひはん", "ひびく", "ひひょう", "ひほう", "ひまわり", "ひまん", "ひみつ", "ひめい", "ひめじし", "ひやけ", "ひやす", "ひよう", "びょうき", "ひらがな", "ひらく", "ひりつ", "ひりょう", "ひるま", "ひるやすみ", "ひれい", "ひろい", "ひろう", "ひろき", "ひろゆき", "ひんかく", "ひんけつ", "ひんこん", "ひんしゅ", "ひんそう", "ぴんち", "ひんぱん", "びんぼう", "ふあん", "ふいうち", "ふうけい", "ふうせん", "ぷうたろう", "ふうとう", "ふうふ", "ふえる", "ふおん", "ふかい", "ふきん", "ふくざつ", "ふくぶくろ", "ふこう", "ふさい", "ふしぎ", "ふじみ", "ふすま", "ふせい", "ふせぐ", "ふそく", "ぶたにく", "ふたん", "ふちょう", "ふつう", "ふつか", "ふっかつ", "ふっき", "ふっこく", "ぶどう", "ふとる", "ふとん", "ふのう", "ふはい", "ふひょう", "ふへん", "ふまん", "ふみん", "ふめつ", "ふめん", "ふよう", "ふりこ", "ふりる", "ふるい", "ふんいき", "ぶんがく", "ぶんぐ", "ふんしつ", "ぶんせき", "ふんそう", "ぶんぽう", "へいあん", "へいおん", "へいがい", "へいき", "へいげん", "へいこう", "へいさ", "へいしゃ", "へいせつ", "へいそ", "へいたく", "へいてん", "へいねつ", "へいわ", "へきが", "へこむ", "べにいろ", "べにしょうが", "へらす", "へんかん", "べんきょう", "べんごし", "へんさい", "へんたい", "べんり", "ほあん", "ほいく", "ぼうぎょ", "ほうこく", "ほうそう", "ほうほう", "ほうもん", "ほうりつ", "ほえる", "ほおん", "ほかん", "ほきょう", "ぼきん", "ほくろ", "ほけつ", "ほけん", "ほこう", "ほこる", "ほしい", "ほしつ", "ほしゅ", "ほしょう", "ほせい", "ほそい", "ほそく", "ほたて", "ほたる", "ぽちぶくろ", "ほっきょく", "ほっさ", "ほったん", "ほとんど", "ほめる", "ほんい", "ほんき", "ほんけ", "ほんしつ", "ほんやく", "まいにち", "まかい", "まかせる", "まがる", "まける", "まこと", "まさつ", "まじめ", "ますく", "まぜる", "まつり", "まとめ", "まなぶ", "まぬけ", "まねく", "まほう", "まもる", "まゆげ", "まよう", "まろやか", "まわす", "まわり", "まわる", "まんが", "まんきつ", "まんぞく", "まんなか", "みいら", "みうち", "みえる", "みがく", "みかた", "みかん", "みけん", "みこん", "みじかい", "みすい", "みすえる", "みせる", "みっか", "みつかる", "みつける", "みてい", "みとめる", "みなと", "みなみかさい", "みねらる", "みのう", "みのがす", "みほん", "みもと", "みやげ", "みらい", "みりょく", "みわく", "みんか", "みんぞく", "むいか", "むえき", "むえん", "むかい", "むかう", "むかえ", "むかし", "むぎちゃ", "むける", "むげん", "むさぼる", "むしあつい", "むしば", "むじゅん", "むしろ", "むすう", "むすこ", "むすぶ", "むすめ", "むせる", "むせん", "むちゅう", "むなしい", "むのう", "むやみ", "むよう", "むらさき", "むりょう", "むろん", "めいあん", "めいうん", "めいえん", "めいかく", "めいきょく", "めいさい", "めいし", "めいそう", "めいぶつ", "めいれい", "めいわく", "めぐまれる", "めざす", "めした", "めずらしい", "めだつ", "めまい", "めやす", "めんきょ", "めんせき", "めんどう", "もうしあげる", "もうどうけん", "もえる", "もくし", "もくてき", "もくようび", "もちろん", "もどる", "もらう", "もんく", "もんだい", "やおや", "やける", "やさい", "やさしい", "やすい", "やすたろう", "やすみ", "やせる", "やそう", "やたい", "やちん", "やっと", "やっぱり", "やぶる", "やめる", "ややこしい", "やよい", "やわらかい", "ゆうき", "ゆうびんきょく", "ゆうべ", "ゆうめい", "ゆけつ", "ゆしゅつ", "ゆせん", "ゆそう", "ゆたか", "ゆちゃく", "ゆでる", "ゆにゅう", "ゆびわ", "ゆらい", "ゆれる", "ようい", "ようか", "ようきゅう", "ようじ", "ようす", "ようちえん", "よかぜ", "よかん", "よきん", "よくせい", "よくぼう", "よけい", "よごれる", "よさん", "よしゅう", "よそう", "よそく", "よっか", "よてい", "よどがわく", "よねつ", "よやく", "よゆう", "よろこぶ", "よろしい", "らいう", "らくがき", "らくご", "らくさつ", "らくだ", "らしんばん", "らせん", "らぞく", "らたい", "らっか", "られつ", "りえき", "りかい", "りきさく", "りきせつ", "りくぐん", "りくつ", "りけん", "りこう", "りせい", "りそう", "りそく", "りてん", "りねん", "りゆう", "りゅうがく", "りよう", "りょうり", "りょかん", "りょくちゃ", "りょこう", "りりく", "りれき", "りろん", "りんご", "るいけい", "るいさい", "るいじ", "るいせき", "るすばん", "るりがわら", "れいかん", "れいぎ", "れいせい", "れいぞうこ", "れいとう", "れいぼう", "れきし", "れきだい", "れんあい", "れんけい", "れんこん", "れんさい", "れんしゅう", "れんぞく", "れんらく", "ろうか", "ろうご", "ろうじん", "ろうそく", "ろくが", "ろこつ", "ろじうら", "ろしゅつ", "ろせん", "ろてん", "ろめん", "ろれつ", "ろんぎ", "ろんぱ", "ろんぶん", "ろんり", "わかす", "わかめ", "わかやま", "わかれる", "わしつ", "わじまし", "わすれもの", "わらう", "われる"];
+		var japanese$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': japanese
+		});
+		var portuguese = ["abacate", "abaixo", "abalar", "abater", "abduzir", "abelha", "aberto", "abismo", "abotoar", "abranger", "abreviar", "abrigar", "abrupto", "absinto", "absoluto", "absurdo", "abutre", "acabado", "acalmar", "acampar", "acanhar", "acaso", "aceitar", "acelerar", "acenar", "acervo", "acessar", "acetona", "achatar", "acidez", "acima", "acionado", "acirrar", "aclamar", "aclive", "acolhida", "acomodar", "acoplar", "acordar", "acumular", "acusador", "adaptar", "adega", "adentro", "adepto", "adequar", "aderente", "adesivo", "adeus", "adiante", "aditivo", "adjetivo", "adjunto", "admirar", "adorar", "adquirir", "adubo", "adverso", "advogado", "aeronave", "afastar", "aferir", "afetivo", "afinador", "afivelar", "aflito", "afluente", "afrontar", "agachar", "agarrar", "agasalho", "agenciar", "agilizar", "agiota", "agitado", "agora", "agradar", "agreste", "agrupar", "aguardar", "agulha", "ajoelhar", "ajudar", "ajustar", "alameda", "alarme", "alastrar", "alavanca", "albergue", "albino", "alcatra", "aldeia", "alecrim", "alegria", "alertar", "alface", "alfinete", "algum", "alheio", "aliar", "alicate", "alienar", "alinhar", "aliviar", "almofada", "alocar", "alpiste", "alterar", "altitude", "alucinar", "alugar", "aluno", "alusivo", "alvo", "amaciar", "amador", "amarelo", "amassar", "ambas", "ambiente", "ameixa", "amenizar", "amido", "amistoso", "amizade", "amolador", "amontoar", "amoroso", "amostra", "amparar", "ampliar", "ampola", "anagrama", "analisar", "anarquia", "anatomia", "andaime", "anel", "anexo", "angular", "animar", "anjo", "anomalia", "anotado", "ansioso", "anterior", "anuidade", "anunciar", "anzol", "apagador", "apalpar", "apanhado", "apego", "apelido", "apertada", "apesar", "apetite", "apito", "aplauso", "aplicada", "apoio", "apontar", "aposta", "aprendiz", "aprovar", "aquecer", "arame", "aranha", "arara", "arcada", "ardente", "areia", "arejar", "arenito", "aresta", "argiloso", "argola", "arma", "arquivo", "arraial", "arrebate", "arriscar", "arroba", "arrumar", "arsenal", "arterial", "artigo", "arvoredo", "asfaltar", "asilado", "aspirar", "assador", "assinar", "assoalho", "assunto", "astral", "atacado", "atadura", "atalho", "atarefar", "atear", "atender", "aterro", "ateu", "atingir", "atirador", "ativo", "atoleiro", "atracar", "atrevido", "atriz", "atual", "atum", "auditor", "aumentar", "aura", "aurora", "autismo", "autoria", "autuar", "avaliar", "avante", "avaria", "avental", "avesso", "aviador", "avisar", "avulso", "axila", "azarar", "azedo", "azeite", "azulejo", "babar", "babosa", "bacalhau", "bacharel", "bacia", "bagagem", "baiano", "bailar", "baioneta", "bairro", "baixista", "bajular", "baleia", "baliza", "balsa", "banal", "bandeira", "banho", "banir", "banquete", "barato", "barbado", "baronesa", "barraca", "barulho", "baseado", "bastante", "batata", "batedor", "batida", "batom", "batucar", "baunilha", "beber", "beijo", "beirada", "beisebol", "beldade", "beleza", "belga", "beliscar", "bendito", "bengala", "benzer", "berimbau", "berlinda", "berro", "besouro", "bexiga", "bezerro", "bico", "bicudo", "bienal", "bifocal", "bifurcar", "bigorna", "bilhete", "bimestre", "bimotor", "biologia", "biombo", "biosfera", "bipolar", "birrento", "biscoito", "bisneto", "bispo", "bissexto", "bitola", "bizarro", "blindado", "bloco", "bloquear", "boato", "bobagem", "bocado", "bocejo", "bochecha", "boicotar", "bolada", "boletim", "bolha", "bolo", "bombeiro", "bonde", "boneco", "bonita", "borbulha", "borda", "boreal", "borracha", "bovino", "boxeador", "branco", "brasa", "braveza", "breu", "briga", "brilho", "brincar", "broa", "brochura", "bronzear", "broto", "bruxo", "bucha", "budismo", "bufar", "bule", "buraco", "busca", "busto", "buzina", "cabana", "cabelo", "cabide", "cabo", "cabrito", "cacau", "cacetada", "cachorro", "cacique", "cadastro", "cadeado", "cafezal", "caiaque", "caipira", "caixote", "cajado", "caju", "calafrio", "calcular", "caldeira", "calibrar", "calmante", "calota", "camada", "cambista", "camisa", "camomila", "campanha", "camuflar", "canavial", "cancelar", "caneta", "canguru", "canhoto", "canivete", "canoa", "cansado", "cantar", "canudo", "capacho", "capela", "capinar", "capotar", "capricho", "captador", "capuz", "caracol", "carbono", "cardeal", "careca", "carimbar", "carneiro", "carpete", "carreira", "cartaz", "carvalho", "casaco", "casca", "casebre", "castelo", "casulo", "catarata", "cativar", "caule", "causador", "cautelar", "cavalo", "caverna", "cebola", "cedilha", "cegonha", "celebrar", "celular", "cenoura", "censo", "centeio", "cercar", "cerrado", "certeiro", "cerveja", "cetim", "cevada", "chacota", "chaleira", "chamado", "chapada", "charme", "chatice", "chave", "chefe", "chegada", "cheiro", "cheque", "chicote", "chifre", "chinelo", "chocalho", "chover", "chumbo", "chutar", "chuva", "cicatriz", "ciclone", "cidade", "cidreira", "ciente", "cigana", "cimento", "cinto", "cinza", "ciranda", "circuito", "cirurgia", "citar", "clareza", "clero", "clicar", "clone", "clube", "coado", "coagir", "cobaia", "cobertor", "cobrar", "cocada", "coelho", "coentro", "coeso", "cogumelo", "coibir", "coifa", "coiote", "colar", "coleira", "colher", "colidir", "colmeia", "colono", "coluna", "comando", "combinar", "comentar", "comitiva", "comover", "complexo", "comum", "concha", "condor", "conectar", "confuso", "congelar", "conhecer", "conjugar", "consumir", "contrato", "convite", "cooperar", "copeiro", "copiador", "copo", "coquetel", "coragem", "cordial", "corneta", "coronha", "corporal", "correio", "cortejo", "coruja", "corvo", "cosseno", "costela", "cotonete", "couro", "couve", "covil", "cozinha", "cratera", "cravo", "creche", "credor", "creme", "crer", "crespo", "criada", "criminal", "crioulo", "crise", "criticar", "crosta", "crua", "cruzeiro", "cubano", "cueca", "cuidado", "cujo", "culatra", "culminar", "culpar", "cultura", "cumprir", "cunhado", "cupido", "curativo", "curral", "cursar", "curto", "cuspir", "custear", "cutelo", "damasco", "datar", "debater", "debitar", "deboche", "debulhar", "decalque", "decimal", "declive", "decote", "decretar", "dedal", "dedicado", "deduzir", "defesa", "defumar", "degelo", "degrau", "degustar", "deitado", "deixar", "delator", "delegado", "delinear", "delonga", "demanda", "demitir", "demolido", "dentista", "depenado", "depilar", "depois", "depressa", "depurar", "deriva", "derramar", "desafio", "desbotar", "descanso", "desenho", "desfiado", "desgaste", "desigual", "deslize", "desmamar", "desova", "despesa", "destaque", "desviar", "detalhar", "detentor", "detonar", "detrito", "deusa", "dever", "devido", "devotado", "dezena", "diagrama", "dialeto", "didata", "difuso", "digitar", "dilatado", "diluente", "diminuir", "dinastia", "dinheiro", "diocese", "direto", "discreta", "disfarce", "disparo", "disquete", "dissipar", "distante", "ditador", "diurno", "diverso", "divisor", "divulgar", "dizer", "dobrador", "dolorido", "domador", "dominado", "donativo", "donzela", "dormente", "dorsal", "dosagem", "dourado", "doutor", "drenagem", "drible", "drogaria", "duelar", "duende", "dueto", "duplo", "duquesa", "durante", "duvidoso", "eclodir", "ecoar", "ecologia", "edificar", "edital", "educado", "efeito", "efetivar", "ejetar", "elaborar", "eleger", "eleitor", "elenco", "elevador", "eliminar", "elogiar", "embargo", "embolado", "embrulho", "embutido", "emenda", "emergir", "emissor", "empatia", "empenho", "empinado", "empolgar", "emprego", "empurrar", "emulador", "encaixe", "encenado", "enchente", "encontro", "endeusar", "endossar", "enfaixar", "enfeite", "enfim", "engajado", "engenho", "englobar", "engomado", "engraxar", "enguia", "enjoar", "enlatar", "enquanto", "enraizar", "enrolado", "enrugar", "ensaio", "enseada", "ensino", "ensopado", "entanto", "enteado", "entidade", "entortar", "entrada", "entulho", "envergar", "enviado", "envolver", "enxame", "enxerto", "enxofre", "enxuto", "epiderme", "equipar", "ereto", "erguido", "errata", "erva", "ervilha", "esbanjar", "esbelto", "escama", "escola", "escrita", "escuta", "esfinge", "esfolar", "esfregar", "esfumado", "esgrima", "esmalte", "espanto", "espelho", "espiga", "esponja", "espreita", "espumar", "esquerda", "estaca", "esteira", "esticar", "estofado", "estrela", "estudo", "esvaziar", "etanol", "etiqueta", "euforia", "europeu", "evacuar", "evaporar", "evasivo", "eventual", "evidente", "evoluir", "exagero", "exalar", "examinar", "exato", "exausto", "excesso", "excitar", "exclamar", "executar", "exemplo", "exibir", "exigente", "exonerar", "expandir", "expelir", "expirar", "explanar", "exposto", "expresso", "expulsar", "externo", "extinto", "extrato", "fabricar", "fabuloso", "faceta", "facial", "fada", "fadiga", "faixa", "falar", "falta", "familiar", "fandango", "fanfarra", "fantoche", "fardado", "farelo", "farinha", "farofa", "farpa", "fartura", "fatia", "fator", "favorita", "faxina", "fazenda", "fechado", "feijoada", "feirante", "felino", "feminino", "fenda", "feno", "fera", "feriado", "ferrugem", "ferver", "festejar", "fetal", "feudal", "fiapo", "fibrose", "ficar", "ficheiro", "figurado", "fileira", "filho", "filme", "filtrar", "firmeza", "fisgada", "fissura", "fita", "fivela", "fixador", "fixo", "flacidez", "flamingo", "flanela", "flechada", "flora", "flutuar", "fluxo", "focal", "focinho", "fofocar", "fogo", "foguete", "foice", "folgado", "folheto", "forjar", "formiga", "forno", "forte", "fosco", "fossa", "fragata", "fralda", "frango", "frasco", "fraterno", "freira", "frente", "fretar", "frieza", "friso", "fritura", "fronha", "frustrar", "fruteira", "fugir", "fulano", "fuligem", "fundar", "fungo", "funil", "furador", "furioso", "futebol", "gabarito", "gabinete", "gado", "gaiato", "gaiola", "gaivota", "galega", "galho", "galinha", "galocha", "ganhar", "garagem", "garfo", "gargalo", "garimpo", "garoupa", "garrafa", "gasoduto", "gasto", "gata", "gatilho", "gaveta", "gazela", "gelado", "geleia", "gelo", "gemada", "gemer", "gemido", "generoso", "gengiva", "genial", "genoma", "genro", "geologia", "gerador", "germinar", "gesso", "gestor", "ginasta", "gincana", "gingado", "girafa", "girino", "glacial", "glicose", "global", "glorioso", "goela", "goiaba", "golfe", "golpear", "gordura", "gorjeta", "gorro", "gostoso", "goteira", "governar", "gracejo", "gradual", "grafite", "gralha", "grampo", "granada", "gratuito", "graveto", "graxa", "grego", "grelhar", "greve", "grilo", "grisalho", "gritaria", "grosso", "grotesco", "grudado", "grunhido", "gruta", "guache", "guarani", "guaxinim", "guerrear", "guiar", "guincho", "guisado", "gula", "guloso", "guru", "habitar", "harmonia", "haste", "haver", "hectare", "herdar", "heresia", "hesitar", "hiato", "hibernar", "hidratar", "hiena", "hino", "hipismo", "hipnose", "hipoteca", "hoje", "holofote", "homem", "honesto", "honrado", "hormonal", "hospedar", "humorado", "iate", "ideia", "idoso", "ignorado", "igreja", "iguana", "ileso", "ilha", "iludido", "iluminar", "ilustrar", "imagem", "imediato", "imenso", "imersivo", "iminente", "imitador", "imortal", "impacto", "impedir", "implante", "impor", "imprensa", "impune", "imunizar", "inalador", "inapto", "inativo", "incenso", "inchar", "incidir", "incluir", "incolor", "indeciso", "indireto", "indutor", "ineficaz", "inerente", "infantil", "infestar", "infinito", "inflamar", "informal", "infrator", "ingerir", "inibido", "inicial", "inimigo", "injetar", "inocente", "inodoro", "inovador", "inox", "inquieto", "inscrito", "inseto", "insistir", "inspetor", "instalar", "insulto", "intacto", "integral", "intimar", "intocado", "intriga", "invasor", "inverno", "invicto", "invocar", "iogurte", "iraniano", "ironizar", "irreal", "irritado", "isca", "isento", "isolado", "isqueiro", "italiano", "janeiro", "jangada", "janta", "jararaca", "jardim", "jarro", "jasmim", "jato", "javali", "jazida", "jejum", "joaninha", "joelhada", "jogador", "joia", "jornal", "jorrar", "jovem", "juba", "judeu", "judoca", "juiz", "julgador", "julho", "jurado", "jurista", "juro", "justa", "labareda", "laboral", "lacre", "lactante", "ladrilho", "lagarta", "lagoa", "laje", "lamber", "lamentar", "laminar", "lampejo", "lanche", "lapidar", "lapso", "laranja", "lareira", "largura", "lasanha", "lastro", "lateral", "latido", "lavanda", "lavoura", "lavrador", "laxante", "lazer", "lealdade", "lebre", "legado", "legendar", "legista", "leigo", "leiloar", "leitura", "lembrete", "leme", "lenhador", "lentilha", "leoa", "lesma", "leste", "letivo", "letreiro", "levar", "leveza", "levitar", "liberal", "libido", "liderar", "ligar", "ligeiro", "limitar", "limoeiro", "limpador", "linda", "linear", "linhagem", "liquidez", "listagem", "lisura", "litoral", "livro", "lixa", "lixeira", "locador", "locutor", "lojista", "lombo", "lona", "longe", "lontra", "lorde", "lotado", "loteria", "loucura", "lousa", "louvar", "luar", "lucidez", "lucro", "luneta", "lustre", "lutador", "luva", "macaco", "macete", "machado", "macio", "madeira", "madrinha", "magnata", "magreza", "maior", "mais", "malandro", "malha", "malote", "maluco", "mamilo", "mamoeiro", "mamute", "manada", "mancha", "mandato", "manequim", "manhoso", "manivela", "manobrar", "mansa", "manter", "manusear", "mapeado", "maquinar", "marcador", "maresia", "marfim", "margem", "marinho", "marmita", "maroto", "marquise", "marreco", "martelo", "marujo", "mascote", "masmorra", "massagem", "mastigar", "matagal", "materno", "matinal", "matutar", "maxilar", "medalha", "medida", "medusa", "megafone", "meiga", "melancia", "melhor", "membro", "memorial", "menino", "menos", "mensagem", "mental", "merecer", "mergulho", "mesada", "mesclar", "mesmo", "mesquita", "mestre", "metade", "meteoro", "metragem", "mexer", "mexicano", "micro", "migalha", "migrar", "milagre", "milenar", "milhar", "mimado", "minerar", "minhoca", "ministro", "minoria", "miolo", "mirante", "mirtilo", "misturar", "mocidade", "moderno", "modular", "moeda", "moer", "moinho", "moita", "moldura", "moleza", "molho", "molinete", "molusco", "montanha", "moqueca", "morango", "morcego", "mordomo", "morena", "mosaico", "mosquete", "mostarda", "motel", "motim", "moto", "motriz", "muda", "muito", "mulata", "mulher", "multar", "mundial", "munido", "muralha", "murcho", "muscular", "museu", "musical", "nacional", "nadador", "naja", "namoro", "narina", "narrado", "nascer", "nativa", "natureza", "navalha", "navegar", "navio", "neblina", "nebuloso", "negativa", "negociar", "negrito", "nervoso", "neta", "neural", "nevasca", "nevoeiro", "ninar", "ninho", "nitidez", "nivelar", "nobreza", "noite", "noiva", "nomear", "nominal", "nordeste", "nortear", "notar", "noticiar", "noturno", "novelo", "novilho", "novo", "nublado", "nudez", "numeral", "nupcial", "nutrir", "nuvem", "obcecado", "obedecer", "objetivo", "obrigado", "obscuro", "obstetra", "obter", "obturar", "ocidente", "ocioso", "ocorrer", "oculista", "ocupado", "ofegante", "ofensiva", "oferenda", "oficina", "ofuscado", "ogiva", "olaria", "oleoso", "olhar", "oliveira", "ombro", "omelete", "omisso", "omitir", "ondulado", "oneroso", "ontem", "opcional", "operador", "oponente", "oportuno", "oposto", "orar", "orbitar", "ordem", "ordinal", "orfanato", "orgasmo", "orgulho", "oriental", "origem", "oriundo", "orla", "ortodoxo", "orvalho", "oscilar", "ossada", "osso", "ostentar", "otimismo", "ousadia", "outono", "outubro", "ouvido", "ovelha", "ovular", "oxidar", "oxigenar", "pacato", "paciente", "pacote", "pactuar", "padaria", "padrinho", "pagar", "pagode", "painel", "pairar", "paisagem", "palavra", "palestra", "palheta", "palito", "palmada", "palpitar", "pancada", "panela", "panfleto", "panqueca", "pantanal", "papagaio", "papelada", "papiro", "parafina", "parcial", "pardal", "parede", "partida", "pasmo", "passado", "pastel", "patamar", "patente", "patinar", "patrono", "paulada", "pausar", "peculiar", "pedalar", "pedestre", "pediatra", "pedra", "pegada", "peitoral", "peixe", "pele", "pelicano", "penca", "pendurar", "peneira", "penhasco", "pensador", "pente", "perceber", "perfeito", "pergunta", "perito", "permitir", "perna", "perplexo", "persiana", "pertence", "peruca", "pescado", "pesquisa", "pessoa", "petiscar", "piada", "picado", "piedade", "pigmento", "pilastra", "pilhado", "pilotar", "pimenta", "pincel", "pinguim", "pinha", "pinote", "pintar", "pioneiro", "pipoca", "piquete", "piranha", "pires", "pirueta", "piscar", "pistola", "pitanga", "pivete", "planta", "plaqueta", "platina", "plebeu", "plumagem", "pluvial", "pneu", "poda", "poeira", "poetisa", "polegada", "policiar", "poluente", "polvilho", "pomar", "pomba", "ponderar", "pontaria", "populoso", "porta", "possuir", "postal", "pote", "poupar", "pouso", "povoar", "praia", "prancha", "prato", "praxe", "prece", "predador", "prefeito", "premiar", "prensar", "preparar", "presilha", "pretexto", "prevenir", "prezar", "primata", "princesa", "prisma", "privado", "processo", "produto", "profeta", "proibido", "projeto", "prometer", "propagar", "prosa", "protetor", "provador", "publicar", "pudim", "pular", "pulmonar", "pulseira", "punhal", "punir", "pupilo", "pureza", "puxador", "quadra", "quantia", "quarto", "quase", "quebrar", "queda", "queijo", "quente", "querido", "quimono", "quina", "quiosque", "rabanada", "rabisco", "rachar", "racionar", "radial", "raiar", "rainha", "raio", "raiva", "rajada", "ralado", "ramal", "ranger", "ranhura", "rapadura", "rapel", "rapidez", "raposa", "raquete", "raridade", "rasante", "rascunho", "rasgar", "raspador", "rasteira", "rasurar", "ratazana", "ratoeira", "realeza", "reanimar", "reaver", "rebaixar", "rebelde", "rebolar", "recado", "recente", "recheio", "recibo", "recordar", "recrutar", "recuar", "rede", "redimir", "redonda", "reduzida", "reenvio", "refinar", "refletir", "refogar", "refresco", "refugiar", "regalia", "regime", "regra", "reinado", "reitor", "rejeitar", "relativo", "remador", "remendo", "remorso", "renovado", "reparo", "repelir", "repleto", "repolho", "represa", "repudiar", "requerer", "resenha", "resfriar", "resgatar", "residir", "resolver", "respeito", "ressaca", "restante", "resumir", "retalho", "reter", "retirar", "retomada", "retratar", "revelar", "revisor", "revolta", "riacho", "rica", "rigidez", "rigoroso", "rimar", "ringue", "risada", "risco", "risonho", "robalo", "rochedo", "rodada", "rodeio", "rodovia", "roedor", "roleta", "romano", "roncar", "rosado", "roseira", "rosto", "rota", "roteiro", "rotina", "rotular", "rouco", "roupa", "roxo", "rubro", "rugido", "rugoso", "ruivo", "rumo", "rupestre", "russo", "sabor", "saciar", "sacola", "sacudir", "sadio", "safira", "saga", "sagrada", "saibro", "salada", "saleiro", "salgado", "saliva", "salpicar", "salsicha", "saltar", "salvador", "sambar", "samurai", "sanar", "sanfona", "sangue", "sanidade", "sapato", "sarda", "sargento", "sarjeta", "saturar", "saudade", "saxofone", "sazonal", "secar", "secular", "seda", "sedento", "sediado", "sedoso", "sedutor", "segmento", "segredo", "segundo", "seiva", "seleto", "selvagem", "semanal", "semente", "senador", "senhor", "sensual", "sentado", "separado", "sereia", "seringa", "serra", "servo", "setembro", "setor", "sigilo", "silhueta", "silicone", "simetria", "simpatia", "simular", "sinal", "sincero", "singular", "sinopse", "sintonia", "sirene", "siri", "situado", "soberano", "sobra", "socorro", "sogro", "soja", "solda", "soletrar", "solteiro", "sombrio", "sonata", "sondar", "sonegar", "sonhador", "sono", "soprano", "soquete", "sorrir", "sorteio", "sossego", "sotaque", "soterrar", "sovado", "sozinho", "suavizar", "subida", "submerso", "subsolo", "subtrair", "sucata", "sucesso", "suco", "sudeste", "sufixo", "sugador", "sugerir", "sujeito", "sulfato", "sumir", "suor", "superior", "suplicar", "suposto", "suprimir", "surdina", "surfista", "surpresa", "surreal", "surtir", "suspiro", "sustento", "tabela", "tablete", "tabuada", "tacho", "tagarela", "talher", "talo", "talvez", "tamanho", "tamborim", "tampa", "tangente", "tanto", "tapar", "tapioca", "tardio", "tarefa", "tarja", "tarraxa", "tatuagem", "taurino", "taxativo", "taxista", "teatral", "tecer", "tecido", "teclado", "tedioso", "teia", "teimar", "telefone", "telhado", "tempero", "tenente", "tensor", "tentar", "termal", "terno", "terreno", "tese", "tesoura", "testado", "teto", "textura", "texugo", "tiara", "tigela", "tijolo", "timbrar", "timidez", "tingido", "tinteiro", "tiragem", "titular", "toalha", "tocha", "tolerar", "tolice", "tomada", "tomilho", "tonel", "tontura", "topete", "tora", "torcido", "torneio", "torque", "torrada", "torto", "tostar", "touca", "toupeira", "toxina", "trabalho", "tracejar", "tradutor", "trafegar", "trajeto", "trama", "trancar", "trapo", "traseiro", "tratador", "travar", "treino", "tremer", "trepidar", "trevo", "triagem", "tribo", "triciclo", "tridente", "trilogia", "trindade", "triplo", "triturar", "triunfal", "trocar", "trombeta", "trova", "trunfo", "truque", "tubular", "tucano", "tudo", "tulipa", "tupi", "turbo", "turma", "turquesa", "tutelar", "tutorial", "uivar", "umbigo", "unha", "unidade", "uniforme", "urologia", "urso", "urtiga", "urubu", "usado", "usina", "usufruir", "vacina", "vadiar", "vagaroso", "vaidoso", "vala", "valente", "validade", "valores", "vantagem", "vaqueiro", "varanda", "vareta", "varrer", "vascular", "vasilha", "vassoura", "vazar", "vazio", "veado", "vedar", "vegetar", "veicular", "veleiro", "velhice", "veludo", "vencedor", "vendaval", "venerar", "ventre", "verbal", "verdade", "vereador", "vergonha", "vermelho", "verniz", "versar", "vertente", "vespa", "vestido", "vetorial", "viaduto", "viagem", "viajar", "viatura", "vibrador", "videira", "vidraria", "viela", "viga", "vigente", "vigiar", "vigorar", "vilarejo", "vinco", "vinheta", "vinil", "violeta", "virada", "virtude", "visitar", "visto", "vitral", "viveiro", "vizinho", "voador", "voar", "vogal", "volante", "voleibol", "voltagem", "volumoso", "vontade", "vulto", "vuvuzela", "xadrez", "xarope", "xeque", "xeretar", "xerife", "xingar", "zangado", "zarpar", "zebu", "zelador", "zombar", "zoologia", "zumbido"];
+		var portuguese$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': portuguese
+		});
+		var english = ["abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act", "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "antenna", "antique", "anxiety", "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area", "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow", "art", "artefact", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "atom", "attack", "attend", "attitude", "attract", "auction", "audit", "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware", "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag", "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef", "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best", "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil", "bomb", "bone", "bonus", "book", "boost", "border", "boring", "borrow", "boss", "bottom", "bounce", "box", "boy", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze", "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom", "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bulb", "bulk", "bullet", "bundle", "bunker", "burden", "burger", "burst", "bus", "business", "busy", "butter", "buyer", "buzz", "cabbage", "cabin", "cable", "cactus", "cage", "cake", "call", "calm", "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "car", "carbon", "card", "cargo", "carpet", "carry", "cart", "case", "cash", "casino", "castle", "casual", "cat", "catalog", "catch", "category", "cattle", "caught", "cause", "caution", "cave", "ceiling", "celery", "cement", "census", "century", "cereal", "certain", "chair", "chalk", "champion", "change", "chaos", "chapter", "charge", "chase", "chat", "cheap", "check", "cheese", "chef", "cherry", "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk", "churn", "cigar", "cinnamon", "circle", "citizen", "city", "civil", "claim", "clap", "clarify", "claw", "clay", "clean", "clerk", "clever", "click", "client", "cliff", "climb", "clinic", "clip", "clock", "clog", "close", "cloth", "cloud", "clown", "club", "clump", "cluster", "clutch", "coach", "coast", "coconut", "code", "coffee", "coil", "coin", "collect", "color", "column", "combine", "come", "comfort", "comic", "common", "company", "concert", "conduct", "confirm", "congress", "connect", "consider", "control", "convince", "cook", "cool", "copper", "copy", "coral", "core", "corn", "correct", "cost", "cotton", "couch", "country", "couple", "course", "cousin", "cover", "coyote", "crack", "cradle", "craft", "cram", "crane", "crash", "crater", "crawl", "crazy", "cream", "credit", "creek", "crew", "cricket", "crime", "crisp", "critic", "crop", "cross", "crouch", "crowd", "crucial", "cruel", "cruise", "crumble", "crunch", "crush", "cry", "crystal", "cube", "culture", "cup", "cupboard", "curious", "current", "curtain", "curve", "cushion", "custom", "cute", "cycle", "dad", "damage", "damp", "dance", "danger", "daring", "dash", "daughter", "dawn", "day", "deal", "debate", "debris", "decade", "december", "decide", "decline", "decorate", "decrease", "deer", "defense", "define", "defy", "degree", "delay", "deliver", "demand", "demise", "denial", "dentist", "deny", "depart", "depend", "deposit", "depth", "deputy", "derive", "describe", "desert", "design", "desk", "despair", "destroy", "detail", "detect", "develop", "device", "devote", "diagram", "dial", "diamond", "diary", "dice", "diesel", "diet", "differ", "digital", "dignity", "dilemma", "dinner", "dinosaur", "direct", "dirt", "disagree", "discover", "disease", "dish", "dismiss", "disorder", "display", "distance", "divert", "divide", "divorce", "dizzy", "doctor", "document", "dog", "doll", "dolphin", "domain", "donate", "donkey", "donor", "door", "dose", "double", "dove", "draft", "dragon", "drama", "drastic", "draw", "dream", "dress", "drift", "drill", "drink", "drip", "drive", "drop", "drum", "dry", "duck", "dumb", "dune", "during", "dust", "dutch", "duty", "dwarf", "dynamic", "eager", "eagle", "early", "earn", "earth", "easily", "east", "easy", "echo", "ecology", "economy", "edge", "edit", "educate", "effort", "egg", "eight", "either", "elbow", "elder", "electric", "elegant", "element", "elephant", "elevator", "elite", "else", "embark", "embody", "embrace", "emerge", "emotion", "employ", "empower", "empty", "enable", "enact", "end", "endless", "endorse", "enemy", "energy", "enforce", "engage", "engine", "enhance", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure", "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "era", "erase", "erode", "erosion", "error", "erupt", "escape", "essay", "essence", "estate", "eternal", "ethics", "evidence", "evil", "evoke", "evolve", "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust", "exhibit", "exile", "exist", "exit", "exotic", "expand", "expect", "expire", "explain", "expose", "express", "extend", "extra", "eye", "eyebrow", "fabric", "face", "faculty", "fade", "faint", "faith", "fall", "false", "fame", "family", "famous", "fan", "fancy", "fantasy", "farm", "fashion", "fat", "fatal", "father", "fatigue", "fault", "favorite", "feature", "february", "federal", "fee", "feed", "feel", "female", "fence", "festival", "fetch", "fever", "few", "fiber", "fiction", "field", "figure", "file", "film", "filter", "final", "find", "fine", "finger", "finish", "fire", "firm", "first", "fiscal", "fish", "fit", "fitness", "fix", "flag", "flame", "flash", "flat", "flavor", "flee", "flight", "flip", "float", "flock", "floor", "flower", "fluid", "flush", "fly", "foam", "focus", "fog", "foil", "fold", "follow", "food", "foot", "force", "forest", "forget", "fork", "fortune", "forum", "forward", "fossil", "foster", "found", "fox", "fragile", "frame", "frequent", "fresh", "friend", "fringe", "frog", "front", "frost", "frown", "frozen", "fruit", "fuel", "fun", "funny", "furnace", "fury", "future", "gadget", "gain", "galaxy", "gallery", "game", "gap", "garage", "garbage", "garden", "garlic", "garment", "gas", "gasp", "gate", "gather", "gauge", "gaze", "general", "genius", "genre", "gentle", "genuine", "gesture", "ghost", "giant", "gift", "giggle", "ginger", "giraffe", "girl", "give", "glad", "glance", "glare", "glass", "glide", "glimpse", "globe", "gloom", "glory", "glove", "glow", "glue", "goat", "goddess", "gold", "good", "goose", "gorilla", "gospel", "gossip", "govern", "gown", "grab", "grace", "grain", "grant", "grape", "grass", "gravity", "great", "green", "grid", "grief", "grit", "grocery", "group", "grow", "grunt", "guard", "guess", "guide", "guilt", "guitar", "gun", "gym", "habit", "hair", "half", "hammer", "hamster", "hand", "happy", "harbor", "hard", "harsh", "harvest", "hat", "have", "hawk", "hazard", "head", "health", "heart", "heavy", "hedgehog", "height", "hello", "helmet", "help", "hen", "hero", "hidden", "high", "hill", "hint", "hip", "hire", "history", "hobby", "hockey", "hold", "hole", "holiday", "hollow", "home", "honey", "hood", "hope", "horn", "horror", "horse", "hospital", "host", "hotel", "hour", "hover", "hub", "huge", "human", "humble", "humor", "hundred", "hungry", "hunt", "hurdle", "hurry", "hurt", "husband", "hybrid", "ice", "icon", "idea", "identify", "idle", "ignore", "ill", "illegal", "illness", "image", "imitate", "immense", "immune", "impact", "impose", "improve", "impulse", "inch", "include", "income", "increase", "index", "indicate", "indoor", "industry", "infant", "inflict", "inform", "inhale", "inherit", "initial", "inject", "injury", "inmate", "inner", "innocent", "input", "inquiry", "insane", "insect", "inside", "inspire", "install", "intact", "interest", "into", "invest", "invite", "involve", "iron", "island", "isolate", "issue", "item", "ivory", "jacket", "jaguar", "jar", "jazz", "jealous", "jeans", "jelly", "jewel", "job", "join", "joke", "journey", "joy", "judge", "juice", "jump", "jungle", "junior", "junk", "just", "kangaroo", "keen", "keep", "ketchup", "key", "kick", "kid", "kidney", "kind", "kingdom", "kiss", "kit", "kitchen", "kite", "kitten", "kiwi", "knee", "knife", "knock", "know", "lab", "label", "labor", "ladder", "lady", "lake", "lamp", "language", "laptop", "large", "later", "latin", "laugh", "laundry", "lava", "law", "lawn", "lawsuit", "layer", "lazy", "leader", "leaf", "learn", "leave", "lecture", "left", "leg", "legal", "legend", "leisure", "lemon", "lend", "length", "lens", "leopard", "lesson", "letter", "level", "liar", "liberty", "library", "license", "life", "lift", "light", "like", "limb", "limit", "link", "lion", "liquid", "list", "little", "live", "lizard", "load", "loan", "lobster", "local", "lock", "logic", "lonely", "long", "loop", "lottery", "loud", "lounge", "love", "loyal", "lucky", "luggage", "lumber", "lunar", "lunch", "luxury", "lyrics", "machine", "mad", "magic", "magnet", "maid", "mail", "main", "major", "make", "mammal", "man", "manage", "mandate", "mango", "mansion", "manual", "maple", "marble", "march", "margin", "marine", "market", "marriage", "mask", "mass", "master", "match", "material", "math", "matrix", "matter", "maximum", "maze", "meadow", "mean", "measure", "meat", "mechanic", "medal", "media", "melody", "melt", "member", "memory", "mention", "menu", "mercy", "merge", "merit", "merry", "mesh", "message", "metal", "method", "middle", "midnight", "milk", "million", "mimic", "mind", "minimum", "minor", "minute", "miracle", "mirror", "misery", "miss", "mistake", "mix", "mixed", "mixture", "mobile", "model", "modify", "mom", "moment", "monitor", "monkey", "monster", "month", "moon", "moral", "more", "morning", "mosquito", "mother", "motion", "motor", "mountain", "mouse", "move", "movie", "much", "muffin", "mule", "multiply", "muscle", "museum", "mushroom", "music", "must", "mutual", "myself", "mystery", "myth", "naive", "name", "napkin", "narrow", "nasty", "nation", "nature", "near", "neck", "need", "negative", "neglect", "neither", "nephew", "nerve", "nest", "net", "network", "neutral", "never", "news", "next", "nice", "night", "noble", "noise", "nominee", "noodle", "normal", "north", "nose", "notable", "note", "nothing", "notice", "novel", "now", "nuclear", "number", "nurse", "nut", "oak", "obey", "object", "oblige", "obscure", "observe", "obtain", "obvious", "occur", "ocean", "october", "odor", "off", "offer", "office", "often", "oil", "okay", "old", "olive", "olympic", "omit", "once", "one", "onion", "online", "only", "open", "opera", "opinion", "oppose", "option", "orange", "orbit", "orchard", "order", "ordinary", "organ", "orient", "original", "orphan", "ostrich", "other", "outdoor", "outer", "output", "outside", "oval", "oven", "over", "own", "owner", "oxygen", "oyster", "ozone", "pact", "paddle", "page", "pair", "palace", "palm", "panda", "panel", "panic", "panther", "paper", "parade", "parent", "park", "parrot", "party", "pass", "patch", "path", "patient", "patrol", "pattern", "pause", "pave", "payment", "peace", "peanut", "pear", "peasant", "pelican", "pen", "penalty", "pencil", "people", "pepper", "perfect", "permit", "person", "pet", "phone", "photo", "phrase", "physical", "piano", "picnic", "picture", "piece", "pig", "pigeon", "pill", "pilot", "pink", "pioneer", "pipe", "pistol", "pitch", "pizza", "place", "planet", "plastic", "plate", "play", "please", "pledge", "pluck", "plug", "plunge", "poem", "poet", "point", "polar", "pole", "police", "pond", "pony", "pool", "popular", "portion", "position", "possible", "post", "potato", "pottery", "poverty", "powder", "power", "practice", "praise", "predict", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride", "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit", "program", "project", "promote", "proof", "property", "prosper", "protect", "proud", "provide", "public", "pudding", "pull", "pulp", "pulse", "pumpkin", "punch", "pupil", "puppy", "purchase", "purity", "purpose", "purse", "push", "put", "puzzle", "pyramid", "quality", "quantum", "quarter", "question", "quick", "quit", "quiz", "quote", "rabbit", "raccoon", "race", "rack", "radar", "radio", "rail", "rain", "raise", "rally", "ramp", "ranch", "random", "range", "rapid", "rare", "rate", "rather", "raven", "raw", "razor", "ready", "real", "reason", "rebel", "rebuild", "recall", "receive", "recipe", "record", "recycle", "reduce", "reflect", "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "rely", "remain", "remember", "remind", "remove", "render", "renew", "rent", "reopen", "repair", "repeat", "replace", "report", "require", "rescue", "resemble", "resist", "resource", "response", "result", "retire", "retreat", "return", "reunion", "reveal", "review", "reward", "rhythm", "rib", "ribbon", "rice", "rich", "ride", "ridge", "rifle", "right", "rigid", "ring", "riot", "ripple", "risk", "ritual", "rival", "river", "road", "roast", "robot", "robust", "rocket", "romance", "roof", "rookie", "room", "rose", "rotate", "rough", "round", "route", "royal", "rubber", "rude", "rug", "rule", "run", "runway", "rural", "sad", "saddle", "sadness", "safe", "sail", "salad", "salmon", "salon", "salt", "salute", "same", "sample", "sand", "satisfy", "satoshi", "sauce", "sausage", "save", "say", "scale", "scan", "scare", "scatter", "scene", "scheme", "school", "science", "scissors", "scorpion", "scout", "scrap", "screen", "script", "scrub", "sea", "search", "season", "seat", "second", "secret", "section", "security", "seed", "seek", "segment", "select", "sell", "seminar", "senior", "sense", "sentence", "series", "service", "session", "settle", "setup", "seven", "shadow", "shaft", "shallow", "share", "shed", "shell", "sheriff", "shield", "shift", "shine", "ship", "shiver", "shock", "shoe", "shoot", "shop", "short", "shoulder", "shove", "shrimp", "shrug", "shuffle", "shy", "sibling", "sick", "side", "siege", "sight", "sign", "silent", "silk", "silly", "silver", "similar", "simple", "since", "sing", "siren", "sister", "situate", "six", "size", "skate", "sketch", "ski", "skill", "skin", "skirt", "skull", "slab", "slam", "sleep", "slender", "slice", "slide", "slight", "slim", "slogan", "slot", "slow", "slush", "small", "smart", "smile", "smoke", "smooth", "snack", "snake", "snap", "sniff", "snow", "soap", "soccer", "social", "sock", "soda", "soft", "solar", "soldier", "solid", "solution", "solve", "someone", "song", "soon", "sorry", "sort", "soul", "sound", "soup", "source", "south", "space", "spare", "spatial", "spawn", "speak", "special", "speed", "spell", "spend", "sphere", "spice", "spider", "spike", "spin", "spirit", "split", "spoil", "sponsor", "spoon", "sport", "spot", "spray", "spread", "spring", "spy", "square", "squeeze", "squirrel", "stable", "stadium", "staff", "stage", "stairs", "stamp", "stand", "start", "state", "stay", "steak", "steel", "stem", "step", "stereo", "stick", "still", "sting", "stock", "stomach", "stone", "stool", "story", "stove", "strategy", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject", "submit", "subway", "success", "such", "sudden", "suffer", "sugar", "suggest", "suit", "summer", "sun", "sunny", "sunset", "super", "supply", "supreme", "sure", "surface", "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "swap", "swarm", "swear", "sweet", "swift", "swim", "swing", "switch", "sword", "symbol", "symptom", "syrup", "system", "table", "tackle", "tag", "tail", "talent", "talk", "tank", "tape", "target", "task", "taste", "tattoo", "taxi", "teach", "team", "tell", "ten", "tenant", "tennis", "tent", "term", "test", "text", "thank", "that", "theme", "then", "theory", "there", "they", "thing", "this", "thought", "three", "thrive", "throw", "thumb", "thunder", "ticket", "tide", "tiger", "tilt", "timber", "time", "tiny", "tip", "tired", "tissue", "title", "toast", "tobacco", "today", "toddler", "toe", "together", "toilet", "token", "tomato", "tomorrow", "tone", "tongue", "tonight", "tool", "tooth", "top", "topic", "topple", "torch", "tornado", "tortoise", "toss", "total", "tourist", "toward", "tower", "town", "toy", "track", "trade", "traffic", "tragic", "train", "transfer", "trap", "trash", "travel", "tray", "treat", "tree", "trend", "trial", "tribe", "trick", "trigger", "trim", "trip", "trophy", "trouble", "truck", "true", "truly", "trumpet", "trust", "truth", "try", "tube", "tuition", "tumble", "tuna", "tunnel", "turkey", "turn", "turtle", "twelve", "twenty", "twice", "twin", "twist", "two", "type", "typical", "ugly", "umbrella", "unable", "unaware", "uncle", "uncover", "under", "undo", "unfair", "unfold", "unhappy", "uniform", "unique", "unit", "universe", "unknown", "unlock", "until", "unusual", "unveil", "update", "upgrade", "uphold", "upon", "upper", "upset", "urban", "urge", "usage", "use", "used", "useful", "useless", "usual", "utility", "vacant", "vacuum", "vague", "valid", "valley", "valve", "van", "vanish", "vapor", "various", "vast", "vault", "vehicle", "velvet", "vendor", "venture", "venue", "verb", "verify", "version", "very", "vessel", "veteran", "viable", "vibrant", "vicious", "victory", "video", "view", "village", "vintage", "violin", "virtual", "virus", "visa", "visit", "visual", "vital", "vivid", "vocal", "voice", "void", "volcano", "volume", "vote", "voyage", "wage", "wagon", "wait", "walk", "wall", "walnut", "want", "warfare", "warm", "warrior", "wash", "wasp", "waste", "water", "wave", "way", "wealth", "weapon", "wear", "weasel", "weather", "web", "wedding", "weekend", "weird", "welcome", "west", "wet", "whale", "what", "wheat", "wheel", "when", "where", "whip", "whisper", "wide", "width", "wife", "wild", "will", "win", "window", "wine", "wing", "wink", "winner", "winter", "wire", "wisdom", "wise", "wish", "witness", "wolf", "woman", "wonder", "wood", "wool", "word", "work", "world", "worry", "worth", "wrap", "wreck", "wrestle", "wrist", "write", "wrong", "yard", "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone", "zoo"];
+		var english$1 = /*#__PURE__*/Object.freeze({
+		  __proto__: null,
+		  'default': english
+		});
+		var require$$0 = getCjsExportFromNamespace(czech$1);
+		var require$$1 = getCjsExportFromNamespace(chinese_simplified$1);
+		var require$$2 = getCjsExportFromNamespace(chinese_traditional$1);
+		var require$$3 = getCjsExportFromNamespace(korean$1);
+		var require$$4 = getCjsExportFromNamespace(french$1);
+		var require$$5 = getCjsExportFromNamespace(italian$1);
+		var require$$6 = getCjsExportFromNamespace(spanish$1);
+		var require$$7 = getCjsExportFromNamespace(japanese$1);
+		var require$$8 = getCjsExportFromNamespace(portuguese$1);
+		var require$$9 = getCjsExportFromNamespace(english$1);
+
+		var _wordlists = createCommonjsModule(function (module, exports) {
+		  Object.defineProperty(exports, "__esModule", {
+		    value: true
+		  }); // browserify by default only pulls in files that are hard coded in requires
+		  // In order of last to first in this file, the default wordlist will be chosen
+		  // based on what is present. (Bundles may remove wordlists they don't need)
+
+		  const wordlists = {};
+		  exports.wordlists = wordlists;
+
+		  let _default;
+
+		  exports._default = _default;
+
+		  try {
+		    exports._default = _default = require$$0;
+		    wordlists.czech = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$1;
+		    wordlists.chinese_simplified = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$2;
+		    wordlists.chinese_traditional = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$3;
+		    wordlists.korean = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$4;
+		    wordlists.french = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$5;
+		    wordlists.italian = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$6;
+		    wordlists.spanish = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$7;
+		    wordlists.japanese = _default;
+		    wordlists.JA = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$8;
+		    wordlists.portuguese = _default;
+		  } catch (err) {}
+
+		  try {
+		    exports._default = _default = require$$9;
+		    wordlists.english = _default;
+		    wordlists.EN = _default;
+		  } catch (err) {}
+		});
+
+		unwrapExports(_wordlists);
+		_wordlists.wordlists;
+		_wordlists._default;
+		var src = createCommonjsModule(function (module, exports) {
+		  Object.defineProperty(exports, "__esModule", {
+		    value: true
+		  });
+		  let DEFAULT_WORDLIST = _wordlists._default;
+		  const INVALID_MNEMONIC = 'Invalid mnemonic';
+		  const INVALID_ENTROPY = 'Invalid entropy';
+		  const INVALID_CHECKSUM = 'Invalid mnemonic checksum';
+		  const WORDLIST_REQUIRED = 'A wordlist is required but a default could not be found.\n' + 'Please pass a 2048 word array explicitly.';
+
+		  function pbkdf2Promise(password, saltMixin, iterations, keylen, digest) {
+		    return Promise.resolve().then(() => new Promise((resolve, reject) => {
+		      const callback = (err, derivedKey) => {
+		        if (err) {
+		          return reject(err);
+		        } else {
+		          return resolve(derivedKey);
+		        }
+		      };
+
+		      pbkdf2.pbkdf2(password, saltMixin, iterations, keylen, digest, callback);
+		    }));
+		  }
+
+		  function normalize(str) {
+		    return (str || '').normalize('NFKD');
+		  }
+
+		  function lpad(str, padString, length) {
+		    while (str.length < length) {
+		      str = padString + str;
+		    }
+
+		    return str;
+		  }
+
+		  function binaryToByte(bin) {
+		    return parseInt(bin, 2);
+		  }
+
+		  function bytesToBinary(bytes) {
+		    return bytes.map(x => lpad(x.toString(2), '0', 8)).join('');
+		  }
+
+		  function deriveChecksumBits(entropyBuffer) {
+		    const ENT = entropyBuffer.length * 8;
+		    const CS = ENT / 32;
+		    const hash = createHash('sha256').update(entropyBuffer).digest();
+		    return bytesToBinary(Array.from(hash)).slice(0, CS);
+		  }
+
+		  function salt(password) {
+		    return 'mnemonic' + (password || '');
+		  }
+
+		  function mnemonicToSeedSync(mnemonic, password) {
+		    const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
+		    const saltBuffer = Buffer.from(salt(normalize(password)), 'utf8');
+		    return pbkdf2.pbkdf2Sync(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
+		  }
+
+		  exports.mnemonicToSeedSync = mnemonicToSeedSync;
+
+		  function mnemonicToSeed(mnemonic, password) {
+		    return Promise.resolve().then(() => {
+		      const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
+		      const saltBuffer = Buffer.from(salt(normalize(password)), 'utf8');
+		      return pbkdf2Promise(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
+		    });
+		  }
+
+		  exports.mnemonicToSeed = mnemonicToSeed;
+
+		  function mnemonicToEntropy(mnemonic, wordlist) {
+		    wordlist = wordlist || DEFAULT_WORDLIST;
+
+		    if (!wordlist) {
+		      throw new Error(WORDLIST_REQUIRED);
+		    }
+
+		    const words = normalize(mnemonic).split(' ');
+
+		    if (words.length % 3 !== 0) {
+		      throw new Error(INVALID_MNEMONIC);
+		    } // convert word indices to 11 bit binary strings
+
+
+		    const bits = words.map(word => {
+		      const index = wordlist.indexOf(word);
+
+		      if (index === -1) {
+		        throw new Error(INVALID_MNEMONIC);
+		      }
+
+		      return lpad(index.toString(2), '0', 11);
+		    }).join(''); // split the binary string into ENT/CS
+
+		    const dividerIndex = Math.floor(bits.length / 33) * 32;
+		    const entropyBits = bits.slice(0, dividerIndex);
+		    const checksumBits = bits.slice(dividerIndex); // calculate the checksum and compare
+
+		    const entropyBytes = entropyBits.match(/(.{1,8})/g).map(binaryToByte);
+
+		    if (entropyBytes.length < 16) {
+		      throw new Error(INVALID_ENTROPY);
+		    }
+
+		    if (entropyBytes.length > 32) {
+		      throw new Error(INVALID_ENTROPY);
+		    }
+
+		    if (entropyBytes.length % 4 !== 0) {
+		      throw new Error(INVALID_ENTROPY);
+		    }
+
+		    const entropy = Buffer.from(entropyBytes);
+		    const newChecksum = deriveChecksumBits(entropy);
+
+		    if (newChecksum !== checksumBits) {
+		      throw new Error(INVALID_CHECKSUM);
+		    }
+
+		    return entropy.toString('hex');
+		  }
+
+		  exports.mnemonicToEntropy = mnemonicToEntropy;
+
+		  function entropyToMnemonic(entropy, wordlist) {
+		    if (!Buffer.isBuffer(entropy)) {
+		      entropy = Buffer.from(entropy, 'hex');
+		    }
+
+		    wordlist = wordlist || DEFAULT_WORDLIST;
+
+		    if (!wordlist) {
+		      throw new Error(WORDLIST_REQUIRED);
+		    } // 128 <= ENT <= 256
+
+
+		    if (entropy.length < 16) {
+		      throw new TypeError(INVALID_ENTROPY);
+		    }
+
+		    if (entropy.length > 32) {
+		      throw new TypeError(INVALID_ENTROPY);
+		    }
+
+		    if (entropy.length % 4 !== 0) {
+		      throw new TypeError(INVALID_ENTROPY);
+		    }
+
+		    const entropyBits = bytesToBinary(Array.from(entropy));
+		    const checksumBits = deriveChecksumBits(entropy);
+		    const bits = entropyBits + checksumBits;
+		    const chunks = bits.match(/(.{1,11})/g);
+		    const words = chunks.map(binary => {
+		      const index = binaryToByte(binary);
+		      return wordlist[index];
+		    });
+		    return wordlist[0] === '\u3042\u3044\u3053\u304f\u3057\u3093' // Japanese wordlist
+		    ? words.join('\u3000') : words.join(' ');
+		  }
+
+		  exports.entropyToMnemonic = entropyToMnemonic;
+
+		  function generateMnemonic(strength, rng, wordlist) {
+		    strength = strength || 128;
+
+		    if (strength % 32 !== 0) {
+		      throw new TypeError(INVALID_ENTROPY);
+		    }
+
+		    rng = rng || randombytes;
+		    return entropyToMnemonic(rng(strength / 8), wordlist);
+		  }
+
+		  exports.generateMnemonic = generateMnemonic;
+
+		  function validateMnemonic(mnemonic, wordlist) {
+		    try {
+		      mnemonicToEntropy(mnemonic, wordlist);
+		    } catch (e) {
+		      return false;
+		    }
+
+		    return true;
+		  }
+
+		  exports.validateMnemonic = validateMnemonic;
+
+		  function setDefaultWordlist(language) {
+		    const result = _wordlists.wordlists[language];
+
+		    if (result) {
+		      DEFAULT_WORDLIST = result;
+		    } else {
+		      throw new Error('Could not find wordlist for language "' + language + '"');
+		    }
+		  }
+
+		  exports.setDefaultWordlist = setDefaultWordlist;
+
+		  function getDefaultWordlist() {
+		    if (!DEFAULT_WORDLIST) {
+		      throw new Error('No Default Wordlist set');
+		    }
+
+		    return Object.keys(_wordlists.wordlists).filter(lang => {
+		      if (lang === 'JA' || lang === 'EN') {
+		        return false;
+		      }
+
+		      return _wordlists.wordlists[lang].every((word, index) => word === DEFAULT_WORDLIST[index]);
+		    })[0];
+		  }
+
+		  exports.getDefaultWordlist = getDefaultWordlist;
+		  var _wordlists_2 = _wordlists;
+		  exports.wordlists = _wordlists_2.wordlists;
+		});
+		unwrapExports(src);
+		src.mnemonicToSeedSync;
+		src.mnemonicToSeed;
+		src.mnemonicToEntropy;
+		src.entropyToMnemonic;
+		src.generateMnemonic;
+		src.validateMnemonic;
+		src.setDefaultWordlist;
+		src.getDefaultWordlist;
+		var src_9 = src.wordlists;
+
+		var SeedEntryForm = /*#__PURE__*/function (_Component) {
+		  _inherits(SeedEntryForm, _Component);
+
+		  var _super = _createSuper(SeedEntryForm);
+
+		  function SeedEntryForm(props) {
+		    var _this;
+
+		    _classCallCheck(this, SeedEntryForm);
+
+		    _this = _super.call(this, props);
+		    _this.settings = lodash_merge({
+		      network: 'regtest'
+		    }, props);
+		    /* this.wallet = new Wallet({
+		      network: this.settings.network
+		    }); */
+		    // TODO: prepare Fabric
+		    // i.e., use _state here, then import from getter and apply properties
+		    // _from_ @react
+
+		    _this.state = {
+		      integrity: 'sha256-deadbeefbabe',
+		      fields: {
+		        seed: '',
+		        password: ''
+		      }
+		    };
+		    return _this;
+		  }
+
+		  _createClass(SeedEntryForm, [{
+		    key: "_seedWords",
+		    get: function get() {
+		      return src_9.english.map(function (x, i) {
+		        return {
+		          key: i,
+		          text: x,
+		          value: x
+		        };
+		      });
+		    }
+		  }, {
+		    key: "handleChange",
+		    value: function handleChange(e) {
+		      var newFields = _objectSpread2(_objectSpread2({}, this.state.fields), {}, _defineProperty({}, e.target.name, e.target.value)); // TODO: merge old state
+
+
+		      this.setState({
+		        fields: newFields
+		      });
+		    }
+		  }, {
+		    key: "handleLoginSubmit",
+		    value: function handleLoginSubmit(e) {
+		      e.preventDefault(); // whatever you want to do when user submits a form
+
+		      console.log('e:', e);
+		      console.log('e.target:', e.target);
+		      console.log('e.target data:', e.target.data);
+		      return false;
+		    }
+		  }, {
+		    key: "handleSubmit",
+		    value: function handleSubmit(e) {
+		      this.handleLoginSubmit(e);
+		      this.props.handleClose();
+		    }
+		  }, {
+		    key: "render",
+		    value: function render() {
+		      // const { fields } = this.state;
+		      return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form, {
+		        onSubmit: this.handleSubmit.bind(this)
+		      }, /*#__PURE__*/React__default["default"].createElement("label", {
+		        htmlFor: "seed"
+		      }, "Seed Phrase (12 or 24 words)"), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Dropdown, {
+		        placeholder: "Your 12 or 24 word seed phrase",
+		        fluid: true,
+		        multiple: true,
+		        search: true,
+		        selection: true //  options={this._seedWords} 
+		        ,
+		        minCharacters: 3,
+		        onChange: this.props.handleChange('seed')
+		      }), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, null, "Load")));
+		    }
+		  }, {
+		    key: "saveAndContinue",
+		    value: function saveAndContinue(e) {
+		      e.preventDefault();
+		      this.props.nextStep();
+		    }
+		  }, {
+		    key: "_handleRestoreButtonClick",
+		    value: function _handleRestoreButtonClick() {
+		      this.setState({
+		        modalOpen: true
+		      });
+		    }
+		  }, {
+		    key: "_handleGeneratorButtonClick",
+		    value: function _handleGeneratorButtonClick() {
+		      this.setState({
+		        modalOpen: true
+		      });
+		    }
+		  }, {
+		    key: "_handleGenerateClick",
+		    value: function _handleGenerateClick() {
+		      console.log('generate request click');
+		    }
+		  }, {
+		    key: "_handleGenerateKeyPress",
+		    value: function _handleGenerateKeyPress(e) {
+		      if (e.charCode === 32 || e.charCode === 13) {
+		        // Prevent the default action to stop scrolling when space is pressed
+		        e.preventDefault();
+		        console.log('Button received click with keyboard');
+		      }
+		    }
+		  }, {
+		    key: "_handleRestoreKeyPress",
+		    value: function _handleRestoreKeyPress(e) {
+		      if (e.charCode === 32 || e.charCode === 13) {
+		        // Prevent the default action to stop scrolling when space is pressed
+		        e.preventDefault();
+		        console.log('Button received click with keyboard');
+		      }
+		    }
+		  }]);
+
+		  return SeedEntryForm;
+		}(React.Component);
+
+		var FabricIdentity = /*#__PURE__*/function (_Component) {
+		  _inherits(FabricIdentity, _Component);
+
+		  var _super = _createSuper(FabricIdentity);
+
+		  function FabricIdentity(props) {
+		    var _this;
+
+		    _classCallCheck(this, FabricIdentity);
+
+		    _this = _super.call(this, props);
+		    _this.settings = lodash_merge({
+		      explain: false,
+		      modalOpen: false,
+		      keys: []
+		    }, props); // TODO: prepare Fabric
+		    // i.e., use _state here, then import from getter and apply properties
+		    // _from_ @react
+
+		    _this.state = {
+		      explain: true,
+		      identity: null,
+		      integrity: 'sha256-deadbeefbabe',
+		      status: 'PAUSED'
+		    };
+		    return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
+		  }
+
+		  _createClass(FabricIdentity, [{
+		    key: "handleChange",
+		    value: function handleChange(e, v) {
+		      console.log('change:', e, v); // this.setState({ seed: e });
+		    }
+		  }, {
+		    key: "handleClose",
+		    value: function handleClose() {
+		      this.setState({
+		        modalOpen: false
+		      });
+		    }
+		  }, {
+		    key: "render",
+		    value: function render() {
+		      return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Menu.Item, {
+		        className: "borderless"
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, {
+		        icon: true,
+		        onClick: this._handleCardClick.bind(this),
+		        labelPosition: "left"
+		      }, /*#__PURE__*/React__default["default"].createElement("span", null, /*#__PURE__*/React__default["default"].createElement("code", null, this.state.identity || 'anonymous')), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "user"
+		      }))), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Modal, {
+		        open: this.state.modalOpen,
+		        onClose: this.handleClose.bind(this),
+		        closeIcon: true
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Modal.Header, null, "Login"), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Modal.Content, null, /*#__PURE__*/React__default["default"].createElement(SeedEntryForm, {
+		        handleClose: this.handleClose.bind(this),
+		        handleChange: this.handleChange.bind(this)
+		      }))));
+		    }
+		  }, {
+		    key: "isVisible",
+		    value: function isVisible() {
+		      if (this.state.explain) return true;
+		      return false;
+		    }
+		  }, {
+		    key: "_handleCardClick",
+		    value: function _handleCardClick() {
+		      this.setState({
+		        modalOpen: true
+		      });
+		    }
+		  }, {
+		    key: "_handleRestoreButtonClick",
+		    value: function _handleRestoreButtonClick() {
+		      this.setState({
+		        modalOpen: true
+		      });
+		    }
+		  }, {
+		    key: "_handleGeneratorButtonClick",
+		    value: function _handleGeneratorButtonClick() {
+		      this.setState({
+		        modalOpen: true
+		      });
+		    }
+		  }, {
+		    key: "_handleGenerateKeyPress",
+		    value: function _handleGenerateKeyPress(e) {
+		      if (e.charCode === 32 || e.charCode === 13) {
+		        // Prevent the default action to stop scrolling when space is pressed
+		        e.preventDefault();
+		        console.log('Button received click with keyboard');
+		      }
+		    }
+		  }, {
+		    key: "_handleRestoreKeyPress",
+		    value: function _handleRestoreKeyPress(e) {
+		      if (e.charCode === 32 || e.charCode === 13) {
+		        // Prevent the default action to stop scrolling when space is pressed
+		        e.preventDefault();
+		        console.log('Button received click with keyboard');
+		      }
+		    }
+		  }]);
+
+		  return FabricIdentity;
+		}(React.Component);
+
+		var IdentityPicker = /*#__PURE__*/function (_Component) {
+		  _inherits(IdentityPicker, _Component);
+
+		  var _super = _createSuper(IdentityPicker);
+
+		  function IdentityPicker() {
+		    _classCallCheck(this, IdentityPicker);
+
+		    return _super.apply(this, arguments);
+		  }
+
+		  _createClass(IdentityPicker, [{
+		    key: "render",
+		    value: function render() {
+		      this.props.values;
+		      return /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button.Group, {
+		        fluid: true
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, {
+		        icon: true,
+		        color: "green",
+		        onClick: this._handleGeneratorButtonClick.bind(this),
+		        onKeyPress: this._handleGenerateKeyPress.bind(this),
+		        labelPosition: "left"
+		      }, "Generate ", /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "leaf"
+		      })), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button.Or, null), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, {
+		        icon: true,
+		        color: "blue",
+		        onClick: this._handleRestoreButtonClick.bind(this),
+		        onKeyPress: this._handleRestoreKeyPress.bind(this),
+		        labelPosition: "right"
+		      }, "Restore from Seed Phrase ", /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "right chevron"
+		      }))), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, {
+		        type: "submit",
+		        onClick: this.saveAndContinue.bind(this)
+		      }, "Save And Continue"));
+		    }
+		  }, {
+		    key: "saveAndContinue",
+		    value: function saveAndContinue(e) {
+		      e.preventDefault();
+		      this.props.nextStep();
+		    }
+		  }, {
+		    key: "_handleRestoreButtonClick",
+		    value: function _handleRestoreButtonClick() {
+		      this.setState({
+		        step: 'SEED_RESTORE_START'
+		      });
+		    }
+		  }, {
+		    key: "_handleGeneratorButtonClick",
+		    value: function _handleGeneratorButtonClick() {
+		      this.setState({
+		        step: 'SEED_GENERATE_START'
+		      });
+		    }
+		  }, {
+		    key: "_handleGenerateClick",
+		    value: function _handleGenerateClick() {
+		      console.log('generate request click');
+		    }
+		  }, {
+		    key: "_handleGenerateKeyPress",
+		    value: function _handleGenerateKeyPress(e) {
+		      if (e.charCode === 32 || e.charCode === 13) {
+		        // Prevent the default action to stop scrolling when space is pressed
+		        e.preventDefault();
+		        console.log('Button received click with keyboard');
+		      }
+		    }
+		  }, {
+		    key: "_handleRestoreKeyPress",
+		    value: function _handleRestoreKeyPress(e) {
+		      if (e.charCode === 32 || e.charCode === 13) {
+		        // Prevent the default action to stop scrolling when space is pressed
+		        e.preventDefault();
+		        console.log('Button received click with keyboard');
+		      }
+		    }
+		  }]);
+
+		  return IdentityPicker;
+		}(React.Component);
+
+		var FabricIdentityManager = /*#__PURE__*/function (_Component) {
+		  _inherits(FabricIdentityManager, _Component);
+
+		  var _super = _createSuper(FabricIdentityManager);
+
+		  function FabricIdentityManager(props) {
+		    var _this;
+
+		    _classCallCheck(this, FabricIdentityManager);
+
+		    _this = _super.call(this, props);
+
+		    _defineProperty(_assertThisInitialized(_this), "handleChange", function (input) {
+		      return function (event) {
+		        _this.setState(_defineProperty({}, input, event.target.value));
+		      };
+		    });
+
+		    _this.settings = lodash_merge({
+		      explain: false,
+		      keys: []
+		    }, props); // TODO: prepare Fabric
+		    // i.e., use _state here, then import from getter and apply properties
+		    // _from_ @react
+
+		    _this.state = {
+		      explain: true,
+		      hash: null,
+		      identities: [],
+		      integrity: 'sha256-deadbeefbabe',
+		      status: 'PAUSED',
+		      step: 1
+		    };
+		    return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
+		  }
+
+		  _createClass(FabricIdentityManager, [{
+		    key: "setStep",
+		    value: function setStep() {
+		      var step = this.state.step;
+		      this.setState({
+		        step: step
+		      });
+		    }
+		  }, {
+		    key: "nextStep",
+		    value: function nextStep() {
+		      var step = this.state.step;
+		      this.setState({
+		        step: step + 1
+		      });
+		    }
+		  }, {
+		    key: "previoustStep",
+		    value: function previoustStep() {
+		      var step = this.state.step;
+		      this.setState({
+		        step: step - 1
+		      });
+		    }
+		  }, {
+		    key: "start",
+		    value: function start() {
+		      TrezorConnect__default["default"].manifest({
+		        email: 'labs@fabric.pub',
+		        appUrl: 'https://hub.fabric.pub'
+		      });
+		      this.setState({
+		        status: 'STARTED'
+		      });
+		      return this;
+		    }
+		  }, {
+		    key: "render",
+		    value: function render() {
+		      var step = this.state.step;
+		      var _this$state = this.state,
+		          firstName = _this$state.firstName,
+		          lastName = _this$state.lastName,
+		          email = _this$state.email,
+		          age = _this$state.age,
+		          city = _this$state.city,
+		          country = _this$state.country;
+		      var values = {
+		        firstName: firstName,
+		        lastName: lastName,
+		        email: email,
+		        age: age,
+		        city: city,
+		        country: country
+		      };
+		      var element = null;
+
+		      switch (step) {
+		        case 1:
+		          element = /*#__PURE__*/React__default["default"].createElement(IdentityPicker, {
+		            nextStep: this.nextStep.bind(this),
+		            setStep: this.setStep.bind(this),
+		            handleChange: this.handleChange.bind(this),
+		            values: values
+		          });
+		          break;
+
+		        case 2:
+		          element = /*#__PURE__*/React__default["default"].createElement(SeedEntryForm, {
+		            nextStep: this.nextStep.bind(this),
+		            setStep: this.setStep.bind(this),
+		            handleChange: this.handleChange.bind(this),
+		            values: values
+		          });
+		          break;
+
+		        case 3:
+		          element = /*#__PURE__*/React__default["default"].createElement(IdentityPicker, {
+		            nextStep: this.nextStep.bind(this),
+		            setStep: this.setStep.bind(this),
+		            handleChange: this.handleChange.bind(this),
+		            values: values
+		          });
+		          break;
+
+		        case 4:
+		          element = /*#__PURE__*/React__default["default"].createElement(IdentityPicker, {
+		            nextStep: this.nextStep.bind(this),
+		            setStep: this.setStep.bind(this),
+		            handleChange: this.handleChange.bind(this),
+		            values: values
+		          });
+		          break;
+		      }
+
+		      return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card, {
+		        fluid: true
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Content, {
+		        attached: "top"
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form.Group, {
+		        inline: true,
+		        widths: "equal"
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form.Field, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form.Input, {
+		        disabled: true,
+		        value: this.state.hash
+		      })), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Form.Field, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button.Group, {
+		        floated: "right"
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "history"
+		      })), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Button, null, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Icon, {
+		        name: "refresh"
+		      }))))))), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Content, {
+		        hidden: !this.isVisible()
+		      }, /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Header, null, "Identity Manager"), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Meta, null, /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("strong", null, "Status:"), " ", /*#__PURE__*/React__default["default"].createElement("pre", null, this.state.status)), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("strong", null, "State:"), " ", /*#__PURE__*/React__default["default"].createElement("pre", null, JSON.stringify(this.state, null, '  ')))), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Description, null, "Get started by restoring from an existing seed phrase or generating a new one.")), /*#__PURE__*/React__default["default"].createElement(semanticUiReact.Card.Content, {
+		        extra: true,
+		        attached: "bottom"
+		      }, element)));
+		    }
+		  }, {
+		    key: "isVisible",
+		    value: function isVisible() {
+		      if (this.state.explain) return true;
+		      return false;
+		    }
+		  }]);
+
+		  return FabricIdentityManager;
+		}(React.Component);
+
+		var module$1 = {
+		  FabricBridge: FabricBridge,
+		  FabricIdentity: FabricIdentity,
+		  FabricIdentityManager: FabricIdentityManager
+		};
+		module.exports = module$1;
+	} (fabric_react));
+
+	var FabricBridge = /*@__PURE__*/getDefaultExportFromCjs(fabric_react.exports);
+
 	class Feed extends react.exports.Component {
 	  state = {
 	    currency: 'BTC',
@@ -57109,7 +61011,11 @@
 	      extra: true
 	    }, /*#__PURE__*/React$1.createElement("a", null, /*#__PURE__*/React$1.createElement(Icon, {
 	      name: "linkify"
-	    })))));
+	    })))), /*#__PURE__*/React$1.createElement(FabricBridge, {
+	      host: "localhost",
+	      secure: "false",
+	      port: "3000"
+	    }));
 	  }
 
 	}
@@ -57158,4 +61064,4 @@
 
 	ReactDOM.render( /*#__PURE__*/React$1.createElement(FeedMonitor, null), document.getElementById('feed'));
 
-})();
+})(require$$10, require$$11, require$$12, require$$13, require$$14, require$$15);
