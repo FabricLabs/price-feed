@@ -1,4 +1,4 @@
-var PortalFeed = (function () {
+(function () {
 	'use strict';
 
 	function getDefaultExportFromCjs (x) {
@@ -33140,6 +33140,8 @@ var PortalFeed = (function () {
 		}
 	} (reactDom));
 
+	var ReactDOM = /*@__PURE__*/getDefaultExportFromCjs(reactDom.exports);
+
 	function _objectWithoutPropertiesLoose(source, excluded) {
 	  if (source == null) return {};
 	  var target = {};
@@ -57114,6 +57116,52 @@ var PortalFeed = (function () {
 
 	}
 
-	return Feed;
+	class FeedMonitor extends react.exports.Component {
+	  state = {
+	    currency: 'BTC',
+	    prices: {
+	      'BTC': 1
+	    },
+	    quote: {
+	      created: new Date().toISOString(),
+	      currency: 'BTC',
+	      rate: 1
+	    }
+	  };
+
+	  constructor(props = {}) {
+	    super(props);
+	    this._state = {
+	      content: this.state // TODO: inherit get state () from Actor
+
+	    };
+	    return this;
+	  }
+
+	  trust(source) {
+	    source.on('log', this._handleSourceLog.bind(this));
+	  }
+
+	  _handleBridgeReady(info) {
+	    console.log('[FEED] Bridge Reported Ready:', info);
+	  }
+
+	  _handleSourceLog(log) {
+	    this.emit('log', `Source log: ${log}`);
+	  }
+
+	  render() {
+	    return /*#__PURE__*/React$1.createElement("fabric-content-page", {
+	      className: "ui page"
+	    }, /*#__PURE__*/React$1.createElement(Card, {
+	      fluid: true
+	    }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Feed, null)), /*#__PURE__*/React$1.createElement(Card.Meta, null, /*#__PURE__*/React$1.createElement(Icon, {
+	      name: "linkify"
+	    }))));
+	  }
+
+	}
+
+	ReactDOM.render( /*#__PURE__*/React$1.createElement(FeedMonitor, null), document.getElementById('feed'));
 
 })();

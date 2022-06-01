@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import '../styles/feed.css';
-import '../libraries/fomantic/dist/semantic.css';
+// import '../styles/feed.css';
+// import '../libraries/fomantic/dist/semantic.css';
 import {
   Card,
-  Icon,
-  Label
+  Icon
 } from 'semantic-ui-react';
 
 // import FabricBridge from '@fabric/react';
+import Feed from './Feed';
 
-export default class Feed extends Component {
+export default class FeedMonitor extends Component {
   state = {
     currency: 'BTC',
     prices: {
@@ -40,8 +40,6 @@ export default class Feed extends Component {
 
   _handleBridgeReady (info) {
     console.log('[FEED] Bridge Reported Ready:', info);
-    // TODO: bind events
-    // i.e., this.trust( info.emitter )
   }
 
   _handleSourceLog (log) {
@@ -53,16 +51,14 @@ export default class Feed extends Component {
       <fabric-content-page className="ui page">
         <Card fluid>
           <Card.Content>
-            <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
+            <Feed />
           </Card.Content>
-          <Card.Content extra>
-            <a>
-              <Icon name='linkify' />
-            </a>
-          </Card.Content>
+          <Card.Meta>
+            <Icon name='linkify' />
+          </Card.Meta>
         </Card>
         {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
       </fabric-content-page>
     );
   }
-};
+}
