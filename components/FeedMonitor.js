@@ -5,7 +5,7 @@ import {
   Segment
 } from 'semantic-ui-react';
 
-// import FabricBridge from '@fabric/react';
+import FabricBridge from '@fabric/react';
 import Feed from './Feed';
 
 export default class FeedMonitor extends Component {
@@ -49,7 +49,7 @@ export default class FeedMonitor extends Component {
         <Segment>
           <Feed />
         </Segment>
-        {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
+        <FabricBridge host="localhost" secure="false" port="3000" />
       </fabric-content-page>
     );
   }

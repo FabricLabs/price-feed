@@ -10,7 +10,6 @@ import json from '@rollup/plugin-json';
 import url from '@rollup/plugin-url';
 // import serve from 'rollup-plugin-serve';
 // import livereload from 'rollup-plugin-livereload';
-import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 const plugins = [
   resolve({
@@ -70,7 +69,8 @@ export default [
       'semantic-ui-react',
       'trezor-connect'
     ],
-    output: {
+    output: [
+      {
         file: 'assets/feed.js',
         format: 'iife',
         name: 'PortalFeed'
