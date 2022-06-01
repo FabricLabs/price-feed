@@ -59,8 +59,16 @@ export default [
   },
   {
     input: 'components/Feed.js',
-    output: [
-      {
+    external: [
+      'buffer',
+      'crypto',
+      'react',
+      'react-dom',
+      'prop-types',
+      'semantic-ui-react',
+      'trezor-connect'
+    ],
+    output: {
         file: 'assets/feed.js',
         format: 'iife',
         name: 'PortalFeed'
