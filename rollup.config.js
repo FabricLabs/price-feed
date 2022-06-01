@@ -61,6 +61,7 @@ export default [
   {
     input: 'components/Feed.js',
     external: [
+      '@fabric/react',
       'buffer',
       'crypto',
       'react',
