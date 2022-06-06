@@ -57086,7 +57086,7 @@
 	// import FabricBridge from '@fabric/react';
 	// Define our component
 
-	class Feed extends react.exports.Component {
+	class Feed extends React$1.Component {
 	  state = {
 	    currency: 'BTC',
 	    prices: {
@@ -57133,7 +57133,7 @@
 
 	}
 
-	class FeedMonitor extends react.exports.Component {
+	class FeedMonitor extends React$1.Component {
 	  state = {
 	    currency: 'BTC',
 	    prices: {

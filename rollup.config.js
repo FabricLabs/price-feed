@@ -2,7 +2,7 @@
  * # Sample Rollup for Fabric
  */
 import babel from '@rollup/plugin-babel';
-import resolve, { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import css from 'rollup-plugin-import-css';
@@ -28,7 +28,9 @@ const plugins = [
     skipPreflightCheck: true,
     exclude: '**/node_modules/**',
   }),
-  commonjs(),
+  commonjs({
+    include: 'node_modules/**'
+  }),
   /* serve({
     open: true,
     contentBase: ['', 'assets'],
@@ -59,21 +61,11 @@ export default [
   },
   {
     input: 'components/Feed.js',
-    external: [
-      '@fabric/react',
-      'buffer',
-      'crypto',
-      'react',
-      'react-dom',
-      'prop-types',
-      'semantic-ui-react',
-      'trezor-connect'
-    ],
     output: [
       {
         file: 'assets/feed.js',
         format: 'iife',
-        name: 'PortalFeed'
+        name: 'PortalFeed',
       }
     ],
     plugins: plugins,

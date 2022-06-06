@@ -2,7 +2,7 @@
  * Live price feed component.
  */
 // Dependencies
-import React, { Component } from 'react';
+import React from 'react';
 
 // Styles
 import '../styles/feed.css';
@@ -14,10 +14,10 @@ import {
 } from 'semantic-ui-react';
 
 // Fabric Components
-import FabricBridge from '@fabric/react';
+// import FabricBridge from '@fabric/react';
 
 // Define our component
-export default class Feed extends Component {
+export default class Feed extends React.Component {
   state = {
     currency: 'BTC',
     prices: {
@@ -67,7 +67,7 @@ export default class Feed extends Component {
             </a>
           </Card.Content>
         </Card>
-        <FabricBridge host="localhost" secure="false" port="3000" />
+        {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
       </fabric-content-block>
     );
   }

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../styles/feed.css';
 // import '../libraries/fomantic/dist/semantic.css';
 import {
   Segment
 } from 'semantic-ui-react';
 
-import FabricBridge from '@fabric/react';
+// import FabricBridge from '@fabric/react';
 import Feed from './Feed';
 
-export default class FeedMonitor extends Component {
+export default class FeedMonitor extends React.Component {
   state = {
     currency: 'BTC',
     prices: {
@@ -49,7 +49,7 @@ export default class FeedMonitor extends Component {
         <Segment>
           <Feed />
         </Segment>
-        <FabricBridge host="localhost" secure="false" port="3000" />
+        {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
       </fabric-content-page>
     );
   }
