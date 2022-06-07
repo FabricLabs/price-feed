@@ -5,6 +5,7 @@
   "main": "services/feed.js",
   "scripts": {
     "build": "npm run build:semantic && npm run build:component",
+    "build:app": "rollup -c",
     "build:component": "rollup -c",
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes ../../assets && cd ../..",
     "dev": "npx concurrently \"npm run watch\" \"npm start\"",
@@ -46,6 +47,7 @@
     "fomantic-ui": "^2.8.8",
     "fomantic-ui-css": "^2.8.8",
     "http-server": "^14.1.0",
+    "lodash.merge": "^4.6.2",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "react": "^18.1.0",
