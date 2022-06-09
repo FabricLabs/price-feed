@@ -37,6 +37,16 @@ export default class FeedMonitor extends React.Component {
     return this;
   }
 
+  componentDidMount () {
+    const self = this;
+    self._monitor = setInterval(async () => {
+      const remote = { _GET: function () { return [] } }; // new Remote({ authority: 'localhost:3000' });
+      const result = await remote._GET('/quotes');
+      self._state.content.quotes = result;
+      self.setState(self._state.content);
+    }, 2500);
+  }
+
   trust (source) {
     source.on('log', this._handleSourceLog.bind(this));
   }
