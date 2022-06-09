@@ -57264,6 +57264,10 @@
 	 * Live price feed component.
 	 */
 
+	const label = {
+	  textAlign: 'right'
+	}; // Define our component
+
 	class Quote extends react.exports.Component {
 	  state = {
 	    age: 0,
@@ -57275,7 +57279,9 @@
 
 	  constructor(props = {}) {
 	    super(props);
-	    this.settings = Object.assign({}, this.state, props);
+	    this.settings = Object.assign({
+	      frequency: 0.007
+	    }, this.state, props);
 	    this._state = {
 	      content: this.state // TODO: inherit get state () from Actor
 
@@ -57291,6 +57297,14 @@
 	    return this.state.value;
 	  }
 
+	  componentDidMount() {
+	    const self = this;
+	    self._timekeeper = setInterval(() => {
+	      self._state.content.age = Date.now() - Date.parse(this.state.created);
+	      self.setState(self._state.content);
+	    }, self.settings.frequency);
+	  }
+
 	  withLocale(value) {
 	    if (typeof value !== 'Number') value = parseFloat(value);
 	    return value.toLocaleString(this.locale);
@@ -57299,24 +57313,32 @@
 	  render() {
 	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("portal-feed-quote", null, /*#__PURE__*/React$1.createElement(Segment, {
 	      compact: true
-	    }, /*#__PURE__*/React$1.createElement(Table, null, /*#__PURE__*/React$1.createElement(Table.Header, null), /*#__PURE__*/React$1.createElement(Table.Body, null, /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
-	      for: "symbol"
+	    }, /*#__PURE__*/React$1.createElement(Table, null, /*#__PURE__*/React$1.createElement(Table.Header, null), /*#__PURE__*/React$1.createElement(Table.Body, null, /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
+	      style: label
+	    }, /*#__PURE__*/React$1.createElement("strong", {
+	      htmlFor: "symbol"
 	    }, "Symbol:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
 	      "data-bind": "symbol"
-	    }, this.state.symbol))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
-	      for: "currency"
+	    }, this.state.symbol))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
+	      style: label
+	    }, /*#__PURE__*/React$1.createElement("strong", {
+	      htmlFor: "currency"
 	    }, "Currency:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
 	      "data-bind": "currency"
-	    }, this.state.currency))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
-	      for: "price"
+	    }, this.state.currency))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
+	      style: label
+	    }, /*#__PURE__*/React$1.createElement("strong", {
+	      htmlFor: "price"
 	    }, "Price:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
 	      "data-bind": "price"
-	    }, this.state.price))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
-	      for: "symbol"
-	    }, "Age:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
+	    }, this.state.price))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
+	      style: label
+	    }, /*#__PURE__*/React$1.createElement("strong", {
+	      htmlFor: "symbol"
+	    }, "Age:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("abbr", {
 	      "data-bind": "age",
 	      title: this.state.created
-	    }, this.state.age))))))));
+	    }, this.state.age, " ms"))))))));
 	  }
 
 	}
@@ -57392,6 +57414,21 @@
 	    return this;
 	  }
 
+	  componentDidMount() {
+	    const self = this;
+	    self._monitor = setInterval(async () => {
+	      const remote = {
+	        _GET: function () {
+	          return [];
+	        }
+	      }; // new Remote({ authority: 'localhost:3000' });
+
+	      const result = await remote._GET('/quotes');
+	      self._state.content.quotes = result;
+	      self.setState(self._state.content);
+	    }, 2500);
+	  }
+
 	  trust(source) {
 	    source.on('log', this._handleSourceLog.bind(this));
 	  }
@@ -57406,18 +57443,22 @@
 
 	  render() {
 	    return /*#__PURE__*/React$1.createElement("fabric-content-page", {
-	      class: "ui page"
+	      className: "ui page"
 	    }, /*#__PURE__*/React$1.createElement(Segment, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h1", null, "Price")), /*#__PURE__*/React$1.createElement(Feed, null), /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h2", null, "Symbols")), /*#__PURE__*/React$1.createElement("div", {
-	      class: "ui cards"
-	    }, this.state.symbols.map(symbol => {
-	      return /*#__PURE__*/React$1.createElement(Card, null, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, symbol), /*#__PURE__*/React$1.createElement(Rate, {
+	      className: "ui cards"
+	    }, this.state.symbols.map((symbol, i) => {
+	      return /*#__PURE__*/React$1.createElement(Card, {
+	        key: i
+	      }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, symbol), /*#__PURE__*/React$1.createElement(Rate, {
 	        currency: this.state.currency,
 	        symbol: symbol
 	      })));
 	    })), /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h2", null, "Quotes")), /*#__PURE__*/React$1.createElement("div", {
-	      class: "ui cards"
+	      className: "ui cards"
 	    }, this.state.quotes.map((quote, i) => {
-	      return /*#__PURE__*/React$1.createElement(Card, null, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("strong", null, "Quote #", i + 1, " (quotes[", i, "])")), /*#__PURE__*/React$1.createElement(Quote, {
+	      return /*#__PURE__*/React$1.createElement(Card, {
+	        key: i
+	      }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("strong", null, "Quote #", i + 1, " (quotes[", i, "])")), /*#__PURE__*/React$1.createElement(Quote, {
 	        symbol: quote.symbol,
 	        currency: quote.currency,
 	        price: quote.price
