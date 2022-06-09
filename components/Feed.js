@@ -33,6 +33,7 @@ export default class Feed extends React.Component {
   constructor (props = {}) {
     super(props);
 
+    this.settings = Object.assign({}, props);
     this._state = {
       content: this.state // TODO: inherit get state () from Actor
     };
@@ -56,19 +57,20 @@ export default class Feed extends React.Component {
 
   render () {
     return (
-      <fabric-content-block>
-        <Card fluid>
-          <Card.Content>
-            <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
-          </Card.Content>
-          <Card.Content extra>
-            <a>
-              <Icon name='linkify' />
-            </a>
-          </Card.Content>
-        </Card>
-        {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
-      </fabric-content-block>
+      <>
+        <fabric-content-block>
+          <Card fluid>
+            <Card.Content>
+              <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
+            </Card.Content>
+            <Card.Content extra>
+              <a>
+                <Icon name='linkify' />
+              </a>
+            </Card.Content>
+          </Card>
+        </fabric-content-block>
+      </>
     );
   }
 };

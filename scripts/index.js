@@ -1,7 +1,11 @@
-import React from 'react';
+// Dependencies
+import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+
+// Components
 import FeedMonitor from '../components/FeedMonitor';
 
+// Settings
 const settings = {
   currency: 'USD',
   symbols: [
@@ -11,6 +15,7 @@ const settings = {
   ]
 };
 
+// Main Process Definition
 async function main (input = {}) {
   const container = document.getElementById('feed');
   const root = createRoot(container);
@@ -22,6 +27,7 @@ async function main (input = {}) {
   }
 }
 
+// Run Main Process
 main(settings).catch((exception) => {
   console.error('[PORTAL:FEED] Main Process Exception:', exception);
 }).then((output) => {
