@@ -268,6 +268,7 @@ class Feed extends Service {
   }
 
   async stop () {
+    await this.http.stop();
     if (this._syncService) clearInterval(this._syncService);
     this._state.status = 'STOPPED';
     this.commit();
