@@ -85,6 +85,7 @@ class Feed extends Service {
       content: {
         values: {}
       },
+      history: [],
       states: {},
       status: 'PAUSED'
     };
