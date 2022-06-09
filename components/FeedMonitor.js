@@ -1,8 +1,11 @@
+const LIMIT_PER_PAGE = 3;
+
 import React from 'react';
 import '../styles/feed.css';
 // import '../libraries/fomantic/dist/semantic.css';
 
 import {
+  Button,
   Card,
   Header,
   Segment
@@ -19,7 +22,8 @@ export default class FeedMonitor extends React.Component {
     symbols: ['BTC', 'NMC', 'LTC'],
     quotes: [
       {
-        value: 29349.54,
+        created: (new Date()).toISOString(),
+        rate: 29349.54,
         currency: 'USD',
         symbol: 'BTC'
       }
@@ -39,8 +43,30 @@ export default class FeedMonitor extends React.Component {
 
   componentDidMount () {
     const self = this;
+
     self._monitor = setInterval(async () => {
-      const remote = { _GET: function () { return [] } }; // new Remote({ authority: 'localhost:3000' });
+      const _GET = async function _GET (path) {
+        const delta = (((Math.random() < 0.5) ? 1 : -1) * Math.random());
+
+        switch (path) {
+          default:
+            return {
+              quotes: self.state.quotes
+            };
+          case '/quotes':
+            return self.state.quotes.concat({
+              created: (new Date()).toISOString(),
+              delta: delta,
+              rate: self.state.quotes[ self.state.quotes.length - 1 ].rate + delta,
+              currency: 'USD',
+              symbol: 'BTC'
+            });
+        }
+      }
+
+      const simulator = { _GET };
+
+      const remote = simulator; // new Remote({ authority: 'localhost:3000' });
       const result = await remote._GET('/quotes');
       self._state.content.quotes = result;
       self.setState(self._state.content);
@@ -60,6 +86,13 @@ export default class FeedMonitor extends React.Component {
   }
 
   render () {
+    const quotes = [].concat(this.state.quotes).sort((a, b) => {
+      return (Date.parse(a.created) > Date.parse(b.created)) ? -1 : 1;
+    });
+
+    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
+    const outOfBounds = quotes.length - quoteView.length;
+
     return (
       <fabric-content-page className="ui page">
         <Segment>
@@ -82,16 +115,21 @@ export default class FeedMonitor extends React.Component {
 
           <Header><h2>Quotes</h2></Header>
           <div className="ui cards">
-            {this.state.quotes.map((quote, i) => {
+            {quoteView.map((quote, i) => {
               return (
                 <Card key={i}>
                   <Card.Content>
-                    <Header><strong>Quote #{i + 1} (quotes[{i}])</strong></Header>
-                    <Quote symbol={quote.symbol} currency={quote.currency} price={quote.price} />
+                    <Header><strong>Quote #{ quotes.length - i}</strong></Header>
+                    <Quote symbol={quote.symbol} currency={quote.currency} rate={quote.rate} />
                   </Card.Content>
                 </Card>
               );
             })}
+            {(outOfBounds) ? <Card>
+              <Card.Content>
+                <Button>{outOfBounds} more</Button>
+              </Card.Content>
+            </Card> : undefined}
           </div>
         </Segment>
         {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
