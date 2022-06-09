@@ -11,6 +11,9 @@ import {
   Segment
 } from 'semantic-ui-react';
 
+import d3 from 'd3';
+import * as Plot from '@observablehq/plot';
+
 // Internal Components
 import Feed from './Feed';
 import Quote from './Quote';
@@ -37,6 +40,9 @@ export default class FeedMonitor extends React.Component {
       assets: {},
       content: this.state // TODO: inherit get state () from Actor
     };
+
+    this.ref = React.createRef();
+    this.chart = React.createRef();
 
     return this;
   }
@@ -93,8 +99,23 @@ export default class FeedMonitor extends React.Component {
     const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
     const outOfBounds = quotes.length - quoteView.length;
 
+    const chart = Plot.line(quotes.map(x => {
+      return {
+        ...x,
+        created: new Date(x.created)
+      };
+    }), {
+      x: 'created',
+      y: 'rate'
+    }).plot({
+      marginBottom: 50,
+      marginLeft: 75,
+      width: (this.chart.current) ? this.chart.current.offsetWidth : 600,
+      x: { tickRotate: 45 }
+    });
+
     return (
-      <fabric-content-page className="ui page">
+      <fabric-content-page className="ui page" ref={this.ref}>
         <Segment>
           <Header><h1>Price</h1></Header>
           <Feed />
@@ -114,6 +135,7 @@ export default class FeedMonitor extends React.Component {
           </div>
 
           <Header><h2>Quotes</h2></Header>
+          <Segment ref={this.chart} class="chart" dangerouslySetInnerHTML={{ __html: chart.outerHTML }}></Segment>
           <div className="ui cards">
             {quoteView.map((quote, i) => {
               const id = quotes.length - i;
