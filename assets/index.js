@@ -57269,21 +57269,21 @@
 	}; // Define our component
 
 	class Quote extends react.exports.Component {
-	  state = {
-	    age: 0,
-	    created: new Date().toISOString(),
-	    currency: 'USD',
-	    price: 29349.54,
-	    symbol: 'BTC'
-	  };
-
 	  constructor(props = {}) {
 	    super(props);
 	    this.settings = Object.assign({
 	      frequency: 0.007
 	    }, this.state, props);
+	    this.state = { ...this.props
+	    };
 	    this._state = {
-	      content: this.state // TODO: inherit get state () from Actor
+	      content: Object.assign({
+	        age: 0,
+	        created: new Date().toISOString(),
+	        currency: 'USD',
+	        rate: 29349.54,
+	        symbol: 'BTC'
+	      }, this.state) // TODO: inherit get state () from Actor
 
 	    };
 	    return this;
@@ -57293,7 +57293,7 @@
 	    return Intl.NumberFormat().resolvedOptions().locale;
 	  }
 
-	  get price() {
+	  get rate() {
 	    return this.state.value;
 	  }
 
@@ -57328,10 +57328,10 @@
 	    }, this.state.currency))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
 	      style: label
 	    }, /*#__PURE__*/React$1.createElement("strong", {
-	      htmlFor: "price"
-	    }, "Price:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
-	      "data-bind": "price"
-	    }, this.state.price))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
+	      htmlFor: "rate"
+	    }, "Rate:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
+	      "data-bind": "rate"
+	    }, this.state.rate.toFixed(2)))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, {
 	      style: label
 	    }, /*#__PURE__*/React$1.createElement("strong", {
 	      htmlFor: "symbol"
@@ -57381,7 +57381,7 @@
 	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("portal-feed-rate", null, /*#__PURE__*/React$1.createElement(Segment, {
 	      compact: true
 	    }, /*#__PURE__*/React$1.createElement(Label, {
-	      for: "currency"
+	      htmlFor: "currency"
 	    }, this.state.currency), /*#__PURE__*/React$1.createElement("code", {
 	      "data-bind": "price",
 	      style: {
@@ -57393,12 +57393,14 @@
 
 	}
 
+	const LIMIT_PER_PAGE = 3;
 	class FeedMonitor extends React$1.Component {
 	  state = {
 	    currency: 'USD',
 	    symbols: ['BTC', 'NMC', 'LTC'],
 	    quotes: [{
-	      value: 29349.54,
+	      created: new Date().toISOString(),
+	      rate: 29349.54,
 	      currency: 'USD',
 	      symbol: 'BTC'
 	    }]
@@ -57417,11 +57419,30 @@
 	  componentDidMount() {
 	    const self = this;
 	    self._monitor = setInterval(async () => {
-	      const remote = {
-	        _GET: function () {
-	          return [];
+	      const _GET = async function _GET(path) {
+	        const delta = (Math.random() < 0.5 ? 1 : -1) * Math.random();
+
+	        switch (path) {
+	          default:
+	            return {
+	              quotes: self.state.quotes
+	            };
+
+	          case '/quotes':
+	            return self.state.quotes.concat({
+	              created: new Date().toISOString(),
+	              delta: delta,
+	              rate: self.state.quotes[self.state.quotes.length - 1].rate + delta,
+	              currency: 'USD',
+	              symbol: 'BTC'
+	            });
 	        }
-	      }; // new Remote({ authority: 'localhost:3000' });
+	      };
+
+	      const simulator = {
+	        _GET
+	      };
+	      const remote = simulator; // new Remote({ authority: 'localhost:3000' });
 
 	      const result = await remote._GET('/quotes');
 	      self._state.content.quotes = result;
@@ -57442,6 +57463,11 @@
 	  }
 
 	  render() {
+	    const quotes = [].concat(this.state.quotes).sort((a, b) => {
+	      return Date.parse(a.created) > Date.parse(b.created) ? -1 : 1;
+	    });
+	    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
+	    const outOfBounds = quotes.length - quoteView.length;
 	    return /*#__PURE__*/React$1.createElement("fabric-content-page", {
 	      className: "ui page"
 	    }, /*#__PURE__*/React$1.createElement(Segment, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h1", null, "Price")), /*#__PURE__*/React$1.createElement(Feed, null), /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h2", null, "Symbols")), /*#__PURE__*/React$1.createElement("div", {
@@ -57455,15 +57481,16 @@
 	      })));
 	    })), /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h2", null, "Quotes")), /*#__PURE__*/React$1.createElement("div", {
 	      className: "ui cards"
-	    }, this.state.quotes.map((quote, i) => {
+	    }, quoteView.map((quote, i) => {
+	      const id = quotes.length - i;
 	      return /*#__PURE__*/React$1.createElement(Card, {
-	        key: i
-	      }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("strong", null, "Quote #", i + 1, " (quotes[", i, "])")), /*#__PURE__*/React$1.createElement(Quote, {
+	        key: id
+	      }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("strong", null, "Quote #", id)), /*#__PURE__*/React$1.createElement(Quote, {
 	        symbol: quote.symbol,
 	        currency: quote.currency,
-	        price: quote.price
+	        rate: quote.rate
 	      })));
-	    }))));
+	    }), outOfBounds ? /*#__PURE__*/React$1.createElement(Card, null, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Button, null, outOfBounds, " more"))) : undefined)));
 	  }
 
 	}

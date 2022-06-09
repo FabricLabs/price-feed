@@ -116,10 +116,11 @@ export default class FeedMonitor extends React.Component {
           <Header><h2>Quotes</h2></Header>
           <div className="ui cards">
             {quoteView.map((quote, i) => {
+              const id = quotes.length - i;
               return (
-                <Card key={i}>
+                <Card key={id}>
                   <Card.Content>
-                    <Header><strong>Quote #{ quotes.length - i}</strong></Header>
+                    <Header><strong>Quote #{id}</strong></Header>
                     <Quote symbol={quote.symbol} currency={quote.currency} rate={quote.rate} />
                   </Card.Content>
                 </Card>

@@ -27,7 +27,7 @@ export default class Quote extends Component {
       frequency: 0.007
     }, this.state, props);
 
-    this.state = this.props;
+    this.state = { ...this.props };
 
     this._state = {
       content: Object.assign({
