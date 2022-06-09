@@ -10,7 +10,9 @@
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes ../../assets && cd ../..",
     "dev": "npx concurrently \"npm run watch\" \"npm start\"",
     "coverage": "nyc npm test",
+    "make:coverage": "npm run coverage && nyc report --reporter html",
     "quote": "node scripts/report.js",
+    "review:coverage": "npm run make:coverage && http-server -p 8000 reports/coverage",
     "serve": "http-server assets",
     "start": "node scripts/node.js",
     "test": "mocha tests",
@@ -61,5 +63,15 @@
   },
   "babelOptions": {
     "compact": false
+  },
+  "nyc": {
+    "exclude": [
+      "assets",
+      "contracts",
+      "tests",
+      "stores"
+    ],
+    "report-dir": "./reports/coverage",
+    "temp-dir": "./reports/nyc"
   }
 }

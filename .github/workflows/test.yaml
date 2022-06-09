@@ -1,4 +1,4 @@
-name: npm test
+name: "@portal/feed npm test"
 on:
   push:
     branches: '*'

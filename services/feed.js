@@ -2,6 +2,7 @@
 
 const ESTIMATE_MODE = 'weighted';
 
+const Actor = require('@fabric/core/types/actor');
 const Peer = require('@fabric/core/types/peer');
 const Service = require('@fabric/core/types/service');
 const Hash256 = require('@fabric/core/types/hash256');
@@ -36,7 +37,9 @@ class Feed extends Service {
       interval: 10 * 60 * 1000,
       fabric: null,
       sources: {
-        bitpay: {}
+        bitpay: {},
+        coinbase: {},
+        coinmarketcap: {}
       },
       symbols: [
         'BTC',
@@ -96,6 +99,33 @@ class Feed extends Service {
     return this.state.values;
   }
 
+  commit () {
+    const state = new Actor(this.state);
+    this._state.states[state.id] = state.toObject();
+    this._state.history.push(state.id);
+
+    if (this.observer) {
+      try {
+        const patches = manager.generate(this.observer);
+        if (patches.length) {
+          this.history.push(patches);
+          this.emit('patches', patches);
+        }
+      } catch (E) {
+        console.error('Could not generate patches:', E);
+      }
+    }
+
+    const commit = new Actor({
+      type: 'Commit',
+      state: this.state
+    });
+
+    this.emit('commit', { ...commit.toObject(), id: commit.id });
+
+    return commit.id;
+  }
+
   estimateFromQuotes (quotes) {
     if (!quotes || !quotes.length) throw new Error('No quotes provided.');
 
@@ -126,6 +156,27 @@ class Feed extends Service {
     }
 
     return estimate;
+  }
+
+  trust (source, name = source.constructor.name) {
+    super.trust(source);
+
+    const self = this;
+
+    source.on('quote', function handleSourceQuote (quote) {
+      const actor = new Actor({
+        type: 'Quote',
+        data: {
+          ...quote,
+          source: name
+        }
+      });
+
+      self._state.quotes[actor.id] = actor.toObject();
+      self.commit();
+    });
+
+    return this;
   }
 
   async generateReport () {
@@ -190,6 +241,10 @@ class Feed extends Service {
   async start () {
     if (this.status === 'STARTED') return this;
     this._state.status = 'STARTING';
+
+    this.trust(this.bitpay, 'BITPAY');
+    this.trust(this.coinbase, 'COINBASE');
+    this.trust(this.cmc, 'COINMARKETCAP');
 
     // Start HTTP Service
     await this.http.start();
