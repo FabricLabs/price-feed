@@ -8,8 +8,6 @@ import replace from '@rollup/plugin-replace';
 import css from 'rollup-plugin-import-css';
 import json from '@rollup/plugin-json';
 import url from '@rollup/plugin-url';
-// import serve from 'rollup-plugin-serve';
-// import livereload from 'rollup-plugin-livereload';
 
 const plugins = [
   resolve({
@@ -30,14 +28,7 @@ const plugins = [
   }),
   commonjs({
     include: 'node_modules/**'
-  }),
-  /* serve({
-    open: true,
-    contentBase: ['', 'assets'],
-    host: 'localhost',
-    port: 3000
-  }) */,
-  // livereload({ watch: 'components' })
+  })
 ];
 
 function onwarn (warning, warn) {
@@ -54,18 +45,6 @@ export default [
         file: 'assets/index.js',
         format: 'iife',
         name: 'PortalFeedMonitor'
-      }
-    ],
-    plugins: plugins,
-    onwarn: onwarn
-  },
-  {
-    input: 'components/Feed.js',
-    output: [
-      {
-        file: 'assets/feed.js',
-        format: 'iife',
-        name: 'PortalFeed',
       }
     ],
     plugins: plugins,

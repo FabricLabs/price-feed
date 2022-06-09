@@ -32643,7 +32643,9 @@
 	      onRecoverableError = options.onRecoverableError;
 	    }
 
-	    if (options.transitionCallbacks !== undefined) ;
+	    if (options.transitionCallbacks !== undefined) {
+	      options.transitionCallbacks;
+	    }
 	  }
 
 	  var root = createContainer(container, ConcurrentRoot, null, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
