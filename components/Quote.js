@@ -3,12 +3,20 @@
  */
 
 // Dependencies
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
+
+// Fomantic
 import {
-  Label,
   Segment,
   Table
 } from 'semantic-ui-react';
+
+// Styles
+const label = {
+  textAlign: 'right'
+};
 
 // Define our component
 export default class Quote extends Component {
@@ -23,7 +31,10 @@ export default class Quote extends Component {
   constructor (props = {}) {
     super(props);
 
-    this.settings = Object.assign({}, this.state, props);
+    this.settings = Object.assign({
+      frequency: 0.007
+    }, this.state, props);
+
     this._state = {
       content: this.state // TODO: inherit get state () from Actor
     };
@@ -37,6 +48,14 @@ export default class Quote extends Component {
 
   get price () {
     return this.state.value;
+  }
+
+  componentDidMount () {
+    const self = this;
+    self._timekeeper = setInterval(() => {
+      self._state.content.age = Date.now() - Date.parse(this.state.created);
+      self.setState(self._state.content);
+    }, self.settings.frequency);
   }
 
   withLocale (value) {
@@ -53,35 +72,35 @@ export default class Quote extends Component {
               <Table.Header></Table.Header>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell>
-                    <Label for="symbol">Symbol:</Label>
+                  <Table.Cell style={label}>
+                    <strong htmlFor="symbol">Symbol:</strong>
                   </Table.Cell>
                   <Table.Cell>
                     <code data-bind="symbol">{this.state.symbol}</code>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>
-                    <Label for="currency">Currency:</Label>
+                  <Table.Cell style={label}>
+                    <strong htmlFor="currency">Currency:</strong>
                   </Table.Cell>
                   <Table.Cell>
                     <code data-bind="currency">{this.state.currency}</code>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>
-                    <Label for="price">Price:</Label>
+                  <Table.Cell style={label}>
+                    <strong htmlFor="price">Price:</strong>
                   </Table.Cell>
                   <Table.Cell>
                     <code data-bind="price">{this.state.price}</code>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>
-                    <Label for="symbol">Age:</Label>
+                  <Table.Cell style={label}>
+                    <strong htmlFor="symbol">Age:</strong>
                   </Table.Cell>
                   <Table.Cell>
-                    <code data-bind="age" title={this.state.created}>{this.state.age}</code>
+                    <abbr data-bind="age" title={this.state.created}>{this.state.age} ms</abbr>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
