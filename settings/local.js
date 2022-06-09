@@ -3,7 +3,7 @@ module.exports = {
   debug: true,
   identity: {
     // This is a sample seed.  Replace with one of your own.
-    seed: 'arrest model vacant obscure kitchen ice rack spider antique pull double discover'
+    seed: 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
   },
   interval: 60 * 60 * 1000, // sync every hour, or ~730 calls/month per symbol
   sources: {
