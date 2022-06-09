@@ -46,7 +46,7 @@ export default class Rate extends Component {
       <>
         <portal-feed-rate>
           <Segment compact>
-            <Label for="currency">{this.state.currency}</Label>
+            <Label htmlFor="currency">{this.state.currency}</Label>
             <code data-bind="price" style={{ display: 'inline-block', marginLeft: '1em' }}>{this.withLocale(this.state.value)}</code>
           </Segment>
         </portal-feed-rate>
