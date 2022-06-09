@@ -50842,7 +50842,70 @@
 	  };
 	});
 
-	({
+	/**
+	 * A table displays a collections of data grouped into rows.
+	 */
+
+	function Table(props) {
+	  var attached = props.attached,
+	      basic = props.basic,
+	      celled = props.celled,
+	      children = props.children,
+	      className = props.className,
+	      collapsing = props.collapsing,
+	      color = props.color,
+	      columns = props.columns,
+	      compact = props.compact,
+	      definition = props.definition,
+	      fixed = props.fixed,
+	      footerRow = props.footerRow,
+	      headerRow = props.headerRow,
+	      headerRows = props.headerRows,
+	      inverted = props.inverted,
+	      padded = props.padded,
+	      renderBodyRow = props.renderBodyRow,
+	      selectable = props.selectable,
+	      singleLine = props.singleLine,
+	      size = props.size,
+	      sortable = props.sortable,
+	      stackable = props.stackable,
+	      striped = props.striped,
+	      structured = props.structured,
+	      tableData = props.tableData,
+	      textAlign = props.textAlign,
+	      unstackable = props.unstackable,
+	      verticalAlign = props.verticalAlign;
+	  var classes = cx('ui', color, size, useKeyOnly(celled, 'celled'), useKeyOnly(collapsing, 'collapsing'), useKeyOnly(definition, 'definition'), useKeyOnly(fixed, 'fixed'), useKeyOnly(inverted, 'inverted'), useKeyOnly(selectable, 'selectable'), useKeyOnly(singleLine, 'single line'), useKeyOnly(sortable, 'sortable'), useKeyOnly(stackable, 'stackable'), useKeyOnly(striped, 'striped'), useKeyOnly(structured, 'structured'), useKeyOnly(unstackable, 'unstackable'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(basic, 'basic'), useKeyOrValueAndKey(compact, 'compact'), useKeyOrValueAndKey(padded, 'padded'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column'), 'table', className);
+	  var rest = getUnhandledProps(Table, props);
+	  var ElementType = getElementType(Table, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  var hasHeaderRows = headerRow || headerRows;
+	  var headerShorthandOptions = {
+	    defaultProps: {
+	      cellAs: 'th'
+	    }
+	  };
+	  var headerElement = hasHeaderRows && /*#__PURE__*/React$1.createElement(TableHeader, null, TableRow.create(headerRow, headerShorthandOptions), map(headerRows, function (data) {
+	    return TableRow.create(data, headerShorthandOptions);
+	  }));
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), headerElement, /*#__PURE__*/React$1.createElement(TableBody, null, renderBodyRow && map(tableData, function (data, index) {
+	    return TableRow.create(renderBodyRow(data, index));
+	  })), footerRow && /*#__PURE__*/React$1.createElement(TableFooter, null, TableRow.create(footerRow)));
+	}
+
+	Table.handledProps = ["as", "attached", "basic", "celled", "children", "className", "collapsing", "color", "columns", "compact", "definition", "fixed", "footerRow", "headerRow", "headerRows", "inverted", "padded", "renderBodyRow", "selectable", "singleLine", "size", "sortable", "stackable", "striped", "structured", "tableData", "textAlign", "unstackable", "verticalAlign"];
+	Table.defaultProps = {
+	  as: 'table'
+	};
+	Table.propTypes = {
 	  /** An element type to render as (string or function). */
 	  as: propTypes.exports.elementType,
 
@@ -50937,7 +51000,13 @@
 
 	  /** A table can adjust its text alignment. */
 	  verticalAlign: propTypes.exports.oneOf(VERTICAL_ALIGNMENTS)
-	}) ;
+	} ;
+	Table.Body = TableBody;
+	Table.Cell = TableCell;
+	Table.Footer = TableFooter;
+	Table.Header = TableHeader;
+	Table.HeaderCell = TableHeaderCell;
+	Table.Row = TableRow;
 
 	({
 	  /** An element type to render as (string or function). */
@@ -51064,7 +51133,60 @@
 	  content: contentShorthand
 	} ;
 
-	({
+	/**
+	 * A header provides a short summary of content
+	 */
+
+	function Header(props) {
+	  var attached = props.attached,
+	      block = props.block,
+	      children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      content = props.content,
+	      disabled = props.disabled,
+	      dividing = props.dividing,
+	      floated = props.floated,
+	      icon = props.icon,
+	      image = props.image,
+	      inverted = props.inverted,
+	      size = props.size,
+	      sub = props.sub,
+	      subheader = props.subheader,
+	      textAlign = props.textAlign;
+	  var classes = cx('ui', color, size, useKeyOnly(block, 'block'), useKeyOnly(disabled, 'disabled'), useKeyOnly(dividing, 'dividing'), useValueAndKey(floated, 'floated'), useKeyOnly(icon === true, 'icon'), useKeyOnly(image === true, 'image'), useKeyOnly(inverted, 'inverted'), useKeyOnly(sub, 'sub'), useKeyOrValueAndKey(attached, 'attached'), useTextAlignProp(textAlign), 'header', className);
+	  var rest = getUnhandledProps(Header, props);
+	  var ElementType = getElementType(Header, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  var iconElement = Icon.create(icon, {
+	    autoGenerateKey: false
+	  });
+	  var imageElement = Image.create(image, {
+	    autoGenerateKey: false
+	  });
+	  var subheaderElement = HeaderSubheader.create(subheader, {
+	    autoGenerateKey: false
+	  });
+
+	  if (iconElement || imageElement) {
+	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), iconElement || imageElement, (content || subheaderElement) && /*#__PURE__*/React$1.createElement(HeaderContent, null, content, subheaderElement));
+	  }
+
+	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), content, subheaderElement);
+	}
+
+	Header.handledProps = ["as", "attached", "block", "children", "className", "color", "content", "disabled", "dividing", "floated", "icon", "image", "inverted", "size", "sub", "subheader", "textAlign"];
+	Header.propTypes = {
 	  /** An element type to render as (string or function). */
 	  as: propTypes.exports.elementType,
 
@@ -51115,7 +51237,9 @@
 
 	  /** Align header content. */
 	  textAlign: propTypes.exports.oneOf(TEXT_ALIGNMENTS)
-	}) ;
+	} ;
+	Header.Content = HeaderContent;
+	Header.Subheader = HeaderSubheader;
 
 	/**
 	 * A list item can contain a description.
@@ -57101,6 +57225,7 @@
 
 	  constructor(props = {}) {
 	    super(props);
+	    this.settings = Object.assign({}, props);
 	    this._state = {
 	      content: this.state // TODO: inherit get state () from Actor
 
@@ -57122,33 +57247,143 @@
 	  }
 
 	  render() {
-	    return /*#__PURE__*/React$1.createElement("fabric-content-block", null, /*#__PURE__*/React$1.createElement(Card, {
+	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("fabric-content-block", null, /*#__PURE__*/React$1.createElement(Card, {
 	      fluid: true
 	    }, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Label, null, "Price: ", /*#__PURE__*/React$1.createElement(Label.Detail, null, this.state.quote.rate))), /*#__PURE__*/React$1.createElement(Card.Content, {
 	      extra: true
 	    }, /*#__PURE__*/React$1.createElement("a", null, /*#__PURE__*/React$1.createElement(Icon, {
 	      name: "linkify"
-	    })))));
+	    }))))));
+	  }
+
+	}
+
+	/**
+	 * Live price feed component.
+	 */
+
+	class Quote extends react.exports.Component {
+	  state = {
+	    age: 0,
+	    created: new Date().toISOString(),
+	    currency: 'USD',
+	    price: 29349.54,
+	    symbol: 'BTC'
+	  };
+
+	  constructor(props = {}) {
+	    super(props);
+	    this.settings = Object.assign({}, this.state, props);
+	    this._state = {
+	      content: this.state // TODO: inherit get state () from Actor
+
+	    };
+	    return this;
+	  }
+
+	  get locale() {
+	    return Intl.NumberFormat().resolvedOptions().locale;
+	  }
+
+	  get price() {
+	    return this.state.value;
+	  }
+
+	  withLocale(value) {
+	    if (typeof value !== 'Number') value = parseFloat(value);
+	    return value.toLocaleString(this.locale);
+	  }
+
+	  render() {
+	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("portal-feed-quote", null, /*#__PURE__*/React$1.createElement(Segment, {
+	      compact: true
+	    }, /*#__PURE__*/React$1.createElement(Table, null, /*#__PURE__*/React$1.createElement(Table.Header, null), /*#__PURE__*/React$1.createElement(Table.Body, null, /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
+	      for: "symbol"
+	    }, "Symbol:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
+	      "data-bind": "symbol"
+	    }, this.state.symbol))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
+	      for: "currency"
+	    }, "Currency:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
+	      "data-bind": "currency"
+	    }, this.state.currency))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
+	      for: "price"
+	    }, "Price:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
+	      "data-bind": "price"
+	    }, this.state.price))), /*#__PURE__*/React$1.createElement(Table.Row, null, /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement(Label, {
+	      for: "symbol"
+	    }, "Age:")), /*#__PURE__*/React$1.createElement(Table.Cell, null, /*#__PURE__*/React$1.createElement("code", {
+	      "data-bind": "age",
+	      title: this.state.created
+	    }, this.state.age))))))));
+	  }
+
+	}
+
+	/**
+	 * Live price feed component.
+	 */
+
+	class Rate extends react.exports.Component {
+	  state = {
+	    value: 29349.54,
+	    currency: 'USD',
+	    symbol: 'BTC'
+	  };
+
+	  constructor(props = {}) {
+	    super(props);
+	    this.settings = Object.assign({}, this.state, props);
+	    this._state = {
+	      content: this.state // TODO: inherit get state () from Actor
+
+	    };
+	    return this;
+	  }
+
+	  get locale() {
+	    return Intl.NumberFormat().resolvedOptions().locale;
+	  }
+
+	  get price() {
+	    return this.state.value;
+	  }
+
+	  withLocale(value) {
+	    if (typeof value !== 'Number') value = parseFloat(value);
+	    return value.toLocaleString(this.locale);
+	  }
+
+	  render() {
+	    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("portal-feed-rate", null, /*#__PURE__*/React$1.createElement(Segment, {
+	      compact: true
+	    }, /*#__PURE__*/React$1.createElement(Label, {
+	      for: "currency"
+	    }, this.state.currency), /*#__PURE__*/React$1.createElement("code", {
+	      "data-bind": "price",
+	      style: {
+	        display: 'inline-block',
+	        marginLeft: '1em'
+	      }
+	    }, this.withLocale(this.state.value)))));
 	  }
 
 	}
 
 	class FeedMonitor extends React$1.Component {
 	  state = {
-	    currency: 'BTC',
-	    prices: {
-	      'BTC': 1
-	    },
-	    quote: {
-	      created: new Date().toISOString(),
-	      currency: 'BTC',
-	      rate: 1
-	    }
+	    currency: 'USD',
+	    symbols: ['BTC', 'NMC', 'LTC'],
+	    quotes: [{
+	      value: 29349.54,
+	      currency: 'USD',
+	      symbol: 'BTC'
+	    }]
 	  };
 
 	  constructor(props = {}) {
 	    super(props);
 	    this._state = {
+	      assets: {},
 	      content: this.state // TODO: inherit get state () from Actor
 
 	    };
@@ -57170,20 +57405,37 @@
 	  render() {
 	    return /*#__PURE__*/React$1.createElement("fabric-content-page", {
 	      class: "ui page"
-	    }, /*#__PURE__*/React$1.createElement(Segment, null, /*#__PURE__*/React$1.createElement(Feed, null)));
+	    }, /*#__PURE__*/React$1.createElement(Segment, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h1", null, "Price")), /*#__PURE__*/React$1.createElement(Feed, null), /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h2", null, "Symbols")), /*#__PURE__*/React$1.createElement("div", {
+	      class: "ui cards"
+	    }, this.state.symbols.map(symbol => {
+	      return /*#__PURE__*/React$1.createElement(Card, null, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, symbol), /*#__PURE__*/React$1.createElement(Rate, {
+	        currency: this.state.currency,
+	        symbol: symbol
+	      })));
+	    })), /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("h2", null, "Quotes")), /*#__PURE__*/React$1.createElement("div", {
+	      class: "ui cards"
+	    }, this.state.quotes.map((quote, i) => {
+	      return /*#__PURE__*/React$1.createElement(Card, null, /*#__PURE__*/React$1.createElement(Card.Content, null, /*#__PURE__*/React$1.createElement(Header, null, /*#__PURE__*/React$1.createElement("strong", null, "Quote #", i + 1, " (quotes[", i, "])")), /*#__PURE__*/React$1.createElement(Quote, {
+	        symbol: quote.symbol,
+	        currency: quote.currency,
+	        price: quote.price
+	      })));
+	    }))));
 	  }
 
 	}
 
+	// Dependencies
+
 	const settings = {
 	  currency: 'USD',
 	  symbols: ['BTC', 'LTC', 'NMC']
-	};
+	}; // Main Process Definition
 
-	async function main(input) {
+	async function main(input = {}) {
 	  const container = document.getElementById('feed');
 	  const root = createRoot(container);
-	  root.render( /*#__PURE__*/React$1.createElement(FeedMonitor, {
+	  root.render( /*#__PURE__*/react.exports.createElement(FeedMonitor, {
 	    state: input
 	  }));
 	  return {
@@ -57191,7 +57443,8 @@
 	      root
 	    }
 	  };
-	}
+	} // Run Main Process
+
 
 	main(settings).catch(exception => {
 	  console.error('[PORTAL:FEED] Main Process Exception:', exception);
