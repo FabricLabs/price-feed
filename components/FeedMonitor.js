@@ -61,16 +61,16 @@ export default class FeedMonitor extends React.Component {
 
   render () {
     return (
-      <fabric-content-page class="ui page">
+      <fabric-content-page className="ui page">
         <Segment>
           <Header><h1>Price</h1></Header>
           <Feed />
 
           <Header><h2>Symbols</h2></Header>
-          <div class="ui cards">
-            {this.state.symbols.map((symbol) => {
+          <div className="ui cards">
+            {this.state.symbols.map((symbol, i) => {
               return (
-                <Card>
+                <Card key={i}>
                   <Card.Content>
                     <Header>{symbol}</Header>
                     <Rate currency={this.state.currency} symbol={symbol} />
@@ -81,10 +81,10 @@ export default class FeedMonitor extends React.Component {
           </div>
 
           <Header><h2>Quotes</h2></Header>
-          <div class="ui cards">
+          <div className="ui cards">
             {this.state.quotes.map((quote, i) => {
               return (
-                <Card>
+                <Card key={i}>
                   <Card.Content>
                     <Header><strong>Quote #{i + 1} (quotes[{i}])</strong></Header>
                     <Quote symbol={quote.symbol} currency={quote.currency} price={quote.price} />
