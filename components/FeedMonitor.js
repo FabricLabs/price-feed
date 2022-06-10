@@ -11,7 +11,7 @@ import {
   Segment
 } from 'semantic-ui-react';
 
-import d3 from 'd3';
+// import d3 from 'd3';
 import * as Plot from '@observablehq/plot';
 
 // Internal Components
