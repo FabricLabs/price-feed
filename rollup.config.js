@@ -44,7 +44,27 @@ export default [
       {
         file: 'assets/index.js',
         format: 'iife',
-        name: 'PortalFeedMonitor'
+        name: 'PortalFeedMonitor',
+        globals: {
+          'buffer': 'buffer',
+          'crypto': 'crypto',
+          'querystring': 'querystring',
+          'stream': 'stream',
+          'url': 'url',
+          'punycode': 'punycode',
+          'zlib': 'zlib',
+          'events': 'events',
+          'net': 'net',
+          'tls': 'tls',
+          'stream': 'stream',
+          'lodash.merge': 'merge',
+          'https': 'https',
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+          'semantic-ui-react': 'semanticUIReact',
+          'bip39': 'bip39',
+          'trezor-connect': 'TrezorConnect'
+        },
       }
     ],
     plugins: plugins,
