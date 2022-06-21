@@ -8,18 +8,17 @@ import replace from '@rollup/plugin-replace';
 import css from 'rollup-plugin-import-css';
 import json from '@rollup/plugin-json';
 import url from '@rollup/plugin-url';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
+import nodeGlobals from 'rollup-plugin-node-globals';
 
 const plugins = [
-  resolve({
-    extensions: ['.js']
-  }),
-  replace({
-    preventAssignment: true,
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-  }),
   css(),
   json(),
   url(),
+  nodeGlobals(),
+  nodePolyfills({
+    include: ['buffer']
+  }),
   babel({
     presets: ['@babel/preset-react'],
     babelHelpers: 'runtime',
@@ -27,8 +26,17 @@ const plugins = [
     exclude: '**/node_modules/**',
   }),
   commonjs({
-    include: 'node_modules/**'
-  })
+    include: 'node_modules/**',
+    transformMixedEsModules: true
+  }),
+  resolve({
+    // extensions: ['.js'],	
+    browser: true		
+  }),
+  replace({
+    preventAssignment: true,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+  }),
 ];
 
 function onwarn (warning, warn) {
