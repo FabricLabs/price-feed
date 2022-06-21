@@ -8,49 +8,66 @@ import replace from '@rollup/plugin-replace';
 import css from 'rollup-plugin-import-css';
 import json from '@rollup/plugin-json';
 import url from '@rollup/plugin-url';
-// import serve from 'rollup-plugin-serve';
-// import livereload from 'rollup-plugin-livereload';
+
+const plugins = [
+  resolve({
+    extensions: ['.js']
+  }),
+  replace({
+    preventAssignment: true,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+  }),
+  css(),
+  json(),
+  url(),
+  babel({
+    presets: ['@babel/preset-react'],
+    babelHelpers: 'runtime',
+    skipPreflightCheck: true,
+    exclude: '**/node_modules/**',
+  }),
+  commonjs({
+    include: 'node_modules/**'
+  })
+];
+
+function onwarn (warning, warn) {
+  const { code, importer } = warning;
+  if (code === 'CIRCULAR_DEPENDENCY' && importer.includes('semantic-ui-react')) return;
+  warn(warning);
+}
 
 export default [
   {
-    input: 'components/Feed.js',
+    input: 'scripts/index.js',
     output: [
       {
-        file: 'assets/feed.js',
+        file: 'assets/index.js',
         format: 'iife',
-        name: 'PortalFeed'
+        name: 'PortalFeedMonitor',
+        globals: {
+          'buffer': 'buffer',
+          'crypto': 'crypto',
+          'querystring': 'querystring',
+          'stream': 'stream',
+          'url': 'url',
+          'punycode': 'punycode',
+          'zlib': 'zlib',
+          'events': 'events',
+          'net': 'net',
+          'tls': 'tls',
+          'stream': 'stream',
+          'lodash.merge': 'merge',
+          'https': 'https',
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+          'semantic-ui-react': 'semanticUIReact',
+          'bip39': 'bip39',
+          'trezor-connect': 'TrezorConnect'
+        },
       }
     ],
-    plugins: [
-      resolve({
-        extensions: ['.js']
-      }),
-      replace({
-        preventAssignment: true,
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-      }),
-      css(),
-      json(),
-      url(),
-      babel({
-        presets: ['@babel/preset-react'],
-        babelHelpers: 'runtime',
-        skipPreflightCheck: true,
-        exclude: '**/node_modules/**',
-      }),
-      commonjs(),
-      /* serve({
-        open: true,
-        contentBase: ['', 'assets'],
-        host: 'localhost',
-        port: 3000
-      }) */,
-      // livereload({ watch: 'components' })
-    ],
-    onwarn(warning, warn) {
-      const { code, importer } = warning;
-      if (code === "CIRCULAR_DEPENDENCY" && importer.includes("semantic-ui-react")) return;
-      warn(warning);
-    },
+    plugins: plugins,
+    onwarn: onwarn
   }
 ];
