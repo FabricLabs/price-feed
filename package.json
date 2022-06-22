@@ -51,6 +51,7 @@
     "d3-graphviz": "^4.1.1",
     "fomantic-ui": "^2.8.8",
     "fomantic-ui-css": "^2.8.8",
+    "fomantic-ui-react": "^0.0.1-alpha.12",
     "http-server": "^14.1.0",
     "lodash.merge": "^4.6.2",
     "mocha": "^10.0.0",
@@ -62,8 +63,7 @@
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-polyfill-node": "^0.9.0",
-    "rollup-plugin-serve": "^1.1.0",
-    "semantic-ui-react": "^2.1.2"
+    "rollup-plugin-serve": "^1.1.0"
   },
   "babelOptions": {
     "compact": false
