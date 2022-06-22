@@ -76,6 +76,8 @@ export default [
       }
     ],
     plugins: plugins,
-    onwarn: onwarn
+    onwarn: onwarn,
+    context: 'null',
+    moduleContext: 'null',
   }
 ];
