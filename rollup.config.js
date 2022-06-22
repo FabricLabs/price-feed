@@ -34,7 +34,7 @@ const plugins = [
 
 function onwarn (warning, warn) {
   const { code, importer } = warning;
-  if (code === 'CIRCULAR_DEPENDENCY' && importer.includes('semantic-ui-react')) return;
+  if (code === 'CIRCULAR_DEPENDENCY' && importer.includes('fomantic-ui-react')) return;
   warn(warning);
 }
 
