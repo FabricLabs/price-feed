@@ -6,7 +6,7 @@ import * as React from 'react';
 
 // Styles
 import '../styles/feed.css';
-import '../libraries/fomantic/dist/fomantic.css';
+// import '../libraries/fomantic/dist/semantic.css';
 import {
   Card,
   Icon,
