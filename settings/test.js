@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   currency: 'BTC',
   identity: {
     seed: 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'

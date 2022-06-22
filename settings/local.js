@@ -1,6 +1,9 @@
-module.exports = {
+export default {
   currency: 'BTC',
   debug: true,
+  http: {
+    port: 8080
+  },
   identity: {
     // This is a sample seed.  Replace with one of your own.
     seed: 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'

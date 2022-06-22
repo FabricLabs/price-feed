@@ -1,10 +1,10 @@
 /**
  * Run the Feed service.
  */
-const Feed = require('../services/feed');
-const Node = require('@fabric/core/types/node');
+import * as Feed from '../services/feed.js';
+import Node from '@fabric/core/types/node.js';
 
-const settings = require('../settings/local');
+import * as settings from '../settings/local.js';
 
 async function main (input = {}) {
   const node = new Node({

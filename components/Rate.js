@@ -3,14 +3,14 @@
  */
 
 // Dependencies
-import React, { Component } from 'react';
+import * as React from 'react';
 import {
   Label,
   Segment
-} from 'semantic-ui-react';
+} from 'fomantic-ui-react';
 
 // Define our component
-export default class Rate extends Component {
+export default class Rate extends React.Component {
   state = {
     value: 29349.54,
     currency: 'USD',

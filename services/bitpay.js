@@ -1,7 +1,7 @@
 'use strict';
 
-const Service = require('@fabric/core/types/service');
-const Remote = require('@fabric/http/types/remote');
+import Service from '@fabric/core/types/service.js';
+import Remote from '@fabric/http/types/remote.js';
 
 class BitPay extends Service {
   constructor (settings = {}) {
@@ -100,4 +100,4 @@ class BitPay extends Service {
   }
 }
 
-module.exports = BitPay;
+export default BitPay;

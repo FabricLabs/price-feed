@@ -3,15 +3,13 @@
  */
 
 // Dependencies
-import React, {
-  Component
-} from 'react';
+import * as React from 'react';
 
 // Fomantic
 import {
   Segment,
   Table
-} from 'semantic-ui-react';
+} from 'fomantic-ui-react';
 
 // Styles
 const label = {
@@ -19,15 +17,7 @@ const label = {
 };
 
 // Define our component
-export default class Quote extends Component {
-  state = {
-    age: 0,
-    created: (new Date()).toISOString(),
-    currency: 'USD',
-    price: 29349.54,
-    symbol: 'BTC'
-  }
-
+export default class Quote extends React.Component {
   constructor (props = {}) {
     super(props);
 
@@ -35,8 +25,16 @@ export default class Quote extends Component {
       frequency: 0.007
     }, this.state, props);
 
+    this.state = { ...this.props };
+
     this._state = {
-      content: this.state // TODO: inherit get state () from Actor
+      content: Object.assign({
+        age: 0,
+        created: (new Date()).toISOString(),
+        currency: 'USD',
+        rate: 29349.54,
+        symbol: 'BTC'
+      }, this.state) // TODO: inherit get state () from Actor
     };
 
     return this;
@@ -46,7 +44,7 @@ export default class Quote extends Component {
     return Intl.NumberFormat().resolvedOptions().locale;
   }
 
-  get price () {
+  get rate () {
     return this.state.value;
   }
 
@@ -89,10 +87,10 @@ export default class Quote extends Component {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell style={label}>
-                    <strong htmlFor="price">Price:</strong>
+                    <strong htmlFor="rate">Rate:</strong>
                   </Table.Cell>
                   <Table.Cell>
-                    <code data-bind="price">{this.state.price}</code>
+                    <code data-bind="rate">{this.state.rate.toFixed(2)}</code>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

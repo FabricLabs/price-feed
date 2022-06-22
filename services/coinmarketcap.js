@@ -1,7 +1,7 @@
 'use strict';
 
-const Service = require('@fabric/core/types/service');
-const Remote = require('@fabric/http/types/remote');
+import Service from '@fabric/core/types/service.js';
+import Remote from '@fabric/http/types/remote.js';
 
 class CoinMarketCap extends Service {
   constructor (settings = {}) {
@@ -63,4 +63,4 @@ class CoinMarketCap extends Service {
   }
 }
 
-module.exports = CoinMarketCap;
+export default CoinMarketCap;
