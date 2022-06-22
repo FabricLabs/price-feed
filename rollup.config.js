@@ -21,9 +21,9 @@ const plugins = [
   }),
   babel({
     presets: ['@babel/preset-react'],
-    babelHelpers: 'runtime',
-    skipPreflightCheck: true,
-    exclude: '**/node_modules/**',
+    babelHelpers: 'bundled',
+    // skipPreflightCheck: true,
+    exclude: ['node_modules/**','**/node_modules/**'],
   }),
   commonjs({
     include: 'node_modules/**',
@@ -69,7 +69,7 @@ export default [
           'https': 'https',
           'react': 'React',
           'react-dom': 'ReactDOM',
-          'semantic-ui-react': 'semanticUIReact',
+          'fomantic-ui-react': 'fomanticUIReact',
           'bip39': 'bip39',
           'trezor-connect': 'TrezorConnect'
         },
