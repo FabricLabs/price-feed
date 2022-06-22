@@ -2,7 +2,6 @@
  * # Sample Rollup for Fabric
  */
 import babel from '@rollup/plugin-babel';
-import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import css from 'rollup-plugin-import-css';
@@ -28,10 +27,6 @@ const plugins = [
   commonjs({
     include: 'node_modules/**',
     transformMixedEsModules: true
-  }),
-  resolve({
-    // extensions: ['.js'],	
-    browser: true		
   }),
   replace({
     preventAssignment: true,
