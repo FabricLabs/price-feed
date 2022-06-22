@@ -3,9 +3,7 @@
  */
 
 // Dependencies
-import React, {
-  Component
-} from 'react';
+import * as React from 'react';
 
 // Fomantic
 import {
@@ -19,7 +17,7 @@ const label = {
 };
 
 // Define our component
-export default class Quote extends Component {
+export default class Quote extends React.Component {
   constructor (props = {}) {
     super(props);
 

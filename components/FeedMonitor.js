@@ -1,6 +1,6 @@
 const LIMIT_PER_PAGE = 3;
 
-import React from 'react';
+import * as React from 'react';
 import '../styles/feed.css';
 // import '../libraries/fomantic/dist/semantic.css';
 

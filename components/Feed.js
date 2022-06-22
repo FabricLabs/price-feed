@@ -2,7 +2,7 @@
  * Live price feed component.
  */
 // Dependencies
-import React from 'react';
+import * as React from 'react';
 
 // Styles
 import '../styles/feed.css';
