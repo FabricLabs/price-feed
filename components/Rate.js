@@ -7,7 +7,7 @@ import * as React from 'react';
 import {
   Label,
   Segment
-} from 'semantic-ui-react';
+} from 'fomantic-ui-react';
 
 // Define our component
 export default class Rate extends React.Component {

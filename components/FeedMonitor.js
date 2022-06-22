@@ -2,14 +2,14 @@ const LIMIT_PER_PAGE = 3;
 
 import * as React from 'react';
 import '../styles/feed.css';
-// import '../libraries/fomantic/dist/semantic.css';
+// import '../libraries/fomantic/dist/fomantic.css';
 
 import {
   Button,
   Card,
   Header,
   Segment
-} from 'semantic-ui-react';
+} from 'fomantic-ui-react';
 
 // import d3 from 'd3';
 import * as Plot from '@observablehq/plot';

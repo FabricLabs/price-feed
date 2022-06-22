@@ -9,7 +9,7 @@ import * as React from 'react';
 import {
   Segment,
   Table
-} from 'semantic-ui-react';
+} from 'fomantic-ui-react';
 
 // Styles
 const label = {

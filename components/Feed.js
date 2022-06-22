@@ -6,12 +6,12 @@ import * as React from 'react';
 
 // Styles
 import '../styles/feed.css';
-import '../libraries/fomantic/dist/semantic.css';
+import '../libraries/fomantic/dist/fomantic.css';
 import {
   Card,
   Icon,
   Label
-} from 'semantic-ui-react';
+} from 'fomantic-ui-react';
 
 // Fabric Components
 // import FabricBridge from '@fabric/react';
