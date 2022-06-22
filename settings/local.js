@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   currency: 'BTC',
   debug: true,
   http: {

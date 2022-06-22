@@ -2,16 +2,16 @@
 
 const ESTIMATE_MODE = 'weighted';
 
-const Actor = require('@fabric/core/types/actor');
-const Peer = require('@fabric/core/types/peer');
-const Service = require('@fabric/core/types/service');
-const Hash256 = require('@fabric/core/types/hash256');
-const Signer = require('@fabric/core/types/signer');
-const HTTPServer = require('@fabric/http/types/server');
+import Actor from '@fabric/core/types/actor.js';
+import Peer from '@fabric/core/types/peer.js';
+import Service from '@fabric/core/types/service.js';
+import Hash256 from '@fabric/core/types/hash256.js';
+import Signer from '@fabric/core/types/signer.js';
+import HTTPServer from '@fabric/http/types/server.js';
 
-const BitPay = require('./bitpay');
-const Coinbase = require('./coinbase');
-const CoinMarketCap = require('./coinmarketcap');
+import * as BitPay from './bitpay.js';
+import * as Coinbase from './coinbase.js';
+import * as CoinMarketCap from './coinmarketcap.js';
 
 class Feed extends Service {
   constructor (settings = {}) {
@@ -300,4 +300,4 @@ class Feed extends Service {
   }
 }
 
-module.exports = Feed;
+export default Feed;
