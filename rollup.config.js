@@ -15,9 +15,7 @@ const plugins = [
   json(),
   url(),
   nodeGlobals(),
-  nodePolyfills({
-    include: ['buffer']
-  }),
+  nodePolyfills(),
   babel({
     presets: ['@babel/preset-react'],
     babelHelpers: 'bundled',
