@@ -47,6 +47,7 @@ export default [
         format: 'iife',
         name: 'PortalFeedMonitor',
         globals: {
+          '@observablehq/plot': 'Plot',
           'buffer': 'buffer',
           'crypto': 'crypto',
           'querystring': 'querystring',
@@ -62,11 +63,19 @@ export default [
           'https': 'https',
           'react': 'React',
           'react-dom': 'ReactDOM',
+          'react-dom/client': 'client',
           'fomantic-ui-react': 'fomanticUIReact',
           'bip39': 'bip39',
           'trezor-connect': 'TrezorConnect'
         },
       }
+    ],
+    external: [
+      '@fabric/react',
+      '@observablehq/plot',
+      'fomantic-ui-react',
+      'react',
+      'react-dom/client',
     ],
     plugins: plugins,
     onwarn: onwarn,
