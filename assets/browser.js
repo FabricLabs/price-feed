@@ -73472,7 +73472,7 @@
 	    symbols: ['BTC', 'NMC', 'LTC'],
 	    quotes: [{
 	      created: new Date().toISOString(),
-	      rate: 19349.54,
+	      rate: 21029.4,
 	      currency: 'USD',
 	      symbol: 'BTC'
 	    }]
