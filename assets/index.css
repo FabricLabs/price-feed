@@ -69362,3 +69362,7 @@ em[data-emoji=":tone5:"]:before,
 em[data-emoji="tone5"]:before {
   background-image: url("https://twemoji.maxcdn.com/v/latest/svg/1f3ff.svg");
 }
+.portal-feed-rate code {
+  text-align: right;
+  width: 100%;
+}

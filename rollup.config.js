@@ -31,13 +31,13 @@ const plugins = [
   })
 ];
 
-function onwarn (warning, warn) {
+function handleWarning (warning, warn) {
   const { code, importer } = warning;
   if (code === 'CIRCULAR_DEPENDENCY' && importer.includes('semantic-ui-react')) return;
   warn(warning);
 }
 
-export default [
+const builds = [
   {
     input: 'scripts/index.js',
     output: [
@@ -68,6 +68,8 @@ export default [
       }
     ],
     plugins: plugins,
-    onwarn: onwarn
+    onwarn: handleWarning
   }
 ];
+
+export default builds;

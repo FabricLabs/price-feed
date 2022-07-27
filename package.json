@@ -54,14 +54,16 @@
     "lodash.merge": "^4.6.2",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
     "rollup": "^2.74.1",
     "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-polyfill-node": "^0.9.0",
     "rollup-plugin-serve": "^1.1.0",
     "semantic-ui-react": "^2.1.2"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   },
   "babelOptions": {
     "compact": false
