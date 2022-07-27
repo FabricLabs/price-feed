@@ -1,6 +1,7 @@
 /**
  * Live price feed component.
  */
+
 // Dependencies
 import React from 'react';
 
@@ -33,7 +34,10 @@ export default class Feed extends React.Component {
   constructor (props = {}) {
     super(props);
 
-    this.settings = Object.assign({}, props);
+    this.settings = Object.assign({
+      currency: 'BTC'
+    }, props);
+
     this._state = {
       content: this.state // TODO: inherit get state () from Actor
     };

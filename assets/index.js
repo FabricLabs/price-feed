@@ -32,36 +32,26 @@
 		) {
 		  __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
 		}
-		          var ReactVersion = '18.1.0';
-
-		// -----------------------------------------------------------------------------
-
-		var enableScopeAPI = false; // Experimental Create Event Handle API.
-		var enableCacheElement = false;
-		var enableTransitionTracing = false; // No known bugs, but needs performance testing
-
-		var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
-		// stuff. Intended to enable React core members to more easily debug scheduling
-		// issues in DEV builds.
-
-		var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
+		          var ReactVersion = '18.2.0';
 
 		// ATTENTION
-
-		var REACT_ELEMENT_TYPE =  Symbol.for('react.element');
-		var REACT_PORTAL_TYPE =  Symbol.for('react.portal');
-		var REACT_FRAGMENT_TYPE =  Symbol.for('react.fragment');
-		var REACT_STRICT_MODE_TYPE =  Symbol.for('react.strict_mode');
-		var REACT_PROFILER_TYPE =  Symbol.for('react.profiler');
-		var REACT_PROVIDER_TYPE =  Symbol.for('react.provider');
-		var REACT_CONTEXT_TYPE =  Symbol.for('react.context');
-		var REACT_FORWARD_REF_TYPE =  Symbol.for('react.forward_ref');
-		var REACT_SUSPENSE_TYPE =  Symbol.for('react.suspense');
-		var REACT_SUSPENSE_LIST_TYPE =  Symbol.for('react.suspense_list');
-		var REACT_MEMO_TYPE =  Symbol.for('react.memo');
-		var REACT_LAZY_TYPE =  Symbol.for('react.lazy');
-		var REACT_OFFSCREEN_TYPE =  Symbol.for('react.offscreen');
-		var MAYBE_ITERATOR_SYMBOL =  Symbol.iterator;
+		// When adding new symbols to this file,
+		// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+		// The Symbol used to tag the ReactElement-like types.
+		var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+		var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+		var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+		var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+		var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+		var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+		var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+		var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+		var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+		var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+		var REACT_MEMO_TYPE = Symbol.for('react.memo');
+		var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+		var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
 		var FAUX_ITERATOR_SYMBOL = '@@iterator';
 		function getIteratorFn(maybeIterable) {
 		  if (maybeIterable === null || typeof maybeIterable !== 'object') {
@@ -152,6 +142,18 @@
 		    return stack;
 		  };
 		}
+
+		// -----------------------------------------------------------------------------
+
+		var enableScopeAPI = false; // Experimental Create Event Handle API.
+		var enableCacheElement = false;
+		var enableTransitionTracing = false; // No known bugs, but needs performance testing
+
+		var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
+		// stuff. Intended to enable React core members to more easily debug scheduling
+		// issues in DEV builds.
+
+		var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
 
 		var ReactSharedInternals = {
 		  ReactCurrentDispatcher: ReactCurrentDispatcher,
@@ -3816,6 +3818,7 @@
 	  }
 
 	  if (isCustomComponentTag) {
+
 	    return false;
 	  }
 
@@ -4130,7 +4133,7 @@
 	 * attributes have multiple equivalent values.
 	 */
 
-	function getValueForAttribute(node, name, expected) {
+	function getValueForAttribute(node, name, expected, isCustomComponentTag) {
 	  {
 	    if (!isAttributeNameSafe(name)) {
 	      return;
@@ -4170,7 +4173,7 @@
 
 	  if (shouldRemoveAttribute(name, value, propertyInfo, isCustomComponentTag)) {
 	    value = null;
-	  } // If the prop isn't in the special list, treat it as a simple attribute.
+	  }
 
 
 	  if (isCustomComponentTag || propertyInfo === null) {
@@ -4247,26 +4250,28 @@
 	}
 
 	// ATTENTION
-
-	var REACT_ELEMENT_TYPE =  Symbol.for('react.element');
-	var REACT_PORTAL_TYPE =  Symbol.for('react.portal');
-	var REACT_FRAGMENT_TYPE =  Symbol.for('react.fragment');
-	var REACT_STRICT_MODE_TYPE =  Symbol.for('react.strict_mode');
-	var REACT_PROFILER_TYPE =  Symbol.for('react.profiler');
-	var REACT_PROVIDER_TYPE =  Symbol.for('react.provider');
-	var REACT_CONTEXT_TYPE =  Symbol.for('react.context');
-	var REACT_FORWARD_REF_TYPE =  Symbol.for('react.forward_ref');
-	var REACT_SUSPENSE_TYPE =  Symbol.for('react.suspense');
-	var REACT_SUSPENSE_LIST_TYPE =  Symbol.for('react.suspense_list');
-	var REACT_MEMO_TYPE =  Symbol.for('react.memo');
-	var REACT_LAZY_TYPE =  Symbol.for('react.lazy');
-	var REACT_SCOPE_TYPE =  Symbol.for('react.scope');
-	var REACT_DEBUG_TRACING_MODE_TYPE =  Symbol.for('react.debug_trace_mode');
-	var REACT_OFFSCREEN_TYPE =  Symbol.for('react.offscreen');
-	var REACT_LEGACY_HIDDEN_TYPE =  Symbol.for('react.legacy_hidden');
-	var REACT_CACHE_TYPE =  Symbol.for('react.cache');
-	var REACT_TRACING_MARKER_TYPE =  Symbol.for('react.tracing_marker');
-	var MAYBE_ITERATOR_SYMBOL =  Symbol.iterator;
+	// When adding new symbols to this file,
+	// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+	// The Symbol used to tag the ReactElement-like types.
+	var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+	var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+	var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+	var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+	var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+	var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+	var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+	var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+	var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+	var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+	var REACT_MEMO_TYPE = Symbol.for('react.memo');
+	var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+	var REACT_SCOPE_TYPE = Symbol.for('react.scope');
+	var REACT_DEBUG_TRACING_MODE_TYPE = Symbol.for('react.debug_trace_mode');
+	var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+	var REACT_LEGACY_HIDDEN_TYPE = Symbol.for('react.legacy_hidden');
+	var REACT_CACHE_TYPE = Symbol.for('react.cache');
+	var REACT_TRACING_MARKER_TYPE = Symbol.for('react.tracing_marker');
+	var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
 	var FAUX_ITERATOR_SYMBOL = '@@iterator';
 	function getIteratorFn(maybeIterable) {
 	  if (maybeIterable === null || typeof maybeIterable !== 'object') {
@@ -14562,10 +14567,8 @@
 	  if (container.nodeType === ELEMENT_NODE) {
 	    container.textContent = '';
 	  } else if (container.nodeType === DOCUMENT_NODE) {
-	    var body = container.body;
-
-	    if (body != null) {
-	      body.textContent = '';
+	    if (container.documentElement) {
+	      container.removeChild(container.documentElement);
 	    }
 	  }
 	} // -------------------
@@ -14600,6 +14603,38 @@
 	}
 	function isSuspenseInstanceFallback(instance) {
 	  return instance.data === SUSPENSE_FALLBACK_START_DATA;
+	}
+	function getSuspenseInstanceFallbackErrorDetails(instance) {
+	  var dataset = instance.nextSibling && instance.nextSibling.dataset;
+	  var digest, message, stack;
+
+	  if (dataset) {
+	    digest = dataset.dgst;
+
+	    {
+	      message = dataset.msg;
+	      stack = dataset.stck;
+	    }
+	  }
+
+	  {
+	    return {
+	      message: message,
+	      digest: digest,
+	      stack: stack
+	    };
+	  } // let value = {message: undefined, hash: undefined};
+	  // const nextSibling = instance.nextSibling;
+	  // if (nextSibling) {
+	  //   const dataset = ((nextSibling: any): HTMLTemplateElement).dataset;
+	  //   value.message = dataset.msg;
+	  //   value.hash = dataset.hash;
+	  //   if (true) {
+	  //     value.stack = dataset.stack;
+	  //   }
+	  // }
+	  // return value;
+
 	}
 	function registerSuspenseInstanceRetry(instance, callback) {
 	  instance._reactRetry = callback;
@@ -15417,6 +15452,682 @@
 	  return null;
 	}
 
+	// TODO: Use the unified fiber stack module instead of this local one?
+	// Intentionally not using it yet to derisk the initial implementation, because
+	// the way we push/pop these values is a bit unusual. If there's a mistake, I'd
+	// rather the ids be wrong than crash the whole reconciler.
+	var forkStack = [];
+	var forkStackIndex = 0;
+	var treeForkProvider = null;
+	var treeForkCount = 0;
+	var idStack = [];
+	var idStackIndex = 0;
+	var treeContextProvider = null;
+	var treeContextId = 1;
+	var treeContextOverflow = '';
+	function isForkedChild(workInProgress) {
+	  warnIfNotHydrating();
+	  return (workInProgress.flags & Forked) !== NoFlags;
+	}
+	function getForksAtLevel(workInProgress) {
+	  warnIfNotHydrating();
+	  return treeForkCount;
+	}
+	function getTreeId() {
+	  var overflow = treeContextOverflow;
+	  var idWithLeadingBit = treeContextId;
+	  var id = idWithLeadingBit & ~getLeadingBit(idWithLeadingBit);
+	  return id.toString(32) + overflow;
+	}
+	function pushTreeFork(workInProgress, totalChildren) {
+	  // This is called right after we reconcile an array (or iterator) of child
+	  // fibers, because that's the only place where we know how many children in
+	  // the whole set without doing extra work later, or storing addtional
+	  // information on the fiber.
+	  //
+	  // That's why this function is separate from pushTreeId — it's called during
+	  // the render phase of the fork parent, not the child, which is where we push
+	  // the other context values.
+	  //
+	  // In the Fizz implementation this is much simpler because the child is
+	  // rendered in the same callstack as the parent.
+	  //
+	  // It might be better to just add a `forks` field to the Fiber type. It would
+	  // make this module simpler.
+	  warnIfNotHydrating();
+	  forkStack[forkStackIndex++] = treeForkCount;
+	  forkStack[forkStackIndex++] = treeForkProvider;
+	  treeForkProvider = workInProgress;
+	  treeForkCount = totalChildren;
+	}
+	function pushTreeId(workInProgress, totalChildren, index) {
+	  warnIfNotHydrating();
+	  idStack[idStackIndex++] = treeContextId;
+	  idStack[idStackIndex++] = treeContextOverflow;
+	  idStack[idStackIndex++] = treeContextProvider;
+	  treeContextProvider = workInProgress;
+	  var baseIdWithLeadingBit = treeContextId;
+	  var baseOverflow = treeContextOverflow; // The leftmost 1 marks the end of the sequence, non-inclusive. It's not part
+	  // of the id; we use it to account for leading 0s.
+
+	  var baseLength = getBitLength(baseIdWithLeadingBit) - 1;
+	  var baseId = baseIdWithLeadingBit & ~(1 << baseLength);
+	  var slot = index + 1;
+	  var length = getBitLength(totalChildren) + baseLength; // 30 is the max length we can store without overflowing, taking into
+	  // consideration the leading 1 we use to mark the end of the sequence.
+
+	  if (length > 30) {
+	    // We overflowed the bitwise-safe range. Fall back to slower algorithm.
+	    // This branch assumes the length of the base id is greater than 5; it won't
+	    // work for smaller ids, because you need 5 bits per character.
+	    //
+	    // We encode the id in multiple steps: first the base id, then the
+	    // remaining digits.
+	    //
+	    // Each 5 bit sequence corresponds to a single base 32 character. So for
+	    // example, if the current id is 23 bits long, we can convert 20 of those
+	    // bits into a string of 4 characters, with 3 bits left over.
+	    //
+	    // First calculate how many bits in the base id represent a complete
+	    // sequence of characters.
+	    var numberOfOverflowBits = baseLength - baseLength % 5; // Then create a bitmask that selects only those bits.
+
+	    var newOverflowBits = (1 << numberOfOverflowBits) - 1; // Select the bits, and convert them to a base 32 string.
+
+	    var newOverflow = (baseId & newOverflowBits).toString(32); // Now we can remove those bits from the base id.
+
+	    var restOfBaseId = baseId >> numberOfOverflowBits;
+	    var restOfBaseLength = baseLength - numberOfOverflowBits; // Finally, encode the rest of the bits using the normal algorithm. Because
+	    // we made more room, this time it won't overflow.
+
+	    var restOfLength = getBitLength(totalChildren) + restOfBaseLength;
+	    var restOfNewBits = slot << restOfBaseLength;
+	    var id = restOfNewBits | restOfBaseId;
+	    var overflow = newOverflow + baseOverflow;
+	    treeContextId = 1 << restOfLength | id;
+	    treeContextOverflow = overflow;
+	  } else {
+	    // Normal path
+	    var newBits = slot << baseLength;
+
+	    var _id = newBits | baseId;
+
+	    var _overflow = baseOverflow;
+	    treeContextId = 1 << length | _id;
+	    treeContextOverflow = _overflow;
+	  }
+	}
+	function pushMaterializedTreeId(workInProgress) {
+	  warnIfNotHydrating(); // This component materialized an id. This will affect any ids that appear
+	  // in its children.
+
+	  var returnFiber = workInProgress.return;
+
+	  if (returnFiber !== null) {
+	    var numberOfForks = 1;
+	    var slotIndex = 0;
+	    pushTreeFork(workInProgress, numberOfForks);
+	    pushTreeId(workInProgress, numberOfForks, slotIndex);
+	  }
+	}
+
+	function getBitLength(number) {
+	  return 32 - clz32(number);
+	}
+
+	function getLeadingBit(id) {
+	  return 1 << getBitLength(id) - 1;
+	}
+
+	function popTreeContext(workInProgress) {
+	  // Restore the previous values.
+	  // This is a bit more complicated than other context-like modules in Fiber
+	  // because the same Fiber may appear on the stack multiple times and for
+	  // different reasons. We have to keep popping until the work-in-progress is
+	  // no longer at the top of the stack.
+	  while (workInProgress === treeForkProvider) {
+	    treeForkProvider = forkStack[--forkStackIndex];
+	    forkStack[forkStackIndex] = null;
+	    treeForkCount = forkStack[--forkStackIndex];
+	    forkStack[forkStackIndex] = null;
+	  }
+
+	  while (workInProgress === treeContextProvider) {
+	    treeContextProvider = idStack[--idStackIndex];
+	    idStack[idStackIndex] = null;
+	    treeContextOverflow = idStack[--idStackIndex];
+	    idStack[idStackIndex] = null;
+	    treeContextId = idStack[--idStackIndex];
+	    idStack[idStackIndex] = null;
+	  }
+	}
+	function getSuspendedTreeContext() {
+	  warnIfNotHydrating();
+
+	  if (treeContextProvider !== null) {
+	    return {
+	      id: treeContextId,
+	      overflow: treeContextOverflow
+	    };
+	  } else {
+	    return null;
+	  }
+	}
+	function restoreSuspendedTreeContext(workInProgress, suspendedContext) {
+	  warnIfNotHydrating();
+	  idStack[idStackIndex++] = treeContextId;
+	  idStack[idStackIndex++] = treeContextOverflow;
+	  idStack[idStackIndex++] = treeContextProvider;
+	  treeContextId = suspendedContext.id;
+	  treeContextOverflow = suspendedContext.overflow;
+	  treeContextProvider = workInProgress;
+	}
+
+	function warnIfNotHydrating() {
+	  {
+	    if (!getIsHydrating()) {
+	      error('Expected to be hydrating. This is a bug in React. Please file ' + 'an issue.');
+	    }
+	  }
+	}
+
+	// This may have been an insertion or a hydration.
+
+	var hydrationParentFiber = null;
+	var nextHydratableInstance = null;
+	var isHydrating = false; // This flag allows for warning supression when we expect there to be mismatches
+	// due to earlier mismatches or a suspended fiber.
+
+	var didSuspendOrErrorDEV = false; // Hydration errors that were thrown inside this boundary
+
+	var hydrationErrors = null;
+
+	function warnIfHydrating() {
+	  {
+	    if (isHydrating) {
+	      error('We should not be hydrating here. This is a bug in React. Please file a bug.');
+	    }
+	  }
+	}
+
+	function markDidThrowWhileHydratingDEV() {
+	  {
+	    didSuspendOrErrorDEV = true;
+	  }
+	}
+	function didSuspendOrErrorWhileHydratingDEV() {
+	  {
+	    return didSuspendOrErrorDEV;
+	  }
+	}
+
+	function enterHydrationState(fiber) {
+
+	  var parentInstance = fiber.stateNode.containerInfo;
+	  nextHydratableInstance = getFirstHydratableChildWithinContainer(parentInstance);
+	  hydrationParentFiber = fiber;
+	  isHydrating = true;
+	  hydrationErrors = null;
+	  didSuspendOrErrorDEV = false;
+	  return true;
+	}
+
+	function reenterHydrationStateFromDehydratedSuspenseInstance(fiber, suspenseInstance, treeContext) {
+
+	  nextHydratableInstance = getFirstHydratableChildWithinSuspenseInstance(suspenseInstance);
+	  hydrationParentFiber = fiber;
+	  isHydrating = true;
+	  hydrationErrors = null;
+	  didSuspendOrErrorDEV = false;
+
+	  if (treeContext !== null) {
+	    restoreSuspendedTreeContext(fiber, treeContext);
+	  }
+
+	  return true;
+	}
+
+	function warnUnhydratedInstance(returnFiber, instance) {
+	  {
+	    switch (returnFiber.tag) {
+	      case HostRoot:
+	        {
+	          didNotHydrateInstanceWithinContainer(returnFiber.stateNode.containerInfo, instance);
+	          break;
+	        }
+
+	      case HostComponent:
+	        {
+	          var isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
+	          didNotHydrateInstance(returnFiber.type, returnFiber.memoizedProps, returnFiber.stateNode, instance, // TODO: Delete this argument when we remove the legacy root API.
+	          isConcurrentMode);
+	          break;
+	        }
+
+	      case SuspenseComponent:
+	        {
+	          var suspenseState = returnFiber.memoizedState;
+	          if (suspenseState.dehydrated !== null) didNotHydrateInstanceWithinSuspenseInstance(suspenseState.dehydrated, instance);
+	          break;
+	        }
+	    }
+	  }
+	}
+
+	function deleteHydratableInstance(returnFiber, instance) {
+	  warnUnhydratedInstance(returnFiber, instance);
+	  var childToDelete = createFiberFromHostInstanceForDeletion();
+	  childToDelete.stateNode = instance;
+	  childToDelete.return = returnFiber;
+	  var deletions = returnFiber.deletions;
+
+	  if (deletions === null) {
+	    returnFiber.deletions = [childToDelete];
+	    returnFiber.flags |= ChildDeletion;
+	  } else {
+	    deletions.push(childToDelete);
+	  }
+	}
+
+	function warnNonhydratedInstance(returnFiber, fiber) {
+	  {
+	    if (didSuspendOrErrorDEV) {
+	      // Inside a boundary that already suspended. We're currently rendering the
+	      // siblings of a suspended node. The mismatch may be due to the missing
+	      // data, so it's probably a false positive.
+	      return;
+	    }
+
+	    switch (returnFiber.tag) {
+	      case HostRoot:
+	        {
+	          var parentContainer = returnFiber.stateNode.containerInfo;
+
+	          switch (fiber.tag) {
+	            case HostComponent:
+	              var type = fiber.type;
+	              fiber.pendingProps;
+	              didNotFindHydratableInstanceWithinContainer(parentContainer, type);
+	              break;
+
+	            case HostText:
+	              var text = fiber.pendingProps;
+	              didNotFindHydratableTextInstanceWithinContainer(parentContainer, text);
+	              break;
+	          }
+
+	          break;
+	        }
+
+	      case HostComponent:
+	        {
+	          var parentType = returnFiber.type;
+	          var parentProps = returnFiber.memoizedProps;
+	          var parentInstance = returnFiber.stateNode;
+
+	          switch (fiber.tag) {
+	            case HostComponent:
+	              {
+	                var _type = fiber.type;
+	                var _props = fiber.pendingProps;
+	                var isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
+	                didNotFindHydratableInstance(parentType, parentProps, parentInstance, _type, _props, // TODO: Delete this argument when we remove the legacy root API.
+	                isConcurrentMode);
+	                break;
+	              }
+
+	            case HostText:
+	              {
+	                var _text = fiber.pendingProps;
+
+	                var _isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
+
+	                didNotFindHydratableTextInstance(parentType, parentProps, parentInstance, _text, // TODO: Delete this argument when we remove the legacy root API.
+	                _isConcurrentMode);
+	                break;
+	              }
+	          }
+
+	          break;
+	        }
+
+	      case SuspenseComponent:
+	        {
+	          var suspenseState = returnFiber.memoizedState;
+	          var _parentInstance = suspenseState.dehydrated;
+	          if (_parentInstance !== null) switch (fiber.tag) {
+	            case HostComponent:
+	              var _type2 = fiber.type;
+	              fiber.pendingProps;
+	              didNotFindHydratableInstanceWithinSuspenseInstance(_parentInstance, _type2);
+	              break;
+
+	            case HostText:
+	              var _text2 = fiber.pendingProps;
+	              didNotFindHydratableTextInstanceWithinSuspenseInstance(_parentInstance, _text2);
+	              break;
+	          }
+	          break;
+	        }
+
+	      default:
+	        return;
+	    }
+	  }
+	}
+
+	function insertNonHydratedInstance(returnFiber, fiber) {
+	  fiber.flags = fiber.flags & ~Hydrating | Placement;
+	  warnNonhydratedInstance(returnFiber, fiber);
+	}
+
+	function tryHydrate(fiber, nextInstance) {
+	  switch (fiber.tag) {
+	    case HostComponent:
+	      {
+	        var type = fiber.type;
+	        fiber.pendingProps;
+	        var instance = canHydrateInstance(nextInstance, type);
+
+	        if (instance !== null) {
+	          fiber.stateNode = instance;
+	          hydrationParentFiber = fiber;
+	          nextHydratableInstance = getFirstHydratableChild(instance);
+	          return true;
+	        }
+
+	        return false;
+	      }
+
+	    case HostText:
+	      {
+	        var text = fiber.pendingProps;
+	        var textInstance = canHydrateTextInstance(nextInstance, text);
+
+	        if (textInstance !== null) {
+	          fiber.stateNode = textInstance;
+	          hydrationParentFiber = fiber; // Text Instances don't have children so there's nothing to hydrate.
+
+	          nextHydratableInstance = null;
+	          return true;
+	        }
+
+	        return false;
+	      }
+
+	    case SuspenseComponent:
+	      {
+	        var suspenseInstance = canHydrateSuspenseInstance(nextInstance);
+
+	        if (suspenseInstance !== null) {
+	          var suspenseState = {
+	            dehydrated: suspenseInstance,
+	            treeContext: getSuspendedTreeContext(),
+	            retryLane: OffscreenLane
+	          };
+	          fiber.memoizedState = suspenseState; // Store the dehydrated fragment as a child fiber.
+	          // This simplifies the code for getHostSibling and deleting nodes,
+	          // since it doesn't have to consider all Suspense boundaries and
+	          // check if they're dehydrated ones or not.
+
+	          var dehydratedFragment = createFiberFromDehydratedFragment(suspenseInstance);
+	          dehydratedFragment.return = fiber;
+	          fiber.child = dehydratedFragment;
+	          hydrationParentFiber = fiber; // While a Suspense Instance does have children, we won't step into
+	          // it during the first pass. Instead, we'll reenter it later.
+
+	          nextHydratableInstance = null;
+	          return true;
+	        }
+
+	        return false;
+	      }
+
+	    default:
+	      return false;
+	  }
+	}
+
+	function shouldClientRenderOnMismatch(fiber) {
+	  return (fiber.mode & ConcurrentMode) !== NoMode && (fiber.flags & DidCapture) === NoFlags;
+	}
+
+	function throwOnHydrationMismatch(fiber) {
+	  throw new Error('Hydration failed because the initial UI does not match what was ' + 'rendered on the server.');
+	}
+
+	function tryToClaimNextHydratableInstance(fiber) {
+	  if (!isHydrating) {
+	    return;
+	  }
+
+	  var nextInstance = nextHydratableInstance;
+
+	  if (!nextInstance) {
+	    if (shouldClientRenderOnMismatch(fiber)) {
+	      warnNonhydratedInstance(hydrationParentFiber, fiber);
+	      throwOnHydrationMismatch();
+	    } // Nothing to hydrate. Make it an insertion.
+
+
+	    insertNonHydratedInstance(hydrationParentFiber, fiber);
+	    isHydrating = false;
+	    hydrationParentFiber = fiber;
+	    return;
+	  }
+
+	  var firstAttemptedInstance = nextInstance;
+
+	  if (!tryHydrate(fiber, nextInstance)) {
+	    if (shouldClientRenderOnMismatch(fiber)) {
+	      warnNonhydratedInstance(hydrationParentFiber, fiber);
+	      throwOnHydrationMismatch();
+	    } // If we can't hydrate this instance let's try the next one.
+	    // We use this as a heuristic. It's based on intuition and not data so it
+	    // might be flawed or unnecessary.
+
+
+	    nextInstance = getNextHydratableSibling(firstAttemptedInstance);
+	    var prevHydrationParentFiber = hydrationParentFiber;
+
+	    if (!nextInstance || !tryHydrate(fiber, nextInstance)) {
+	      // Nothing to hydrate. Make it an insertion.
+	      insertNonHydratedInstance(hydrationParentFiber, fiber);
+	      isHydrating = false;
+	      hydrationParentFiber = fiber;
+	      return;
+	    } // We matched the next one, we'll now assume that the first one was
+	    // superfluous and we'll delete it. Since we can't eagerly delete it
+	    // we'll have to schedule a deletion. To do that, this node needs a dummy
+	    // fiber associated with it.
+
+
+	    deleteHydratableInstance(prevHydrationParentFiber, firstAttemptedInstance);
+	  }
+	}
+
+	function prepareToHydrateHostInstance(fiber, rootContainerInstance, hostContext) {
+
+	  var instance = fiber.stateNode;
+	  var shouldWarnIfMismatchDev = !didSuspendOrErrorDEV;
+	  var updatePayload = hydrateInstance(instance, fiber.type, fiber.memoizedProps, rootContainerInstance, hostContext, fiber, shouldWarnIfMismatchDev); // TODO: Type this specific to this type of component.
+
+	  fiber.updateQueue = updatePayload; // If the update payload indicates that there is a change or if there
+	  // is a new ref we mark this as an update.
+
+	  if (updatePayload !== null) {
+	    return true;
+	  }
+
+	  return false;
+	}
+
+	function prepareToHydrateHostTextInstance(fiber) {
+
+	  var textInstance = fiber.stateNode;
+	  var textContent = fiber.memoizedProps;
+	  var shouldUpdate = hydrateTextInstance(textInstance, textContent, fiber);
+
+	  if (shouldUpdate) {
+	    // We assume that prepareToHydrateHostTextInstance is called in a context where the
+	    // hydration parent is the parent host component of this host text.
+	    var returnFiber = hydrationParentFiber;
+
+	    if (returnFiber !== null) {
+	      switch (returnFiber.tag) {
+	        case HostRoot:
+	          {
+	            var parentContainer = returnFiber.stateNode.containerInfo;
+	            var isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
+	            didNotMatchHydratedContainerTextInstance(parentContainer, textInstance, textContent, // TODO: Delete this argument when we remove the legacy root API.
+	            isConcurrentMode);
+	            break;
+	          }
+
+	        case HostComponent:
+	          {
+	            var parentType = returnFiber.type;
+	            var parentProps = returnFiber.memoizedProps;
+	            var parentInstance = returnFiber.stateNode;
+
+	            var _isConcurrentMode2 = (returnFiber.mode & ConcurrentMode) !== NoMode;
+
+	            didNotMatchHydratedTextInstance(parentType, parentProps, parentInstance, textInstance, textContent, // TODO: Delete this argument when we remove the legacy root API.
+	            _isConcurrentMode2);
+	            break;
+	          }
+	      }
+	    }
+	  }
+
+	  return shouldUpdate;
+	}
+
+	function prepareToHydrateHostSuspenseInstance(fiber) {
+
+	  var suspenseState = fiber.memoizedState;
+	  var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
+
+	  if (!suspenseInstance) {
+	    throw new Error('Expected to have a hydrated suspense instance. ' + 'This error is likely caused by a bug in React. Please file an issue.');
+	  }
+
+	  hydrateSuspenseInstance(suspenseInstance, fiber);
+	}
+
+	function skipPastDehydratedSuspenseInstance(fiber) {
+
+	  var suspenseState = fiber.memoizedState;
+	  var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
+
+	  if (!suspenseInstance) {
+	    throw new Error('Expected to have a hydrated suspense instance. ' + 'This error is likely caused by a bug in React. Please file an issue.');
+	  }
+
+	  return getNextHydratableInstanceAfterSuspenseInstance(suspenseInstance);
+	}
+
+	function popToNextHostParent(fiber) {
+	  var parent = fiber.return;
+
+	  while (parent !== null && parent.tag !== HostComponent && parent.tag !== HostRoot && parent.tag !== SuspenseComponent) {
+	    parent = parent.return;
+	  }
+
+	  hydrationParentFiber = parent;
+	}
+
+	function popHydrationState(fiber) {
+
+	  if (fiber !== hydrationParentFiber) {
+	    // We're deeper than the current hydration context, inside an inserted
+	    // tree.
+	    return false;
+	  }
+
+	  if (!isHydrating) {
+	    // If we're not currently hydrating but we're in a hydration context, then
+	    // we were an insertion and now need to pop up reenter hydration of our
+	    // siblings.
+	    popToNextHostParent(fiber);
+	    isHydrating = true;
+	    return false;
+	  } // If we have any remaining hydratable nodes, we need to delete them now.
+	  // We only do this deeper than head and body since they tend to have random
+	  // other nodes in them. We also ignore components with pure text content in
+	  // side of them. We also don't delete anything inside the root container.
+
+
+	  if (fiber.tag !== HostRoot && (fiber.tag !== HostComponent || shouldDeleteUnhydratedTailInstances(fiber.type) && !shouldSetTextContent(fiber.type, fiber.memoizedProps))) {
+	    var nextInstance = nextHydratableInstance;
+
+	    if (nextInstance) {
+	      if (shouldClientRenderOnMismatch(fiber)) {
+	        warnIfUnhydratedTailNodes(fiber);
+	        throwOnHydrationMismatch();
+	      } else {
+	        while (nextInstance) {
+	          deleteHydratableInstance(fiber, nextInstance);
+	          nextInstance = getNextHydratableSibling(nextInstance);
+	        }
+	      }
+	    }
+	  }
+
+	  popToNextHostParent(fiber);
+
+	  if (fiber.tag === SuspenseComponent) {
+	    nextHydratableInstance = skipPastDehydratedSuspenseInstance(fiber);
+	  } else {
+	    nextHydratableInstance = hydrationParentFiber ? getNextHydratableSibling(fiber.stateNode) : null;
+	  }
+
+	  return true;
+	}
+
+	function hasUnhydratedTailNodes() {
+	  return isHydrating && nextHydratableInstance !== null;
+	}
+
+	function warnIfUnhydratedTailNodes(fiber) {
+	  var nextInstance = nextHydratableInstance;
+
+	  while (nextInstance) {
+	    warnUnhydratedInstance(fiber, nextInstance);
+	    nextInstance = getNextHydratableSibling(nextInstance);
+	  }
+	}
+
+	function resetHydrationState() {
+
+	  hydrationParentFiber = null;
+	  nextHydratableInstance = null;
+	  isHydrating = false;
+	  didSuspendOrErrorDEV = false;
+	}
+
+	function upgradeHydrationErrorsToRecoverable() {
+	  if (hydrationErrors !== null) {
+	    // Successfully completed a forced client render. The errors that occurred
+	    // during the hydration attempt are now recovered. We will log them in
+	    // commit phase, once the entire tree has finished.
+	    queueRecoverableErrors(hydrationErrors);
+	    hydrationErrors = null;
+	  }
+	}
+
+	function getIsHydrating() {
+	  return isHydrating;
+	}
+
+	function queueHydrationError(error) {
+	  if (hydrationErrors === null) {
+	    hydrationErrors = [error];
+	  } else {
+	    hydrationErrors.push(error);
+	  }
+	}
+
 	var ReactCurrentBatchConfig$1 = ReactSharedInternals.ReactCurrentBatchConfig;
 	var NoTransition = null;
 	function requestCurrentTransition() {
@@ -15962,30 +16673,27 @@
 	  return value;
 	}
 
-	// An array of all update queues that received updates during the current
 	// render. When this render exits, either because it finishes or because it is
 	// interrupted, the interleaved updates will be transferred onto the main part
 	// of the queue.
-	var interleavedQueues = null;
-	function pushInterleavedQueue(queue) {
-	  if (interleavedQueues === null) {
-	    interleavedQueues = [queue];
+
+	var concurrentQueues = null;
+	function pushConcurrentUpdateQueue(queue) {
+	  if (concurrentQueues === null) {
+	    concurrentQueues = [queue];
 	  } else {
-	    interleavedQueues.push(queue);
+	    concurrentQueues.push(queue);
 	  }
 	}
-	function hasInterleavedUpdates() {
-	  return interleavedQueues !== null;
-	}
-	function enqueueInterleavedUpdates() {
+	function finishQueueingConcurrentUpdates() {
 	  // Transfer the interleaved updates onto the main queue. Each queue has a
 	  // `pending` field and an `interleaved` field. When they are not null, they
 	  // point to the last node in a circular linked list. We need to append the
 	  // interleaved list to the end of the pending list by joining them into a
 	  // single, circular list.
-	  if (interleavedQueues !== null) {
-	    for (var i = 0; i < interleavedQueues.length; i++) {
-	      var queue = interleavedQueues[i];
+	  if (concurrentQueues !== null) {
+	    for (var i = 0; i < concurrentQueues.length; i++) {
+	      var queue = concurrentQueues[i];
 	      var lastInterleavedUpdate = queue.interleaved;
 
 	      if (lastInterleavedUpdate !== null) {
@@ -16003,7 +16711,108 @@
 	      }
 	    }
 
-	    interleavedQueues = null;
+	    concurrentQueues = null;
+	  }
+	}
+	function enqueueConcurrentHookUpdate(fiber, queue, update, lane) {
+	  var interleaved = queue.interleaved;
+
+	  if (interleaved === null) {
+	    // This is the first update. Create a circular list.
+	    update.next = update; // At the end of the current render, this queue's interleaved updates will
+	    // be transferred to the pending queue.
+
+	    pushConcurrentUpdateQueue(queue);
+	  } else {
+	    update.next = interleaved.next;
+	    interleaved.next = update;
+	  }
+
+	  queue.interleaved = update;
+	  return markUpdateLaneFromFiberToRoot(fiber, lane);
+	}
+	function enqueueConcurrentHookUpdateAndEagerlyBailout(fiber, queue, update, lane) {
+	  var interleaved = queue.interleaved;
+
+	  if (interleaved === null) {
+	    // This is the first update. Create a circular list.
+	    update.next = update; // At the end of the current render, this queue's interleaved updates will
+	    // be transferred to the pending queue.
+
+	    pushConcurrentUpdateQueue(queue);
+	  } else {
+	    update.next = interleaved.next;
+	    interleaved.next = update;
+	  }
+
+	  queue.interleaved = update;
+	}
+	function enqueueConcurrentClassUpdate(fiber, queue, update, lane) {
+	  var interleaved = queue.interleaved;
+
+	  if (interleaved === null) {
+	    // This is the first update. Create a circular list.
+	    update.next = update; // At the end of the current render, this queue's interleaved updates will
+	    // be transferred to the pending queue.
+
+	    pushConcurrentUpdateQueue(queue);
+	  } else {
+	    update.next = interleaved.next;
+	    interleaved.next = update;
+	  }
+
+	  queue.interleaved = update;
+	  return markUpdateLaneFromFiberToRoot(fiber, lane);
+	}
+	function enqueueConcurrentRenderForLane(fiber, lane) {
+	  return markUpdateLaneFromFiberToRoot(fiber, lane);
+	} // Calling this function outside this module should only be done for backwards
+	// compatibility and should always be accompanied by a warning.
+
+	var unsafe_markUpdateLaneFromFiberToRoot = markUpdateLaneFromFiberToRoot;
+
+	function markUpdateLaneFromFiberToRoot(sourceFiber, lane) {
+	  // Update the source fiber's lanes
+	  sourceFiber.lanes = mergeLanes(sourceFiber.lanes, lane);
+	  var alternate = sourceFiber.alternate;
+
+	  if (alternate !== null) {
+	    alternate.lanes = mergeLanes(alternate.lanes, lane);
+	  }
+
+	  {
+	    if (alternate === null && (sourceFiber.flags & (Placement | Hydrating)) !== NoFlags) {
+	      warnAboutUpdateOnNotYetMountedFiberInDEV(sourceFiber);
+	    }
+	  } // Walk the parent path to the root and update the child lanes.
+
+
+	  var node = sourceFiber;
+	  var parent = sourceFiber.return;
+
+	  while (parent !== null) {
+	    parent.childLanes = mergeLanes(parent.childLanes, lane);
+	    alternate = parent.alternate;
+
+	    if (alternate !== null) {
+	      alternate.childLanes = mergeLanes(alternate.childLanes, lane);
+	    } else {
+	      {
+	        if ((parent.flags & (Placement | Hydrating)) !== NoFlags) {
+	          warnAboutUpdateOnNotYetMountedFiberInDEV(sourceFiber);
+	        }
+	      }
+	    }
+
+	    node = parent;
+	    parent = parent.return;
+	  }
+
+	  if (node.tag === HostRoot) {
+	    var root = node.stateNode;
+	    return root;
+	  } else {
+	    return null;
 	  }
 	}
 
@@ -16069,27 +16878,22 @@
 
 	  if (updateQueue === null) {
 	    // Only occurs if the fiber has been unmounted.
-	    return;
+	    return null;
 	  }
 
 	  var sharedQueue = updateQueue.shared;
 
-	  if (isInterleavedUpdate(fiber)) {
-	    var interleaved = sharedQueue.interleaved;
+	  {
+	    if (currentlyProcessingQueue === sharedQueue && !didWarnUpdateInsideUpdate) {
+	      error('An update (setState, replaceState, or forceUpdate) was scheduled ' + 'from inside an update function. Update functions should be pure, ' + 'with zero side-effects. Consider using componentDidUpdate or a ' + 'callback.');
 
-	    if (interleaved === null) {
-	      // This is the first update. Create a circular list.
-	      update.next = update; // At the end of the current render, this queue's interleaved updates will
-	      // be transferred to the pending queue.
-
-	      pushInterleavedQueue(sharedQueue);
-	    } else {
-	      update.next = interleaved.next;
-	      interleaved.next = update;
+	      didWarnUpdateInsideUpdate = true;
 	    }
+	  }
 
-	    sharedQueue.interleaved = update;
-	  } else {
+	  if (isUnsafeClassRenderPhaseUpdate()) {
+	    // This is an unsafe render phase update. Add directly to the update
+	    // queue so we can process it immediately during the current render.
 	    var pending = sharedQueue.pending;
 
 	    if (pending === null) {
@@ -16100,15 +16904,14 @@
 	      pending.next = update;
 	    }
 
-	    sharedQueue.pending = update;
-	  }
+	    sharedQueue.pending = update; // Update the childLanes even though we're most likely already rendering
+	    // this fiber. This is for backwards compatibility in the case where you
+	    // update a different component during render phase than the one that is
+	    // currently renderings (a pattern that is accompanied by a warning).
 
-	  {
-	    if (currentlyProcessingQueue === sharedQueue && !didWarnUpdateInsideUpdate) {
-	      error('An update (setState, replaceState, or forceUpdate) was scheduled ' + 'from inside an update function. Update functions should be pure, ' + 'with zero side-effects. Consider using componentDidUpdate or a ' + 'callback.');
-
-	      didWarnUpdateInsideUpdate = true;
-	    }
+	    return unsafe_markUpdateLaneFromFiberToRoot(fiber, lane);
+	  } else {
+	    return enqueueConcurrentClassUpdate(fiber, sharedQueue, update, lane);
 	  }
 	}
 	function entangleTransitions(root, fiber, lane) {
@@ -16647,10 +17450,10 @@
 	      update.callback = callback;
 	    }
 
-	    enqueueUpdate(fiber, update);
-	    var root = scheduleUpdateOnFiber(fiber, lane, eventTime);
+	    var root = enqueueUpdate(fiber, update, lane);
 
 	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, lane, eventTime);
 	      entangleTransitions(root, fiber, lane);
 	    }
 
@@ -16674,10 +17477,10 @@
 	      update.callback = callback;
 	    }
 
-	    enqueueUpdate(fiber, update);
-	    var root = scheduleUpdateOnFiber(fiber, lane, eventTime);
+	    var root = enqueueUpdate(fiber, update, lane);
 
 	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, lane, eventTime);
 	      entangleTransitions(root, fiber, lane);
 	    }
 
@@ -16700,10 +17503,10 @@
 	      update.callback = callback;
 	    }
 
-	    enqueueUpdate(fiber, update);
-	    var root = scheduleUpdateOnFiber(fiber, lane, eventTime);
+	    var root = enqueueUpdate(fiber, update, lane);
 
 	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, lane, eventTime);
 	      entangleTransitions(root, fiber, lane);
 	    }
 
@@ -17334,677 +18137,6 @@
 	  instance.state = newState;
 	  instance.context = nextContext;
 	  return shouldUpdate;
-	}
-
-	// TODO: Use the unified fiber stack module instead of this local one?
-	// Intentionally not using it yet to derisk the initial implementation, because
-	// the way we push/pop these values is a bit unusual. If there's a mistake, I'd
-	// rather the ids be wrong than crash the whole reconciler.
-	var forkStack = [];
-	var forkStackIndex = 0;
-	var treeForkProvider = null;
-	var treeForkCount = 0;
-	var idStack = [];
-	var idStackIndex = 0;
-	var treeContextProvider = null;
-	var treeContextId = 1;
-	var treeContextOverflow = '';
-	function isForkedChild(workInProgress) {
-	  warnIfNotHydrating();
-	  return (workInProgress.flags & Forked) !== NoFlags;
-	}
-	function getForksAtLevel(workInProgress) {
-	  warnIfNotHydrating();
-	  return treeForkCount;
-	}
-	function getTreeId() {
-	  var overflow = treeContextOverflow;
-	  var idWithLeadingBit = treeContextId;
-	  var id = idWithLeadingBit & ~getLeadingBit(idWithLeadingBit);
-	  return id.toString(32) + overflow;
-	}
-	function pushTreeFork(workInProgress, totalChildren) {
-	  // This is called right after we reconcile an array (or iterator) of child
-	  // fibers, because that's the only place where we know how many children in
-	  // the whole set without doing extra work later, or storing addtional
-	  // information on the fiber.
-	  //
-	  // That's why this function is separate from pushTreeId — it's called during
-	  // the render phase of the fork parent, not the child, which is where we push
-	  // the other context values.
-	  //
-	  // In the Fizz implementation this is much simpler because the child is
-	  // rendered in the same callstack as the parent.
-	  //
-	  // It might be better to just add a `forks` field to the Fiber type. It would
-	  // make this module simpler.
-	  warnIfNotHydrating();
-	  forkStack[forkStackIndex++] = treeForkCount;
-	  forkStack[forkStackIndex++] = treeForkProvider;
-	  treeForkProvider = workInProgress;
-	  treeForkCount = totalChildren;
-	}
-	function pushTreeId(workInProgress, totalChildren, index) {
-	  warnIfNotHydrating();
-	  idStack[idStackIndex++] = treeContextId;
-	  idStack[idStackIndex++] = treeContextOverflow;
-	  idStack[idStackIndex++] = treeContextProvider;
-	  treeContextProvider = workInProgress;
-	  var baseIdWithLeadingBit = treeContextId;
-	  var baseOverflow = treeContextOverflow; // The leftmost 1 marks the end of the sequence, non-inclusive. It's not part
-	  // of the id; we use it to account for leading 0s.
-
-	  var baseLength = getBitLength(baseIdWithLeadingBit) - 1;
-	  var baseId = baseIdWithLeadingBit & ~(1 << baseLength);
-	  var slot = index + 1;
-	  var length = getBitLength(totalChildren) + baseLength; // 30 is the max length we can store without overflowing, taking into
-	  // consideration the leading 1 we use to mark the end of the sequence.
-
-	  if (length > 30) {
-	    // We overflowed the bitwise-safe range. Fall back to slower algorithm.
-	    // This branch assumes the length of the base id is greater than 5; it won't
-	    // work for smaller ids, because you need 5 bits per character.
-	    //
-	    // We encode the id in multiple steps: first the base id, then the
-	    // remaining digits.
-	    //
-	    // Each 5 bit sequence corresponds to a single base 32 character. So for
-	    // example, if the current id is 23 bits long, we can convert 20 of those
-	    // bits into a string of 4 characters, with 3 bits left over.
-	    //
-	    // First calculate how many bits in the base id represent a complete
-	    // sequence of characters.
-	    var numberOfOverflowBits = baseLength - baseLength % 5; // Then create a bitmask that selects only those bits.
-
-	    var newOverflowBits = (1 << numberOfOverflowBits) - 1; // Select the bits, and convert them to a base 32 string.
-
-	    var newOverflow = (baseId & newOverflowBits).toString(32); // Now we can remove those bits from the base id.
-
-	    var restOfBaseId = baseId >> numberOfOverflowBits;
-	    var restOfBaseLength = baseLength - numberOfOverflowBits; // Finally, encode the rest of the bits using the normal algorithm. Because
-	    // we made more room, this time it won't overflow.
-
-	    var restOfLength = getBitLength(totalChildren) + restOfBaseLength;
-	    var restOfNewBits = slot << restOfBaseLength;
-	    var id = restOfNewBits | restOfBaseId;
-	    var overflow = newOverflow + baseOverflow;
-	    treeContextId = 1 << restOfLength | id;
-	    treeContextOverflow = overflow;
-	  } else {
-	    // Normal path
-	    var newBits = slot << baseLength;
-
-	    var _id = newBits | baseId;
-
-	    var _overflow = baseOverflow;
-	    treeContextId = 1 << length | _id;
-	    treeContextOverflow = _overflow;
-	  }
-	}
-	function pushMaterializedTreeId(workInProgress) {
-	  warnIfNotHydrating(); // This component materialized an id. This will affect any ids that appear
-	  // in its children.
-
-	  var returnFiber = workInProgress.return;
-
-	  if (returnFiber !== null) {
-	    var numberOfForks = 1;
-	    var slotIndex = 0;
-	    pushTreeFork(workInProgress, numberOfForks);
-	    pushTreeId(workInProgress, numberOfForks, slotIndex);
-	  }
-	}
-
-	function getBitLength(number) {
-	  return 32 - clz32(number);
-	}
-
-	function getLeadingBit(id) {
-	  return 1 << getBitLength(id) - 1;
-	}
-
-	function popTreeContext(workInProgress) {
-	  // Restore the previous values.
-	  // This is a bit more complicated than other context-like modules in Fiber
-	  // because the same Fiber may appear on the stack multiple times and for
-	  // different reasons. We have to keep popping until the work-in-progress is
-	  // no longer at the top of the stack.
-	  while (workInProgress === treeForkProvider) {
-	    treeForkProvider = forkStack[--forkStackIndex];
-	    forkStack[forkStackIndex] = null;
-	    treeForkCount = forkStack[--forkStackIndex];
-	    forkStack[forkStackIndex] = null;
-	  }
-
-	  while (workInProgress === treeContextProvider) {
-	    treeContextProvider = idStack[--idStackIndex];
-	    idStack[idStackIndex] = null;
-	    treeContextOverflow = idStack[--idStackIndex];
-	    idStack[idStackIndex] = null;
-	    treeContextId = idStack[--idStackIndex];
-	    idStack[idStackIndex] = null;
-	  }
-	}
-	function getSuspendedTreeContext() {
-	  warnIfNotHydrating();
-
-	  if (treeContextProvider !== null) {
-	    return {
-	      id: treeContextId,
-	      overflow: treeContextOverflow
-	    };
-	  } else {
-	    return null;
-	  }
-	}
-	function restoreSuspendedTreeContext(workInProgress, suspendedContext) {
-	  warnIfNotHydrating();
-	  idStack[idStackIndex++] = treeContextId;
-	  idStack[idStackIndex++] = treeContextOverflow;
-	  idStack[idStackIndex++] = treeContextProvider;
-	  treeContextId = suspendedContext.id;
-	  treeContextOverflow = suspendedContext.overflow;
-	  treeContextProvider = workInProgress;
-	}
-
-	function warnIfNotHydrating() {
-	  {
-	    if (!getIsHydrating()) {
-	      error('Expected to be hydrating. This is a bug in React. Please file ' + 'an issue.');
-	    }
-	  }
-	}
-
-	// This may have been an insertion or a hydration.
-
-	var hydrationParentFiber = null;
-	var nextHydratableInstance = null;
-	var isHydrating = false; // This flag allows for warning supression when we expect there to be mismatches
-	// due to earlier mismatches or a suspended fiber.
-
-	var didSuspendOrErrorDEV = false; // Hydration errors that were thrown inside this boundary
-
-	var hydrationErrors = null;
-
-	function warnIfHydrating() {
-	  {
-	    if (isHydrating) {
-	      error('We should not be hydrating here. This is a bug in React. Please file a bug.');
-	    }
-	  }
-	}
-
-	function markDidThrowWhileHydratingDEV() {
-	  {
-	    didSuspendOrErrorDEV = true;
-	  }
-	}
-
-	function enterHydrationState(fiber) {
-
-	  var parentInstance = fiber.stateNode.containerInfo;
-	  nextHydratableInstance = getFirstHydratableChildWithinContainer(parentInstance);
-	  hydrationParentFiber = fiber;
-	  isHydrating = true;
-	  hydrationErrors = null;
-	  didSuspendOrErrorDEV = false;
-	  return true;
-	}
-
-	function reenterHydrationStateFromDehydratedSuspenseInstance(fiber, suspenseInstance, treeContext) {
-
-	  nextHydratableInstance = getFirstHydratableChildWithinSuspenseInstance(suspenseInstance);
-	  hydrationParentFiber = fiber;
-	  isHydrating = true;
-	  hydrationErrors = null;
-	  didSuspendOrErrorDEV = false;
-
-	  if (treeContext !== null) {
-	    restoreSuspendedTreeContext(fiber, treeContext);
-	  }
-
-	  return true;
-	}
-
-	function warnUnhydratedInstance(returnFiber, instance) {
-	  {
-	    switch (returnFiber.tag) {
-	      case HostRoot:
-	        {
-	          didNotHydrateInstanceWithinContainer(returnFiber.stateNode.containerInfo, instance);
-	          break;
-	        }
-
-	      case HostComponent:
-	        {
-	          var isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
-	          didNotHydrateInstance(returnFiber.type, returnFiber.memoizedProps, returnFiber.stateNode, instance, // TODO: Delete this argument when we remove the legacy root API.
-	          isConcurrentMode);
-	          break;
-	        }
-
-	      case SuspenseComponent:
-	        {
-	          var suspenseState = returnFiber.memoizedState;
-	          if (suspenseState.dehydrated !== null) didNotHydrateInstanceWithinSuspenseInstance(suspenseState.dehydrated, instance);
-	          break;
-	        }
-	    }
-	  }
-	}
-
-	function deleteHydratableInstance(returnFiber, instance) {
-	  warnUnhydratedInstance(returnFiber, instance);
-	  var childToDelete = createFiberFromHostInstanceForDeletion();
-	  childToDelete.stateNode = instance;
-	  childToDelete.return = returnFiber;
-	  var deletions = returnFiber.deletions;
-
-	  if (deletions === null) {
-	    returnFiber.deletions = [childToDelete];
-	    returnFiber.flags |= ChildDeletion;
-	  } else {
-	    deletions.push(childToDelete);
-	  }
-	}
-
-	function warnNonhydratedInstance(returnFiber, fiber) {
-	  {
-	    if (didSuspendOrErrorDEV) {
-	      // Inside a boundary that already suspended. We're currently rendering the
-	      // siblings of a suspended node. The mismatch may be due to the missing
-	      // data, so it's probably a false positive.
-	      return;
-	    }
-
-	    switch (returnFiber.tag) {
-	      case HostRoot:
-	        {
-	          var parentContainer = returnFiber.stateNode.containerInfo;
-
-	          switch (fiber.tag) {
-	            case HostComponent:
-	              var type = fiber.type;
-	              fiber.pendingProps;
-	              didNotFindHydratableInstanceWithinContainer(parentContainer, type);
-	              break;
-
-	            case HostText:
-	              var text = fiber.pendingProps;
-	              didNotFindHydratableTextInstanceWithinContainer(parentContainer, text);
-	              break;
-	          }
-
-	          break;
-	        }
-
-	      case HostComponent:
-	        {
-	          var parentType = returnFiber.type;
-	          var parentProps = returnFiber.memoizedProps;
-	          var parentInstance = returnFiber.stateNode;
-
-	          switch (fiber.tag) {
-	            case HostComponent:
-	              {
-	                var _type = fiber.type;
-	                var _props = fiber.pendingProps;
-	                var isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
-	                didNotFindHydratableInstance(parentType, parentProps, parentInstance, _type, _props, // TODO: Delete this argument when we remove the legacy root API.
-	                isConcurrentMode);
-	                break;
-	              }
-
-	            case HostText:
-	              {
-	                var _text = fiber.pendingProps;
-
-	                var _isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
-
-	                didNotFindHydratableTextInstance(parentType, parentProps, parentInstance, _text, // TODO: Delete this argument when we remove the legacy root API.
-	                _isConcurrentMode);
-	                break;
-	              }
-	          }
-
-	          break;
-	        }
-
-	      case SuspenseComponent:
-	        {
-	          var suspenseState = returnFiber.memoizedState;
-	          var _parentInstance = suspenseState.dehydrated;
-	          if (_parentInstance !== null) switch (fiber.tag) {
-	            case HostComponent:
-	              var _type2 = fiber.type;
-	              fiber.pendingProps;
-	              didNotFindHydratableInstanceWithinSuspenseInstance(_parentInstance, _type2);
-	              break;
-
-	            case HostText:
-	              var _text2 = fiber.pendingProps;
-	              didNotFindHydratableTextInstanceWithinSuspenseInstance(_parentInstance, _text2);
-	              break;
-	          }
-	          break;
-	        }
-
-	      default:
-	        return;
-	    }
-	  }
-	}
-
-	function insertNonHydratedInstance(returnFiber, fiber) {
-	  fiber.flags = fiber.flags & ~Hydrating | Placement;
-	  warnNonhydratedInstance(returnFiber, fiber);
-	}
-
-	function tryHydrate(fiber, nextInstance) {
-	  switch (fiber.tag) {
-	    case HostComponent:
-	      {
-	        var type = fiber.type;
-	        fiber.pendingProps;
-	        var instance = canHydrateInstance(nextInstance, type);
-
-	        if (instance !== null) {
-	          fiber.stateNode = instance;
-	          hydrationParentFiber = fiber;
-	          nextHydratableInstance = getFirstHydratableChild(instance);
-	          return true;
-	        }
-
-	        return false;
-	      }
-
-	    case HostText:
-	      {
-	        var text = fiber.pendingProps;
-	        var textInstance = canHydrateTextInstance(nextInstance, text);
-
-	        if (textInstance !== null) {
-	          fiber.stateNode = textInstance;
-	          hydrationParentFiber = fiber; // Text Instances don't have children so there's nothing to hydrate.
-
-	          nextHydratableInstance = null;
-	          return true;
-	        }
-
-	        return false;
-	      }
-
-	    case SuspenseComponent:
-	      {
-	        var suspenseInstance = canHydrateSuspenseInstance(nextInstance);
-
-	        if (suspenseInstance !== null) {
-	          var suspenseState = {
-	            dehydrated: suspenseInstance,
-	            treeContext: getSuspendedTreeContext(),
-	            retryLane: OffscreenLane
-	          };
-	          fiber.memoizedState = suspenseState; // Store the dehydrated fragment as a child fiber.
-	          // This simplifies the code for getHostSibling and deleting nodes,
-	          // since it doesn't have to consider all Suspense boundaries and
-	          // check if they're dehydrated ones or not.
-
-	          var dehydratedFragment = createFiberFromDehydratedFragment(suspenseInstance);
-	          dehydratedFragment.return = fiber;
-	          fiber.child = dehydratedFragment;
-	          hydrationParentFiber = fiber; // While a Suspense Instance does have children, we won't step into
-	          // it during the first pass. Instead, we'll reenter it later.
-
-	          nextHydratableInstance = null;
-	          return true;
-	        }
-
-	        return false;
-	      }
-
-	    default:
-	      return false;
-	  }
-	}
-
-	function shouldClientRenderOnMismatch(fiber) {
-	  return (fiber.mode & ConcurrentMode) !== NoMode && (fiber.flags & DidCapture) === NoFlags;
-	}
-
-	function throwOnHydrationMismatch(fiber) {
-	  throw new Error('Hydration failed because the initial UI does not match what was ' + 'rendered on the server.');
-	}
-
-	function tryToClaimNextHydratableInstance(fiber) {
-	  if (!isHydrating) {
-	    return;
-	  }
-
-	  var nextInstance = nextHydratableInstance;
-
-	  if (!nextInstance) {
-	    if (shouldClientRenderOnMismatch(fiber)) {
-	      warnNonhydratedInstance(hydrationParentFiber, fiber);
-	      throwOnHydrationMismatch();
-	    } // Nothing to hydrate. Make it an insertion.
-
-
-	    insertNonHydratedInstance(hydrationParentFiber, fiber);
-	    isHydrating = false;
-	    hydrationParentFiber = fiber;
-	    return;
-	  }
-
-	  var firstAttemptedInstance = nextInstance;
-
-	  if (!tryHydrate(fiber, nextInstance)) {
-	    if (shouldClientRenderOnMismatch(fiber)) {
-	      warnNonhydratedInstance(hydrationParentFiber, fiber);
-	      throwOnHydrationMismatch();
-	    } // If we can't hydrate this instance let's try the next one.
-	    // We use this as a heuristic. It's based on intuition and not data so it
-	    // might be flawed or unnecessary.
-
-
-	    nextInstance = getNextHydratableSibling(firstAttemptedInstance);
-	    var prevHydrationParentFiber = hydrationParentFiber;
-
-	    if (!nextInstance || !tryHydrate(fiber, nextInstance)) {
-	      // Nothing to hydrate. Make it an insertion.
-	      insertNonHydratedInstance(hydrationParentFiber, fiber);
-	      isHydrating = false;
-	      hydrationParentFiber = fiber;
-	      return;
-	    } // We matched the next one, we'll now assume that the first one was
-	    // superfluous and we'll delete it. Since we can't eagerly delete it
-	    // we'll have to schedule a deletion. To do that, this node needs a dummy
-	    // fiber associated with it.
-
-
-	    deleteHydratableInstance(prevHydrationParentFiber, firstAttemptedInstance);
-	  }
-	}
-
-	function prepareToHydrateHostInstance(fiber, rootContainerInstance, hostContext) {
-
-	  var instance = fiber.stateNode;
-	  var shouldWarnIfMismatchDev = !didSuspendOrErrorDEV;
-	  var updatePayload = hydrateInstance(instance, fiber.type, fiber.memoizedProps, rootContainerInstance, hostContext, fiber, shouldWarnIfMismatchDev); // TODO: Type this specific to this type of component.
-
-	  fiber.updateQueue = updatePayload; // If the update payload indicates that there is a change or if there
-	  // is a new ref we mark this as an update.
-
-	  if (updatePayload !== null) {
-	    return true;
-	  }
-
-	  return false;
-	}
-
-	function prepareToHydrateHostTextInstance(fiber) {
-
-	  var textInstance = fiber.stateNode;
-	  var textContent = fiber.memoizedProps;
-	  var shouldUpdate = hydrateTextInstance(textInstance, textContent, fiber);
-
-	  if (shouldUpdate) {
-	    // We assume that prepareToHydrateHostTextInstance is called in a context where the
-	    // hydration parent is the parent host component of this host text.
-	    var returnFiber = hydrationParentFiber;
-
-	    if (returnFiber !== null) {
-	      switch (returnFiber.tag) {
-	        case HostRoot:
-	          {
-	            var parentContainer = returnFiber.stateNode.containerInfo;
-	            var isConcurrentMode = (returnFiber.mode & ConcurrentMode) !== NoMode;
-	            didNotMatchHydratedContainerTextInstance(parentContainer, textInstance, textContent, // TODO: Delete this argument when we remove the legacy root API.
-	            isConcurrentMode);
-	            break;
-	          }
-
-	        case HostComponent:
-	          {
-	            var parentType = returnFiber.type;
-	            var parentProps = returnFiber.memoizedProps;
-	            var parentInstance = returnFiber.stateNode;
-
-	            var _isConcurrentMode2 = (returnFiber.mode & ConcurrentMode) !== NoMode;
-
-	            didNotMatchHydratedTextInstance(parentType, parentProps, parentInstance, textInstance, textContent, // TODO: Delete this argument when we remove the legacy root API.
-	            _isConcurrentMode2);
-	            break;
-	          }
-	      }
-	    }
-	  }
-
-	  return shouldUpdate;
-	}
-
-	function prepareToHydrateHostSuspenseInstance(fiber) {
-
-	  var suspenseState = fiber.memoizedState;
-	  var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
-
-	  if (!suspenseInstance) {
-	    throw new Error('Expected to have a hydrated suspense instance. ' + 'This error is likely caused by a bug in React. Please file an issue.');
-	  }
-
-	  hydrateSuspenseInstance(suspenseInstance, fiber);
-	}
-
-	function skipPastDehydratedSuspenseInstance(fiber) {
-
-	  var suspenseState = fiber.memoizedState;
-	  var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
-
-	  if (!suspenseInstance) {
-	    throw new Error('Expected to have a hydrated suspense instance. ' + 'This error is likely caused by a bug in React. Please file an issue.');
-	  }
-
-	  return getNextHydratableInstanceAfterSuspenseInstance(suspenseInstance);
-	}
-
-	function popToNextHostParent(fiber) {
-	  var parent = fiber.return;
-
-	  while (parent !== null && parent.tag !== HostComponent && parent.tag !== HostRoot && parent.tag !== SuspenseComponent) {
-	    parent = parent.return;
-	  }
-
-	  hydrationParentFiber = parent;
-	}
-
-	function popHydrationState(fiber) {
-
-	  if (fiber !== hydrationParentFiber) {
-	    // We're deeper than the current hydration context, inside an inserted
-	    // tree.
-	    return false;
-	  }
-
-	  if (!isHydrating) {
-	    // If we're not currently hydrating but we're in a hydration context, then
-	    // we were an insertion and now need to pop up reenter hydration of our
-	    // siblings.
-	    popToNextHostParent(fiber);
-	    isHydrating = true;
-	    return false;
-	  } // If we have any remaining hydratable nodes, we need to delete them now.
-	  // We only do this deeper than head and body since they tend to have random
-	  // other nodes in them. We also ignore components with pure text content in
-	  // side of them. We also don't delete anything inside the root container.
-
-
-	  if (fiber.tag !== HostRoot && (fiber.tag !== HostComponent || shouldDeleteUnhydratedTailInstances(fiber.type) && !shouldSetTextContent(fiber.type, fiber.memoizedProps))) {
-	    var nextInstance = nextHydratableInstance;
-
-	    if (nextInstance) {
-	      if (shouldClientRenderOnMismatch(fiber)) {
-	        warnIfUnhydratedTailNodes(fiber);
-	        throwOnHydrationMismatch();
-	      } else {
-	        while (nextInstance) {
-	          deleteHydratableInstance(fiber, nextInstance);
-	          nextInstance = getNextHydratableSibling(nextInstance);
-	        }
-	      }
-	    }
-	  }
-
-	  popToNextHostParent(fiber);
-
-	  if (fiber.tag === SuspenseComponent) {
-	    nextHydratableInstance = skipPastDehydratedSuspenseInstance(fiber);
-	  } else {
-	    nextHydratableInstance = hydrationParentFiber ? getNextHydratableSibling(fiber.stateNode) : null;
-	  }
-
-	  return true;
-	}
-
-	function hasUnhydratedTailNodes() {
-	  return isHydrating && nextHydratableInstance !== null;
-	}
-
-	function warnIfUnhydratedTailNodes(fiber) {
-	  var nextInstance = nextHydratableInstance;
-
-	  while (nextInstance) {
-	    warnUnhydratedInstance(fiber, nextInstance);
-	    nextInstance = getNextHydratableSibling(nextInstance);
-	  }
-	}
-
-	function resetHydrationState() {
-
-	  hydrationParentFiber = null;
-	  nextHydratableInstance = null;
-	  isHydrating = false;
-	  didSuspendOrErrorDEV = false;
-	}
-
-	function upgradeHydrationErrorsToRecoverable() {
-	  if (hydrationErrors !== null) {
-	    // Successfully completed a forced client render. The errors that occurred
-	    // during the hydration attempt are now recovered. We will log them in
-	    // commit phase, once the entire tree has finished.
-	    queueRecoverableErrors(hydrationErrors);
-	    hydrationErrors = null;
-	  }
-	}
-
-	function getIsHydrating() {
-	  return isHydrating;
-	}
-
-	function queueHydrationError(error) {
-	  if (hydrationErrors === null) {
-	    hydrationErrors = [error];
-	  } else {
-	    hydrationErrors.push(error);
-	  }
 	}
 
 	var didWarnAboutMaps;
@@ -20228,7 +20360,11 @@
 	}
 
 	function forceStoreRerender(fiber) {
-	  scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	  var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	  if (root !== null) {
+	    scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	  }
 	}
 
 	function mountState(initialState) {
@@ -20698,11 +20834,11 @@
 	  if (isRenderPhaseUpdate(fiber)) {
 	    enqueueRenderPhaseUpdate(queue, update);
 	  } else {
-	    enqueueUpdate$1(fiber, queue, update);
-	    var eventTime = requestEventTime();
-	    var root = scheduleUpdateOnFiber(fiber, lane, eventTime);
+	    var root = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
 
 	    if (root !== null) {
+	      var eventTime = requestEventTime();
+	      scheduleUpdateOnFiber(root, fiber, lane, eventTime);
 	      entangleTransitionUpdate(root, queue, lane);
 	    }
 	  }
@@ -20729,7 +20865,6 @@
 	  if (isRenderPhaseUpdate(fiber)) {
 	    enqueueRenderPhaseUpdate(queue, update);
 	  } else {
-	    enqueueUpdate$1(fiber, queue, update);
 	    var alternate = fiber.alternate;
 
 	    if (fiber.lanes === NoLanes && (alternate === null || alternate.lanes === NoLanes)) {
@@ -20761,6 +20896,8 @@
 	            // It's still possible that we'll need to rebase this update later,
 	            // if the component re-renders for a different reason and by that
 	            // time the reducer has changed.
+	            // TODO: Do we still need to entangle transitions in this case?
+	            enqueueConcurrentHookUpdateAndEagerlyBailout(fiber, queue, update, lane);
 	            return;
 	          }
 	        } catch (error) {// Suppress the error. It will throw again in the render phase.
@@ -20772,10 +20909,11 @@
 	      }
 	    }
 
-	    var eventTime = requestEventTime();
-	    var root = scheduleUpdateOnFiber(fiber, lane, eventTime);
+	    var root = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
 
 	    if (root !== null) {
+	      var eventTime = requestEventTime();
+	      scheduleUpdateOnFiber(root, fiber, lane, eventTime);
 	      entangleTransitionUpdate(root, queue, lane);
 	    }
 	  }
@@ -20804,38 +20942,8 @@
 	  }
 
 	  queue.pending = update;
-	}
+	} // TODO: Move to ReactFiberConcurrentUpdates?
 
-	function enqueueUpdate$1(fiber, queue, update, lane) {
-	  if (isInterleavedUpdate(fiber)) {
-	    var interleaved = queue.interleaved;
-
-	    if (interleaved === null) {
-	      // This is the first update. Create a circular list.
-	      update.next = update; // At the end of the current render, this queue's interleaved updates will
-	      // be transferred to the pending queue.
-
-	      pushInterleavedQueue(queue);
-	    } else {
-	      update.next = interleaved.next;
-	      interleaved.next = update;
-	    }
-
-	    queue.interleaved = update;
-	  } else {
-	    var pending = queue.pending;
-
-	    if (pending === null) {
-	      // This is the first update. Create a circular list.
-	      update.next = update;
-	    } else {
-	      update.next = pending.next;
-	      pending.next = update;
-	    }
-
-	    queue.pending = update;
-	  }
-	}
 
 	function entangleTransitionUpdate(root, queue, lane) {
 	  if (isTransitionLane(lane)) {
@@ -21888,13 +21996,22 @@
 	  }
 	}
 
-	function createCapturedValue(value, source) {
+	function createCapturedValueAtFiber(value, source) {
 	  // If the value is an error, call this function immediately after it is thrown
 	  // so the stack is accurate.
 	  return {
 	    value: value,
 	    source: source,
-	    stack: getStackByFiberInDevAndProd(source)
+	    stack: getStackByFiberInDevAndProd(source),
+	    digest: null
+	  };
+	}
+	function createCapturedValue(value, digest, stack) {
+	  return {
+	    value: value,
+	    source: null,
+	    stack: stack != null ? stack : null,
+	    digest: digest != null ? digest : null
 	  };
 	}
 
@@ -22205,7 +22322,7 @@
 	          // prevent a bail out.
 	          var update = createUpdate(NoTimestamp, SyncLane);
 	          update.tag = ForceUpdate;
-	          enqueueUpdate(sourceFiber, update);
+	          enqueueUpdate(sourceFiber, update, SyncLane);
 	        }
 	      } // The source fiber did not complete. Mark it with Sync priority to
 	      // indicate that it still has pending work.
@@ -22345,17 +22462,17 @@
 	        markSuspenseBoundaryShouldCapture(_suspenseBoundary, returnFiber, sourceFiber, root, rootRenderLanes); // Even though the user may not be affected by this error, we should
 	        // still log it so it can be fixed.
 
-	        queueHydrationError(value);
+	        queueHydrationError(createCapturedValueAtFiber(value, sourceFiber));
 	        return;
 	      }
 	    }
-	  } // We didn't find a boundary that could handle this type of exception. Start
+	  }
+
+	  value = createCapturedValueAtFiber(value, sourceFiber);
+	  renderDidError(value); // We didn't find a boundary that could handle this type of exception. Start
 	  // over and traverse parent path again, this time treating the exception
 	  // as an error.
 
-
-	  renderDidError(value);
-	  value = createCapturedValue(value, sourceFiber);
 	  var workInProgress = returnFiber;
 
 	  do {
@@ -22401,918 +22518,6 @@
 	  {
 	    return null;
 	  } // This function is called when a Suspense boundary suspends. It returns the
-	}
-
-	function markUpdate(workInProgress) {
-	  // Tag the fiber with an update effect. This turns a Placement into
-	  // a PlacementAndUpdate.
-	  workInProgress.flags |= Update;
-	}
-
-	function markRef(workInProgress) {
-	  workInProgress.flags |= Ref;
-
-	  {
-	    workInProgress.flags |= RefStatic;
-	  }
-	}
-
-	var appendAllChildren;
-	var updateHostContainer;
-	var updateHostComponent;
-	var updateHostText;
-
-	{
-	  // Mutation mode
-	  appendAllChildren = function (parent, workInProgress, needsVisibilityToggle, isHidden) {
-	    // We only have the top Fiber that was created but we need recurse down its
-	    // children to find all the terminal nodes.
-	    var node = workInProgress.child;
-
-	    while (node !== null) {
-	      if (node.tag === HostComponent || node.tag === HostText) {
-	        appendInitialChild(parent, node.stateNode);
-	      } else if (node.tag === HostPortal) ; else if (node.child !== null) {
-	        node.child.return = node;
-	        node = node.child;
-	        continue;
-	      }
-
-	      if (node === workInProgress) {
-	        return;
-	      }
-
-	      while (node.sibling === null) {
-	        if (node.return === null || node.return === workInProgress) {
-	          return;
-	        }
-
-	        node = node.return;
-	      }
-
-	      node.sibling.return = node.return;
-	      node = node.sibling;
-	    }
-	  };
-
-	  updateHostContainer = function (current, workInProgress) {// Noop
-	  };
-
-	  updateHostComponent = function (current, workInProgress, type, newProps, rootContainerInstance) {
-	    // If we have an alternate, that means this is an update and we need to
-	    // schedule a side-effect to do the updates.
-	    var oldProps = current.memoizedProps;
-
-	    if (oldProps === newProps) {
-	      // In mutation mode, this is sufficient for a bailout because
-	      // we won't touch this node even if children changed.
-	      return;
-	    } // If we get updated because one of our children updated, we don't
-	    // have newProps so we'll have to reuse them.
-	    // TODO: Split the update API as separate for the props vs. children.
-	    // Even better would be if children weren't special cased at all tho.
-
-
-	    var instance = workInProgress.stateNode;
-	    var currentHostContext = getHostContext(); // TODO: Experiencing an error where oldProps is null. Suggests a host
-	    // component is hitting the resume path. Figure out why. Possibly
-	    // related to `hidden`.
-
-	    var updatePayload = prepareUpdate(instance, type, oldProps, newProps, rootContainerInstance, currentHostContext); // TODO: Type this specific to this type of component.
-
-	    workInProgress.updateQueue = updatePayload; // If the update payload indicates that there is a change or if there
-	    // is a new ref we mark this as an update. All the work is done in commitWork.
-
-	    if (updatePayload) {
-	      markUpdate(workInProgress);
-	    }
-	  };
-
-	  updateHostText = function (current, workInProgress, oldText, newText) {
-	    // If the text differs, mark it as an update. All the work in done in commitWork.
-	    if (oldText !== newText) {
-	      markUpdate(workInProgress);
-	    }
-	  };
-	}
-
-	function cutOffTailIfNeeded(renderState, hasRenderedATailFallback) {
-	  if (getIsHydrating()) {
-	    // If we're hydrating, we should consume as many items as we can
-	    // so we don't leave any behind.
-	    return;
-	  }
-
-	  switch (renderState.tailMode) {
-	    case 'hidden':
-	      {
-	        // Any insertions at the end of the tail list after this point
-	        // should be invisible. If there are already mounted boundaries
-	        // anything before them are not considered for collapsing.
-	        // Therefore we need to go through the whole tail to find if
-	        // there are any.
-	        var tailNode = renderState.tail;
-	        var lastTailNode = null;
-
-	        while (tailNode !== null) {
-	          if (tailNode.alternate !== null) {
-	            lastTailNode = tailNode;
-	          }
-
-	          tailNode = tailNode.sibling;
-	        } // Next we're simply going to delete all insertions after the
-	        // last rendered item.
-
-
-	        if (lastTailNode === null) {
-	          // All remaining items in the tail are insertions.
-	          renderState.tail = null;
-	        } else {
-	          // Detach the insertion after the last node that was already
-	          // inserted.
-	          lastTailNode.sibling = null;
-	        }
-
-	        break;
-	      }
-
-	    case 'collapsed':
-	      {
-	        // Any insertions at the end of the tail list after this point
-	        // should be invisible. If there are already mounted boundaries
-	        // anything before them are not considered for collapsing.
-	        // Therefore we need to go through the whole tail to find if
-	        // there are any.
-	        var _tailNode = renderState.tail;
-	        var _lastTailNode = null;
-
-	        while (_tailNode !== null) {
-	          if (_tailNode.alternate !== null) {
-	            _lastTailNode = _tailNode;
-	          }
-
-	          _tailNode = _tailNode.sibling;
-	        } // Next we're simply going to delete all insertions after the
-	        // last rendered item.
-
-
-	        if (_lastTailNode === null) {
-	          // All remaining items in the tail are insertions.
-	          if (!hasRenderedATailFallback && renderState.tail !== null) {
-	            // We suspended during the head. We want to show at least one
-	            // row at the tail. So we'll keep on and cut off the rest.
-	            renderState.tail.sibling = null;
-	          } else {
-	            renderState.tail = null;
-	          }
-	        } else {
-	          // Detach the insertion after the last node that was already
-	          // inserted.
-	          _lastTailNode.sibling = null;
-	        }
-
-	        break;
-	      }
-	  }
-	}
-
-	function bubbleProperties(completedWork) {
-	  var didBailout = completedWork.alternate !== null && completedWork.alternate.child === completedWork.child;
-	  var newChildLanes = NoLanes;
-	  var subtreeFlags = NoFlags;
-
-	  if (!didBailout) {
-	    // Bubble up the earliest expiration time.
-	    if ( (completedWork.mode & ProfileMode) !== NoMode) {
-	      // In profiling mode, resetChildExpirationTime is also used to reset
-	      // profiler durations.
-	      var actualDuration = completedWork.actualDuration;
-	      var treeBaseDuration = completedWork.selfBaseDuration;
-	      var child = completedWork.child;
-
-	      while (child !== null) {
-	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(child.lanes, child.childLanes));
-	        subtreeFlags |= child.subtreeFlags;
-	        subtreeFlags |= child.flags; // When a fiber is cloned, its actualDuration is reset to 0. This value will
-	        // only be updated if work is done on the fiber (i.e. it doesn't bailout).
-	        // When work is done, it should bubble to the parent's actualDuration. If
-	        // the fiber has not been cloned though, (meaning no work was done), then
-	        // this value will reflect the amount of time spent working on a previous
-	        // render. In that case it should not bubble. We determine whether it was
-	        // cloned by comparing the child pointer.
-
-	        actualDuration += child.actualDuration;
-	        treeBaseDuration += child.treeBaseDuration;
-	        child = child.sibling;
-	      }
-
-	      completedWork.actualDuration = actualDuration;
-	      completedWork.treeBaseDuration = treeBaseDuration;
-	    } else {
-	      var _child = completedWork.child;
-
-	      while (_child !== null) {
-	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(_child.lanes, _child.childLanes));
-	        subtreeFlags |= _child.subtreeFlags;
-	        subtreeFlags |= _child.flags; // Update the return pointer so the tree is consistent. This is a code
-	        // smell because it assumes the commit phase is never concurrent with
-	        // the render phase. Will address during refactor to alternate model.
-
-	        _child.return = completedWork;
-	        _child = _child.sibling;
-	      }
-	    }
-
-	    completedWork.subtreeFlags |= subtreeFlags;
-	  } else {
-	    // Bubble up the earliest expiration time.
-	    if ( (completedWork.mode & ProfileMode) !== NoMode) {
-	      // In profiling mode, resetChildExpirationTime is also used to reset
-	      // profiler durations.
-	      var _treeBaseDuration = completedWork.selfBaseDuration;
-	      var _child2 = completedWork.child;
-
-	      while (_child2 !== null) {
-	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(_child2.lanes, _child2.childLanes)); // "Static" flags share the lifetime of the fiber/hook they belong to,
-	        // so we should bubble those up even during a bailout. All the other
-	        // flags have a lifetime only of a single render + commit, so we should
-	        // ignore them.
-
-	        subtreeFlags |= _child2.subtreeFlags & StaticMask;
-	        subtreeFlags |= _child2.flags & StaticMask;
-	        _treeBaseDuration += _child2.treeBaseDuration;
-	        _child2 = _child2.sibling;
-	      }
-
-	      completedWork.treeBaseDuration = _treeBaseDuration;
-	    } else {
-	      var _child3 = completedWork.child;
-
-	      while (_child3 !== null) {
-	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(_child3.lanes, _child3.childLanes)); // "Static" flags share the lifetime of the fiber/hook they belong to,
-	        // so we should bubble those up even during a bailout. All the other
-	        // flags have a lifetime only of a single render + commit, so we should
-	        // ignore them.
-
-	        subtreeFlags |= _child3.subtreeFlags & StaticMask;
-	        subtreeFlags |= _child3.flags & StaticMask; // Update the return pointer so the tree is consistent. This is a code
-	        // smell because it assumes the commit phase is never concurrent with
-	        // the render phase. Will address during refactor to alternate model.
-
-	        _child3.return = completedWork;
-	        _child3 = _child3.sibling;
-	      }
-	    }
-
-	    completedWork.subtreeFlags |= subtreeFlags;
-	  }
-
-	  completedWork.childLanes = newChildLanes;
-	  return didBailout;
-	}
-
-	function completeWork(current, workInProgress, renderLanes) {
-	  var newProps = workInProgress.pendingProps; // Note: This intentionally doesn't check if we're hydrating because comparing
-	  // to the current tree provider fiber is just as fast and less error-prone.
-	  // Ideally we would have a special version of the work loop only
-	  // for hydration.
-
-	  popTreeContext(workInProgress);
-
-	  switch (workInProgress.tag) {
-	    case IndeterminateComponent:
-	    case LazyComponent:
-	    case SimpleMemoComponent:
-	    case FunctionComponent:
-	    case ForwardRef:
-	    case Fragment:
-	    case Mode:
-	    case Profiler:
-	    case ContextConsumer:
-	    case MemoComponent:
-	      bubbleProperties(workInProgress);
-	      return null;
-
-	    case ClassComponent:
-	      {
-	        var Component = workInProgress.type;
-
-	        if (isContextProvider(Component)) {
-	          popContext(workInProgress);
-	        }
-
-	        bubbleProperties(workInProgress);
-	        return null;
-	      }
-
-	    case HostRoot:
-	      {
-	        var fiberRoot = workInProgress.stateNode;
-	        popHostContainer(workInProgress);
-	        popTopLevelContextObject(workInProgress);
-	        resetWorkInProgressVersions();
-
-	        if (fiberRoot.pendingContext) {
-	          fiberRoot.context = fiberRoot.pendingContext;
-	          fiberRoot.pendingContext = null;
-	        }
-
-	        if (current === null || current.child === null) {
-	          // If we hydrated, pop so that we can delete any remaining children
-	          // that weren't hydrated.
-	          var wasHydrated = popHydrationState(workInProgress);
-
-	          if (wasHydrated) {
-	            // If we hydrated, then we'll need to schedule an update for
-	            // the commit side-effects on the root.
-	            markUpdate(workInProgress);
-	          } else {
-	            if (current !== null) {
-	              var prevState = current.memoizedState;
-
-	              if ( // Check if this is a client root
-	              !prevState.isDehydrated || // Check if we reverted to client rendering (e.g. due to an error)
-	              (workInProgress.flags & ForceClientRender) !== NoFlags) {
-	                // Schedule an effect to clear this container at the start of the
-	                // next commit. This handles the case of React rendering into a
-	                // container with previous children. It's also safe to do for
-	                // updates too, because current.child would only be null if the
-	                // previous render was null (so the container would already
-	                // be empty).
-	                workInProgress.flags |= Snapshot; // If this was a forced client render, there may have been
-	                // recoverable errors during first hydration attempt. If so, add
-	                // them to a queue so we can log them in the commit phase.
-
-	                upgradeHydrationErrorsToRecoverable();
-	              }
-	            }
-	          }
-	        }
-
-	        updateHostContainer(current, workInProgress);
-	        bubbleProperties(workInProgress);
-
-	        return null;
-	      }
-
-	    case HostComponent:
-	      {
-	        popHostContext(workInProgress);
-	        var rootContainerInstance = getRootHostContainer();
-	        var type = workInProgress.type;
-
-	        if (current !== null && workInProgress.stateNode != null) {
-	          updateHostComponent(current, workInProgress, type, newProps, rootContainerInstance);
-
-	          if (current.ref !== workInProgress.ref) {
-	            markRef(workInProgress);
-	          }
-	        } else {
-	          if (!newProps) {
-	            if (workInProgress.stateNode === null) {
-	              throw new Error('We must have new props for new mounts. This error is likely ' + 'caused by a bug in React. Please file an issue.');
-	            } // This can happen when we abort work.
-
-
-	            bubbleProperties(workInProgress);
-	            return null;
-	          }
-
-	          var currentHostContext = getHostContext(); // TODO: Move createInstance to beginWork and keep it on a context
-	          // "stack" as the parent. Then append children as we go in beginWork
-	          // or completeWork depending on whether we want to add them top->down or
-	          // bottom->up. Top->down is faster in IE11.
-
-	          var _wasHydrated = popHydrationState(workInProgress);
-
-	          if (_wasHydrated) {
-	            // TODO: Move this and createInstance step into the beginPhase
-	            // to consolidate.
-	            if (prepareToHydrateHostInstance(workInProgress, rootContainerInstance, currentHostContext)) {
-	              // If changes to the hydrated node need to be applied at the
-	              // commit-phase we mark this as such.
-	              markUpdate(workInProgress);
-	            }
-	          } else {
-	            var instance = createInstance(type, newProps, rootContainerInstance, currentHostContext, workInProgress);
-	            appendAllChildren(instance, workInProgress, false, false);
-	            workInProgress.stateNode = instance; // Certain renderers require commit-time effects for initial mount.
-	            // (eg DOM renderer supports auto-focus for certain elements).
-	            // Make sure such renderers get scheduled for later work.
-
-	            if (finalizeInitialChildren(instance, type, newProps, rootContainerInstance)) {
-	              markUpdate(workInProgress);
-	            }
-	          }
-
-	          if (workInProgress.ref !== null) {
-	            // If there is a ref on a host node we need to schedule a callback
-	            markRef(workInProgress);
-	          }
-	        }
-
-	        bubbleProperties(workInProgress);
-	        return null;
-	      }
-
-	    case HostText:
-	      {
-	        var newText = newProps;
-
-	        if (current && workInProgress.stateNode != null) {
-	          var oldText = current.memoizedProps; // If we have an alternate, that means this is an update and we need
-	          // to schedule a side-effect to do the updates.
-
-	          updateHostText(current, workInProgress, oldText, newText);
-	        } else {
-	          if (typeof newText !== 'string') {
-	            if (workInProgress.stateNode === null) {
-	              throw new Error('We must have new props for new mounts. This error is likely ' + 'caused by a bug in React. Please file an issue.');
-	            } // This can happen when we abort work.
-
-	          }
-
-	          var _rootContainerInstance = getRootHostContainer();
-
-	          var _currentHostContext = getHostContext();
-
-	          var _wasHydrated2 = popHydrationState(workInProgress);
-
-	          if (_wasHydrated2) {
-	            if (prepareToHydrateHostTextInstance(workInProgress)) {
-	              markUpdate(workInProgress);
-	            }
-	          } else {
-	            workInProgress.stateNode = createTextInstance(newText, _rootContainerInstance, _currentHostContext, workInProgress);
-	          }
-	        }
-
-	        bubbleProperties(workInProgress);
-	        return null;
-	      }
-
-	    case SuspenseComponent:
-	      {
-	        popSuspenseContext(workInProgress);
-	        var nextState = workInProgress.memoizedState;
-
-	        if (hasUnhydratedTailNodes() && (workInProgress.mode & ConcurrentMode) !== NoMode && (workInProgress.flags & DidCapture) === NoFlags) {
-	          warnIfUnhydratedTailNodes(workInProgress);
-	          resetHydrationState();
-	          workInProgress.flags |= ForceClientRender | Incomplete | ShouldCapture;
-	          return workInProgress;
-	        }
-
-	        if (nextState !== null && nextState.dehydrated !== null) {
-	          // We might be inside a hydration state the first time we're picking up this
-	          // Suspense boundary, and also after we've reentered it for further hydration.
-	          var _wasHydrated3 = popHydrationState(workInProgress);
-
-	          if (current === null) {
-	            if (!_wasHydrated3) {
-	              throw new Error('A dehydrated suspense component was completed without a hydrated node. ' + 'This is probably a bug in React.');
-	            }
-
-	            prepareToHydrateHostSuspenseInstance(workInProgress);
-	            bubbleProperties(workInProgress);
-
-	            {
-	              if ((workInProgress.mode & ProfileMode) !== NoMode) {
-	                var isTimedOutSuspense = nextState !== null;
-
-	                if (isTimedOutSuspense) {
-	                  // Don't count time spent in a timed out Suspense subtree as part of the base duration.
-	                  var primaryChildFragment = workInProgress.child;
-
-	                  if (primaryChildFragment !== null) {
-	                    // $FlowFixMe Flow doesn't support type casting in combination with the -= operator
-	                    workInProgress.treeBaseDuration -= primaryChildFragment.treeBaseDuration;
-	                  }
-	                }
-	              }
-	            }
-
-	            return null;
-	          } else {
-	            // We might have reentered this boundary to hydrate it. If so, we need to reset the hydration
-	            // state since we're now exiting out of it. popHydrationState doesn't do that for us.
-	            resetHydrationState();
-
-	            if ((workInProgress.flags & DidCapture) === NoFlags) {
-	              // This boundary did not suspend so it's now hydrated and unsuspended.
-	              workInProgress.memoizedState = null;
-	            } // If nothing suspended, we need to schedule an effect to mark this boundary
-	            // as having hydrated so events know that they're free to be invoked.
-	            // It's also a signal to replay events and the suspense callback.
-	            // If something suspended, schedule an effect to attach retry listeners.
-	            // So we might as well always mark this.
-
-
-	            workInProgress.flags |= Update;
-	            bubbleProperties(workInProgress);
-
-	            {
-	              if ((workInProgress.mode & ProfileMode) !== NoMode) {
-	                var _isTimedOutSuspense = nextState !== null;
-
-	                if (_isTimedOutSuspense) {
-	                  // Don't count time spent in a timed out Suspense subtree as part of the base duration.
-	                  var _primaryChildFragment = workInProgress.child;
-
-	                  if (_primaryChildFragment !== null) {
-	                    // $FlowFixMe Flow doesn't support type casting in combination with the -= operator
-	                    workInProgress.treeBaseDuration -= _primaryChildFragment.treeBaseDuration;
-	                  }
-	                }
-	              }
-	            }
-
-	            return null;
-	          }
-	        } // Successfully completed this tree. If this was a forced client render,
-	        // there may have been recoverable errors during first hydration
-	        // attempt. If so, add them to a queue so we can log them in the
-	        // commit phase.
-
-
-	        upgradeHydrationErrorsToRecoverable();
-
-	        if ((workInProgress.flags & DidCapture) !== NoFlags) {
-	          // Something suspended. Re-render with the fallback children.
-	          workInProgress.lanes = renderLanes; // Do not reset the effect list.
-
-	          if ( (workInProgress.mode & ProfileMode) !== NoMode) {
-	            transferActualDuration(workInProgress);
-	          } // Don't bubble properties in this case.
-
-
-	          return workInProgress;
-	        }
-
-	        var nextDidTimeout = nextState !== null;
-	        var prevDidTimeout = false;
-
-	        if (current === null) {
-	          popHydrationState(workInProgress);
-	        } else {
-	          var _prevState = current.memoizedState;
-	          prevDidTimeout = _prevState !== null;
-	        }
-	        // a passive effect, which is when we process the transitions
-
-
-	        if (nextDidTimeout !== prevDidTimeout) {
-	          // an effect to toggle the subtree's visibility. When we switch from
-	          // fallback -> primary, the inner Offscreen fiber schedules this effect
-	          // as part of its normal complete phase. But when we switch from
-	          // primary -> fallback, the inner Offscreen fiber does not have a complete
-	          // phase. So we need to schedule its effect here.
-	          //
-	          // We also use this flag to connect/disconnect the effects, but the same
-	          // logic applies: when re-connecting, the Offscreen fiber's complete
-	          // phase will handle scheduling the effect. It's only when the fallback
-	          // is active that we have to do anything special.
-
-
-	          if (nextDidTimeout) {
-	            var _offscreenFiber2 = workInProgress.child;
-	            _offscreenFiber2.flags |= Visibility; // TODO: This will still suspend a synchronous tree if anything
-	            // in the concurrent tree already suspended during this render.
-	            // This is a known bug.
-
-	            if ((workInProgress.mode & ConcurrentMode) !== NoMode) {
-	              // TODO: Move this back to throwException because this is too late
-	              // if this is a large tree which is common for initial loads. We
-	              // don't know if we should restart a render or not until we get
-	              // this marker, and this is too late.
-	              // If this render already had a ping or lower pri updates,
-	              // and this is the first time we know we're going to suspend we
-	              // should be able to immediately restart from within throwException.
-	              var hasInvisibleChildContext = current === null && (workInProgress.memoizedProps.unstable_avoidThisFallback !== true || !enableSuspenseAvoidThisFallback);
-
-	              if (hasInvisibleChildContext || hasSuspenseContext(suspenseStackCursor.current, InvisibleParentSuspenseContext)) {
-	                // If this was in an invisible tree or a new render, then showing
-	                // this boundary is ok.
-	                renderDidSuspend();
-	              } else {
-	                // Otherwise, we're going to have to hide content so we should
-	                // suspend for longer if possible.
-	                renderDidSuspendDelayIfPossible();
-	              }
-	            }
-	          }
-	        }
-
-	        var wakeables = workInProgress.updateQueue;
-
-	        if (wakeables !== null) {
-	          // Schedule an effect to attach a retry listener to the promise.
-	          // TODO: Move to passive phase
-	          workInProgress.flags |= Update;
-	        }
-
-	        bubbleProperties(workInProgress);
-
-	        {
-	          if ((workInProgress.mode & ProfileMode) !== NoMode) {
-	            if (nextDidTimeout) {
-	              // Don't count time spent in a timed out Suspense subtree as part of the base duration.
-	              var _primaryChildFragment2 = workInProgress.child;
-
-	              if (_primaryChildFragment2 !== null) {
-	                // $FlowFixMe Flow doesn't support type casting in combination with the -= operator
-	                workInProgress.treeBaseDuration -= _primaryChildFragment2.treeBaseDuration;
-	              }
-	            }
-	          }
-	        }
-
-	        return null;
-	      }
-
-	    case HostPortal:
-	      popHostContainer(workInProgress);
-	      updateHostContainer(current, workInProgress);
-
-	      if (current === null) {
-	        preparePortalMount(workInProgress.stateNode.containerInfo);
-	      }
-
-	      bubbleProperties(workInProgress);
-	      return null;
-
-	    case ContextProvider:
-	      // Pop provider fiber
-	      var context = workInProgress.type._context;
-	      popProvider(context, workInProgress);
-	      bubbleProperties(workInProgress);
-	      return null;
-
-	    case IncompleteClassComponent:
-	      {
-	        // Same as class component case. I put it down here so that the tags are
-	        // sequential to ensure this switch is compiled to a jump table.
-	        var _Component = workInProgress.type;
-
-	        if (isContextProvider(_Component)) {
-	          popContext(workInProgress);
-	        }
-
-	        bubbleProperties(workInProgress);
-	        return null;
-	      }
-
-	    case SuspenseListComponent:
-	      {
-	        popSuspenseContext(workInProgress);
-	        var renderState = workInProgress.memoizedState;
-
-	        if (renderState === null) {
-	          // We're running in the default, "independent" mode.
-	          // We don't do anything in this mode.
-	          bubbleProperties(workInProgress);
-	          return null;
-	        }
-
-	        var didSuspendAlready = (workInProgress.flags & DidCapture) !== NoFlags;
-	        var renderedTail = renderState.rendering;
-
-	        if (renderedTail === null) {
-	          // We just rendered the head.
-	          if (!didSuspendAlready) {
-	            // This is the first pass. We need to figure out if anything is still
-	            // suspended in the rendered set.
-	            // If new content unsuspended, but there's still some content that
-	            // didn't. Then we need to do a second pass that forces everything
-	            // to keep showing their fallbacks.
-	            // We might be suspended if something in this render pass suspended, or
-	            // something in the previous committed pass suspended. Otherwise,
-	            // there's no chance so we can skip the expensive call to
-	            // findFirstSuspended.
-	            var cannotBeSuspended = renderHasNotSuspendedYet() && (current === null || (current.flags & DidCapture) === NoFlags);
-
-	            if (!cannotBeSuspended) {
-	              var row = workInProgress.child;
-
-	              while (row !== null) {
-	                var suspended = findFirstSuspended(row);
-
-	                if (suspended !== null) {
-	                  didSuspendAlready = true;
-	                  workInProgress.flags |= DidCapture;
-	                  cutOffTailIfNeeded(renderState, false); // If this is a newly suspended tree, it might not get committed as
-	                  // part of the second pass. In that case nothing will subscribe to
-	                  // its thenables. Instead, we'll transfer its thenables to the
-	                  // SuspenseList so that it can retry if they resolve.
-	                  // There might be multiple of these in the list but since we're
-	                  // going to wait for all of them anyway, it doesn't really matter
-	                  // which ones gets to ping. In theory we could get clever and keep
-	                  // track of how many dependencies remain but it gets tricky because
-	                  // in the meantime, we can add/remove/change items and dependencies.
-	                  // We might bail out of the loop before finding any but that
-	                  // doesn't matter since that means that the other boundaries that
-	                  // we did find already has their listeners attached.
-
-	                  var newThenables = suspended.updateQueue;
-
-	                  if (newThenables !== null) {
-	                    workInProgress.updateQueue = newThenables;
-	                    workInProgress.flags |= Update;
-	                  } // Rerender the whole list, but this time, we'll force fallbacks
-	                  // to stay in place.
-	                  // Reset the effect flags before doing the second pass since that's now invalid.
-	                  // Reset the child fibers to their original state.
-
-
-	                  workInProgress.subtreeFlags = NoFlags;
-	                  resetChildFibers(workInProgress, renderLanes); // Set up the Suspense Context to force suspense and immediately
-	                  // rerender the children.
-
-	                  pushSuspenseContext(workInProgress, setShallowSuspenseContext(suspenseStackCursor.current, ForceSuspenseFallback)); // Don't bubble properties in this case.
-
-	                  return workInProgress.child;
-	                }
-
-	                row = row.sibling;
-	              }
-	            }
-
-	            if (renderState.tail !== null && now() > getRenderTargetTime()) {
-	              // We have already passed our CPU deadline but we still have rows
-	              // left in the tail. We'll just give up further attempts to render
-	              // the main content and only render fallbacks.
-	              workInProgress.flags |= DidCapture;
-	              didSuspendAlready = true;
-	              cutOffTailIfNeeded(renderState, false); // Since nothing actually suspended, there will nothing to ping this
-	              // to get it started back up to attempt the next item. While in terms
-	              // of priority this work has the same priority as this current render,
-	              // it's not part of the same transition once the transition has
-	              // committed. If it's sync, we still want to yield so that it can be
-	              // painted. Conceptually, this is really the same as pinging.
-	              // We can use any RetryLane even if it's the one currently rendering
-	              // since we're leaving it behind on this node.
-
-	              workInProgress.lanes = SomeRetryLane;
-	            }
-	          } else {
-	            cutOffTailIfNeeded(renderState, false);
-	          } // Next we're going to render the tail.
-
-	        } else {
-	          // Append the rendered row to the child list.
-	          if (!didSuspendAlready) {
-	            var _suspended = findFirstSuspended(renderedTail);
-
-	            if (_suspended !== null) {
-	              workInProgress.flags |= DidCapture;
-	              didSuspendAlready = true; // Ensure we transfer the update queue to the parent so that it doesn't
-	              // get lost if this row ends up dropped during a second pass.
-
-	              var _newThenables = _suspended.updateQueue;
-
-	              if (_newThenables !== null) {
-	                workInProgress.updateQueue = _newThenables;
-	                workInProgress.flags |= Update;
-	              }
-
-	              cutOffTailIfNeeded(renderState, true); // This might have been modified.
-
-	              if (renderState.tail === null && renderState.tailMode === 'hidden' && !renderedTail.alternate && !getIsHydrating() // We don't cut it if we're hydrating.
-	              ) {
-	                  // We're done.
-	                  bubbleProperties(workInProgress);
-	                  return null;
-	                }
-	            } else if ( // The time it took to render last row is greater than the remaining
-	            // time we have to render. So rendering one more row would likely
-	            // exceed it.
-	            now() * 2 - renderState.renderingStartTime > getRenderTargetTime() && renderLanes !== OffscreenLane) {
-	              // We have now passed our CPU deadline and we'll just give up further
-	              // attempts to render the main content and only render fallbacks.
-	              // The assumption is that this is usually faster.
-	              workInProgress.flags |= DidCapture;
-	              didSuspendAlready = true;
-	              cutOffTailIfNeeded(renderState, false); // Since nothing actually suspended, there will nothing to ping this
-	              // to get it started back up to attempt the next item. While in terms
-	              // of priority this work has the same priority as this current render,
-	              // it's not part of the same transition once the transition has
-	              // committed. If it's sync, we still want to yield so that it can be
-	              // painted. Conceptually, this is really the same as pinging.
-	              // We can use any RetryLane even if it's the one currently rendering
-	              // since we're leaving it behind on this node.
-
-	              workInProgress.lanes = SomeRetryLane;
-	            }
-	          }
-
-	          if (renderState.isBackwards) {
-	            // The effect list of the backwards tail will have been added
-	            // to the end. This breaks the guarantee that life-cycles fire in
-	            // sibling order but that isn't a strong guarantee promised by React.
-	            // Especially since these might also just pop in during future commits.
-	            // Append to the beginning of the list.
-	            renderedTail.sibling = workInProgress.child;
-	            workInProgress.child = renderedTail;
-	          } else {
-	            var previousSibling = renderState.last;
-
-	            if (previousSibling !== null) {
-	              previousSibling.sibling = renderedTail;
-	            } else {
-	              workInProgress.child = renderedTail;
-	            }
-
-	            renderState.last = renderedTail;
-	          }
-	        }
-
-	        if (renderState.tail !== null) {
-	          // We still have tail rows to render.
-	          // Pop a row.
-	          var next = renderState.tail;
-	          renderState.rendering = next;
-	          renderState.tail = next.sibling;
-	          renderState.renderingStartTime = now();
-	          next.sibling = null; // Restore the context.
-	          // TODO: We can probably just avoid popping it instead and only
-	          // setting it the first time we go from not suspended to suspended.
-
-	          var suspenseContext = suspenseStackCursor.current;
-
-	          if (didSuspendAlready) {
-	            suspenseContext = setShallowSuspenseContext(suspenseContext, ForceSuspenseFallback);
-	          } else {
-	            suspenseContext = setDefaultShallowSuspenseContext(suspenseContext);
-	          }
-
-	          pushSuspenseContext(workInProgress, suspenseContext); // Do a pass over the next row.
-	          // Don't bubble properties in this case.
-
-	          return next;
-	        }
-
-	        bubbleProperties(workInProgress);
-	        return null;
-	      }
-
-	    case ScopeComponent:
-	      {
-
-	        break;
-	      }
-
-	    case OffscreenComponent:
-	    case LegacyHiddenComponent:
-	      {
-	        popRenderLanes(workInProgress);
-	        var _nextState = workInProgress.memoizedState;
-	        var nextIsHidden = _nextState !== null;
-
-	        if (current !== null) {
-	          var _prevState2 = current.memoizedState;
-	          var prevIsHidden = _prevState2 !== null;
-
-	          if (prevIsHidden !== nextIsHidden && ( // LegacyHidden doesn't do any hiding — it only pre-renders.
-	          !enableLegacyHidden )) {
-	            workInProgress.flags |= Visibility;
-	          }
-	        }
-
-	        if (!nextIsHidden || (workInProgress.mode & ConcurrentMode) === NoMode) {
-	          bubbleProperties(workInProgress);
-	        } else {
-	          // Don't bubble properties for hidden children unless we're rendering
-	          // at offscreen priority.
-	          if (includesSomeLane(subtreeRenderLanes, OffscreenLane)) {
-	            bubbleProperties(workInProgress);
-
-	            {
-	              // Check if there was an insertion or update in the hidden subtree.
-	              // If so, we need to hide those nodes in the commit phase, so
-	              // schedule a visibility effect.
-	              if ( workInProgress.subtreeFlags & (Placement | Update)) {
-	                workInProgress.flags |= Visibility;
-	              }
-	            }
-	          }
-	        }
-	        return null;
-	      }
-
-	    case CacheComponent:
-	      {
-
-	        return null;
-	      }
-
-	    case TracingMarkerComponent:
-	      {
-
-	        return null;
-	      }
-	  }
-
-	  throw new Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in " + 'React. Please file an issue.');
 	}
 
 	var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
@@ -23684,11 +22889,9 @@
 	    pushRenderLanes(workInProgress, _subtreeRenderLanes);
 	  }
 
-	  {
-	    reconcileChildren(current, workInProgress, nextChildren, renderLanes);
-	    return workInProgress.child;
-	  }
-	}
+	  reconcileChildren(current, workInProgress, nextChildren, renderLanes);
+	  return workInProgress.child;
+	} // Note: These happen to have identical begin phases, for now. We shouldn't hold
 
 	function updateFragment(current, workInProgress, renderLanes) {
 	  var nextChildren = workInProgress.pendingProps;
@@ -23721,7 +22924,7 @@
 	  return workInProgress.child;
 	}
 
-	function markRef$1(current, workInProgress) {
+	function markRef(current, workInProgress) {
 	  var ref = workInProgress.ref;
 
 	  if (current === null && ref !== null || current !== null && current.ref !== ref) {
@@ -23829,7 +23032,7 @@
 	          var lane = pickArbitraryLane(renderLanes);
 	          workInProgress.lanes = mergeLanes(workInProgress.lanes, lane); // Schedule the error boundary to re-render using updated state
 
-	          var update = createClassErrorUpdate(workInProgress, createCapturedValue(error$1, workInProgress), lane);
+	          var update = createClassErrorUpdate(workInProgress, createCapturedValueAtFiber(error$1, workInProgress), lane);
 	          enqueueCapturedUpdate(workInProgress, update);
 	          break;
 	        }
@@ -23864,17 +23067,7 @@
 	  var shouldUpdate;
 
 	  if (instance === null) {
-	    if (current !== null) {
-	      // A class component without an instance only mounts if it suspended
-	      // inside a non-concurrent tree, in an inconsistent state. We want to
-	      // treat it like a new mount, even though an empty version of it already
-	      // committed. Disconnect the alternate pointers.
-	      current.alternate = null;
-	      workInProgress.alternate = null; // Since this is conceptually a new fiber, schedule a Placement effect
-
-	      workInProgress.flags |= Placement;
-	    } // In the initial pass we might need to construct the instance.
-
+	    resetSuspendedCurrentOnMountInLegacyMode(current, workInProgress); // In the initial pass we might need to construct the instance.
 
 	    constructClassInstance(workInProgress, Component, nextProps);
 	    mountClassInstance(workInProgress, Component, nextProps, renderLanes);
@@ -23905,7 +23098,7 @@
 
 	function finishClassComponent(current, workInProgress, Component, shouldUpdate, hasContext, renderLanes) {
 	  // Refs should update even if shouldComponentUpdate returns false
-	  markRef$1(current, workInProgress);
+	  markRef(current, workInProgress);
 	  var didCaptureError = (workInProgress.flags & DidCapture) !== NoFlags;
 
 	  if (!shouldUpdate && !didCaptureError) {
@@ -24037,10 +23230,10 @@
 	    if (workInProgress.flags & ForceClientRender) {
 	      // Something errored during a previous attempt to hydrate the shell, so we
 	      // forced a client render.
-	      var recoverableError = new Error('There was an error while hydrating. Because the error happened outside ' + 'of a Suspense boundary, the entire root will switch to ' + 'client rendering.');
+	      var recoverableError = createCapturedValueAtFiber(new Error('There was an error while hydrating. Because the error happened outside ' + 'of a Suspense boundary, the entire root will switch to ' + 'client rendering.'), workInProgress);
 	      return mountHostRootWithoutHydrating(current, workInProgress, nextChildren, renderLanes, recoverableError);
 	    } else if (nextChildren !== prevChildren) {
-	      var _recoverableError = new Error('This root received an early update, before anything was able ' + 'hydrate. Switched the entire root to client rendering.');
+	      var _recoverableError = createCapturedValueAtFiber(new Error('This root received an early update, before anything was able ' + 'hydrate. Switched the entire root to client rendering.'), workInProgress);
 
 	      return mountHostRootWithoutHydrating(current, workInProgress, nextChildren, renderLanes, _recoverableError);
 	    } else {
@@ -24086,7 +23279,7 @@
 	  return workInProgress.child;
 	}
 
-	function updateHostComponent$1(current, workInProgress, renderLanes) {
+	function updateHostComponent(current, workInProgress, renderLanes) {
 	  pushHostContext(workInProgress);
 
 	  if (current === null) {
@@ -24111,12 +23304,12 @@
 	    workInProgress.flags |= ContentReset;
 	  }
 
-	  markRef$1(current, workInProgress);
+	  markRef(current, workInProgress);
 	  reconcileChildren(current, workInProgress, nextChildren, renderLanes);
 	  return workInProgress.child;
 	}
 
-	function updateHostText$1(current, workInProgress) {
+	function updateHostText(current, workInProgress) {
 	  if (current === null) {
 	    tryToClaimNextHydratableInstance(workInProgress);
 	  } // Nothing to do here. This is terminal. We'll do the completion step
@@ -24127,17 +23320,7 @@
 	}
 
 	function mountLazyComponent(_current, workInProgress, elementType, renderLanes) {
-	  if (_current !== null) {
-	    // A lazy component only mounts if it suspended inside a non-
-	    // concurrent tree, in an inconsistent state. We want to treat it like
-	    // a new mount, even though an empty version of it already committed.
-	    // Disconnect the alternate pointers.
-	    _current.alternate = null;
-	    workInProgress.alternate = null; // Since this is conceptually a new fiber, schedule a Placement effect
-
-	    workInProgress.flags |= Placement;
-	  }
-
+	  resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress);
 	  var props = workInProgress.pendingProps;
 	  var lazyComponent = elementType;
 	  var payload = lazyComponent._payload;
@@ -24215,17 +23398,7 @@
 	}
 
 	function mountIncompleteClassComponent(_current, workInProgress, Component, nextProps, renderLanes) {
-	  if (_current !== null) {
-	    // An incomplete component only mounts if it suspended inside a non-
-	    // concurrent tree, in an inconsistent state. We want to treat it like
-	    // a new mount, even though an empty version of it already committed.
-	    // Disconnect the alternate pointers.
-	    _current.alternate = null;
-	    workInProgress.alternate = null; // Since this is conceptually a new fiber, schedule a Placement effect
-
-	    workInProgress.flags |= Placement;
-	  } // Promote the fiber to a class and try rendering again.
-
+	  resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress); // Promote the fiber to a class and try rendering again.
 
 	  workInProgress.tag = ClassComponent; // The rest of this function is a fork of `updateClassComponent`
 	  // Push context providers early to prevent context stack mismatches.
@@ -24248,17 +23421,7 @@
 	}
 
 	function mountIndeterminateComponent(_current, workInProgress, Component, renderLanes) {
-	  if (_current !== null) {
-	    // An indeterminate component only mounts if it suspended inside a non-
-	    // concurrent tree, in an inconsistent state. We want to treat it like
-	    // a new mount, even though an empty version of it already committed.
-	    // Disconnect the alternate pointers.
-	    _current.alternate = null;
-	    workInProgress.alternate = null; // Since this is conceptually a new fiber, schedule a Placement effect
-
-	    workInProgress.flags |= Placement;
-	  }
-
+	  resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress);
 	  var props = workInProgress.pendingProps;
 	  var context;
 
@@ -24544,6 +23707,7 @@
 
 	  if (current === null) {
 	    // Initial mount
+	    // Special path for hydration
 	    // If we're currently hydrating, try to hydrate this boundary.
 	    tryToClaimNextHydratableInstance(workInProgress); // This could've been a dehydrated suspense component.
 
@@ -24572,92 +23736,35 @@
 	    }
 	  } else {
 	    // This is an update.
-	    // If the current fiber has a SuspenseState, that means it's already showing
-	    // a fallback.
+	    // Special path for hydration
 	    var prevState = current.memoizedState;
 
 	    if (prevState !== null) {
-	      // The current tree is already showing a fallback
-	      // Special path for hydration
 	      var _dehydrated = prevState.dehydrated;
 
 	      if (_dehydrated !== null) {
-	        if (!didSuspend) {
-	          return updateDehydratedSuspenseComponent(current, workInProgress, _dehydrated, prevState, renderLanes);
-	        } else if (workInProgress.flags & ForceClientRender) {
-	          // Something errored during hydration. Try again without hydrating.
-	          workInProgress.flags &= ~ForceClientRender;
-	          return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, new Error('There was an error while hydrating this Suspense boundary. ' + 'Switched to client rendering.'));
-	        } else if (workInProgress.memoizedState !== null) {
-	          // Something suspended and we should still be in dehydrated mode.
-	          // Leave the existing child in place.
-	          workInProgress.child = current.child; // The dehydrated completion pass expects this flag to be there
-	          // but the normal suspense pass doesn't.
-
-	          workInProgress.flags |= DidCapture;
-	          return null;
-	        } else {
-	          // Suspended but we should no longer be in dehydrated mode.
-	          // Therefore we now have to render the fallback.
-	          var _nextPrimaryChildren = nextProps.children;
-	          var _nextFallbackChildren = nextProps.fallback;
-	          var fallbackChildFragment = mountSuspenseFallbackAfterRetryWithoutHydrating(current, workInProgress, _nextPrimaryChildren, _nextFallbackChildren, renderLanes);
-	          var _primaryChildFragment2 = workInProgress.child;
-	          _primaryChildFragment2.memoizedState = mountSuspenseOffscreenState(renderLanes);
-	          workInProgress.memoizedState = SUSPENDED_MARKER;
-	          return fallbackChildFragment;
-	        }
+	        return updateDehydratedSuspenseComponent(current, workInProgress, didSuspend, nextProps, _dehydrated, prevState, renderLanes);
 	      }
+	    }
 
-	      if (showFallback) {
-	        var _nextFallbackChildren2 = nextProps.fallback;
-	        var _nextPrimaryChildren2 = nextProps.children;
+	    if (showFallback) {
+	      var _nextFallbackChildren = nextProps.fallback;
+	      var _nextPrimaryChildren = nextProps.children;
+	      var fallbackChildFragment = updateSuspenseFallbackChildren(current, workInProgress, _nextPrimaryChildren, _nextFallbackChildren, renderLanes);
+	      var _primaryChildFragment2 = workInProgress.child;
+	      var prevOffscreenState = current.child.memoizedState;
+	      _primaryChildFragment2.memoizedState = prevOffscreenState === null ? mountSuspenseOffscreenState(renderLanes) : updateSuspenseOffscreenState(prevOffscreenState, renderLanes);
 
-	        var _fallbackChildFragment = updateSuspenseFallbackChildren(current, workInProgress, _nextPrimaryChildren2, _nextFallbackChildren2, renderLanes);
-
-	        var _primaryChildFragment3 = workInProgress.child;
-	        var prevOffscreenState = current.child.memoizedState;
-	        _primaryChildFragment3.memoizedState = prevOffscreenState === null ? mountSuspenseOffscreenState(renderLanes) : updateSuspenseOffscreenState(prevOffscreenState, renderLanes);
-
-	        _primaryChildFragment3.childLanes = getRemainingWorkInPrimaryTree(current, renderLanes);
-	        workInProgress.memoizedState = SUSPENDED_MARKER;
-	        return _fallbackChildFragment;
-	      } else {
-	        var _nextPrimaryChildren3 = nextProps.children;
-
-	        var _primaryChildFragment4 = updateSuspensePrimaryChildren(current, workInProgress, _nextPrimaryChildren3, renderLanes);
-
-	        workInProgress.memoizedState = null;
-	        return _primaryChildFragment4;
-	      }
+	      _primaryChildFragment2.childLanes = getRemainingWorkInPrimaryTree(current, renderLanes);
+	      workInProgress.memoizedState = SUSPENDED_MARKER;
+	      return fallbackChildFragment;
 	    } else {
-	      // The current tree is not already showing a fallback.
-	      if (showFallback) {
-	        // Timed out.
-	        var _nextFallbackChildren3 = nextProps.fallback;
-	        var _nextPrimaryChildren4 = nextProps.children;
+	      var _nextPrimaryChildren2 = nextProps.children;
 
-	        var _fallbackChildFragment2 = updateSuspenseFallbackChildren(current, workInProgress, _nextPrimaryChildren4, _nextFallbackChildren3, renderLanes);
+	      var _primaryChildFragment3 = updateSuspensePrimaryChildren(current, workInProgress, _nextPrimaryChildren2, renderLanes);
 
-	        var _primaryChildFragment5 = workInProgress.child;
-	        var _prevOffscreenState = current.child.memoizedState;
-	        _primaryChildFragment5.memoizedState = _prevOffscreenState === null ? mountSuspenseOffscreenState(renderLanes) : updateSuspenseOffscreenState(_prevOffscreenState, renderLanes);
-	        _primaryChildFragment5.childLanes = getRemainingWorkInPrimaryTree(current, renderLanes);
-	        // fallback children.
-
-
-	        workInProgress.memoizedState = SUSPENDED_MARKER;
-	        return _fallbackChildFragment2;
-	      } else {
-	        // Still haven't timed out. Continue rendering the children, like we
-	        // normally do.
-	        var _nextPrimaryChildren5 = nextProps.children;
-
-	        var _primaryChildFragment6 = updateSuspensePrimaryChildren(current, workInProgress, _nextPrimaryChildren5, renderLanes);
-
-	        workInProgress.memoizedState = null;
-	        return _primaryChildFragment6;
-	      }
+	      workInProgress.memoizedState = null;
+	      return _primaryChildFragment3;
 	    }
 	  }
 	}
@@ -24791,17 +23898,16 @@
 	      primaryChildFragment.actualStartTime = -1;
 	      primaryChildFragment.selfBaseDuration = currentPrimaryChildFragment.selfBaseDuration;
 	      primaryChildFragment.treeBaseDuration = currentPrimaryChildFragment.treeBaseDuration;
-	    }
+	    } // The fallback fiber was added as a deletion during the first pass.
 	    // However, since we're going to remain on the fallback, we no longer want
 	    // to delete it.
 
 
 	    workInProgress.deletions = null;
 	  } else {
-	    primaryChildFragment = updateWorkInProgressOffscreenFiber(currentPrimaryChildFragment, primaryChildProps);
+	    primaryChildFragment = updateWorkInProgressOffscreenFiber(currentPrimaryChildFragment, primaryChildProps); // Since we're reusing a current tree, we need to reuse the flags, too.
 	    // (We don't do this in legacy mode, because in legacy mode we don't re-use
 	    // the current tree; see previous branch.)
-
 
 	    primaryChildFragment.subtreeFlags = currentPrimaryChildFragment.subtreeFlags & StaticMask;
 	  }
@@ -24905,89 +24011,141 @@
 	  return null;
 	}
 
-	function updateDehydratedSuspenseComponent(current, workInProgress, suspenseInstance, suspenseState, renderLanes) {
-	  // We should never be hydrating at this point because it is the first pass,
-	  // but after we've already committed once.
-	  warnIfHydrating();
+	function updateDehydratedSuspenseComponent(current, workInProgress, didSuspend, nextProps, suspenseInstance, suspenseState, renderLanes) {
+	  if (!didSuspend) {
+	    // This is the first render pass. Attempt to hydrate.
+	    // We should never be hydrating at this point because it is the first pass,
+	    // but after we've already committed once.
+	    warnIfHydrating();
 
-	  if ((workInProgress.mode & ConcurrentMode) === NoMode) {
-	    return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, // TODO: When we delete legacy mode, we should make this error argument
-	    // required — every concurrent mode path that causes hydration to
-	    // de-opt to client rendering should have an error message.
-	    null);
-	  }
+	    if ((workInProgress.mode & ConcurrentMode) === NoMode) {
+	      return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, // TODO: When we delete legacy mode, we should make this error argument
+	      // required — every concurrent mode path that causes hydration to
+	      // de-opt to client rendering should have an error message.
+	      null);
+	    }
 
-	  if (isSuspenseInstanceFallback(suspenseInstance)) {
-	    // This boundary is in a permanent fallback state. In this case, we'll never
-	    // get an update and we'll never be able to hydrate the final content. Let's just try the
-	    // client side render instead.
-	    return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, // TODO: The server should serialize the error message so we can log it
-	    // here on the client. Or, in production, a hash/id that corresponds to
-	    // the error.
-	    new Error('The server could not finish this Suspense boundary, likely ' + 'due to an error during server rendering. Switched to ' + 'client rendering.'));
-	  }
-	  // any context has changed, we need to treat is as if the input might have changed.
+	    if (isSuspenseInstanceFallback(suspenseInstance)) {
+	      // This boundary is in a permanent fallback state. In this case, we'll never
+	      // get an update and we'll never be able to hydrate the final content. Let's just try the
+	      // client side render instead.
+	      var digest, message, stack;
 
+	      {
+	        var _getSuspenseInstanceF = getSuspenseInstanceFallbackErrorDetails(suspenseInstance);
 
-	  var hasContextChanged = includesSomeLane(renderLanes, current.childLanes);
-
-	  if (didReceiveUpdate || hasContextChanged) {
-	    // This boundary has changed since the first render. This means that we are now unable to
-	    // hydrate it. We might still be able to hydrate it using a higher priority lane.
-	    var root = getWorkInProgressRoot();
-
-	    if (root !== null) {
-	      var attemptHydrationAtLane = getBumpedLaneForHydration(root, renderLanes);
-
-	      if (attemptHydrationAtLane !== NoLane && attemptHydrationAtLane !== suspenseState.retryLane) {
-	        // Intentionally mutating since this render will get interrupted. This
-	        // is one of the very rare times where we mutate the current tree
-	        // during the render phase.
-	        suspenseState.retryLane = attemptHydrationAtLane; // TODO: Ideally this would inherit the event time of the current render
-
-	        var eventTime = NoTimestamp;
-	        scheduleUpdateOnFiber(current, attemptHydrationAtLane, eventTime);
+	        digest = _getSuspenseInstanceF.digest;
+	        message = _getSuspenseInstanceF.message;
+	        stack = _getSuspenseInstanceF.stack;
 	      }
-	    } // If we have scheduled higher pri work above, this will probably just abort the render
-	    // since we now have higher priority work, but in case it doesn't, we need to prepare to
-	    // render something, if we time out. Even if that requires us to delete everything and
-	    // skip hydration.
-	    // Delay having to do this as long as the suspense timeout allows us.
+
+	      var error;
+
+	      if (message) {
+	        // eslint-disable-next-line react-internal/prod-error-codes
+	        error = new Error(message);
+	      } else {
+	        error = new Error('The server could not finish this Suspense boundary, likely ' + 'due to an error during server rendering. Switched to ' + 'client rendering.');
+	      }
+
+	      var capturedValue = createCapturedValue(error, digest, stack);
+	      return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, capturedValue);
+	    }
+	    // any context has changed, we need to treat is as if the input might have changed.
 
 
-	    renderDidSuspendDelayIfPossible();
-	    return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, new Error('This Suspense boundary received an update before it finished ' + 'hydrating. This caused the boundary to switch to client rendering. ' + 'The usual way to fix this is to wrap the original update ' + 'in startTransition.'));
-	  } else if (isSuspenseInstancePending(suspenseInstance)) {
-	    // This component is still pending more data from the server, so we can't hydrate its
-	    // content. We treat it as if this component suspended itself. It might seem as if
-	    // we could just try to render it client-side instead. However, this will perform a
-	    // lot of unnecessary work and is unlikely to complete since it often will suspend
-	    // on missing data anyway. Additionally, the server might be able to render more
-	    // than we can on the client yet. In that case we'd end up with more fallback states
-	    // on the client than if we just leave it alone. If the server times out or errors
-	    // these should update this boundary to the permanent Fallback state instead.
-	    // Mark it as having captured (i.e. suspended).
-	    workInProgress.flags |= DidCapture; // Leave the child in place. I.e. the dehydrated fragment.
+	    var hasContextChanged = includesSomeLane(renderLanes, current.childLanes);
 
-	    workInProgress.child = current.child; // Register a callback to retry this boundary once the server has sent the result.
+	    if (didReceiveUpdate || hasContextChanged) {
+	      // This boundary has changed since the first render. This means that we are now unable to
+	      // hydrate it. We might still be able to hydrate it using a higher priority lane.
+	      var root = getWorkInProgressRoot();
 
-	    var retry = retryDehydratedSuspenseBoundary.bind(null, current);
-	    registerSuspenseInstanceRetry(suspenseInstance, retry);
-	    return null;
+	      if (root !== null) {
+	        var attemptHydrationAtLane = getBumpedLaneForHydration(root, renderLanes);
+
+	        if (attemptHydrationAtLane !== NoLane && attemptHydrationAtLane !== suspenseState.retryLane) {
+	          // Intentionally mutating since this render will get interrupted. This
+	          // is one of the very rare times where we mutate the current tree
+	          // during the render phase.
+	          suspenseState.retryLane = attemptHydrationAtLane; // TODO: Ideally this would inherit the event time of the current render
+
+	          var eventTime = NoTimestamp;
+	          enqueueConcurrentRenderForLane(current, attemptHydrationAtLane);
+	          scheduleUpdateOnFiber(root, current, attemptHydrationAtLane, eventTime);
+	        }
+	      } // If we have scheduled higher pri work above, this will probably just abort the render
+	      // since we now have higher priority work, but in case it doesn't, we need to prepare to
+	      // render something, if we time out. Even if that requires us to delete everything and
+	      // skip hydration.
+	      // Delay having to do this as long as the suspense timeout allows us.
+
+
+	      renderDidSuspendDelayIfPossible();
+
+	      var _capturedValue = createCapturedValue(new Error('This Suspense boundary received an update before it finished ' + 'hydrating. This caused the boundary to switch to client rendering. ' + 'The usual way to fix this is to wrap the original update ' + 'in startTransition.'));
+
+	      return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, _capturedValue);
+	    } else if (isSuspenseInstancePending(suspenseInstance)) {
+	      // This component is still pending more data from the server, so we can't hydrate its
+	      // content. We treat it as if this component suspended itself. It might seem as if
+	      // we could just try to render it client-side instead. However, this will perform a
+	      // lot of unnecessary work and is unlikely to complete since it often will suspend
+	      // on missing data anyway. Additionally, the server might be able to render more
+	      // than we can on the client yet. In that case we'd end up with more fallback states
+	      // on the client than if we just leave it alone. If the server times out or errors
+	      // these should update this boundary to the permanent Fallback state instead.
+	      // Mark it as having captured (i.e. suspended).
+	      workInProgress.flags |= DidCapture; // Leave the child in place. I.e. the dehydrated fragment.
+
+	      workInProgress.child = current.child; // Register a callback to retry this boundary once the server has sent the result.
+
+	      var retry = retryDehydratedSuspenseBoundary.bind(null, current);
+	      registerSuspenseInstanceRetry(suspenseInstance, retry);
+	      return null;
+	    } else {
+	      // This is the first attempt.
+	      reenterHydrationStateFromDehydratedSuspenseInstance(workInProgress, suspenseInstance, suspenseState.treeContext);
+	      var primaryChildren = nextProps.children;
+	      var primaryChildFragment = mountSuspensePrimaryChildren(workInProgress, primaryChildren); // Mark the children as hydrating. This is a fast path to know whether this
+	      // tree is part of a hydrating tree. This is used to determine if a child
+	      // node has fully mounted yet, and for scheduling event replaying.
+	      // Conceptually this is similar to Placement in that a new subtree is
+	      // inserted into the React tree here. It just happens to not need DOM
+	      // mutations because it already exists.
+
+	      primaryChildFragment.flags |= Hydrating;
+	      return primaryChildFragment;
+	    }
 	  } else {
-	    // This is the first attempt.
-	    reenterHydrationStateFromDehydratedSuspenseInstance(workInProgress, suspenseInstance, suspenseState.treeContext);
-	    var nextProps = workInProgress.pendingProps;
-	    var primaryChildren = nextProps.children;
-	    var primaryChildFragment = mountSuspensePrimaryChildren(workInProgress, primaryChildren); // Mark the children as hydrating. This is a fast path to know whether this
-	    // tree is part of a hydrating tree. This is used to determine if a child
-	    // node has fully mounted yet, and for scheduling event replaying.
-	    // Conceptually this is similar to Placement in that a new subtree is
-	    // inserted into the React tree here. It just happens to not need DOM
-	    // mutations because it already exists.
+	    // This is the second render pass. We already attempted to hydrated, but
+	    // something either suspended or errored.
+	    if (workInProgress.flags & ForceClientRender) {
+	      // Something errored during hydration. Try again without hydrating.
+	      workInProgress.flags &= ~ForceClientRender;
 
-	    primaryChildFragment.flags |= Hydrating;
-	    return primaryChildFragment;
+	      var _capturedValue2 = createCapturedValue(new Error('There was an error while hydrating this Suspense boundary. ' + 'Switched to client rendering.'));
+
+	      return retrySuspenseComponentWithoutHydrating(current, workInProgress, renderLanes, _capturedValue2);
+	    } else if (workInProgress.memoizedState !== null) {
+	      // Something suspended and we should still be in dehydrated mode.
+	      // Leave the existing child in place.
+	      workInProgress.child = current.child; // The dehydrated completion pass expects this flag to be there
+	      // but the normal suspense pass doesn't.
+
+	      workInProgress.flags |= DidCapture;
+	      return null;
+	    } else {
+	      // Suspended but we should no longer be in dehydrated mode.
+	      // Therefore we now have to render the fallback.
+	      var nextPrimaryChildren = nextProps.children;
+	      var nextFallbackChildren = nextProps.fallback;
+	      var fallbackChildFragment = mountSuspenseFallbackAfterRetryWithoutHydrating(current, workInProgress, nextPrimaryChildren, nextFallbackChildren, renderLanes);
+	      var _primaryChildFragment4 = workInProgress.child;
+	      _primaryChildFragment4.memoizedState = mountSuspenseOffscreenState(renderLanes);
+	      workInProgress.memoizedState = SUSPENDED_MARKER;
+	      return fallbackChildFragment;
+	    }
 	  }
 	}
 
@@ -25448,6 +24606,21 @@
 	  didReceiveUpdate = true;
 	}
 
+	function resetSuspendedCurrentOnMountInLegacyMode(current, workInProgress) {
+	  if ((workInProgress.mode & ConcurrentMode) === NoMode) {
+	    if (current !== null) {
+	      // A lazy component only mounts if it suspended inside a non-
+	      // concurrent tree, in an inconsistent state. We want to treat it like
+	      // a new mount, even though an empty version of it already committed.
+	      // Disconnect the alternate pointers.
+	      current.alternate = null;
+	      workInProgress.alternate = null; // Since this is conceptually a new fiber, schedule a Placement effect
+
+	      workInProgress.flags |= Placement;
+	    }
+	  }
+	}
+
 	function bailoutOnAlreadyFinishedWork(current, workInProgress, renderLanes) {
 	  if (current !== null) {
 	    // Reuse previous dependencies
@@ -25826,10 +24999,10 @@
 	      return updateHostRoot(current, workInProgress, renderLanes);
 
 	    case HostComponent:
-	      return updateHostComponent$1(current, workInProgress, renderLanes);
+	      return updateHostComponent(current, workInProgress, renderLanes);
 
 	    case HostText:
-	      return updateHostText$1(current, workInProgress);
+	      return updateHostText(current, workInProgress);
 
 	    case SuspenseComponent:
 	      return updateSuspenseComponent(current, workInProgress, renderLanes);
@@ -25913,6 +25086,936 @@
 	    case OffscreenComponent:
 	      {
 	        return updateOffscreenComponent(current, workInProgress, renderLanes);
+	      }
+	  }
+
+	  throw new Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in " + 'React. Please file an issue.');
+	}
+
+	function markUpdate(workInProgress) {
+	  // Tag the fiber with an update effect. This turns a Placement into
+	  // a PlacementAndUpdate.
+	  workInProgress.flags |= Update;
+	}
+
+	function markRef$1(workInProgress) {
+	  workInProgress.flags |= Ref;
+
+	  {
+	    workInProgress.flags |= RefStatic;
+	  }
+	}
+
+	var appendAllChildren;
+	var updateHostContainer;
+	var updateHostComponent$1;
+	var updateHostText$1;
+
+	{
+	  // Mutation mode
+	  appendAllChildren = function (parent, workInProgress, needsVisibilityToggle, isHidden) {
+	    // We only have the top Fiber that was created but we need recurse down its
+	    // children to find all the terminal nodes.
+	    var node = workInProgress.child;
+
+	    while (node !== null) {
+	      if (node.tag === HostComponent || node.tag === HostText) {
+	        appendInitialChild(parent, node.stateNode);
+	      } else if (node.tag === HostPortal) ; else if (node.child !== null) {
+	        node.child.return = node;
+	        node = node.child;
+	        continue;
+	      }
+
+	      if (node === workInProgress) {
+	        return;
+	      }
+
+	      while (node.sibling === null) {
+	        if (node.return === null || node.return === workInProgress) {
+	          return;
+	        }
+
+	        node = node.return;
+	      }
+
+	      node.sibling.return = node.return;
+	      node = node.sibling;
+	    }
+	  };
+
+	  updateHostContainer = function (current, workInProgress) {// Noop
+	  };
+
+	  updateHostComponent$1 = function (current, workInProgress, type, newProps, rootContainerInstance) {
+	    // If we have an alternate, that means this is an update and we need to
+	    // schedule a side-effect to do the updates.
+	    var oldProps = current.memoizedProps;
+
+	    if (oldProps === newProps) {
+	      // In mutation mode, this is sufficient for a bailout because
+	      // we won't touch this node even if children changed.
+	      return;
+	    } // If we get updated because one of our children updated, we don't
+	    // have newProps so we'll have to reuse them.
+	    // TODO: Split the update API as separate for the props vs. children.
+	    // Even better would be if children weren't special cased at all tho.
+
+
+	    var instance = workInProgress.stateNode;
+	    var currentHostContext = getHostContext(); // TODO: Experiencing an error where oldProps is null. Suggests a host
+	    // component is hitting the resume path. Figure out why. Possibly
+	    // related to `hidden`.
+
+	    var updatePayload = prepareUpdate(instance, type, oldProps, newProps, rootContainerInstance, currentHostContext); // TODO: Type this specific to this type of component.
+
+	    workInProgress.updateQueue = updatePayload; // If the update payload indicates that there is a change or if there
+	    // is a new ref we mark this as an update. All the work is done in commitWork.
+
+	    if (updatePayload) {
+	      markUpdate(workInProgress);
+	    }
+	  };
+
+	  updateHostText$1 = function (current, workInProgress, oldText, newText) {
+	    // If the text differs, mark it as an update. All the work in done in commitWork.
+	    if (oldText !== newText) {
+	      markUpdate(workInProgress);
+	    }
+	  };
+	}
+
+	function cutOffTailIfNeeded(renderState, hasRenderedATailFallback) {
+	  if (getIsHydrating()) {
+	    // If we're hydrating, we should consume as many items as we can
+	    // so we don't leave any behind.
+	    return;
+	  }
+
+	  switch (renderState.tailMode) {
+	    case 'hidden':
+	      {
+	        // Any insertions at the end of the tail list after this point
+	        // should be invisible. If there are already mounted boundaries
+	        // anything before them are not considered for collapsing.
+	        // Therefore we need to go through the whole tail to find if
+	        // there are any.
+	        var tailNode = renderState.tail;
+	        var lastTailNode = null;
+
+	        while (tailNode !== null) {
+	          if (tailNode.alternate !== null) {
+	            lastTailNode = tailNode;
+	          }
+
+	          tailNode = tailNode.sibling;
+	        } // Next we're simply going to delete all insertions after the
+	        // last rendered item.
+
+
+	        if (lastTailNode === null) {
+	          // All remaining items in the tail are insertions.
+	          renderState.tail = null;
+	        } else {
+	          // Detach the insertion after the last node that was already
+	          // inserted.
+	          lastTailNode.sibling = null;
+	        }
+
+	        break;
+	      }
+
+	    case 'collapsed':
+	      {
+	        // Any insertions at the end of the tail list after this point
+	        // should be invisible. If there are already mounted boundaries
+	        // anything before them are not considered for collapsing.
+	        // Therefore we need to go through the whole tail to find if
+	        // there are any.
+	        var _tailNode = renderState.tail;
+	        var _lastTailNode = null;
+
+	        while (_tailNode !== null) {
+	          if (_tailNode.alternate !== null) {
+	            _lastTailNode = _tailNode;
+	          }
+
+	          _tailNode = _tailNode.sibling;
+	        } // Next we're simply going to delete all insertions after the
+	        // last rendered item.
+
+
+	        if (_lastTailNode === null) {
+	          // All remaining items in the tail are insertions.
+	          if (!hasRenderedATailFallback && renderState.tail !== null) {
+	            // We suspended during the head. We want to show at least one
+	            // row at the tail. So we'll keep on and cut off the rest.
+	            renderState.tail.sibling = null;
+	          } else {
+	            renderState.tail = null;
+	          }
+	        } else {
+	          // Detach the insertion after the last node that was already
+	          // inserted.
+	          _lastTailNode.sibling = null;
+	        }
+
+	        break;
+	      }
+	  }
+	}
+
+	function bubbleProperties(completedWork) {
+	  var didBailout = completedWork.alternate !== null && completedWork.alternate.child === completedWork.child;
+	  var newChildLanes = NoLanes;
+	  var subtreeFlags = NoFlags;
+
+	  if (!didBailout) {
+	    // Bubble up the earliest expiration time.
+	    if ( (completedWork.mode & ProfileMode) !== NoMode) {
+	      // In profiling mode, resetChildExpirationTime is also used to reset
+	      // profiler durations.
+	      var actualDuration = completedWork.actualDuration;
+	      var treeBaseDuration = completedWork.selfBaseDuration;
+	      var child = completedWork.child;
+
+	      while (child !== null) {
+	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(child.lanes, child.childLanes));
+	        subtreeFlags |= child.subtreeFlags;
+	        subtreeFlags |= child.flags; // When a fiber is cloned, its actualDuration is reset to 0. This value will
+	        // only be updated if work is done on the fiber (i.e. it doesn't bailout).
+	        // When work is done, it should bubble to the parent's actualDuration. If
+	        // the fiber has not been cloned though, (meaning no work was done), then
+	        // this value will reflect the amount of time spent working on a previous
+	        // render. In that case it should not bubble. We determine whether it was
+	        // cloned by comparing the child pointer.
+
+	        actualDuration += child.actualDuration;
+	        treeBaseDuration += child.treeBaseDuration;
+	        child = child.sibling;
+	      }
+
+	      completedWork.actualDuration = actualDuration;
+	      completedWork.treeBaseDuration = treeBaseDuration;
+	    } else {
+	      var _child = completedWork.child;
+
+	      while (_child !== null) {
+	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(_child.lanes, _child.childLanes));
+	        subtreeFlags |= _child.subtreeFlags;
+	        subtreeFlags |= _child.flags; // Update the return pointer so the tree is consistent. This is a code
+	        // smell because it assumes the commit phase is never concurrent with
+	        // the render phase. Will address during refactor to alternate model.
+
+	        _child.return = completedWork;
+	        _child = _child.sibling;
+	      }
+	    }
+
+	    completedWork.subtreeFlags |= subtreeFlags;
+	  } else {
+	    // Bubble up the earliest expiration time.
+	    if ( (completedWork.mode & ProfileMode) !== NoMode) {
+	      // In profiling mode, resetChildExpirationTime is also used to reset
+	      // profiler durations.
+	      var _treeBaseDuration = completedWork.selfBaseDuration;
+	      var _child2 = completedWork.child;
+
+	      while (_child2 !== null) {
+	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(_child2.lanes, _child2.childLanes)); // "Static" flags share the lifetime of the fiber/hook they belong to,
+	        // so we should bubble those up even during a bailout. All the other
+	        // flags have a lifetime only of a single render + commit, so we should
+	        // ignore them.
+
+	        subtreeFlags |= _child2.subtreeFlags & StaticMask;
+	        subtreeFlags |= _child2.flags & StaticMask;
+	        _treeBaseDuration += _child2.treeBaseDuration;
+	        _child2 = _child2.sibling;
+	      }
+
+	      completedWork.treeBaseDuration = _treeBaseDuration;
+	    } else {
+	      var _child3 = completedWork.child;
+
+	      while (_child3 !== null) {
+	        newChildLanes = mergeLanes(newChildLanes, mergeLanes(_child3.lanes, _child3.childLanes)); // "Static" flags share the lifetime of the fiber/hook they belong to,
+	        // so we should bubble those up even during a bailout. All the other
+	        // flags have a lifetime only of a single render + commit, so we should
+	        // ignore them.
+
+	        subtreeFlags |= _child3.subtreeFlags & StaticMask;
+	        subtreeFlags |= _child3.flags & StaticMask; // Update the return pointer so the tree is consistent. This is a code
+	        // smell because it assumes the commit phase is never concurrent with
+	        // the render phase. Will address during refactor to alternate model.
+
+	        _child3.return = completedWork;
+	        _child3 = _child3.sibling;
+	      }
+	    }
+
+	    completedWork.subtreeFlags |= subtreeFlags;
+	  }
+
+	  completedWork.childLanes = newChildLanes;
+	  return didBailout;
+	}
+
+	function completeDehydratedSuspenseBoundary(current, workInProgress, nextState) {
+	  if (hasUnhydratedTailNodes() && (workInProgress.mode & ConcurrentMode) !== NoMode && (workInProgress.flags & DidCapture) === NoFlags) {
+	    warnIfUnhydratedTailNodes(workInProgress);
+	    resetHydrationState();
+	    workInProgress.flags |= ForceClientRender | Incomplete | ShouldCapture;
+	    return false;
+	  }
+
+	  var wasHydrated = popHydrationState(workInProgress);
+
+	  if (nextState !== null && nextState.dehydrated !== null) {
+	    // We might be inside a hydration state the first time we're picking up this
+	    // Suspense boundary, and also after we've reentered it for further hydration.
+	    if (current === null) {
+	      if (!wasHydrated) {
+	        throw new Error('A dehydrated suspense component was completed without a hydrated node. ' + 'This is probably a bug in React.');
+	      }
+
+	      prepareToHydrateHostSuspenseInstance(workInProgress);
+	      bubbleProperties(workInProgress);
+
+	      {
+	        if ((workInProgress.mode & ProfileMode) !== NoMode) {
+	          var isTimedOutSuspense = nextState !== null;
+
+	          if (isTimedOutSuspense) {
+	            // Don't count time spent in a timed out Suspense subtree as part of the base duration.
+	            var primaryChildFragment = workInProgress.child;
+
+	            if (primaryChildFragment !== null) {
+	              // $FlowFixMe Flow doesn't support type casting in combination with the -= operator
+	              workInProgress.treeBaseDuration -= primaryChildFragment.treeBaseDuration;
+	            }
+	          }
+	        }
+	      }
+
+	      return false;
+	    } else {
+	      // We might have reentered this boundary to hydrate it. If so, we need to reset the hydration
+	      // state since we're now exiting out of it. popHydrationState doesn't do that for us.
+	      resetHydrationState();
+
+	      if ((workInProgress.flags & DidCapture) === NoFlags) {
+	        // This boundary did not suspend so it's now hydrated and unsuspended.
+	        workInProgress.memoizedState = null;
+	      } // If nothing suspended, we need to schedule an effect to mark this boundary
+	      // as having hydrated so events know that they're free to be invoked.
+	      // It's also a signal to replay events and the suspense callback.
+	      // If something suspended, schedule an effect to attach retry listeners.
+	      // So we might as well always mark this.
+
+
+	      workInProgress.flags |= Update;
+	      bubbleProperties(workInProgress);
+
+	      {
+	        if ((workInProgress.mode & ProfileMode) !== NoMode) {
+	          var _isTimedOutSuspense = nextState !== null;
+
+	          if (_isTimedOutSuspense) {
+	            // Don't count time spent in a timed out Suspense subtree as part of the base duration.
+	            var _primaryChildFragment = workInProgress.child;
+
+	            if (_primaryChildFragment !== null) {
+	              // $FlowFixMe Flow doesn't support type casting in combination with the -= operator
+	              workInProgress.treeBaseDuration -= _primaryChildFragment.treeBaseDuration;
+	            }
+	          }
+	        }
+	      }
+
+	      return false;
+	    }
+	  } else {
+	    // Successfully completed this tree. If this was a forced client render,
+	    // there may have been recoverable errors during first hydration
+	    // attempt. If so, add them to a queue so we can log them in the
+	    // commit phase.
+	    upgradeHydrationErrorsToRecoverable(); // Fall through to normal Suspense path
+
+	    return true;
+	  }
+	}
+
+	function completeWork(current, workInProgress, renderLanes) {
+	  var newProps = workInProgress.pendingProps; // Note: This intentionally doesn't check if we're hydrating because comparing
+	  // to the current tree provider fiber is just as fast and less error-prone.
+	  // Ideally we would have a special version of the work loop only
+	  // for hydration.
+
+	  popTreeContext(workInProgress);
+
+	  switch (workInProgress.tag) {
+	    case IndeterminateComponent:
+	    case LazyComponent:
+	    case SimpleMemoComponent:
+	    case FunctionComponent:
+	    case ForwardRef:
+	    case Fragment:
+	    case Mode:
+	    case Profiler:
+	    case ContextConsumer:
+	    case MemoComponent:
+	      bubbleProperties(workInProgress);
+	      return null;
+
+	    case ClassComponent:
+	      {
+	        var Component = workInProgress.type;
+
+	        if (isContextProvider(Component)) {
+	          popContext(workInProgress);
+	        }
+
+	        bubbleProperties(workInProgress);
+	        return null;
+	      }
+
+	    case HostRoot:
+	      {
+	        var fiberRoot = workInProgress.stateNode;
+	        popHostContainer(workInProgress);
+	        popTopLevelContextObject(workInProgress);
+	        resetWorkInProgressVersions();
+
+	        if (fiberRoot.pendingContext) {
+	          fiberRoot.context = fiberRoot.pendingContext;
+	          fiberRoot.pendingContext = null;
+	        }
+
+	        if (current === null || current.child === null) {
+	          // If we hydrated, pop so that we can delete any remaining children
+	          // that weren't hydrated.
+	          var wasHydrated = popHydrationState(workInProgress);
+
+	          if (wasHydrated) {
+	            // If we hydrated, then we'll need to schedule an update for
+	            // the commit side-effects on the root.
+	            markUpdate(workInProgress);
+	          } else {
+	            if (current !== null) {
+	              var prevState = current.memoizedState;
+
+	              if ( // Check if this is a client root
+	              !prevState.isDehydrated || // Check if we reverted to client rendering (e.g. due to an error)
+	              (workInProgress.flags & ForceClientRender) !== NoFlags) {
+	                // Schedule an effect to clear this container at the start of the
+	                // next commit. This handles the case of React rendering into a
+	                // container with previous children. It's also safe to do for
+	                // updates too, because current.child would only be null if the
+	                // previous render was null (so the container would already
+	                // be empty).
+	                workInProgress.flags |= Snapshot; // If this was a forced client render, there may have been
+	                // recoverable errors during first hydration attempt. If so, add
+	                // them to a queue so we can log them in the commit phase.
+
+	                upgradeHydrationErrorsToRecoverable();
+	              }
+	            }
+	          }
+	        }
+
+	        updateHostContainer(current, workInProgress);
+	        bubbleProperties(workInProgress);
+
+	        return null;
+	      }
+
+	    case HostComponent:
+	      {
+	        popHostContext(workInProgress);
+	        var rootContainerInstance = getRootHostContainer();
+	        var type = workInProgress.type;
+
+	        if (current !== null && workInProgress.stateNode != null) {
+	          updateHostComponent$1(current, workInProgress, type, newProps, rootContainerInstance);
+
+	          if (current.ref !== workInProgress.ref) {
+	            markRef$1(workInProgress);
+	          }
+	        } else {
+	          if (!newProps) {
+	            if (workInProgress.stateNode === null) {
+	              throw new Error('We must have new props for new mounts. This error is likely ' + 'caused by a bug in React. Please file an issue.');
+	            } // This can happen when we abort work.
+
+
+	            bubbleProperties(workInProgress);
+	            return null;
+	          }
+
+	          var currentHostContext = getHostContext(); // TODO: Move createInstance to beginWork and keep it on a context
+	          // "stack" as the parent. Then append children as we go in beginWork
+	          // or completeWork depending on whether we want to add them top->down or
+	          // bottom->up. Top->down is faster in IE11.
+
+	          var _wasHydrated = popHydrationState(workInProgress);
+
+	          if (_wasHydrated) {
+	            // TODO: Move this and createInstance step into the beginPhase
+	            // to consolidate.
+	            if (prepareToHydrateHostInstance(workInProgress, rootContainerInstance, currentHostContext)) {
+	              // If changes to the hydrated node need to be applied at the
+	              // commit-phase we mark this as such.
+	              markUpdate(workInProgress);
+	            }
+	          } else {
+	            var instance = createInstance(type, newProps, rootContainerInstance, currentHostContext, workInProgress);
+	            appendAllChildren(instance, workInProgress, false, false);
+	            workInProgress.stateNode = instance; // Certain renderers require commit-time effects for initial mount.
+	            // (eg DOM renderer supports auto-focus for certain elements).
+	            // Make sure such renderers get scheduled for later work.
+
+	            if (finalizeInitialChildren(instance, type, newProps, rootContainerInstance)) {
+	              markUpdate(workInProgress);
+	            }
+	          }
+
+	          if (workInProgress.ref !== null) {
+	            // If there is a ref on a host node we need to schedule a callback
+	            markRef$1(workInProgress);
+	          }
+	        }
+
+	        bubbleProperties(workInProgress);
+	        return null;
+	      }
+
+	    case HostText:
+	      {
+	        var newText = newProps;
+
+	        if (current && workInProgress.stateNode != null) {
+	          var oldText = current.memoizedProps; // If we have an alternate, that means this is an update and we need
+	          // to schedule a side-effect to do the updates.
+
+	          updateHostText$1(current, workInProgress, oldText, newText);
+	        } else {
+	          if (typeof newText !== 'string') {
+	            if (workInProgress.stateNode === null) {
+	              throw new Error('We must have new props for new mounts. This error is likely ' + 'caused by a bug in React. Please file an issue.');
+	            } // This can happen when we abort work.
+
+	          }
+
+	          var _rootContainerInstance = getRootHostContainer();
+
+	          var _currentHostContext = getHostContext();
+
+	          var _wasHydrated2 = popHydrationState(workInProgress);
+
+	          if (_wasHydrated2) {
+	            if (prepareToHydrateHostTextInstance(workInProgress)) {
+	              markUpdate(workInProgress);
+	            }
+	          } else {
+	            workInProgress.stateNode = createTextInstance(newText, _rootContainerInstance, _currentHostContext, workInProgress);
+	          }
+	        }
+
+	        bubbleProperties(workInProgress);
+	        return null;
+	      }
+
+	    case SuspenseComponent:
+	      {
+	        popSuspenseContext(workInProgress);
+	        var nextState = workInProgress.memoizedState; // Special path for dehydrated boundaries. We may eventually move this
+	        // to its own fiber type so that we can add other kinds of hydration
+	        // boundaries that aren't associated with a Suspense tree. In anticipation
+	        // of such a refactor, all the hydration logic is contained in
+	        // this branch.
+
+	        if (current === null || current.memoizedState !== null && current.memoizedState.dehydrated !== null) {
+	          var fallthroughToNormalSuspensePath = completeDehydratedSuspenseBoundary(current, workInProgress, nextState);
+
+	          if (!fallthroughToNormalSuspensePath) {
+	            if (workInProgress.flags & ShouldCapture) {
+	              // Special case. There were remaining unhydrated nodes. We treat
+	              // this as a mismatch. Revert to client rendering.
+	              return workInProgress;
+	            } else {
+	              // Did not finish hydrating, either because this is the initial
+	              // render or because something suspended.
+	              return null;
+	            }
+	          } // Continue with the normal Suspense path.
+
+	        }
+
+	        if ((workInProgress.flags & DidCapture) !== NoFlags) {
+	          // Something suspended. Re-render with the fallback children.
+	          workInProgress.lanes = renderLanes; // Do not reset the effect list.
+
+	          if ( (workInProgress.mode & ProfileMode) !== NoMode) {
+	            transferActualDuration(workInProgress);
+	          } // Don't bubble properties in this case.
+
+
+	          return workInProgress;
+	        }
+
+	        var nextDidTimeout = nextState !== null;
+	        var prevDidTimeout = current !== null && current.memoizedState !== null;
+	        // a passive effect, which is when we process the transitions
+
+
+	        if (nextDidTimeout !== prevDidTimeout) {
+	          // an effect to toggle the subtree's visibility. When we switch from
+	          // fallback -> primary, the inner Offscreen fiber schedules this effect
+	          // as part of its normal complete phase. But when we switch from
+	          // primary -> fallback, the inner Offscreen fiber does not have a complete
+	          // phase. So we need to schedule its effect here.
+	          //
+	          // We also use this flag to connect/disconnect the effects, but the same
+	          // logic applies: when re-connecting, the Offscreen fiber's complete
+	          // phase will handle scheduling the effect. It's only when the fallback
+	          // is active that we have to do anything special.
+
+
+	          if (nextDidTimeout) {
+	            var _offscreenFiber2 = workInProgress.child;
+	            _offscreenFiber2.flags |= Visibility; // TODO: This will still suspend a synchronous tree if anything
+	            // in the concurrent tree already suspended during this render.
+	            // This is a known bug.
+
+	            if ((workInProgress.mode & ConcurrentMode) !== NoMode) {
+	              // TODO: Move this back to throwException because this is too late
+	              // if this is a large tree which is common for initial loads. We
+	              // don't know if we should restart a render or not until we get
+	              // this marker, and this is too late.
+	              // If this render already had a ping or lower pri updates,
+	              // and this is the first time we know we're going to suspend we
+	              // should be able to immediately restart from within throwException.
+	              var hasInvisibleChildContext = current === null && (workInProgress.memoizedProps.unstable_avoidThisFallback !== true || !enableSuspenseAvoidThisFallback);
+
+	              if (hasInvisibleChildContext || hasSuspenseContext(suspenseStackCursor.current, InvisibleParentSuspenseContext)) {
+	                // If this was in an invisible tree or a new render, then showing
+	                // this boundary is ok.
+	                renderDidSuspend();
+	              } else {
+	                // Otherwise, we're going to have to hide content so we should
+	                // suspend for longer if possible.
+	                renderDidSuspendDelayIfPossible();
+	              }
+	            }
+	          }
+	        }
+
+	        var wakeables = workInProgress.updateQueue;
+
+	        if (wakeables !== null) {
+	          // Schedule an effect to attach a retry listener to the promise.
+	          // TODO: Move to passive phase
+	          workInProgress.flags |= Update;
+	        }
+
+	        bubbleProperties(workInProgress);
+
+	        {
+	          if ((workInProgress.mode & ProfileMode) !== NoMode) {
+	            if (nextDidTimeout) {
+	              // Don't count time spent in a timed out Suspense subtree as part of the base duration.
+	              var primaryChildFragment = workInProgress.child;
+
+	              if (primaryChildFragment !== null) {
+	                // $FlowFixMe Flow doesn't support type casting in combination with the -= operator
+	                workInProgress.treeBaseDuration -= primaryChildFragment.treeBaseDuration;
+	              }
+	            }
+	          }
+	        }
+
+	        return null;
+	      }
+
+	    case HostPortal:
+	      popHostContainer(workInProgress);
+	      updateHostContainer(current, workInProgress);
+
+	      if (current === null) {
+	        preparePortalMount(workInProgress.stateNode.containerInfo);
+	      }
+
+	      bubbleProperties(workInProgress);
+	      return null;
+
+	    case ContextProvider:
+	      // Pop provider fiber
+	      var context = workInProgress.type._context;
+	      popProvider(context, workInProgress);
+	      bubbleProperties(workInProgress);
+	      return null;
+
+	    case IncompleteClassComponent:
+	      {
+	        // Same as class component case. I put it down here so that the tags are
+	        // sequential to ensure this switch is compiled to a jump table.
+	        var _Component = workInProgress.type;
+
+	        if (isContextProvider(_Component)) {
+	          popContext(workInProgress);
+	        }
+
+	        bubbleProperties(workInProgress);
+	        return null;
+	      }
+
+	    case SuspenseListComponent:
+	      {
+	        popSuspenseContext(workInProgress);
+	        var renderState = workInProgress.memoizedState;
+
+	        if (renderState === null) {
+	          // We're running in the default, "independent" mode.
+	          // We don't do anything in this mode.
+	          bubbleProperties(workInProgress);
+	          return null;
+	        }
+
+	        var didSuspendAlready = (workInProgress.flags & DidCapture) !== NoFlags;
+	        var renderedTail = renderState.rendering;
+
+	        if (renderedTail === null) {
+	          // We just rendered the head.
+	          if (!didSuspendAlready) {
+	            // This is the first pass. We need to figure out if anything is still
+	            // suspended in the rendered set.
+	            // If new content unsuspended, but there's still some content that
+	            // didn't. Then we need to do a second pass that forces everything
+	            // to keep showing their fallbacks.
+	            // We might be suspended if something in this render pass suspended, or
+	            // something in the previous committed pass suspended. Otherwise,
+	            // there's no chance so we can skip the expensive call to
+	            // findFirstSuspended.
+	            var cannotBeSuspended = renderHasNotSuspendedYet() && (current === null || (current.flags & DidCapture) === NoFlags);
+
+	            if (!cannotBeSuspended) {
+	              var row = workInProgress.child;
+
+	              while (row !== null) {
+	                var suspended = findFirstSuspended(row);
+
+	                if (suspended !== null) {
+	                  didSuspendAlready = true;
+	                  workInProgress.flags |= DidCapture;
+	                  cutOffTailIfNeeded(renderState, false); // If this is a newly suspended tree, it might not get committed as
+	                  // part of the second pass. In that case nothing will subscribe to
+	                  // its thenables. Instead, we'll transfer its thenables to the
+	                  // SuspenseList so that it can retry if they resolve.
+	                  // There might be multiple of these in the list but since we're
+	                  // going to wait for all of them anyway, it doesn't really matter
+	                  // which ones gets to ping. In theory we could get clever and keep
+	                  // track of how many dependencies remain but it gets tricky because
+	                  // in the meantime, we can add/remove/change items and dependencies.
+	                  // We might bail out of the loop before finding any but that
+	                  // doesn't matter since that means that the other boundaries that
+	                  // we did find already has their listeners attached.
+
+	                  var newThenables = suspended.updateQueue;
+
+	                  if (newThenables !== null) {
+	                    workInProgress.updateQueue = newThenables;
+	                    workInProgress.flags |= Update;
+	                  } // Rerender the whole list, but this time, we'll force fallbacks
+	                  // to stay in place.
+	                  // Reset the effect flags before doing the second pass since that's now invalid.
+	                  // Reset the child fibers to their original state.
+
+
+	                  workInProgress.subtreeFlags = NoFlags;
+	                  resetChildFibers(workInProgress, renderLanes); // Set up the Suspense Context to force suspense and immediately
+	                  // rerender the children.
+
+	                  pushSuspenseContext(workInProgress, setShallowSuspenseContext(suspenseStackCursor.current, ForceSuspenseFallback)); // Don't bubble properties in this case.
+
+	                  return workInProgress.child;
+	                }
+
+	                row = row.sibling;
+	              }
+	            }
+
+	            if (renderState.tail !== null && now() > getRenderTargetTime()) {
+	              // We have already passed our CPU deadline but we still have rows
+	              // left in the tail. We'll just give up further attempts to render
+	              // the main content and only render fallbacks.
+	              workInProgress.flags |= DidCapture;
+	              didSuspendAlready = true;
+	              cutOffTailIfNeeded(renderState, false); // Since nothing actually suspended, there will nothing to ping this
+	              // to get it started back up to attempt the next item. While in terms
+	              // of priority this work has the same priority as this current render,
+	              // it's not part of the same transition once the transition has
+	              // committed. If it's sync, we still want to yield so that it can be
+	              // painted. Conceptually, this is really the same as pinging.
+	              // We can use any RetryLane even if it's the one currently rendering
+	              // since we're leaving it behind on this node.
+
+	              workInProgress.lanes = SomeRetryLane;
+	            }
+	          } else {
+	            cutOffTailIfNeeded(renderState, false);
+	          } // Next we're going to render the tail.
+
+	        } else {
+	          // Append the rendered row to the child list.
+	          if (!didSuspendAlready) {
+	            var _suspended = findFirstSuspended(renderedTail);
+
+	            if (_suspended !== null) {
+	              workInProgress.flags |= DidCapture;
+	              didSuspendAlready = true; // Ensure we transfer the update queue to the parent so that it doesn't
+	              // get lost if this row ends up dropped during a second pass.
+
+	              var _newThenables = _suspended.updateQueue;
+
+	              if (_newThenables !== null) {
+	                workInProgress.updateQueue = _newThenables;
+	                workInProgress.flags |= Update;
+	              }
+
+	              cutOffTailIfNeeded(renderState, true); // This might have been modified.
+
+	              if (renderState.tail === null && renderState.tailMode === 'hidden' && !renderedTail.alternate && !getIsHydrating() // We don't cut it if we're hydrating.
+	              ) {
+	                  // We're done.
+	                  bubbleProperties(workInProgress);
+	                  return null;
+	                }
+	            } else if ( // The time it took to render last row is greater than the remaining
+	            // time we have to render. So rendering one more row would likely
+	            // exceed it.
+	            now() * 2 - renderState.renderingStartTime > getRenderTargetTime() && renderLanes !== OffscreenLane) {
+	              // We have now passed our CPU deadline and we'll just give up further
+	              // attempts to render the main content and only render fallbacks.
+	              // The assumption is that this is usually faster.
+	              workInProgress.flags |= DidCapture;
+	              didSuspendAlready = true;
+	              cutOffTailIfNeeded(renderState, false); // Since nothing actually suspended, there will nothing to ping this
+	              // to get it started back up to attempt the next item. While in terms
+	              // of priority this work has the same priority as this current render,
+	              // it's not part of the same transition once the transition has
+	              // committed. If it's sync, we still want to yield so that it can be
+	              // painted. Conceptually, this is really the same as pinging.
+	              // We can use any RetryLane even if it's the one currently rendering
+	              // since we're leaving it behind on this node.
+
+	              workInProgress.lanes = SomeRetryLane;
+	            }
+	          }
+
+	          if (renderState.isBackwards) {
+	            // The effect list of the backwards tail will have been added
+	            // to the end. This breaks the guarantee that life-cycles fire in
+	            // sibling order but that isn't a strong guarantee promised by React.
+	            // Especially since these might also just pop in during future commits.
+	            // Append to the beginning of the list.
+	            renderedTail.sibling = workInProgress.child;
+	            workInProgress.child = renderedTail;
+	          } else {
+	            var previousSibling = renderState.last;
+
+	            if (previousSibling !== null) {
+	              previousSibling.sibling = renderedTail;
+	            } else {
+	              workInProgress.child = renderedTail;
+	            }
+
+	            renderState.last = renderedTail;
+	          }
+	        }
+
+	        if (renderState.tail !== null) {
+	          // We still have tail rows to render.
+	          // Pop a row.
+	          var next = renderState.tail;
+	          renderState.rendering = next;
+	          renderState.tail = next.sibling;
+	          renderState.renderingStartTime = now();
+	          next.sibling = null; // Restore the context.
+	          // TODO: We can probably just avoid popping it instead and only
+	          // setting it the first time we go from not suspended to suspended.
+
+	          var suspenseContext = suspenseStackCursor.current;
+
+	          if (didSuspendAlready) {
+	            suspenseContext = setShallowSuspenseContext(suspenseContext, ForceSuspenseFallback);
+	          } else {
+	            suspenseContext = setDefaultShallowSuspenseContext(suspenseContext);
+	          }
+
+	          pushSuspenseContext(workInProgress, suspenseContext); // Do a pass over the next row.
+	          // Don't bubble properties in this case.
+
+	          return next;
+	        }
+
+	        bubbleProperties(workInProgress);
+	        return null;
+	      }
+
+	    case ScopeComponent:
+	      {
+
+	        break;
+	      }
+
+	    case OffscreenComponent:
+	    case LegacyHiddenComponent:
+	      {
+	        popRenderLanes(workInProgress);
+	        var _nextState = workInProgress.memoizedState;
+	        var nextIsHidden = _nextState !== null;
+
+	        if (current !== null) {
+	          var _prevState = current.memoizedState;
+	          var prevIsHidden = _prevState !== null;
+
+	          if (prevIsHidden !== nextIsHidden && ( // LegacyHidden doesn't do any hiding — it only pre-renders.
+	          !enableLegacyHidden )) {
+	            workInProgress.flags |= Visibility;
+	          }
+	        }
+
+	        if (!nextIsHidden || (workInProgress.mode & ConcurrentMode) === NoMode) {
+	          bubbleProperties(workInProgress);
+	        } else {
+	          // Don't bubble properties for hidden children unless we're rendering
+	          // at offscreen priority.
+	          if (includesSomeLane(subtreeRenderLanes, OffscreenLane)) {
+	            bubbleProperties(workInProgress);
+
+	            {
+	              // Check if there was an insertion or update in the hidden subtree.
+	              // If so, we need to hide those nodes in the commit phase, so
+	              // schedule a visibility effect.
+	              if ( workInProgress.subtreeFlags & (Placement | Update)) {
+	                workInProgress.flags |= Visibility;
+	              }
+	            }
+	          }
+	        }
+	        return null;
+	      }
+
+	    case CacheComponent:
+	      {
+
+	        return null;
+	      }
+
+	    case TracingMarkerComponent:
+	      {
+
+	        return null;
 	      }
 	  }
 
@@ -26765,6 +26868,7 @@
 	      case ScopeComponent:
 	      case OffscreenComponent:
 	      case LegacyHiddenComponent:
+	      case TracingMarkerComponent:
 	        {
 	          break;
 	        }
@@ -27743,8 +27847,12 @@
 	        var offscreenFiber = finishedWork.child;
 
 	        if (offscreenFiber.flags & Visibility) {
+	          var offscreenInstance = offscreenFiber.stateNode;
 	          var newState = offscreenFiber.memoizedState;
-	          var isHidden = newState !== null;
+	          var isHidden = newState !== null; // Track the current state on the Offscreen instance so we can
+	          // read it during an event
+
+	          offscreenInstance.isHidden = isHidden;
 
 	          if (isHidden) {
 	            var wasHidden = offscreenFiber.alternate !== null && offscreenFiber.alternate.memoizedState !== null;
@@ -27789,17 +27897,15 @@
 	        commitReconciliationEffects(finishedWork);
 
 	        if (flags & Visibility) {
+	          var _offscreenInstance = finishedWork.stateNode;
 	          var _newState = finishedWork.memoizedState;
 
 	          var _isHidden = _newState !== null;
 
-	          var offscreenBoundary = finishedWork;
+	          var offscreenBoundary = finishedWork; // Track the current state on the Offscreen instance so we can
+	          // read it during an event
 
-	          {
-	            // TODO: This needs to run whenever there's an insertion or update
-	            // inside a hidden Offscreen tree.
-	            hideOrUnhideAllChildren(offscreenBoundary, _isHidden);
-	          }
+	          _offscreenInstance.isHidden = _isHidden;
 
 	          {
 	            if (_isHidden) {
@@ -27816,6 +27922,12 @@
 	                }
 	              }
 	            }
+	          }
+
+	          {
+	            // TODO: This needs to run whenever there's an insertion or update
+	            // inside a hidden Offscreen tree.
+	            hideOrUnhideAllChildren(offscreenBoundary, _isHidden);
 	          }
 	        }
 
@@ -28729,19 +28841,13 @@
 	  return claimNextRetryLane();
 	}
 
-	function scheduleUpdateOnFiber(fiber, lane, eventTime) {
+	function scheduleUpdateOnFiber(root, fiber, lane, eventTime) {
 	  checkForNestedUpdates();
 
 	  {
 	    if (isRunningInsertionEffect) {
 	      error('useInsertionEffect must not schedule updates.');
 	    }
-	  }
-
-	  var root = markUpdateLaneFromFiberToRoot(fiber, lane);
-
-	  if (root === null) {
-	    return null;
 	  }
 
 	  {
@@ -28772,7 +28878,6 @@
 	    warnIfUpdatesNotWrappedWithActDEV(fiber);
 
 	    if (root === workInProgressRoot) {
-	      // TODO: Consolidate with `isInterleavedUpdate` check
 	      // Received an update to a tree that's in the middle of rendering. Mark
 	      // that there was an interleaved update work on this root. Unless the
 	      // `deferRenderPhaseUpdateToNextBatch` flag is off and this is a render
@@ -28806,8 +28911,6 @@
 	      flushSyncCallbacksOnlyInLegacyMode();
 	    }
 	  }
-
-	  return root;
 	}
 	function scheduleInitialHydrationOnRoot(root, lane, eventTime) {
 	  // This is a special fork of scheduleUpdateOnFiber that is only used to
@@ -28823,70 +28926,13 @@
 	  current.lanes = lane;
 	  markRootUpdated(root, lane, eventTime);
 	  ensureRootIsScheduled(root, eventTime);
-	} // This is split into a separate function so we can mark a fiber with pending
-	// work without treating it as a typical update that originates from an event;
-	// e.g. retrying a Suspense boundary isn't an update, but it does schedule work
-	// on a fiber.
-
-	function markUpdateLaneFromFiberToRoot(sourceFiber, lane) {
-	  // Update the source fiber's lanes
-	  sourceFiber.lanes = mergeLanes(sourceFiber.lanes, lane);
-	  var alternate = sourceFiber.alternate;
-
-	  if (alternate !== null) {
-	    alternate.lanes = mergeLanes(alternate.lanes, lane);
-	  }
-
-	  {
-	    if (alternate === null && (sourceFiber.flags & (Placement | Hydrating)) !== NoFlags) {
-	      warnAboutUpdateOnNotYetMountedFiberInDEV(sourceFiber);
-	    }
-	  } // Walk the parent path to the root and update the child lanes.
-
-
-	  var node = sourceFiber;
-	  var parent = sourceFiber.return;
-
-	  while (parent !== null) {
-	    parent.childLanes = mergeLanes(parent.childLanes, lane);
-	    alternate = parent.alternate;
-
-	    if (alternate !== null) {
-	      alternate.childLanes = mergeLanes(alternate.childLanes, lane);
-	    } else {
-	      {
-	        if ((parent.flags & (Placement | Hydrating)) !== NoFlags) {
-	          warnAboutUpdateOnNotYetMountedFiberInDEV(sourceFiber);
-	        }
-	      }
-	    }
-
-	    node = parent;
-	    parent = parent.return;
-	  }
-
-	  if (node.tag === HostRoot) {
-	    var root = node.stateNode;
-	    return root;
-	  } else {
-	    return null;
-	  }
 	}
-
-	function isInterleavedUpdate(fiber, lane) {
-	  return (// TODO: Optimize slightly by comparing to root that fiber belongs to.
-	    // Requires some refactoring. Not a big deal though since it's rare for
-	    // concurrent apps to have more than a single root.
-	    (workInProgressRoot !== null || // If the interleaved updates queue hasn't been cleared yet, then
-	    // we should treat this as an interleaved update, too. This is also a
-	    // defensive coding measure in case a new update comes in between when
-	    // rendering has finished and when the interleaved updates are transferred
-	    // to the main queue.
-	    hasInterleavedUpdates()) && (fiber.mode & ConcurrentMode) !== NoMode && ( // If this is a render phase update (i.e. UNSAFE_componentWillReceiveProps),
-	    // then don't treat this as an interleaved update. This pattern is
-	    // accompanied by a warning but we haven't fully deprecated it yet. We can
-	    // remove once the deferRenderPhaseUpdateToNextBatch flag is enabled.
-	     (executionContext & RenderContext) === NoContext)
+	function isUnsafeClassRenderPhaseUpdate(fiber) {
+	  // Check if this is a render phase update. Only called by class components,
+	  // which special (deprecated) behavior for UNSAFE_componentWillReceive props.
+	  return (// TODO: Remove outdated deferRenderPhaseUpdateToNextBatch experiment. We
+	    // decided not to enable it.
+	     (executionContext & RenderContext) !== NoContext
 	  );
 	} // Use this function to schedule a task for a root. There's only one task per
 	// root; if a task was already scheduled, we'll check to make sure the priority
@@ -28969,9 +29015,9 @@
 	          // https://github.com/facebook/react/issues/22459
 	          // We don't support running callbacks in the middle of render
 	          // or commit so we need to check against that.
-	          if (executionContext === NoContext) {
-	            // It's only safe to do this conditionally because we always
-	            // check for pending work before we exit the task.
+	          if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
+	            // Note that this would still prematurely flush the callbacks
+	            // if this happens outside render or commit phase (e.g. in an event).
 	            flushSyncCallbacks();
 	          }
 	        });
@@ -29574,7 +29620,7 @@
 	  workInProgressRootPingedLanes = NoLanes;
 	  workInProgressRootConcurrentErrors = null;
 	  workInProgressRootRecoverableErrors = null;
-	  enqueueInterleavedUpdates();
+	  finishQueueingConcurrentUpdates();
 
 	  {
 	    ReactStrictModeWarnings.discardPendingWarnings();
@@ -30230,7 +30276,12 @@
 
 	    for (var i = 0; i < recoverableErrors.length; i++) {
 	      var recoverableError = recoverableErrors[i];
-	      onRecoverableError(recoverableError);
+	      var componentStack = recoverableError.stack;
+	      var digest = recoverableError.digest;
+	      onRecoverableError(recoverableError.value, {
+	        componentStack: componentStack,
+	        digest: digest
+	      });
 	    }
 	  }
 
@@ -30428,11 +30479,10 @@
 	var onUncaughtError = prepareToThrowUncaughtError;
 
 	function captureCommitPhaseErrorOnRoot(rootFiber, sourceFiber, error) {
-	  var errorInfo = createCapturedValue(error, sourceFiber);
+	  var errorInfo = createCapturedValueAtFiber(error, sourceFiber);
 	  var update = createRootErrorUpdate(rootFiber, errorInfo, SyncLane);
-	  enqueueUpdate(rootFiber, update);
+	  var root = enqueueUpdate(rootFiber, update, SyncLane);
 	  var eventTime = requestEventTime();
-	  var root = markUpdateLaneFromFiberToRoot(rootFiber, SyncLane);
 
 	  if (root !== null) {
 	    markRootUpdated(root, SyncLane, eventTime);
@@ -30468,11 +30518,10 @@
 	      var instance = fiber.stateNode;
 
 	      if (typeof ctor.getDerivedStateFromError === 'function' || typeof instance.componentDidCatch === 'function' && !isAlreadyFailedLegacyErrorBoundary(instance)) {
-	        var errorInfo = createCapturedValue(error$1, sourceFiber);
+	        var errorInfo = createCapturedValueAtFiber(error$1, sourceFiber);
 	        var update = createClassErrorUpdate(fiber, errorInfo, SyncLane);
-	        enqueueUpdate(fiber, update);
+	        var root = enqueueUpdate(fiber, update, SyncLane);
 	        var eventTime = requestEventTime();
-	        var root = markUpdateLaneFromFiberToRoot(fiber, SyncLane);
 
 	        if (root !== null) {
 	          markRootUpdated(root, SyncLane, eventTime);
@@ -30542,7 +30591,7 @@
 
 
 	  var eventTime = requestEventTime();
-	  var root = markUpdateLaneFromFiberToRoot(boundaryFiber, retryLane);
+	  var root = enqueueConcurrentRenderForLane(boundaryFiber, retryLane);
 
 	  if (root !== null) {
 	    markRootUpdated(root, retryLane, eventTime);
@@ -30682,7 +30731,6 @@
 	}
 
 	var didWarnStateUpdateForNotYetMountedComponent = null;
-
 	function warnAboutUpdateOnNotYetMountedFiberInDEV(fiber) {
 	  {
 	    if ((executionContext & RenderContext) !== NoContext) {
@@ -30730,7 +30778,6 @@
 	    }
 	  }
 	}
-
 	var beginWork$1;
 
 	{
@@ -30747,8 +30794,9 @@
 	    try {
 	      return beginWork(current, unitOfWork, lanes);
 	    } catch (originalError) {
-	      if (originalError !== null && typeof originalError === 'object' && typeof originalError.then === 'function') {
-	        // Don't replay promises. Treat everything else like an error.
+	      if (didSuspendOrErrorWhileHydratingDEV() || originalError !== null && typeof originalError === 'object' && typeof originalError.then === 'function') {
+	        // Don't replay promises.
+	        // Don't replay errors if we are hydrating and have already suspended or handled an error
 	        throw originalError;
 	      } // Keep this code in sync with handleError; any changes here must have
 	      // corresponding changes there.
@@ -31189,7 +31237,11 @@
 	    }
 
 	    if (needsRemount || needsRender) {
-	      scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	      var _root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	      if (_root !== null) {
+	        scheduleUpdateOnFiber(_root, fiber, SyncLane, NoTimestamp);
+	      }
 	    }
 
 	    if (child !== null && !needsRemount) {
@@ -31831,7 +31883,9 @@
 	  var fiber = createFiber(OffscreenComponent, pendingProps, key, mode);
 	  fiber.elementType = REACT_OFFSCREEN_TYPE;
 	  fiber.lanes = lanes;
-	  var primaryChildInstance = {};
+	  var primaryChildInstance = {
+	    isHidden: false
+	  };
 	  fiber.stateNode = primaryChildInstance;
 	  return fiber;
 	}
@@ -31997,7 +32051,7 @@
 	  return root;
 	}
 
-	var ReactVersion = '18.1.0';
+	var ReactVersion = '18.2.0';
 
 	function createPortal(children, containerInfo, // TODO: figure out the API for cross-renderer implementation.
 	implementation) {
@@ -32116,7 +32170,7 @@
 	  var lane = requestUpdateLane(current);
 	  var update = createUpdate(eventTime, lane);
 	  update.callback = callback !== undefined && callback !== null ? callback : null;
-	  enqueueUpdate(current, update);
+	  enqueueUpdate(current, update, lane);
 	  scheduleInitialHydrationOnRoot(root, lane, eventTime);
 	  return root;
 	}
@@ -32167,10 +32221,10 @@
 	    update.callback = callback;
 	  }
 
-	  enqueueUpdate(current$1, update);
-	  var root = scheduleUpdateOnFiber(current$1, lane, eventTime);
+	  var root = enqueueUpdate(current$1, update, lane);
 
 	  if (root !== null) {
+	    scheduleUpdateOnFiber(root, current$1, lane, eventTime);
 	    entangleTransitions(root, current$1, lane);
 	  }
 
@@ -32194,27 +32248,35 @@
 	function attemptSynchronousHydration$1(fiber) {
 	  switch (fiber.tag) {
 	    case HostRoot:
-	      var root = fiber.stateNode;
+	      {
+	        var root = fiber.stateNode;
 
-	      if (isRootDehydrated(root)) {
-	        // Flush the first scheduled "update".
-	        var lanes = getHighestPriorityPendingLanes(root);
-	        flushRoot(root, lanes);
+	        if (isRootDehydrated(root)) {
+	          // Flush the first scheduled "update".
+	          var lanes = getHighestPriorityPendingLanes(root);
+	          flushRoot(root, lanes);
+	        }
+
+	        break;
 	      }
 
-	      break;
-
 	    case SuspenseComponent:
-	      var eventTime = requestEventTime();
-	      flushSync(function () {
-	        return scheduleUpdateOnFiber(fiber, SyncLane, eventTime);
-	      }); // If we're still blocked after this, we need to increase
-	      // the priority of any promises resolving within this
-	      // boundary so that they next attempt also has higher pri.
+	      {
+	        flushSync(function () {
+	          var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
 
-	      var retryLane = SyncLane;
-	      markRetryLaneIfNotHydrated(fiber, retryLane);
-	      break;
+	          if (root !== null) {
+	            var eventTime = requestEventTime();
+	            scheduleUpdateOnFiber(root, fiber, SyncLane, eventTime);
+	          }
+	        }); // If we're still blocked after this, we need to increase
+	        // the priority of any promises resolving within this
+	        // boundary so that they next attempt also has higher pri.
+
+	        var retryLane = SyncLane;
+	        markRetryLaneIfNotHydrated(fiber, retryLane);
+	        break;
+	      }
 	  }
 	}
 
@@ -32244,9 +32306,14 @@
 	    return;
 	  }
 
-	  var eventTime = requestEventTime();
 	  var lane = SelectiveHydrationLane;
-	  scheduleUpdateOnFiber(fiber, lane, eventTime);
+	  var root = enqueueConcurrentRenderForLane(fiber, lane);
+
+	  if (root !== null) {
+	    var eventTime = requestEventTime();
+	    scheduleUpdateOnFiber(root, fiber, lane, eventTime);
+	  }
+
 	  markRetryLaneIfNotHydrated(fiber, lane);
 	}
 	function attemptHydrationAtCurrentPriority$1(fiber) {
@@ -32256,9 +32323,14 @@
 	    return;
 	  }
 
-	  var eventTime = requestEventTime();
 	  var lane = requestUpdateLane(fiber);
-	  scheduleUpdateOnFiber(fiber, lane, eventTime);
+	  var root = enqueueConcurrentRenderForLane(fiber, lane);
+
+	  if (root !== null) {
+	    var eventTime = requestEventTime();
+	    scheduleUpdateOnFiber(root, fiber, lane, eventTime);
+	  }
+
 	  markRetryLaneIfNotHydrated(fiber, lane);
 	}
 	function findHostInstanceWithNoPortals(fiber) {
@@ -32404,7 +32476,11 @@
 	      // Shallow cloning props works as a workaround for now to bypass the bailout check.
 
 	      fiber.memoizedProps = assign({}, fiber.memoizedProps);
-	      scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	      var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	      if (root !== null) {
+	        scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	      }
 	    }
 	  };
 
@@ -32421,7 +32497,11 @@
 	      // Shallow cloning props works as a workaround for now to bypass the bailout check.
 
 	      fiber.memoizedProps = assign({}, fiber.memoizedProps);
-	      scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	      var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	      if (root !== null) {
+	        scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	      }
 	    }
 	  };
 
@@ -32438,7 +32518,11 @@
 	      // Shallow cloning props works as a workaround for now to bypass the bailout check.
 
 	      fiber.memoizedProps = assign({}, fiber.memoizedProps);
-	      scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	      var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	      if (root !== null) {
+	        scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	      }
 	    }
 	  }; // Support DevTools props for function components, forwardRef, memo, host components, etc.
 
@@ -32450,7 +32534,11 @@
 	      fiber.alternate.pendingProps = fiber.pendingProps;
 	    }
 
-	    scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	    var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	    }
 	  };
 
 	  overridePropsDeletePath = function (fiber, path) {
@@ -32460,7 +32548,11 @@
 	      fiber.alternate.pendingProps = fiber.pendingProps;
 	    }
 
-	    scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	    var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	    }
 	  };
 
 	  overridePropsRenamePath = function (fiber, oldPath, newPath) {
@@ -32470,11 +32562,19 @@
 	      fiber.alternate.pendingProps = fiber.pendingProps;
 	    }
 
-	    scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	    var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	    }
 	  };
 
 	  scheduleUpdate = function (fiber) {
-	    scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp);
+	    var root = enqueueConcurrentRenderForLane(fiber, SyncLane);
+
+	    if (root !== null) {
+	      scheduleUpdateOnFiber(root, fiber, SyncLane, NoTimestamp);
+	    }
 	  };
 
 	  setErrorHandler = function (newShouldErrorImpl) {
@@ -40970,46 +41070,7 @@
 	    (isObjectLike(value) && baseGetTag(value) == boolTag);
 	}
 
-	function toVal(mix) {
-		var k, y, str='';
-
-		if (typeof mix === 'string' || typeof mix === 'number') {
-			str += mix;
-		} else if (typeof mix === 'object') {
-			if (Array.isArray(mix)) {
-				for (k=0; k < mix.length; k++) {
-					if (mix[k]) {
-						if (y = toVal(mix[k])) {
-							str && (str += ' ');
-							str += y;
-						}
-					}
-				}
-			} else {
-				for (k in mix) {
-					if (mix[k]) {
-						str && (str += ' ');
-						str += k;
-					}
-				}
-			}
-		}
-
-		return str;
-	}
-
-	function cx () {
-		var i=0, tmp, x, str='';
-		while (i < arguments.length) {
-			if (tmp = arguments[i++]) {
-				if (x = toVal(tmp)) {
-					str && (str += ' ');
-					str += x;
-				}
-			}
-		}
-		return str;
-	}
+	function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else if("object"==typeof e)if(Array.isArray(e))for(t=0;t<e.length;t++)e[t]&&(f=r(e[t]))&&(n&&(n+=" "),n+=f);else for(t in e)e[t]&&(n&&(n+=" "),n+=t);return n}function clsx(){for(var e,t,f=0,n="";f<arguments.length;)(e=arguments[f++])&&(t=r(e))&&(n&&(n+=" "),n+=t);return n}
 
 	var DEPRECATED_CALLS = {}; // ============================================================
 	// Factories
@@ -41087,7 +41148,7 @@
 
 
 	  if (defaultProps.className || overrideProps.className || usersProps.className) {
-	    var mergedClassesNames = cx(defaultProps.className, overrideProps.className, usersProps.className);
+	    var mergedClassesNames = clsx(defaultProps.className, overrideProps.className, usersProps.className);
 	    props.className = uniq(mergedClassesNames.split(' ')).join(' ');
 	  } // Merge style
 
@@ -41818,7 +41879,7 @@
 	      className = props.className,
 	      content = props.content,
 	      size = props.size;
-	  var classes = cx(size, 'icons', className);
+	  var classes = clsx(size, 'icons', className);
 	  var rest = getUnhandledProps(IconGroup, props);
 	  var ElementType = getElementType(IconGroup, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -41915,7 +41976,7 @@
 	        name = _this$props2.name,
 	        rotated = _this$props2.rotated,
 	        size = _this$props2.size;
-	    var classes = cx(color, name, size, useKeyOnly(bordered, 'bordered'), useKeyOnly(circular, 'circular'), useKeyOnly(disabled, 'disabled'), useKeyOnly(fitted, 'fitted'), useKeyOnly(inverted, 'inverted'), useKeyOnly(link, 'link'), useKeyOnly(loading, 'loading'), useKeyOrValueAndKey(corner, 'corner'), useValueAndKey(flipped, 'flipped'), useValueAndKey(rotated, 'rotated'), 'icon', className);
+	    var classes = clsx(color, name, size, useKeyOnly(bordered, 'bordered'), useKeyOnly(circular, 'circular'), useKeyOnly(disabled, 'disabled'), useKeyOnly(fitted, 'fitted'), useKeyOnly(inverted, 'inverted'), useKeyOnly(link, 'link'), useKeyOnly(loading, 'loading'), useKeyOrValueAndKey(corner, 'corner'), useValueAndKey(flipped, 'flipped'), useValueAndKey(rotated, 'rotated'), 'icon', className);
 	    var rest = getUnhandledProps(Icon, this.props);
 	    var ElementType = getElementType(Icon, this.props);
 	    var ariaOptions = this.getIconAriaOptions();
@@ -42362,6 +42423,25 @@
 	{
 	  (function() {
 
+	// ATTENTION
+	// When adding new symbols to this file,
+	// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+	// The Symbol used to tag the ReactElement-like types.
+	var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+	var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+	var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+	var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+	var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+	var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+	var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+	var REACT_SERVER_CONTEXT_TYPE = Symbol.for('react.server_context');
+	var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+	var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+	var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+	var REACT_MEMO_TYPE = Symbol.for('react.memo');
+	var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+	var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+
 	// -----------------------------------------------------------------------------
 
 	var enableScopeAPI = false; // Experimental Create Event Handle API.
@@ -42373,23 +42453,6 @@
 	// issues in DEV builds.
 
 	var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
-
-	// ATTENTION
-
-	var REACT_ELEMENT_TYPE =  Symbol.for('react.element');
-	var REACT_PORTAL_TYPE =  Symbol.for('react.portal');
-	var REACT_FRAGMENT_TYPE =  Symbol.for('react.fragment');
-	var REACT_STRICT_MODE_TYPE =  Symbol.for('react.strict_mode');
-	var REACT_PROFILER_TYPE =  Symbol.for('react.profiler');
-	var REACT_PROVIDER_TYPE =  Symbol.for('react.provider');
-	var REACT_CONTEXT_TYPE =  Symbol.for('react.context');
-	var REACT_SERVER_CONTEXT_TYPE =  Symbol.for('react.server_context');
-	var REACT_FORWARD_REF_TYPE =  Symbol.for('react.forward_ref');
-	var REACT_SUSPENSE_TYPE =  Symbol.for('react.suspense');
-	var REACT_SUSPENSE_LIST_TYPE =  Symbol.for('react.suspense_list');
-	var REACT_MEMO_TYPE =  Symbol.for('react.memo');
-	var REACT_LAZY_TYPE =  Symbol.for('react.lazy');
-	var REACT_OFFSCREEN_TYPE =  Symbol.for('react.offscreen');
 
 	var REACT_MODULE_REFERENCE;
 
@@ -43056,7 +43119,7 @@
 	      children = props.children,
 	      content = props.content,
 	      dimmed = props.dimmed;
-	  var classes = cx(useKeyOnly(blurring, 'blurring'), useKeyOnly(dimmed, 'dimmed'), 'dimmable', className);
+	  var classes = clsx(useKeyOnly(blurring, 'blurring'), useKeyOnly(dimmed, 'dimmed'), 'dimmable', className);
 	  var rest = getUnhandledProps(DimmerDimmable, props);
 	  var ElementType = getElementType(DimmerDimmable, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -43153,7 +43216,7 @@
 	        page = _this$props.page,
 	        simple = _this$props.simple,
 	        verticalAlign = _this$props.verticalAlign;
-	    var classes = cx('ui', useKeyOnly(active, 'active transition visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(inverted, 'inverted'), useKeyOnly(page, 'page'), useKeyOnly(simple, 'simple'), useVerticalAlignProp(verticalAlign), 'dimmer', className);
+	    var classes = clsx('ui', useKeyOnly(active, 'active transition visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(inverted, 'inverted'), useKeyOnly(page, 'page'), useKeyOnly(simple, 'simple'), useVerticalAlignProp(verticalAlign), 'dimmer', className);
 	    var rest = getUnhandledProps(DimmerInner, this.props);
 	    var ElementType = getElementType(DimmerInner, this.props);
 	    var childrenContent = isNil$1(children) ? content : children;
@@ -43309,7 +43372,7 @@
 	      className = props.className,
 	      content = props.content,
 	      size = props.size;
-	  var classes = cx('ui', size, className, 'images');
+	  var classes = clsx('ui', size, className, 'images');
 	  var rest = getUnhandledProps(ImageGroup, props);
 	  var ElementType = getElementType(ImageGroup, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -43362,7 +43425,7 @@
 	      verticalAlign = props.verticalAlign,
 	      wrapped = props.wrapped,
 	      ui = props.ui;
-	  var classes = cx(useKeyOnly(ui, 'ui'), size, useKeyOnly(avatar, 'avatar'), useKeyOnly(bordered, 'bordered'), useKeyOnly(circular, 'circular'), useKeyOnly(centered, 'centered'), useKeyOnly(disabled, 'disabled'), useKeyOnly(fluid, 'fluid'), useKeyOnly(hidden, 'hidden'), useKeyOnly(inline, 'inline'), useKeyOnly(rounded, 'rounded'), useKeyOrValueAndKey(spaced, 'spaced'), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'image', className);
+	  var classes = clsx(useKeyOnly(ui, 'ui'), size, useKeyOnly(avatar, 'avatar'), useKeyOnly(bordered, 'bordered'), useKeyOnly(circular, 'circular'), useKeyOnly(centered, 'centered'), useKeyOnly(disabled, 'disabled'), useKeyOnly(fluid, 'fluid'), useKeyOnly(hidden, 'hidden'), useKeyOnly(inline, 'inline'), useKeyOnly(rounded, 'rounded'), useKeyOrValueAndKey(spaced, 'spaced'), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'image', className);
 	  var rest = getUnhandledProps(Image, props);
 
 	  var _partitionHTMLProps = partitionHTMLProps(rest, {
@@ -43488,7 +43551,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('detail', className);
+	  var classes = clsx('detail', className);
 	  var rest = getUnhandledProps(LabelDetail, props);
 	  var ElementType = getElementType(LabelDetail, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -43528,7 +43591,7 @@
 	      content = props.content,
 	      size = props.size,
 	      tag = props.tag;
-	  var classes = cx('ui', color, size, useKeyOnly(circular, 'circular'), useKeyOnly(tag, 'tag'), 'labels', className);
+	  var classes = clsx('ui', color, size, useKeyOnly(circular, 'circular'), useKeyOnly(tag, 'tag'), 'labels', className);
 	  var rest = getUnhandledProps(LabelGroup, props);
 	  var ElementType = getElementType(LabelGroup, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -43624,7 +43687,7 @@
 	        size = _this$props.size,
 	        tag = _this$props.tag;
 	    var pointingClass = pointing === true && 'pointing' || (pointing === 'left' || pointing === 'right') && pointing + " pointing" || (pointing === 'above' || pointing === 'below') && "pointing " + pointing;
-	    var classes = cx('ui', color, pointingClass, size, useKeyOnly(active, 'active'), useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(empty, 'empty'), useKeyOnly(floating, 'floating'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(image === true, 'image'), useKeyOnly(prompt, 'prompt'), useKeyOnly(tag, 'tag'), useKeyOrValueAndKey(corner, 'corner'), useKeyOrValueAndKey(ribbon, 'ribbon'), useValueAndKey(attached, 'attached'), 'label', className);
+	    var classes = clsx('ui', color, pointingClass, size, useKeyOnly(active, 'active'), useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(empty, 'empty'), useKeyOnly(floating, 'floating'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(image === true, 'image'), useKeyOnly(prompt, 'prompt'), useKeyOnly(tag, 'tag'), useKeyOrValueAndKey(corner, 'corner'), useKeyOrValueAndKey(ribbon, 'ribbon'), useValueAndKey(attached, 'attached'), 'label', className);
 	    var rest = getUnhandledProps(Label, this.props);
 	    var ElementType = getElementType(Label, this.props);
 
@@ -43756,7 +43819,7 @@
 	      content = props.content,
 	      hidden = props.hidden,
 	      visible = props.visible;
-	  var classes = cx(useKeyOnly(visible, 'visible'), useKeyOnly(hidden, 'hidden'), 'content', className);
+	  var classes = clsx(useKeyOnly(visible, 'visible'), useKeyOnly(hidden, 'hidden'), 'content', className);
 	  var rest = getUnhandledProps(ButtonContent, props);
 	  var ElementType = getElementType(ButtonContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -43811,7 +43874,7 @@
 	      toggle = props.toggle,
 	      vertical = props.vertical,
 	      widths = props.widths;
-	  var classes = cx('ui', color, size, useKeyOnly(basic, 'basic'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(icon, 'icon'), useKeyOnly(inverted, 'inverted'), useKeyOnly(labeled, 'labeled'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(primary, 'primary'), useKeyOnly(secondary, 'secondary'), useKeyOnly(toggle, 'toggle'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useValueAndKey(floated, 'floated'), useWidthProp(widths), 'buttons', className);
+	  var classes = clsx('ui', color, size, useKeyOnly(basic, 'basic'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(icon, 'icon'), useKeyOnly(inverted, 'inverted'), useKeyOnly(labeled, 'labeled'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(primary, 'primary'), useKeyOnly(secondary, 'secondary'), useKeyOnly(toggle, 'toggle'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useValueAndKey(floated, 'floated'), useWidthProp(widths), 'buttons', className);
 	  var rest = getUnhandledProps(ButtonGroup, props);
 	  var ElementType = getElementType(ButtonGroup, props);
 
@@ -43904,7 +43967,7 @@
 	function ButtonOr(props) {
 	  var className = props.className,
 	      text = props.text;
-	  var classes = cx('or', className);
+	  var classes = clsx('or', className);
 	  var rest = getUnhandledProps(ButtonOr, props);
 	  var ElementType = getElementType(ButtonOr, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -44024,16 +44087,16 @@
 	        size = _this$props4.size,
 	        toggle = _this$props4.toggle,
 	        type = _this$props4.type;
-	    var baseClasses = cx(color, size, useKeyOnly(active, 'active'), useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(this.hasIconClass(), 'icon'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(primary, 'primary'), useKeyOnly(secondary, 'secondary'), useKeyOnly(toggle, 'toggle'), useKeyOrValueAndKey(animated, 'animated'), useKeyOrValueAndKey(attached, 'attached'));
-	    var labeledClasses = cx(useKeyOrValueAndKey(labelPosition || !!label, 'labeled'));
-	    var wrapperClasses = cx(useKeyOnly(disabled, 'disabled'), useValueAndKey(floated, 'floated'));
+	    var baseClasses = clsx(color, size, useKeyOnly(active, 'active'), useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(this.hasIconClass(), 'icon'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(primary, 'primary'), useKeyOnly(secondary, 'secondary'), useKeyOnly(toggle, 'toggle'), useKeyOrValueAndKey(animated, 'animated'), useKeyOrValueAndKey(attached, 'attached'));
+	    var labeledClasses = clsx(useKeyOrValueAndKey(labelPosition || !!label, 'labeled'));
+	    var wrapperClasses = clsx(useKeyOnly(disabled, 'disabled'), useValueAndKey(floated, 'floated'));
 	    var rest = getUnhandledProps(Button, this.props);
 	    var ElementType = getElementType(Button, this.props, this.computeElementType);
 	    var tabIndex = this.computeTabIndex(ElementType);
 
 	    if (!isNil(label)) {
-	      var buttonClasses = cx('ui', baseClasses, 'button', className);
-	      var containerClasses = cx('ui', labeledClasses, 'button', className, wrapperClasses);
+	      var buttonClasses = clsx('ui', baseClasses, 'button', className);
+	      var containerClasses = clsx('ui', labeledClasses, 'button', className, wrapperClasses);
 	      var labelElement = Label.create(label, {
 	        defaultProps: {
 	          basic: true,
@@ -44057,7 +44120,7 @@
 	      }), " ", content)), (labelPosition === 'right' || !labelPosition) && labelElement);
 	    }
 
-	    var classes = cx('ui', baseClasses, wrapperClasses, labeledClasses, 'button', className);
+	    var classes = clsx('ui', baseClasses, wrapperClasses, labeledClasses, 'button', className);
 	    var hasChildren = !isNil$1(children);
 	    var role = this.computeButtonAriaRole(ElementType);
 	    return /*#__PURE__*/React$1.createElement(Ref, {
@@ -44362,7 +44425,7 @@
 	        children = _this$props.children,
 	        className = _this$props.className,
 	        content = _this$props.content;
-	    var classes = cx('actions', className);
+	    var classes = clsx('actions', className);
 	    var rest = getUnhandledProps(ModalActions, this.props);
 	    var ElementType = getElementType(ModalActions, this.props);
 
@@ -44431,7 +44494,7 @@
 	      content = props.content,
 	      image = props.image,
 	      scrolling = props.scrolling;
-	  var classes = cx(className, useKeyOnly(image, 'image'), useKeyOnly(scrolling, 'scrolling'), 'content');
+	  var classes = clsx(className, useKeyOnly(image, 'image'), useKeyOnly(scrolling, 'scrolling'), 'content');
 	  var rest = getUnhandledProps(ModalContent, props);
 	  var ElementType = getElementType(ModalContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -44473,7 +44536,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('description', className);
+	  var classes = clsx('description', className);
 	  var rest = getUnhandledProps(ModalDescription, props);
 	  var ElementType = getElementType(ModalDescription, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -44510,8 +44573,8 @@
 	      mountNode = props.mountNode,
 	      scrolling = props.scrolling;
 	  var ref = React$1.useRef();
-	  var classes = cx('ui', useKeyOnly(inverted, 'inverted'), useKeyOnly(!centered, 'top aligned'), 'page modals dimmer transition visible active', className);
-	  var bodyClasses = cx('dimmable dimmed', useKeyOnly(blurring, 'blurring'), useKeyOnly(scrolling, 'scrolling'));
+	  var classes = clsx('ui', useKeyOnly(inverted, 'inverted'), useKeyOnly(!centered, 'top aligned'), 'page modals dimmer transition visible active', className);
+	  var bodyClasses = clsx('dimmable dimmed', useKeyOnly(blurring, 'blurring'), useKeyOnly(scrolling, 'scrolling'));
 	  var rest = getUnhandledProps(ModalDimmer, props);
 	  var ElementType = getElementType(ModalDimmer, props);
 	  useClassNamesOnNode(mountNode, bodyClasses);
@@ -44570,7 +44633,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(ModalHeader, props);
 	  var ElementType = getElementType(ModalHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -44746,7 +44809,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(MenuHeader, props);
 	  var ElementType = getElementType(MenuHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -45147,7 +45210,7 @@
 	        name = _this$props.name,
 	        onClick = _this$props.onClick,
 	        position = _this$props.position;
-	    var classes = cx(color, position, useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(icon === true || icon && !(name || content), 'icon'), useKeyOnly(header, 'header'), useKeyOnly(link, 'link'), useKeyOrValueAndKey(fitted, 'fitted'), 'item', className);
+	    var classes = clsx(color, position, useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(icon === true || icon && !(name || content), 'icon'), useKeyOnly(header, 'header'), useKeyOnly(link, 'link'), useKeyOrValueAndKey(fitted, 'fitted'), 'item', className);
 	    var ElementType = getElementType(MenuItem, this.props, function () {
 	      if (onClick) return 'a';
 	    });
@@ -45240,7 +45303,7 @@
 	      className = props.className,
 	      content = props.content,
 	      position = props.position;
-	  var classes = cx(position, 'menu', className);
+	  var classes = clsx(position, 'menu', className);
 	  var rest = getUnhandledProps(MenuMenu, props);
 	  var ElementType = getElementType(MenuMenu, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -45342,7 +45405,7 @@
 	        text = _this$props.text,
 	        vertical = _this$props.vertical,
 	        widths = _this$props.widths;
-	    var classes = cx('ui', color, size, useKeyOnly(borderless, 'borderless'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(inverted, 'inverted'), useKeyOnly(pagination, 'pagination'), useKeyOnly(pointing, 'pointing'), useKeyOnly(secondary, 'secondary'), useKeyOnly(stackable, 'stackable'), useKeyOnly(text, 'text'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(floated, 'floated'), useKeyOrValueAndKey(icon, 'icon'), useKeyOrValueAndKey(tabular, 'tabular'), useValueAndKey(fixed, 'fixed'), useWidthProp(widths, 'item'), className, 'menu');
+	    var classes = clsx('ui', color, size, useKeyOnly(borderless, 'borderless'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(inverted, 'inverted'), useKeyOnly(pagination, 'pagination'), useKeyOnly(pointing, 'pointing'), useKeyOnly(secondary, 'secondary'), useKeyOnly(stackable, 'stackable'), useKeyOnly(text, 'text'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(floated, 'floated'), useKeyOrValueAndKey(icon, 'icon'), useKeyOrValueAndKey(tabular, 'tabular'), useValueAndKey(fixed, 'fixed'), useWidthProp(widths, 'item'), className, 'menu');
 	    var rest = getUnhandledProps(Menu, this.props);
 	    var ElementType = getElementType(Menu, this.props);
 	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -45777,7 +45840,7 @@
 	    var _this$state4 = this.state,
 	        checked = _this$state4.checked,
 	        indeterminate = _this$state4.indeterminate;
-	    var classes = cx('ui', useKeyOnly(checked, 'checked'), useKeyOnly(disabled, 'disabled'), useKeyOnly(indeterminate, 'indeterminate'), // auto apply fitted class to compact white space when there is no label
+	    var classes = clsx('ui', useKeyOnly(checked, 'checked'), useKeyOnly(disabled, 'disabled'), useKeyOnly(indeterminate, 'indeterminate'), // auto apply fitted class to compact white space when there is no label
 	    // https://semantic-ui.com/modules/checkbox.html#fitted
 	    useKeyOnly(isNil(label), 'fitted'), useKeyOnly(radio, 'radio'), useKeyOnly(readOnly, 'read-only'), useKeyOnly(slider, 'slider'), useKeyOnly(toggle, 'toggle'), 'checkbox', className);
 	    var unhandled = getUnhandledProps(Checkbox, this.props);
@@ -46253,7 +46316,7 @@
 	    var _this$props = this.props,
 	        className = _this$props.className,
 	        name = _this$props.name;
-	    var classes = cx(name, 'flag', className);
+	    var classes = clsx(name, 'flag', className);
 	    var rest = getUnhandledProps(Flag, this.props);
 	    var ElementType = getElementType(Flag, this.props);
 	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -46290,7 +46353,7 @@
 
 	function DropdownDivider(props) {
 	  var className = props.className;
-	  var classes = cx('divider', className);
+	  var classes = clsx('divider', className);
 	  var rest = getUnhandledProps(DropdownDivider, props);
 	  var ElementType = getElementType(DropdownDivider, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -46346,7 +46409,7 @@
 	        label = _this$props.label,
 	        selected = _this$props.selected,
 	        text = _this$props.text;
-	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(selected, 'selected'), 'item', className); // add default dropdown icon if item contains another menu
+	    var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(selected, 'selected'), 'item', className); // add default dropdown icon if item contains another menu
 
 	    var iconName = isNil(icon) ? someByType(children, 'DropdownMenu') && 'dropdown' : icon;
 	    var rest = getUnhandledProps(DropdownItem, this.props);
@@ -46474,7 +46537,7 @@
 	      className = props.className,
 	      content = props.content,
 	      icon = props.icon;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(DropdownHeader, props);
 	  var ElementType = getElementType(DropdownHeader, props);
 
@@ -46525,7 +46588,7 @@
 	      direction = props.direction,
 	      open = props.open,
 	      scrolling = props.scrolling;
-	  var classes = cx(direction, useKeyOnly(open, 'visible'), useKeyOnly(scrolling, 'scrolling'), 'menu transition', className);
+	  var classes = clsx(direction, useKeyOnly(open, 'visible'), useKeyOnly(scrolling, 'scrolling'), 'menu transition', className);
 	  var rest = getUnhandledProps(DropdownMenu, props);
 	  var ElementType = getElementType(DropdownMenu, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -46593,7 +46656,7 @@
 	        tabIndex = _this$props.tabIndex,
 	        type = _this$props.type,
 	        value = _this$props.value;
-	    var classes = cx('search', className);
+	    var classes = clsx('search', className);
 	    var rest = getUnhandledProps(DropdownSearchInput, this.props);
 	    return /*#__PURE__*/React$1.createElement("input", _extends({}, rest, {
 	      "aria-autocomplete": "list",
@@ -46647,7 +46710,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('divider', className);
+	  var classes = clsx('divider', className);
 	  var rest = getUnhandledProps(DropdownText, props);
 	  var ElementType = getElementType(DropdownText, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({
@@ -47400,7 +47463,7 @@
 
 	    _this.handleIconOverrides = function (predefinedProps) {
 	      var clearable = _this.props.clearable;
-	      var classes = cx(clearable && _this.hasValue() && 'clear', predefinedProps.className);
+	      var classes = clsx(clearable && _this.hasValue() && 'clear', predefinedProps.className);
 	      return {
 	        className: classes,
 	        onClick: function onClick(e) {
@@ -47588,7 +47651,7 @@
 
 	      var hasValue = _this.hasValue();
 
-	      var classes = cx(placeholder && !hasValue && 'default', 'text', search && searchQuery && 'filtered');
+	      var classes = clsx(placeholder && !hasValue && 'default', 'text', search && searchQuery && 'filtered');
 	      var _text = placeholder;
 	      var selectedItem;
 
@@ -47739,7 +47802,7 @@
 
 	      if (!isNil$1(children)) {
 	        var menuChild = react.exports.Children.only(children);
-	        var className = cx(direction, useKeyOnly(open, 'visible'), menuChild.props.className);
+	        var className = clsx(direction, useKeyOnly(open, 'visible'), menuChild.props.className);
 	        return /*#__PURE__*/react.exports.cloneElement(menuChild, _extends({
 	          className: className
 	        }, ariaOptions));
@@ -47903,7 +47966,7 @@
 	        open = _this$state9.open,
 	        upward = _this$state9.upward; // Classes
 
-	    var classes = cx('ui', useKeyOnly(open, 'active visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(loading, 'loading'), useKeyOnly(basic, 'basic'), useKeyOnly(button, 'button'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(floating, 'floating'), useKeyOnly(inline, 'inline'), // TODO: consider augmentation to render Dropdowns as Button/Menu, solves icon/link item issues
+	    var classes = clsx('ui', useKeyOnly(open, 'active visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(loading, 'loading'), useKeyOnly(basic, 'basic'), useKeyOnly(button, 'button'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(floating, 'floating'), useKeyOnly(inline, 'inline'), // TODO: consider augmentation to render Dropdowns as Button/Menu, solves icon/link item issues
 	    // https://github.com/Semantic-Org/Semantic-UI-React/issues/401#issuecomment-240487229
 	    // TODO: the icon class is only required when a dropdown is a button
 	    // useKeyOnly(icon, 'icon'),
@@ -48931,10 +48994,10 @@
 	      var isDirectional = isNil(directional) ? includes(DIRECTIONAL_TRANSITIONS, animation) : directional;
 
 	      if (isDirectional) {
-	        return cx(animation, childClasses, useKeyOnly(animating, 'animating'), useKeyOnly(status === TRANSITION_STATUS_ENTERING, 'in'), useKeyOnly(status === TRANSITION_STATUS_EXITING, 'out'), useKeyOnly(status === TRANSITION_STATUS_EXITED, 'hidden'), useKeyOnly(status !== TRANSITION_STATUS_EXITED, 'visible'), 'transition');
+	        return clsx(animation, childClasses, useKeyOnly(animating, 'animating'), useKeyOnly(status === TRANSITION_STATUS_ENTERING, 'in'), useKeyOnly(status === TRANSITION_STATUS_EXITING, 'out'), useKeyOnly(status === TRANSITION_STATUS_EXITED, 'hidden'), useKeyOnly(status !== TRANSITION_STATUS_EXITED, 'visible'), 'transition');
 	      }
 
-	      return cx(animation, childClasses, useKeyOnly(animating, 'animating transition'));
+	      return clsx(animation, childClasses, useKeyOnly(animating, 'animating transition'));
 	    };
 
 	    _this.computeStyle = function () {
@@ -49281,7 +49344,7 @@
 	      className = props.className,
 	      content = props.content,
 	      icon = props.icon;
-	  var classes = cx('divider', className);
+	  var classes = clsx('divider', className);
 	  var rest = getUnhandledProps(BreadcrumbDivider, props);
 	  var ElementType = getElementType(BreadcrumbDivider, props);
 
@@ -49367,7 +49430,7 @@
 	        className = _this$props2.className,
 	        content = _this$props2.content,
 	        href = _this$props2.href;
-	    var classes = cx(useKeyOnly(active, 'active'), 'section', className);
+	    var classes = clsx(useKeyOnly(active, 'active'), 'section', className);
 	    var rest = getUnhandledProps(BreadcrumbSection, this.props);
 	    var ElementType = getElementType(BreadcrumbSection, this.props, this.computeElementType);
 	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -49468,7 +49531,7 @@
 	      type = props.type,
 	      width = props.width,
 	      id = props.id;
-	  var classes = cx(useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(inline, 'inline'), useKeyOnly(required, 'required'), useWidthProp(width, 'wide'), 'field', className);
+	  var classes = clsx(useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(inline, 'inline'), useKeyOnly(required, 'required'), useWidthProp(width, 'wide'), 'field', className);
 	  var rest = getUnhandledProps(FormField, props);
 	  var ElementType = getElementType(FormField, props);
 
@@ -49700,7 +49763,7 @@
 	      inline = props.inline,
 	      unstackable = props.unstackable,
 	      widths = props.widths;
-	  var classes = cx(useKeyOnly(grouped, 'grouped'), useKeyOnly(inline, 'inline'), useKeyOnly(unstackable, 'unstackable'), useWidthProp(widths, null, true), 'fields', className);
+	  var classes = clsx(useKeyOnly(grouped, 'grouped'), useKeyOnly(inline, 'inline'), useKeyOnly(unstackable, 'unstackable'), useWidthProp(widths, null, true), 'fields', className);
 	  var rest = getUnhandledProps(FormGroup, props);
 	  var ElementType = getElementType(FormGroup, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -49843,7 +49906,7 @@
 	        size = _this$props4.size,
 	        transparent = _this$props4.transparent,
 	        type = _this$props4.type;
-	    var classes = cx('ui', size, useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(fluid, 'fluid'), useKeyOnly(focus, 'focus'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(transparent, 'transparent'), useValueAndKey(actionPosition, 'action') || useKeyOnly(action, 'action'), useValueAndKey(iconPosition, 'icon') || useKeyOnly(icon || loading, 'icon'), useValueAndKey(labelPosition, 'labeled') || useKeyOnly(label, 'labeled'), 'input', className);
+	    var classes = clsx('ui', size, useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(fluid, 'fluid'), useKeyOnly(focus, 'focus'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(transparent, 'transparent'), useValueAndKey(actionPosition, 'action') || useKeyOnly(action, 'action'), useValueAndKey(iconPosition, 'icon') || useKeyOnly(icon || loading, 'icon'), useValueAndKey(labelPosition, 'labeled') || useKeyOnly(label, 'labeled'), 'input', className);
 	    var ElementType = getElementType(Input, this.props);
 
 	    var _this$partitionProps = this.partitionProps(),
@@ -49871,7 +49934,7 @@
 	    });
 	    var labelElement = Label.create(label, {
 	      defaultProps: {
-	        className: cx('label', // add 'left|right corner'
+	        className: clsx('label', // add 'left|right corner'
 	        includes(labelPosition, 'corner') && labelPosition)
 	      },
 	      autoGenerateKey: false
@@ -50148,7 +50211,7 @@
 	      verticalAlign = props.verticalAlign,
 	      widescreen = props.widescreen,
 	      width = props.width;
-	  var classes = cx(color, useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), useWidthProp(computer, 'wide computer'), useWidthProp(largeScreen, 'wide large screen'), useWidthProp(mobile, 'wide mobile'), useWidthProp(tablet, 'wide tablet'), useWidthProp(widescreen, 'wide widescreen'), useWidthProp(width, 'wide'), 'column', className);
+	  var classes = clsx(color, useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), useWidthProp(computer, 'wide computer'), useWidthProp(largeScreen, 'wide large screen'), useWidthProp(mobile, 'wide mobile'), useWidthProp(tablet, 'wide tablet'), useWidthProp(widescreen, 'wide widescreen'), useWidthProp(width, 'wide'), 'column', className);
 	  var rest = getUnhandledProps(GridColumn, props);
 	  var ElementType = getElementType(GridColumn, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50225,7 +50288,7 @@
 	      stretched = props.stretched,
 	      textAlign = props.textAlign,
 	      verticalAlign = props.verticalAlign;
-	  var classes = cx(color, useKeyOnly(centered, 'centered'), useKeyOnly(divided, 'divided'), useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useMultipleProp(reversed, 'reversed'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column', true), 'row', className);
+	  var classes = clsx(color, useKeyOnly(centered, 'centered'), useKeyOnly(divided, 'divided'), useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useMultipleProp(reversed, 'reversed'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column', true), 'row', className);
 	  var rest = getUnhandledProps(GridRow, props);
 	  var ElementType = getElementType(GridRow, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50333,7 +50396,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('content', className);
+	  var classes = clsx('content', className);
 	  var rest = getUnhandledProps(MessageContent, props);
 	  var ElementType = getElementType(MessageContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50364,7 +50427,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(MessageHeader, props);
 	  var ElementType = getElementType(MessageHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50400,7 +50463,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('content', className);
+	  var classes = clsx('content', className);
 	  var rest = getUnhandledProps(MessageItem, props);
 	  var ElementType = getElementType(MessageItem, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50439,7 +50502,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      items = props.items;
-	  var classes = cx('list', className);
+	  var classes = clsx('list', className);
 	  var rest = getUnhandledProps(MessageList, props);
 	  var ElementType = getElementType(MessageList, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50544,7 +50607,7 @@
 	function TableBody(props) {
 	  var children = props.children,
 	      className = props.className;
-	  var classes = cx(className);
+	  var classes = clsx(className);
 	  var rest = getUnhandledProps(TableBody, props);
 	  var ElementType = getElementType(TableBody, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50588,7 +50651,7 @@
 	      verticalAlign = props.verticalAlign,
 	      warning = props.warning,
 	      width = props.width;
-	  var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(collapsing, 'collapsing'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(selectable, 'selectable'), useKeyOnly(singleLine, 'single line'), useKeyOnly(warning, 'warning'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(width, 'wide'), className);
+	  var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(collapsing, 'collapsing'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(selectable, 'selectable'), useKeyOnly(singleLine, 'single line'), useKeyOnly(warning, 'warning'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(width, 'wide'), className);
 	  var rest = getUnhandledProps(TableCell, props);
 	  var ElementType = getElementType(TableCell, props);
 
@@ -50674,7 +50737,7 @@
 	      className = props.className,
 	      content = props.content,
 	      fullWidth = props.fullWidth;
-	  var classes = cx(useKeyOnly(fullWidth, 'full-width'), className);
+	  var classes = clsx(useKeyOnly(fullWidth, 'full-width'), className);
 	  var rest = getUnhandledProps(TableHeader, props);
 	  var ElementType = getElementType(TableHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -50732,7 +50795,7 @@
 	  var as = props.as,
 	      className = props.className,
 	      sorted = props.sorted;
-	  var classes = cx(useValueAndKey(sorted, 'sorted'), className);
+	  var classes = clsx(useValueAndKey(sorted, 'sorted'), className);
 	  var rest = getUnhandledProps(TableHeaderCell, props);
 	  return /*#__PURE__*/React$1.createElement(TableCell, _extends({}, rest, {
 	    as: as,
@@ -50772,7 +50835,7 @@
 	      textAlign = props.textAlign,
 	      verticalAlign = props.verticalAlign,
 	      warning = props.warning;
-	  var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(warning, 'warning'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), className);
+	  var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(warning, 'warning'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), className);
 	  var rest = getUnhandledProps(TableRow, props);
 	  var ElementType = getElementType(TableRow, props);
 
@@ -50877,7 +50940,7 @@
 	      textAlign = props.textAlign,
 	      unstackable = props.unstackable,
 	      verticalAlign = props.verticalAlign;
-	  var classes = cx('ui', color, size, useKeyOnly(celled, 'celled'), useKeyOnly(collapsing, 'collapsing'), useKeyOnly(definition, 'definition'), useKeyOnly(fixed, 'fixed'), useKeyOnly(inverted, 'inverted'), useKeyOnly(selectable, 'selectable'), useKeyOnly(singleLine, 'single line'), useKeyOnly(sortable, 'sortable'), useKeyOnly(stackable, 'stackable'), useKeyOnly(striped, 'striped'), useKeyOnly(structured, 'structured'), useKeyOnly(unstackable, 'unstackable'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(basic, 'basic'), useKeyOrValueAndKey(compact, 'compact'), useKeyOrValueAndKey(padded, 'padded'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column'), 'table', className);
+	  var classes = clsx('ui', color, size, useKeyOnly(celled, 'celled'), useKeyOnly(collapsing, 'collapsing'), useKeyOnly(definition, 'definition'), useKeyOnly(fixed, 'fixed'), useKeyOnly(inverted, 'inverted'), useKeyOnly(selectable, 'selectable'), useKeyOnly(singleLine, 'single line'), useKeyOnly(sortable, 'sortable'), useKeyOnly(stackable, 'stackable'), useKeyOnly(striped, 'striped'), useKeyOnly(structured, 'structured'), useKeyOnly(unstackable, 'unstackable'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(basic, 'basic'), useKeyOrValueAndKey(compact, 'compact'), useKeyOrValueAndKey(padded, 'padded'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column'), 'table', className);
 	  var rest = getUnhandledProps(Table, props);
 	  var ElementType = getElementType(Table, props);
 
@@ -51076,7 +51139,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('sub header', className);
+	  var classes = clsx('sub header', className);
 	  var rest = getUnhandledProps(HeaderSubheader, props);
 	  var ElementType = getElementType(HeaderSubheader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51112,7 +51175,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('content', className);
+	  var classes = clsx('content', className);
 	  var rest = getUnhandledProps(HeaderContent, props);
 	  var ElementType = getElementType(HeaderContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51156,7 +51219,7 @@
 	      sub = props.sub,
 	      subheader = props.subheader,
 	      textAlign = props.textAlign;
-	  var classes = cx('ui', color, size, useKeyOnly(block, 'block'), useKeyOnly(disabled, 'disabled'), useKeyOnly(dividing, 'dividing'), useValueAndKey(floated, 'floated'), useKeyOnly(icon === true, 'icon'), useKeyOnly(image === true, 'image'), useKeyOnly(inverted, 'inverted'), useKeyOnly(sub, 'sub'), useKeyOrValueAndKey(attached, 'attached'), useTextAlignProp(textAlign), 'header', className);
+	  var classes = clsx('ui', color, size, useKeyOnly(block, 'block'), useKeyOnly(disabled, 'disabled'), useKeyOnly(dividing, 'dividing'), useValueAndKey(floated, 'floated'), useKeyOnly(icon === true, 'icon'), useKeyOnly(image === true, 'image'), useKeyOnly(inverted, 'inverted'), useKeyOnly(sub, 'sub'), useKeyOrValueAndKey(attached, 'attached'), useTextAlignProp(textAlign), 'header', className);
 	  var rest = getUnhandledProps(Header, props);
 	  var ElementType = getElementType(Header, props);
 
@@ -51251,7 +51314,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx(className, 'description');
+	  var classes = clsx(className, 'description');
 	  var rest = getUnhandledProps(ListDescription, props);
 	  var ElementType = getElementType(ListDescription, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51287,7 +51350,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(ListHeader, props);
 	  var ElementType = getElementType(ListHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51327,7 +51390,7 @@
 	      floated = props.floated,
 	      header = props.header,
 	      verticalAlign = props.verticalAlign;
-	  var classes = cx(useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'content', className);
+	  var classes = clsx(useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'content', className);
 	  var rest = getUnhandledProps(ListContent, props);
 	  var ElementType = getElementType(ListContent, props);
 
@@ -51381,7 +51444,7 @@
 	function ListIcon(props) {
 	  var className = props.className,
 	      verticalAlign = props.verticalAlign;
-	  var classes = cx(useVerticalAlignProp(verticalAlign), className);
+	  var classes = clsx(useVerticalAlignProp(verticalAlign), className);
 	  var rest = getUnhandledProps(ListIcon, props);
 	  return /*#__PURE__*/React$1.createElement(Icon, _extends({}, rest, {
 	    className: classes
@@ -51441,7 +51504,7 @@
 	        image = _this$props.image,
 	        value = _this$props.value;
 	    var ElementType = getElementType(ListItem, this.props);
-	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(ElementType !== 'li', 'item'), className);
+	    var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(ElementType !== 'li', 'item'), className);
 	    var rest = getUnhandledProps(ListItem, this.props);
 	    var valueProp = ElementType === 'li' ? {
 	      value: value
@@ -51571,7 +51634,7 @@
 	      content = props.content;
 	  var rest = getUnhandledProps(ListList, props);
 	  var ElementType = getElementType(ListList, props);
-	  var classes = cx(useKeyOnly(ElementType !== 'ul' && ElementType !== 'ol', 'list'), className);
+	  var classes = clsx(useKeyOnly(ElementType !== 'ul' && ElementType !== 'ol', 'list'), className);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
 	    className: classes
 	  }), isNil$1(children) ? content : children);
@@ -51697,7 +51760,7 @@
 	      className = props.className,
 	      content = props.content,
 	      image = props.image;
-	  var classes = cx(useKeyOnly(image, 'image'), 'header', className);
+	  var classes = clsx(useKeyOnly(image, 'image'), 'header', className);
 	  var rest = getUnhandledProps(PlaceholderHeader, props);
 	  var ElementType = getElementType(PlaceholderHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51731,7 +51794,7 @@
 	  var className = props.className,
 	      square = props.square,
 	      rectangular = props.rectangular;
-	  var classes = cx(useKeyOnly(square, 'square'), useKeyOnly(rectangular, 'rectangular'), 'image', className);
+	  var classes = clsx(useKeyOnly(square, 'square'), useKeyOnly(rectangular, 'rectangular'), 'image', className);
 	  var rest = getUnhandledProps(PlaceholderImage, props);
 	  var ElementType = getElementType(PlaceholderImage, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51761,7 +51824,7 @@
 	function PlaceholderLine(props) {
 	  var className = props.className,
 	      length = props.length;
-	  var classes = cx('line', length, className);
+	  var classes = clsx('line', length, className);
 	  var rest = getUnhandledProps(PlaceholderLine, props);
 	  var ElementType = getElementType(PlaceholderLine, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51789,7 +51852,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('paragraph', className);
+	  var classes = clsx('paragraph', className);
 	  var rest = getUnhandledProps(PlaceholderParagraph, props);
 	  var ElementType = getElementType(PlaceholderParagraph, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51874,7 +51937,7 @@
 	      content = props.content,
 	      hidden = props.hidden,
 	      visible = props.visible;
-	  var classes = cx('ui', useKeyOnly(hidden, 'hidden'), useKeyOnly(visible, 'visible'), 'content', className);
+	  var classes = clsx('ui', useKeyOnly(hidden, 'hidden'), useKeyOnly(visible, 'visible'), 'content', className);
 	  var rest = getUnhandledProps(RevealContent, props);
 	  var ElementType = getElementType(RevealContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51943,7 +52006,7 @@
 	      raised = props.raised,
 	      size = props.size,
 	      stacked = props.stacked;
-	  var classes = cx('ui', size, useKeyOnly(compact, 'compact'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(piled, 'piled'), useKeyOnly(raised, 'raised'), useKeyOnly(stacked, 'stacked'), 'segments', className);
+	  var classes = clsx('ui', size, useKeyOnly(compact, 'compact'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(piled, 'piled'), useKeyOnly(raised, 'raised'), useKeyOnly(stacked, 'stacked'), 'segments', className);
 	  var rest = getUnhandledProps(SegmentGroup, props);
 	  var ElementType = getElementType(SegmentGroup, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -51992,7 +52055,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('inline', className);
+	  var classes = clsx('inline', className);
 	  var rest = getUnhandledProps(SegmentInline, props);
 	  var ElementType = getElementType(SegmentInline, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -52043,7 +52106,7 @@
 	      tertiary = props.tertiary,
 	      textAlign = props.textAlign,
 	      vertical = props.vertical;
-	  var classes = cx('ui', color, size, useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(clearing, 'clearing'), useKeyOnly(compact, 'compact'), useKeyOnly(disabled, 'disabled'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(placeholder, 'placeholder'), useKeyOnly(piled, 'piled'), useKeyOnly(raised, 'raised'), useKeyOnly(secondary, 'secondary'), useKeyOnly(stacked, 'stacked'), useKeyOnly(tertiary, 'tertiary'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(padded, 'padded'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), 'segment', className);
+	  var classes = clsx('ui', color, size, useKeyOnly(basic, 'basic'), useKeyOnly(circular, 'circular'), useKeyOnly(clearing, 'clearing'), useKeyOnly(compact, 'compact'), useKeyOnly(disabled, 'disabled'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(placeholder, 'placeholder'), useKeyOnly(piled, 'piled'), useKeyOnly(raised, 'raised'), useKeyOnly(secondary, 'secondary'), useKeyOnly(stacked, 'stacked'), useKeyOnly(tertiary, 'tertiary'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useKeyOrValueAndKey(padded, 'padded'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), 'segment', className);
 	  var rest = getUnhandledProps(Segment, props);
 	  var ElementType = getElementType(Segment, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -52132,7 +52195,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('description', className);
+	  var classes = clsx('description', className);
 	  var rest = getUnhandledProps(StepDescription, props);
 	  var ElementType = getElementType(StepDescription, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -52168,7 +52231,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('title', className);
+	  var classes = clsx('title', className);
 	  var rest = getUnhandledProps(StepTitle, props);
 	  var ElementType = getElementType(StepTitle, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -52206,7 +52269,7 @@
 	      content = props.content,
 	      description = props.description,
 	      title = props.title;
-	  var classes = cx('content', className);
+	  var classes = clsx('content', className);
 	  var rest = getUnhandledProps(StepContent, props);
 	  var ElementType = getElementType(StepContent, props);
 
@@ -52413,7 +52476,7 @@
 	      unstackable = props.unstackable,
 	      vertical = props.vertical,
 	      widths = props.widths;
-	  var classes = cx('ui', size, useKeyOnly(fluid, 'fluid'), useKeyOnly(ordered, 'ordered'), useKeyOnly(unstackable, 'unstackable'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useValueAndKey(stackable, 'stackable'), useWidthProp(widths), 'steps', className);
+	  var classes = clsx('ui', size, useKeyOnly(fluid, 'fluid'), useKeyOnly(ordered, 'ordered'), useKeyOnly(unstackable, 'unstackable'), useKeyOnly(vertical, 'vertical'), useKeyOrValueAndKey(attached, 'attached'), useValueAndKey(stackable, 'stackable'), useWidthProp(widths), 'steps', className);
 	  var rest = getUnhandledProps(StepGroup, props);
 	  var ElementType = getElementType(StepGroup, props);
 
@@ -52522,7 +52585,7 @@
 	        icon = _this$props.icon,
 	        link = _this$props.link,
 	        title = _this$props.title;
-	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(completed, 'completed'), useKeyOnly(disabled, 'disabled'), useKeyOnly(link, 'link'), 'step', className);
+	    var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(completed, 'completed'), useKeyOnly(disabled, 'disabled'), useKeyOnly(link, 'link'), 'step', className);
 	    var rest = getUnhandledProps(Step, this.props);
 	    var ElementType = getElementType(Step, this.props, this.computeElementType);
 
@@ -52651,7 +52714,7 @@
 	        className = _this$props.className,
 	        content = _this$props.content,
 	        icon = _this$props.icon;
-	    var classes = cx(useKeyOnly(active, 'active'), 'title', className);
+	    var classes = clsx(useKeyOnly(active, 'active'), 'title', className);
 	    var rest = getUnhandledProps(AccordionTitle, this.props);
 	    var ElementType = getElementType(AccordionTitle, this.props);
 	    var iconValue = isNil(icon) ? 'dropdown' : icon;
@@ -52720,7 +52783,7 @@
 	      children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('content', useKeyOnly(active, 'active'), className);
+	  var classes = clsx('content', useKeyOnly(active, 'active'), className);
 	  var rest = getUnhandledProps(AccordionContent, props);
 	  var ElementType = getElementType(AccordionContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -52915,7 +52978,7 @@
 	        className = _this$props.className,
 	        children = _this$props.children,
 	        panels = _this$props.panels;
-	    var classes = cx('accordion', className);
+	    var classes = clsx('accordion', className);
 	    var rest = getUnhandledProps(AccordionAccordion, this.props);
 	    var ElementType = getElementType(AccordionAccordion, this.props);
 	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -53210,7 +53273,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('content', className);
+	  var classes = clsx('content', className);
 	  var rest = getUnhandledProps(PopupContent, props);
 	  var ElementType = getElementType(PopupContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -53245,7 +53308,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(PopupHeader, props);
 	  var ElementType = getElementType(PopupHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -53508,7 +53571,7 @@
 	        active = _this$props.active,
 	        className = _this$props.className,
 	        selected = _this$props.selected;
-	    var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(selected, 'selected'), 'icon', className);
+	    var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(selected, 'selected'), 'icon', className);
 	    var rest = getUnhandledProps(RatingIcon, this.props);
 	    var ElementType = getElementType(RatingIcon, this.props);
 	    return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -54702,7 +54765,7 @@
 	      content = props.content,
 	      layoutRenderer = props.layoutRenderer,
 	      renderer = props.renderer;
-	  var classes = cx(useKeyOnly(active, 'active'), 'category', className);
+	  var classes = clsx(useKeyOnly(active, 'active'), 'category', className);
 	  var rest = getUnhandledProps(SearchCategory, props);
 	  var ElementType = getElementType(SearchCategory, props);
 	  var categoryContent = renderer(props);
@@ -54820,7 +54883,7 @@
 	        active = _this$props.active,
 	        className = _this$props.className,
 	        renderer = _this$props.renderer;
-	    var classes = cx(useKeyOnly(active, 'active'), 'result', className);
+	    var classes = clsx(useKeyOnly(active, 'active'), 'result', className);
 	    var rest = getUnhandledProps(SearchResult, this.props);
 	    var ElementType = getElementType(SearchResult, this.props); // Note: You technically only need the 'content' wrapper when there's an
 	    // image. However, optionally wrapping it makes this function a lot more
@@ -54889,7 +54952,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('results transition', className);
+	  var classes = clsx('results transition', className);
 	  var rest = getUnhandledProps(SearchResults, props);
 	  var ElementType = getElementType(SearchResults, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55071,7 +55134,7 @@
 	  var className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx('pushable', className);
+	  var classes = clsx('pushable', className);
 	  var rest = getUnhandledProps(SidebarPushable, props);
 	  var ElementType = getElementType(SidebarPushable, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55103,7 +55166,7 @@
 	      dimmed = props.dimmed,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx('pusher', useKeyOnly(dimmed, 'dimmed'), className);
+	  var classes = clsx('pusher', useKeyOnly(dimmed, 'dimmed'), className);
 	  var rest = getUnhandledProps(SidebarPusher, props);
 	  var ElementType = getElementType(SidebarPusher, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55264,7 +55327,7 @@
 	      className = props.className,
 	      content = props.content,
 	      loading = props.loading;
-	  var classes = cx(useKeyOnly(active, 'active'), useKeyOnly(loading, 'loading'), 'tab', className);
+	  var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(loading, 'loading'), 'tab', className);
 	  var rest = getUnhandledProps(TabPane, props);
 	  var ElementType = getElementType(TabPane, props);
 	  var calculatedDefaultProps = {};
@@ -55387,7 +55450,7 @@
 	      className = props.className,
 	      content = props.content,
 	      textAlign = props.textAlign;
-	  var classes = cx(useTextAlignProp(textAlign), 'description', className);
+	  var classes = clsx(useTextAlignProp(textAlign), 'description', className);
 	  var rest = getUnhandledProps(CardDescription, props);
 	  var ElementType = getElementType(CardDescription, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55422,7 +55485,7 @@
 	      className = props.className,
 	      content = props.content,
 	      textAlign = props.textAlign;
-	  var classes = cx(useTextAlignProp(textAlign), 'header', className);
+	  var classes = clsx(useTextAlignProp(textAlign), 'header', className);
 	  var rest = getUnhandledProps(CardHeader, props);
 	  var ElementType = getElementType(CardHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55457,7 +55520,7 @@
 	      className = props.className,
 	      content = props.content,
 	      textAlign = props.textAlign;
-	  var classes = cx(useTextAlignProp(textAlign), 'meta', className);
+	  var classes = clsx(useTextAlignProp(textAlign), 'meta', className);
 	  var rest = getUnhandledProps(CardMeta, props);
 	  var ElementType = getElementType(CardMeta, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55496,7 +55559,7 @@
 	      header = props.header,
 	      meta = props.meta,
 	      textAlign = props.textAlign;
-	  var classes = cx(useKeyOnly(extra, 'extra'), useTextAlignProp(textAlign), 'content', className);
+	  var classes = clsx(useKeyOnly(extra, 'extra'), useTextAlignProp(textAlign), 'content', className);
 	  var rest = getUnhandledProps(CardContent, props);
 	  var ElementType = getElementType(CardContent, props);
 
@@ -55579,7 +55642,7 @@
 	      itemsPerRow = props.itemsPerRow,
 	      stackable = props.stackable,
 	      textAlign = props.textAlign;
-	  var classes = cx('ui', useKeyOnly(centered, 'centered'), useKeyOnly(doubling, 'doubling'), useKeyOnly(stackable, 'stackable'), useTextAlignProp(textAlign), useWidthProp(itemsPerRow), 'cards', className);
+	  var classes = clsx('ui', useKeyOnly(centered, 'centered'), useKeyOnly(doubling, 'doubling'), useKeyOnly(stackable, 'stackable'), useTextAlignProp(textAlign), useWidthProp(itemsPerRow), 'cards', className);
 	  var rest = getUnhandledProps(CardGroup, props);
 	  var ElementType = getElementType(CardGroup, props);
 
@@ -55685,7 +55748,7 @@
 	        meta = _this$props.meta,
 	        onClick = _this$props.onClick,
 	        raised = _this$props.raised;
-	    var classes = cx('ui', color, useKeyOnly(centered, 'centered'), useKeyOnly(fluid, 'fluid'), useKeyOnly(link, 'link'), useKeyOnly(raised, 'raised'), 'card', className);
+	    var classes = clsx('ui', color, useKeyOnly(centered, 'centered'), useKeyOnly(fluid, 'fluid'), useKeyOnly(link, 'link'), useKeyOnly(raised, 'raised'), 'card', className);
 	    var rest = getUnhandledProps(Card, this.props);
 	    var ElementType = getElementType(Card, this.props, function () {
 	      if (onClick) return 'a';
@@ -55800,7 +55863,7 @@
 	      className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx(useKeyOnly(active, 'active'), className);
+	  var classes = clsx(useKeyOnly(active, 'active'), className);
 	  var rest = getUnhandledProps(CommentAction, props);
 	  var ElementType = getElementType(CommentAction, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55837,7 +55900,7 @@
 	  var className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx('actions', className);
+	  var classes = clsx('actions', className);
 	  var rest = getUnhandledProps(CommentActions, props);
 	  var ElementType = getElementType(CommentActions, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55868,7 +55931,7 @@
 	  var className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx('author', className);
+	  var classes = clsx('author', className);
 	  var rest = getUnhandledProps(CommentAuthor, props);
 	  var ElementType = getElementType(CommentAuthor, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55898,7 +55961,7 @@
 	function CommentAvatar(props) {
 	  var className = props.className,
 	      src = props.src;
-	  var classes = cx('avatar', className);
+	  var classes = clsx('avatar', className);
 	  var rest = getUnhandledProps(CommentAvatar, props);
 
 	  var _partitionHTMLProps = partitionHTMLProps(rest, {
@@ -55936,7 +55999,7 @@
 	  var className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx(className, 'content');
+	  var classes = clsx(className, 'content');
 	  var rest = getUnhandledProps(CommentContent, props);
 	  var ElementType = getElementType(CommentContent, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -55971,7 +56034,7 @@
 	      minimal = props.minimal,
 	      size = props.size,
 	      threaded = props.threaded;
-	  var classes = cx('ui', size, useKeyOnly(collapsed, 'collapsed'), useKeyOnly(minimal, 'minimal'), useKeyOnly(threaded, 'threaded'), 'comments', className);
+	  var classes = clsx('ui', size, useKeyOnly(collapsed, 'collapsed'), useKeyOnly(minimal, 'minimal'), useKeyOnly(threaded, 'threaded'), 'comments', className);
 	  var rest = getUnhandledProps(CommentGroup, props);
 	  var ElementType = getElementType(CommentGroup, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56014,7 +56077,7 @@
 	  var className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx('metadata', className);
+	  var classes = clsx('metadata', className);
 	  var rest = getUnhandledProps(CommentMetadata, props);
 	  var ElementType = getElementType(CommentMetadata, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56045,7 +56108,7 @@
 	  var className = props.className,
 	      children = props.children,
 	      content = props.content;
-	  var classes = cx(className, 'text');
+	  var classes = clsx(className, 'text');
 	  var rest = getUnhandledProps(CommentText, props);
 	  var ElementType = getElementType(CommentText, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56093,7 +56156,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('date', className);
+	  var classes = clsx('date', className);
 	  var rest = getUnhandledProps(FeedDate, props);
 	  var ElementType = getElementType(FeedDate, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56126,7 +56189,7 @@
 	      content = props.content,
 	      images = props.images,
 	      text = props.text;
-	  var classes = cx(useKeyOnly(images, 'images'), useKeyOnly(content || text, 'text'), 'extra', className);
+	  var classes = clsx(useKeyOnly(images, 'images'), useKeyOnly(content || text, 'text'), 'extra', className);
 	  var rest = getUnhandledProps(FeedExtra, props);
 	  var ElementType = getElementType(FeedExtra, props);
 
@@ -56179,7 +56242,7 @@
 	      className = props.className,
 	      content = props.content,
 	      icon = props.icon;
-	  var classes = cx('like', className);
+	  var classes = clsx('like', className);
 	  var rest = getUnhandledProps(FeedLike, props);
 	  var ElementType = getElementType(FeedLike, props);
 
@@ -56226,7 +56289,7 @@
 	      className = props.className,
 	      content = props.content,
 	      like = props.like;
-	  var classes = cx('meta', className);
+	  var classes = clsx('meta', className);
 	  var rest = getUnhandledProps(FeedMeta, props);
 	  var ElementType = getElementType(FeedMeta, props);
 
@@ -56273,7 +56336,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('user', className);
+	  var classes = clsx('user', className);
 	  var rest = getUnhandledProps(FeedUser, props);
 	  var ElementType = getElementType(FeedUser, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56309,7 +56372,7 @@
 	      content = props.content,
 	      date = props.date,
 	      user = props.user;
-	  var classes = cx('summary', className);
+	  var classes = clsx('summary', className);
 	  var rest = getUnhandledProps(FeedSummary, props);
 	  var ElementType = getElementType(FeedSummary, props);
 
@@ -56366,7 +56429,7 @@
 	      date = props.date,
 	      meta = props.meta,
 	      summary = props.summary;
-	  var classes = cx('content', className);
+	  var classes = clsx('content', className);
 	  var rest = getUnhandledProps(FeedContent, props);
 	  var ElementType = getElementType(FeedContent, props);
 
@@ -56452,7 +56515,7 @@
 	      content = props.content,
 	      icon = props.icon,
 	      image = props.image;
-	  var classes = cx('label', className);
+	  var classes = clsx('label', className);
 	  var rest = getUnhandledProps(FeedLabel, props);
 	  var ElementType = getElementType(FeedLabel, props);
 
@@ -56505,7 +56568,7 @@
 	      icon = props.icon,
 	      meta = props.meta,
 	      summary = props.summary;
-	  var classes = cx('event', className);
+	  var classes = clsx('event', className);
 	  var rest = getUnhandledProps(FeedEvent, props);
 	  var ElementType = getElementType(FeedEvent, props);
 	  var hasContentProp = content || date || extraImages || extraText || meta || summary;
@@ -56595,7 +56658,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('header', className);
+	  var classes = clsx('header', className);
 	  var rest = getUnhandledProps(ItemHeader, props);
 	  var ElementType = getElementType(ItemHeader, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56631,7 +56694,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('description', className);
+	  var classes = clsx('description', className);
 	  var rest = getUnhandledProps(ItemDescription, props);
 	  var ElementType = getElementType(ItemDescription, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56667,7 +56730,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('extra', className);
+	  var classes = clsx('extra', className);
 	  var rest = getUnhandledProps(ItemExtra, props);
 	  var ElementType = getElementType(ItemExtra, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56703,7 +56766,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('meta', className);
+	  var classes = clsx('meta', className);
 	  var rest = getUnhandledProps(ItemMeta, props);
 	  var ElementType = getElementType(ItemMeta, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -56744,7 +56807,7 @@
 	      header = props.header,
 	      meta = props.meta,
 	      verticalAlign = props.verticalAlign;
-	  var classes = cx(useVerticalAlignProp(verticalAlign), 'content', className);
+	  var classes = clsx(useVerticalAlignProp(verticalAlign), 'content', className);
 	  var rest = getUnhandledProps(ItemContent, props);
 	  var ElementType = getElementType(ItemContent, props);
 
@@ -56810,7 +56873,7 @@
 	      link = props.link,
 	      relaxed = props.relaxed,
 	      unstackable = props.unstackable;
-	  var classes = cx('ui', useKeyOnly(divided, 'divided'), useKeyOnly(link, 'link'), useKeyOnly(unstackable, 'unstackable'), useKeyOrValueAndKey(relaxed, 'relaxed'), 'items', className);
+	  var classes = clsx('ui', useKeyOnly(divided, 'divided'), useKeyOnly(link, 'link'), useKeyOnly(unstackable, 'unstackable'), useKeyOrValueAndKey(relaxed, 'relaxed'), 'items', className);
 	  var rest = getUnhandledProps(ItemGroup, props);
 	  var ElementType = getElementType(ItemGroup, props);
 
@@ -56909,7 +56972,7 @@
 	      header = props.header,
 	      image = props.image,
 	      meta = props.meta;
-	  var classes = cx('item', className);
+	  var classes = clsx('item', className);
 	  var rest = getUnhandledProps(Item, props);
 	  var ElementType = getElementType(Item, props);
 
@@ -56983,7 +57046,7 @@
 	      items = props.items,
 	      size = props.size,
 	      widths = props.widths;
-	  var classes = cx('ui', color, size, useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), useWidthProp(widths), 'statistics', className);
+	  var classes = clsx('ui', color, size, useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), useWidthProp(widths), 'statistics', className);
 	  var rest = getUnhandledProps(StatisticGroup, props);
 	  var ElementType = getElementType(StatisticGroup, props);
 
@@ -57047,7 +57110,7 @@
 	  var children = props.children,
 	      className = props.className,
 	      content = props.content;
-	  var classes = cx('label', className);
+	  var classes = clsx('label', className);
 	  var rest = getUnhandledProps(StatisticLabel, props);
 	  var ElementType = getElementType(StatisticLabel, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -57084,7 +57147,7 @@
 	      className = props.className,
 	      content = props.content,
 	      text = props.text;
-	  var classes = cx(useKeyOnly(text, 'text'), 'value', className);
+	  var classes = clsx(useKeyOnly(text, 'text'), 'value', className);
 	  var rest = getUnhandledProps(StatisticValue, props);
 	  var ElementType = getElementType(StatisticValue, props);
 	  return /*#__PURE__*/React$1.createElement(ElementType, _extends({}, rest, {
@@ -57131,7 +57194,7 @@
 	      size = props.size,
 	      text = props.text,
 	      value = props.value;
-	  var classes = cx('ui', color, size, useValueAndKey(floated, 'floated'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), 'statistic', className);
+	  var classes = clsx('ui', color, size, useValueAndKey(floated, 'floated'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), 'statistic', className);
 	  var rest = getUnhandledProps(Statistic, props);
 	  var ElementType = getElementType(Statistic, props);
 
@@ -57606,6 +57669,29 @@
 	  return max;
 	}
 
+	function maxIndex(values, valueof) {
+	  let max;
+	  let maxIndex = -1;
+	  let index = -1;
+	  if (valueof === undefined) {
+	    for (const value of values) {
+	      ++index;
+	      if (value != null
+	          && (max < value || (max === undefined && value >= value))) {
+	        max = value, maxIndex = index;
+	      }
+	    }
+	  } else {
+	    for (let value of values) {
+	      if ((value = valueof(value, ++index, values)) != null
+	          && (max < value || (max === undefined && value >= value))) {
+	        max = value, maxIndex = index;
+	      }
+	    }
+	  }
+	  return maxIndex;
+	}
+
 	function min$1(values, valueof) {
 	  let min;
 	  if (valueof === undefined) {
@@ -57625,6 +57711,29 @@
 	    }
 	  }
 	  return min;
+	}
+
+	function minIndex(values, valueof) {
+	  let min;
+	  let minIndex = -1;
+	  let index = -1;
+	  if (valueof === undefined) {
+	    for (const value of values) {
+	      ++index;
+	      if (value != null
+	          && (min > value || (min === undefined && value >= value))) {
+	        min = value, minIndex = index;
+	      }
+	    }
+	  } else {
+	    for (let value of values) {
+	      if ((value = valueof(value, ++index, values)) != null
+	          && (min > value || (min === undefined && value >= value))) {
+	        min = value, minIndex = index;
+	      }
+	    }
+	  }
+	  return minIndex;
 	}
 
 	// Based on https://github.com/mourner/quickselect
@@ -57663,6 +57772,7 @@
 	    if (j <= k) left = j + 1;
 	    if (k <= j) right = j - 1;
 	  }
+
 	  return array;
 	}
 
@@ -57697,29 +57807,6 @@
 	  return value0 + (value1 - value0) * (i - i0);
 	}
 
-	function maxIndex(values, valueof) {
-	  let max;
-	  let maxIndex = -1;
-	  let index = -1;
-	  if (valueof === undefined) {
-	    for (const value of values) {
-	      ++index;
-	      if (value != null
-	          && (max < value || (max === undefined && value >= value))) {
-	        max = value, maxIndex = index;
-	      }
-	    }
-	  } else {
-	    for (let value of values) {
-	      if ((value = valueof(value, ++index, values)) != null
-	          && (max < value || (max === undefined && value >= value))) {
-	        max = value, maxIndex = index;
-	      }
-	    }
-	  }
-	  return maxIndex;
-	}
-
 	function mean(values, valueof) {
 	  let count = 0;
 	  let sum = 0;
@@ -57742,29 +57829,6 @@
 
 	function median(values, valueof) {
 	  return quantile$1(values, 0.5, valueof);
-	}
-
-	function minIndex(values, valueof) {
-	  let min;
-	  let minIndex = -1;
-	  let index = -1;
-	  if (valueof === undefined) {
-	    for (const value of values) {
-	      ++index;
-	      if (value != null
-	          && (min > value || (min === undefined && value >= value))) {
-	        min = value, minIndex = index;
-	      }
-	    }
-	  } else {
-	    for (let value of values) {
-	      if ((value = valueof(value, ++index, values)) != null
-	          && (min > value || (min === undefined && value >= value))) {
-	        min = value, minIndex = index;
-	      }
-	    }
-	  }
-	  return minIndex;
 	}
 
 	function mode(values, valueof) {
@@ -63086,7 +63150,7 @@
 	  ease: cubicInOut
 	};
 
-	function inherit(node, id) {
+	function inherit$1(node, id) {
 	  var timing;
 	  while (!(timing = node.__transition) || !(timing = timing[id])) {
 	    if (!(node = node.parentNode)) {
@@ -63109,7 +63173,7 @@
 	  for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
 	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
 	      if (node = group[i]) {
-	        schedule(node, name, id, i, group, timing || inherit(node, id));
+	        schedule(node, name, id, i, group, timing || inherit$1(node, id));
 	      }
 	    }
 	  }
@@ -64334,7 +64398,7 @@
 	    children = objectChildren;
 	  }
 
-	  var root = new Node(data),
+	  var root = new Node$1(data),
 	      node,
 	      nodes = [root],
 	      child,
@@ -64346,7 +64410,7 @@
 	    if ((childs = children(node.data)) && (n = (childs = Array.from(childs)).length)) {
 	      node.children = childs;
 	      for (i = n - 1; i >= 0; --i) {
-	        nodes.push(child = childs[i] = new Node(childs[i]));
+	        nodes.push(child = childs[i] = new Node$1(childs[i]));
 	        child.parent = node;
 	        child.depth = node.depth + 1;
 	      }
@@ -64379,15 +64443,15 @@
 	  while ((node = node.parent) && (node.height < ++height));
 	}
 
-	function Node(data) {
+	function Node$1(data) {
 	  this.data = data;
 	  this.depth =
 	  this.height = 0;
 	  this.parent = null;
 	}
 
-	Node.prototype = hierarchy.prototype = {
-	  constructor: Node,
+	Node$1.prototype = hierarchy.prototype = {
+	  constructor: Node$1,
 	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
@@ -64417,7 +64481,7 @@
 	  }
 	}
 
-	Object.create(Node.prototype);
+	Object.create(Node$1.prototype);
 
 	function treemapSlice(parent, x0, y0, x1, y1) {
 	  var nodes = parent.children,
@@ -66859,7 +66923,7 @@
 
 	var schemeTableau10 = colors("4e79a7f28e2ce1575976b7b259a14fedc949af7aa1ff9da79c755fbab0ab");
 
-	var ramp$2 = scheme => rgbBasis(scheme[scheme.length - 1]);
+	var ramp$1 = scheme => rgbBasis(scheme[scheme.length - 1]);
 
 	var scheme$q = new Array(3).concat(
 	  "d8b365f5f5f55ab4ac",
@@ -66873,7 +66937,7 @@
 	  "5430058c510abf812ddfc27df6e8c3f5f5f5c7eae580cdc135978f01665e003c30"
 	).map(colors);
 
-	var interpolateBrBG = ramp$2(scheme$q);
+	var interpolateBrBG = ramp$1(scheme$q);
 
 	var scheme$p = new Array(3).concat(
 	  "af8dc3f7f7f77fbf7b",
@@ -66887,7 +66951,7 @@
 	  "40004b762a839970abc2a5cfe7d4e8f7f7f7d9f0d3a6dba05aae611b783700441b"
 	).map(colors);
 
-	var interpolatePRGn = ramp$2(scheme$p);
+	var interpolatePRGn = ramp$1(scheme$p);
 
 	var scheme$o = new Array(3).concat(
 	  "e9a3c9f7f7f7a1d76a",
@@ -66901,7 +66965,7 @@
 	  "8e0152c51b7dde77aef1b6dafde0eff7f7f7e6f5d0b8e1867fbc414d9221276419"
 	).map(colors);
 
-	var interpolatePiYG = ramp$2(scheme$o);
+	var interpolatePiYG = ramp$1(scheme$o);
 
 	var scheme$n = new Array(3).concat(
 	  "998ec3f7f7f7f1a340",
@@ -66915,7 +66979,7 @@
 	  "2d004b5427888073acb2abd2d8daebf7f7f7fee0b6fdb863e08214b358067f3b08"
 	).map(colors);
 
-	var interpolatePuOr = ramp$2(scheme$n);
+	var interpolatePuOr = ramp$1(scheme$n);
 
 	var scheme$m = new Array(3).concat(
 	  "ef8a62f7f7f767a9cf",
@@ -66929,7 +66993,7 @@
 	  "67001fb2182bd6604df4a582fddbc7f7f7f7d1e5f092c5de4393c32166ac053061"
 	).map(colors);
 
-	var interpolateRdBu = ramp$2(scheme$m);
+	var interpolateRdBu = ramp$1(scheme$m);
 
 	var scheme$l = new Array(3).concat(
 	  "ef8a62ffffff999999",
@@ -66943,7 +67007,7 @@
 	  "67001fb2182bd6604df4a582fddbc7ffffffe0e0e0bababa8787874d4d4d1a1a1a"
 	).map(colors);
 
-	var interpolateRdGy = ramp$2(scheme$l);
+	var interpolateRdGy = ramp$1(scheme$l);
 
 	var scheme$k = new Array(3).concat(
 	  "fc8d59ffffbf91bfdb",
@@ -66957,7 +67021,7 @@
 	  "a50026d73027f46d43fdae61fee090ffffbfe0f3f8abd9e974add14575b4313695"
 	).map(colors);
 
-	var interpolateRdYlBu = ramp$2(scheme$k);
+	var interpolateRdYlBu = ramp$1(scheme$k);
 
 	var scheme$j = new Array(3).concat(
 	  "fc8d59ffffbf91cf60",
@@ -66971,7 +67035,7 @@
 	  "a50026d73027f46d43fdae61fee08bffffbfd9ef8ba6d96a66bd631a9850006837"
 	).map(colors);
 
-	var interpolateRdYlGn = ramp$2(scheme$j);
+	var interpolateRdYlGn = ramp$1(scheme$j);
 
 	var scheme$i = new Array(3).concat(
 	  "fc8d59ffffbf99d594",
@@ -66985,7 +67049,7 @@
 	  "9e0142d53e4ff46d43fdae61fee08bffffbfe6f598abdda466c2a53288bd5e4fa2"
 	).map(colors);
 
-	var interpolateSpectral = ramp$2(scheme$i);
+	var interpolateSpectral = ramp$1(scheme$i);
 
 	var scheme$h = new Array(3).concat(
 	  "e5f5f999d8c92ca25f",
@@ -66997,7 +67061,7 @@
 	  "f7fcfde5f5f9ccece699d8c966c2a441ae76238b45006d2c00441b"
 	).map(colors);
 
-	var interpolateBuGn = ramp$2(scheme$h);
+	var interpolateBuGn = ramp$1(scheme$h);
 
 	var scheme$g = new Array(3).concat(
 	  "e0ecf49ebcda8856a7",
@@ -67009,7 +67073,7 @@
 	  "f7fcfde0ecf4bfd3e69ebcda8c96c68c6bb188419d810f7c4d004b"
 	).map(colors);
 
-	var interpolateBuPu = ramp$2(scheme$g);
+	var interpolateBuPu = ramp$1(scheme$g);
 
 	var scheme$f = new Array(3).concat(
 	  "e0f3dba8ddb543a2ca",
@@ -67021,7 +67085,7 @@
 	  "f7fcf0e0f3dbccebc5a8ddb57bccc44eb3d32b8cbe0868ac084081"
 	).map(colors);
 
-	var interpolateGnBu = ramp$2(scheme$f);
+	var interpolateGnBu = ramp$1(scheme$f);
 
 	var scheme$e = new Array(3).concat(
 	  "fee8c8fdbb84e34a33",
@@ -67033,7 +67097,7 @@
 	  "fff7ecfee8c8fdd49efdbb84fc8d59ef6548d7301fb300007f0000"
 	).map(colors);
 
-	var interpolateOrRd = ramp$2(scheme$e);
+	var interpolateOrRd = ramp$1(scheme$e);
 
 	var scheme$d = new Array(3).concat(
 	  "ece2f0a6bddb1c9099",
@@ -67045,7 +67109,7 @@
 	  "fff7fbece2f0d0d1e6a6bddb67a9cf3690c002818a016c59014636"
 	).map(colors);
 
-	var interpolatePuBuGn = ramp$2(scheme$d);
+	var interpolatePuBuGn = ramp$1(scheme$d);
 
 	var scheme$c = new Array(3).concat(
 	  "ece7f2a6bddb2b8cbe",
@@ -67057,7 +67121,7 @@
 	  "fff7fbece7f2d0d1e6a6bddb74a9cf3690c00570b0045a8d023858"
 	).map(colors);
 
-	var interpolatePuBu = ramp$2(scheme$c);
+	var interpolatePuBu = ramp$1(scheme$c);
 
 	var scheme$b = new Array(3).concat(
 	  "e7e1efc994c7dd1c77",
@@ -67069,7 +67133,7 @@
 	  "f7f4f9e7e1efd4b9dac994c7df65b0e7298ace125698004367001f"
 	).map(colors);
 
-	var interpolatePuRd = ramp$2(scheme$b);
+	var interpolatePuRd = ramp$1(scheme$b);
 
 	var scheme$a = new Array(3).concat(
 	  "fde0ddfa9fb5c51b8a",
@@ -67081,7 +67145,7 @@
 	  "fff7f3fde0ddfcc5c0fa9fb5f768a1dd3497ae017e7a017749006a"
 	).map(colors);
 
-	var interpolateRdPu = ramp$2(scheme$a);
+	var interpolateRdPu = ramp$1(scheme$a);
 
 	var scheme$9 = new Array(3).concat(
 	  "edf8b17fcdbb2c7fb8",
@@ -67093,7 +67157,7 @@
 	  "ffffd9edf8b1c7e9b47fcdbb41b6c41d91c0225ea8253494081d58"
 	).map(colors);
 
-	var interpolateYlGnBu = ramp$2(scheme$9);
+	var interpolateYlGnBu = ramp$1(scheme$9);
 
 	var scheme$8 = new Array(3).concat(
 	  "f7fcb9addd8e31a354",
@@ -67105,7 +67169,7 @@
 	  "ffffe5f7fcb9d9f0a3addd8e78c67941ab5d238443006837004529"
 	).map(colors);
 
-	var interpolateYlGn = ramp$2(scheme$8);
+	var interpolateYlGn = ramp$1(scheme$8);
 
 	var scheme$7 = new Array(3).concat(
 	  "fff7bcfec44fd95f0e",
@@ -67117,7 +67181,7 @@
 	  "ffffe5fff7bcfee391fec44ffe9929ec7014cc4c02993404662506"
 	).map(colors);
 
-	var interpolateYlOrBr = ramp$2(scheme$7);
+	var interpolateYlOrBr = ramp$1(scheme$7);
 
 	var scheme$6 = new Array(3).concat(
 	  "ffeda0feb24cf03b20",
@@ -67129,7 +67193,7 @@
 	  "ffffccffeda0fed976feb24cfd8d3cfc4e2ae31a1cbd0026800026"
 	).map(colors);
 
-	var interpolateYlOrRd = ramp$2(scheme$6);
+	var interpolateYlOrRd = ramp$1(scheme$6);
 
 	var scheme$5 = new Array(3).concat(
 	  "deebf79ecae13182bd",
@@ -67141,7 +67205,7 @@
 	  "f7fbffdeebf7c6dbef9ecae16baed64292c62171b508519c08306b"
 	).map(colors);
 
-	var interpolateBlues = ramp$2(scheme$5);
+	var interpolateBlues = ramp$1(scheme$5);
 
 	var scheme$4 = new Array(3).concat(
 	  "e5f5e0a1d99b31a354",
@@ -67153,7 +67217,7 @@
 	  "f7fcf5e5f5e0c7e9c0a1d99b74c47641ab5d238b45006d2c00441b"
 	).map(colors);
 
-	var interpolateGreens = ramp$2(scheme$4);
+	var interpolateGreens = ramp$1(scheme$4);
 
 	var scheme$3 = new Array(3).concat(
 	  "f0f0f0bdbdbd636363",
@@ -67165,7 +67229,7 @@
 	  "fffffff0f0f0d9d9d9bdbdbd969696737373525252252525000000"
 	).map(colors);
 
-	var interpolateGreys = ramp$2(scheme$3);
+	var interpolateGreys = ramp$1(scheme$3);
 
 	var scheme$2 = new Array(3).concat(
 	  "efedf5bcbddc756bb1",
@@ -67177,7 +67241,7 @@
 	  "fcfbfdefedf5dadaebbcbddc9e9ac8807dba6a51a354278f3f007d"
 	).map(colors);
 
-	var interpolatePurples = ramp$2(scheme$2);
+	var interpolatePurples = ramp$1(scheme$2);
 
 	var scheme$1 = new Array(3).concat(
 	  "fee0d2fc9272de2d26",
@@ -67189,7 +67253,7 @@
 	  "fff5f0fee0d2fcbba1fc9272fb6a4aef3b2ccb181da50f1567000d"
 	).map(colors);
 
-	var interpolateReds = ramp$2(scheme$1);
+	var interpolateReds = ramp$1(scheme$1);
 
 	var scheme = new Array(3).concat(
 	  "fee6cefdae6be6550d",
@@ -67201,7 +67265,7 @@
 	  "fff5ebfee6cefdd0a2fdae6bfd8d3cf16913d94801a636037f2704"
 	).map(colors);
 
-	var interpolateOranges = ramp$2(scheme);
+	var interpolateOranges = ramp$1(scheme);
 
 	function interpolateCividis(t) {
 	  t = Math.max(0, Math.min(1, t));
@@ -67251,20 +67315,20 @@
 	      + ")";
 	}
 
-	function ramp$1(range) {
+	function ramp(range) {
 	  var n = range.length;
 	  return function(t) {
 	    return range[Math.max(0, Math.min(n - 1, Math.floor(t * n)))];
 	  };
 	}
 
-	var interpolateViridis = ramp$1(colors("44015444025645045745055946075a46085c460a5d460b5e470d60470e6147106347116447136548146748166848176948186a481a6c481b6d481c6e481d6f481f70482071482173482374482475482576482677482878482979472a7a472c7a472d7b472e7c472f7d46307e46327e46337f463480453581453781453882443983443a83443b84433d84433e85423f854240864241864142874144874045884046883f47883f48893e49893e4a893e4c8a3d4d8a3d4e8a3c4f8a3c508b3b518b3b528b3a538b3a548c39558c39568c38588c38598c375a8c375b8d365c8d365d8d355e8d355f8d34608d34618d33628d33638d32648e32658e31668e31678e31688e30698e306a8e2f6b8e2f6c8e2e6d8e2e6e8e2e6f8e2d708e2d718e2c718e2c728e2c738e2b748e2b758e2a768e2a778e2a788e29798e297a8e297b8e287c8e287d8e277e8e277f8e27808e26818e26828e26828e25838e25848e25858e24868e24878e23888e23898e238a8d228b8d228c8d228d8d218e8d218f8d21908d21918c20928c20928c20938c1f948c1f958b1f968b1f978b1f988b1f998a1f9a8a1e9b8a1e9c891e9d891f9e891f9f881fa0881fa1881fa1871fa28720a38620a48621a58521a68522a78522a88423a98324aa8325ab8225ac8226ad8127ad8128ae8029af7f2ab07f2cb17e2db27d2eb37c2fb47c31b57b32b67a34b67935b77937b87838b9773aba763bbb753dbc743fbc7340bd7242be7144bf7046c06f48c16e4ac16d4cc26c4ec36b50c46a52c56954c56856c66758c7655ac8645cc8635ec96260ca6063cb5f65cb5e67cc5c69cd5b6ccd5a6ece5870cf5773d05675d05477d1537ad1517cd2507fd34e81d34d84d44b86d54989d5488bd6468ed64590d74393d74195d84098d83e9bd93c9dd93ba0da39a2da37a5db36a8db34aadc32addc30b0dd2fb2dd2db5de2bb8de29bade28bddf26c0df25c2df23c5e021c8e020cae11fcde11dd0e11cd2e21bd5e21ad8e219dae319dde318dfe318e2e418e5e419e7e419eae51aece51befe51cf1e51df4e61ef6e620f8e621fbe723fde725"));
+	var interpolateViridis = ramp(colors("44015444025645045745055946075a46085c460a5d460b5e470d60470e6147106347116447136548146748166848176948186a481a6c481b6d481c6e481d6f481f70482071482173482374482475482576482677482878482979472a7a472c7a472d7b472e7c472f7d46307e46327e46337f463480453581453781453882443983443a83443b84433d84433e85423f854240864241864142874144874045884046883f47883f48893e49893e4a893e4c8a3d4d8a3d4e8a3c4f8a3c508b3b518b3b528b3a538b3a548c39558c39568c38588c38598c375a8c375b8d365c8d365d8d355e8d355f8d34608d34618d33628d33638d32648e32658e31668e31678e31688e30698e306a8e2f6b8e2f6c8e2e6d8e2e6e8e2e6f8e2d708e2d718e2c718e2c728e2c738e2b748e2b758e2a768e2a778e2a788e29798e297a8e297b8e287c8e287d8e277e8e277f8e27808e26818e26828e26828e25838e25848e25858e24868e24878e23888e23898e238a8d228b8d228c8d228d8d218e8d218f8d21908d21918c20928c20928c20938c1f948c1f958b1f968b1f978b1f988b1f998a1f9a8a1e9b8a1e9c891e9d891f9e891f9f881fa0881fa1881fa1871fa28720a38620a48621a58521a68522a78522a88423a98324aa8325ab8225ac8226ad8127ad8128ae8029af7f2ab07f2cb17e2db27d2eb37c2fb47c31b57b32b67a34b67935b77937b87838b9773aba763bbb753dbc743fbc7340bd7242be7144bf7046c06f48c16e4ac16d4cc26c4ec36b50c46a52c56954c56856c66758c7655ac8645cc8635ec96260ca6063cb5f65cb5e67cc5c69cd5b6ccd5a6ece5870cf5773d05675d05477d1537ad1517cd2507fd34e81d34d84d44b86d54989d5488bd6468ed64590d74393d74195d84098d83e9bd93c9dd93ba0da39a2da37a5db36a8db34aadc32addc30b0dd2fb2dd2db5de2bb8de29bade28bddf26c0df25c2df23c5e021c8e020cae11fcde11dd0e11cd2e21bd5e21ad8e219dae319dde318dfe318e2e418e5e419e7e419eae51aece51befe51cf1e51df4e61ef6e620f8e621fbe723fde725"));
 
-	var magma = ramp$1(colors("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
+	var magma = ramp(colors("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
 
-	var inferno = ramp$1(colors("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
+	var inferno = ramp(colors("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
 
-	var plasma = ramp$1(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
+	var plasma = ramp(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
 
 	var xhtml = "http://www.w3.org/1999/xhtml";
 
@@ -68184,10 +68248,6 @@
 	  return typeof selector === "string"
 	      ? new Selection([[document.querySelector(selector)]], [document.documentElement])
 	      : new Selection([[selector]], root);
-	}
-
-	function create(name) {
-	  return select(creator(name).call(document.documentElement));
 	}
 
 	var nextId = 0;
@@ -69455,6 +69515,13 @@
 
 	Transform.prototype;
 
+	function Context({ document = window.document } = {}) {
+	    return { document };
+	}
+	function create(name, { document }) {
+	    return select(creator(name).call(document.documentElement));
+	}
+
 	function format(date, fallback) {
 	  if (!(date instanceof Date)) date = new Date(+date);
 	  if (isNaN(date)) return typeof fallback === "function" ? fallback(date) : fallback;
@@ -69491,17 +69558,15 @@
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 	const TypedArray = Object.getPrototypeOf(Uint8Array);
 	const objectToString = Object.prototype.toString;
-
 	// This allows transforms to behave equivalently to channels.
 	function valueof(data, value, arrayType) {
-	  const type = typeof value;
-	  return type === "string" ? map(data, field(value), arrayType)
-	    : type === "function" ? map(data, value, arrayType)
-	    : type === "number" || value instanceof Date || type === "boolean" ? map(data, constant(value), arrayType)
-	    : value && typeof value.transform === "function" ? arrayify(value.transform(data), arrayType)
-	    : arrayify(value, arrayType); // preserve undefined type
+	    const type = typeof value;
+	    return type === "string" ? map(data, field(value), arrayType)
+	        : type === "function" ? map(data, value, arrayType)
+	            : type === "number" || value instanceof Date || type === "boolean" ? map(data, constant(value), arrayType)
+	                : value && typeof value.transform === "function" ? arrayify(value.transform(data), arrayType)
+	                    : arrayify(value, arrayType); // preserve undefined type
 	}
-
 	const field = name => d => d[name];
 	const yes = () => true;
 	const string = x => x == null ? x : `${x}`;
@@ -69510,14 +69575,12 @@
 	const first = x => x ? x[0] : undefined;
 	const second = x => x ? x[1] : undefined;
 	const constant = x => () => x;
-
 	// Converts a string like “p25” into a function that takes an index I and an
 	// accessor function f, returning the corresponding percentile value.
 	function percentile(reduce) {
-	  const p = +`${reduce}`.slice(1) / 100;
-	  return (I, f) => quantile$1(I, p, f);
+	    const p = +`${reduce}`.slice(1) / 100;
+	    return (I, f) => quantile$1(I, p, f);
 	}
-
 	// Some channels may allow a string constant to be specified; to differentiate
 	// string constants (e.g., "red") from named fields (e.g., "date"), this
 	// function tests whether the given value is a CSS color string and returns a
@@ -69525,253 +69588,253 @@
 	// the given value. If you wish to reference a named field that is also a valid
 	// CSS color, use an accessor (d => d.red) instead.
 	function maybeColorChannel(value, defaultValue) {
-	  if (value === undefined) value = defaultValue;
-	  return value === null ? [undefined, "none"]
-	    : isColor(value) ? [undefined, value]
-	    : [value, undefined];
+	    if (value === undefined)
+	        value = defaultValue;
+	    return value === null ? [undefined, "none"]
+	        : isColor(value) ? [undefined, value]
+	            : [value, undefined];
 	}
-
 	// Similar to maybeColorChannel, this tests whether the given value is a number
 	// indicating a constant, and otherwise assumes that it’s a channel value.
 	function maybeNumberChannel(value, defaultValue) {
-	  if (value === undefined) value = defaultValue;
-	  return value === null || typeof value === "number" ? [undefined, value]
-	    : [value, undefined];
+	    if (value === undefined)
+	        value = defaultValue;
+	    return value === null || typeof value === "number" ? [undefined, value]
+	        : [value, undefined];
 	}
-
 	// Validates the specified optional string against the allowed list of keywords.
 	function maybeKeyword(input, name, allowed) {
-	  if (input != null) return keyword(input, name, allowed);
+	    if (input != null)
+	        return keyword(input, name, allowed);
 	}
-
 	// Validates the specified required string against the allowed list of keywords.
 	function keyword(input, name, allowed) {
-	  const i = `${input}`.toLowerCase();
-	  if (!allowed.includes(i)) throw new Error(`invalid ${name}: ${input}`);
-	  return i;
+	    const i = `${input}`.toLowerCase();
+	    if (!allowed.includes(i))
+	        throw new Error(`invalid ${name}: ${input}`);
+	    return i;
 	}
-
 	// Promotes the specified data to an array or typed array as needed. If an array
 	// type is provided (e.g., Array), then the returned array will strictly be of
 	// the specified type; otherwise, any array or typed array may be returned. If
 	// the specified data is null or undefined, returns the value as-is.
 	function arrayify(data, type) {
-	  return data == null ? data : (type === undefined
-	    ? (data instanceof Array || data instanceof TypedArray) ? data : Array.from(data)
-	    : (data instanceof type ? data : type.from(data)));
+	    return data == null ? data : (type === undefined
+	        ? (data instanceof Array || data instanceof TypedArray) ? data : Array.from(data)
+	        : (data instanceof type ? data : type.from(data)));
 	}
-
 	// An optimization of type.from(values, f): if the given values are already an
 	// instanceof the desired array type, the faster values.map method is used.
 	function map(values, f, type = Array) {
-	  return values instanceof type ? values.map(f) : type.from(values, f);
+	    return values instanceof type ? values.map(f) : type.from(values, f);
 	}
-
 	// An optimization of type.from(values): if the given values are already an
 	// instanceof the desired array type, the faster values.slice method is used.
 	function slice(values, type = Array) {
-	  return values instanceof type ? values.slice() : type.from(values);
+	    return values instanceof type ? values.slice() : type.from(values);
 	}
-
 	function isTypedArray(values) {
-	  return values instanceof TypedArray;
+	    return values instanceof TypedArray;
 	}
-
 	// Disambiguates an options object (e.g., {y: "x2"}) from a primitive value.
 	function isObject(option) {
-	  return option?.toString === objectToString;
+	    return option?.toString === objectToString;
 	}
-
 	// Disambiguates a scale options object (e.g., {color: {type: "linear"}}) from
 	// some other option (e.g., {color: "red"}). When creating standalone legends,
 	// this is used to test whether a scale is defined; this should be consistent
 	// with inferScaleType when there are no channels associated with the scale, and
 	// if this returns true, then normalizeScale must return non-null.
 	function isScaleOptions(option) {
-	  return isObject(option) && (option.type !== undefined || option.domain !== undefined);
+	    return isObject(option) && (option.type !== undefined || option.domain !== undefined);
 	}
-
 	// Disambiguates an options object (e.g., {y: "x2"}) from a channel value
 	// definition expressed as a channel transform (e.g., {transform: …}).
 	function isOptions(option) {
-	  return isObject(option) && typeof option.transform !== "function";
+	    return isObject(option) && typeof option.transform !== "function";
 	}
-
 	// Disambiguates a sort transform (e.g., {sort: "date"}) from a channel domain
 	// sort definition (e.g., {sort: {y: "x"}}).
 	function isDomainSort(sort) {
-	  return isOptions(sort) && sort.value === undefined && sort.channel === undefined;
+	    return isOptions(sort) && sort.value === undefined && sort.channel === undefined;
 	}
-
 	// For marks that have x and y channels (e.g., cell, dot, line, text).
 	function maybeTuple(x, y) {
-	  return x === undefined && y === undefined ? [first, second] : [x, y];
+	    return x === undefined && y === undefined ? [first, second] : [x, y];
 	}
-
 	// A helper for extracting the z channel, if it is variable. Used by transforms
 	// that require series, such as moving average and normalize.
-	function maybeZ({z, fill, stroke} = {}) {
-	  if (z === undefined) ([z] = maybeColorChannel(fill));
-	  if (z === undefined) ([z] = maybeColorChannel(stroke));
-	  return z;
+	function maybeZ({ z, fill, stroke } = {}) {
+	    if (z === undefined)
+	        ([z] = maybeColorChannel(fill));
+	    if (z === undefined)
+	        ([z] = maybeColorChannel(stroke));
+	    return z;
 	}
-
 	// Returns a Uint32Array with elements [0, 1, 2, … data.length - 1].
 	function range(data) {
-	  const n = data.length;
-	  const r = new Uint32Array(n);
-	  for (let i = 0; i < n; ++i) r[i] = i;
-	  return r;
+	    const n = data.length;
+	    const r = new Uint32Array(n);
+	    for (let i = 0; i < n; ++i)
+	        r[i] = i;
+	    return r;
 	}
-
 	// Returns a filtered range of data given the test function.
 	function where(data, test) {
-	  return range(data).filter(i => test(data[i], i, data));
+	    return range(data).filter(i => test(data[i], i, data));
 	}
-
 	// Returns an array [values[index[0]], values[index[1]], …].
 	function take(values, index) {
-	  return map(index, i => values[i]);
+	    return map(index, i => values[i]);
 	}
-
 	// Based on InternMap (d3.group).
 	function keyof(value) {
-	  return value !== null && typeof value === "object" ? value.valueOf() : value;
+	    return value !== null && typeof value === "object" ? value.valueOf() : value;
 	}
-
 	function labelof(value, defaultValue) {
-	  return typeof value === "string" ? value
-	    : value && value.label !== undefined ? value.label
-	    : defaultValue;
+	    return typeof value === "string" ? value
+	        : value && value.label !== undefined ? value.label
+	            : defaultValue;
 	}
-
 	// This distinguishes between per-dimension options and a standalone value.
 	function maybeValue(value) {
-	  return value === undefined || isOptions(value) ? value : {value};
+	    return value === undefined || isOptions(value) ? value : { value };
 	}
-
 	function isIterable(value) {
-	  return value && typeof value[Symbol.iterator] === "function";
+	    return value && typeof value[Symbol.iterator] === "function";
 	}
-
 	function isOrdinal(values) {
-	  for (const value of values) {
-	    if (value == null) continue;
-	    const type = typeof value;
-	    return type === "string" || type === "boolean";
-	  }
+	    for (const value of values) {
+	        if (value == null)
+	            continue;
+	        const type = typeof value;
+	        return type === "string" || type === "boolean";
+	    }
 	}
-
 	function isTemporal(values) {
-	  for (const value of values) {
-	    if (value == null) continue;
-	    return value instanceof Date;
-	  }
+	    for (const value of values) {
+	        if (value == null)
+	            continue;
+	        return value instanceof Date;
+	    }
 	}
-
 	// Are these strings that might represent dates? This is stricter than ISO 8601
 	// because we want to ignore false positives on numbers; for example, the string
 	// "1192" is more likely to represent a number than a date even though it is
 	// valid ISO 8601 representing 1192-01-01.
 	function isTemporalString(values) {
-	  for (const value of values) {
-	    if (value == null) continue;
-	    return typeof value === "string" && isNaN(value) && parse(value);
-	  }
+	    for (const value of values) {
+	        if (value == null)
+	            continue;
+	        return typeof value === "string" && isNaN(value) && parse(value);
+	    }
 	}
-
 	// Are these strings that might represent numbers? This is stricter than
 	// coercion because we want to ignore false positives on e.g. empty strings.
 	function isNumericString(values) {
-	  for (const value of values) {
-	    if (value == null || value === "") continue;
-	    return typeof value === "string" && !isNaN(value);
-	  }
+	    for (const value of values) {
+	        if (value == null || value === "")
+	            continue;
+	        return typeof value === "string" && !isNaN(value);
+	    }
 	}
-
 	function isFirst(values, is) {
-	  for (const value of values) {
-	    if (value == null) continue;
-	    return is(value);
-	  }
+	    for (const value of values) {
+	        if (value == null)
+	            continue;
+	        return is(value);
+	    }
 	}
-
 	// Whereas isFirst only tests the first defined value and returns undefined for
 	// an empty array, this tests all defined values and only returns true if all of
 	// them are valid colors. It also returns true for an empty array, and thus
 	// should generally be used in conjunction with isFirst.
 	function isEvery(values, is) {
-	  for (const value of values) {
-	    if (value == null) continue;
-	    if (!is(value)) return false;
-	  }
-	  return true;
+	    for (const value of values) {
+	        if (value == null)
+	            continue;
+	        if (!is(value))
+	            return false;
+	    }
+	    return true;
 	}
-
 	// Mostly relies on d3-color, with a few extra color keywords. Currently this
 	// strictly requires that the value be a string; we might want to apply string
 	// coercion here, though note that d3-color instances would need to support
 	// valueOf to work correctly with InternMap.
 	// https://www.w3.org/TR/SVG11/painting.html#SpecifyingPaint
 	function isColor(value) {
-	  if (typeof value !== "string") return false;
-	  value = value.toLowerCase().trim();
-	  return value === "none"
-	    || value === "currentcolor"
-	    || (value.startsWith("url(") && value.endsWith(")")) // <funciri>, e.g. pattern or gradient
-	    || (value.startsWith("var(") && value.endsWith(")")) // CSS variable
-	    || color$1(value) !== null;
+	    if (typeof value !== "string")
+	        return false;
+	    value = value.toLowerCase().trim();
+	    return value === "none"
+	        || value === "currentcolor"
+	        || (value.startsWith("url(") && value.endsWith(")")) // <funciri>, e.g. pattern or gradient
+	        || (value.startsWith("var(") && value.endsWith(")")) // CSS variable
+	        || color$1(value) !== null;
 	}
-
 	function isNoneish(value) {
-	  return value == null || isNone(value);
+	    return value == null || isNone(value);
 	}
-
 	function isNone(value) {
-	  return /^\s*none\s*$/i.test(value);
+	    return /^\s*none\s*$/i.test(value);
 	}
-
 	function isRound(value) {
-	  return /^\s*round\s*$/i.test(value);
+	    return /^\s*round\s*$/i.test(value);
 	}
-
 	// Like a sort comparator, returns a positive value if the given array of values
 	// is in ascending order, a negative value if the values are in descending
 	// order. Assumes monotonicity; only tests the first and last values.
 	function order(values) {
-	  if (values == null) return;
-	  const first = values[0];
-	  const last = values[values.length - 1];
-	  return descending(first, last);
+	    if (values == null)
+	        return;
+	    const first = values[0];
+	    const last = values[values.length - 1];
+	    return descending(first, last);
 	}
-
-	function memoize1(compute) {
-	  let cacheValue, cacheKeys = {};
-	  return (...keys) => {
-	    if (cacheKeys.length !== keys.length || cacheKeys.some((k, i) => k !== keys[i])) {
-	      cacheKeys = keys;
-	      cacheValue = compute(...keys);
+	// Unlike {...defaults, ...options}, this ensures that any undefined (but
+	// present) properties in options inherit the given default value.
+	function inherit(options = {}, ...rest) {
+	    let o = options;
+	    for (const defaults of rest) {
+	        for (const key in defaults) {
+	            if (o[key] === undefined) {
+	                const value = defaults[key];
+	                if (o === options)
+	                    o = { ...o, [key]: value };
+	                else
+	                    o[key] = value;
+	            }
+	        }
 	    }
-	    return cacheValue;
-	  };
+	    return o;
 	}
 
-	const numberFormat = memoize1(locale => new Intl.NumberFormat(locale));
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	function memoize1(compute) {
+	    let cacheValue, cacheKeys;
+	    return (...keys) => {
+	        if (cacheKeys?.length !== keys.length || cacheKeys.some((k, i) => k !== keys[i])) {
+	            cacheKeys = keys;
+	            cacheValue = compute(...keys);
+	        }
+	        return cacheValue;
+	    };
+	}
 
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	const numberFormat = memoize1((locale) => new Intl.NumberFormat(locale));
 	function formatNumber(locale = "en-US") {
-	  const format = numberFormat(locale);
-	  return i => i != null && !isNaN(i) ? format.format(i) : undefined;
+	    const format = numberFormat(locale);
+	    return (i) => i != null && !isNaN(i) ? format.format(i) : undefined;
 	}
-
 	function formatIsoDate(date) {
-	  return format(date, "Invalid Date");
+	    return format(date, "Invalid Date");
 	}
-
 	function formatAuto(locale = "en-US") {
-	  const number = formatNumber(locale);
-	  return v => (v instanceof Date ? formatIsoDate : typeof v === "number" ? number : string)(v);
+	    const number = formatNumber(locale);
+	    return (v) => (v instanceof Date ? formatIsoDate : typeof v === "number" ? number : string)(v);
 	}
-
 	// TODO When Plot supports a top-level locale option, this should be removed
 	// because it lacks context to know which locale to use; formatAuto should be
 	// used instead whenever possible.
@@ -69780,1285 +69843,1090 @@
 	const radians = Math.PI / 180;
 
 	function defined(x) {
-	  return x != null && !Number.isNaN(x);
+	    return x != null && !Number.isNaN(x);
 	}
-
 	function ascendingDefined(a, b) {
-	  return defined(b) - defined(a) || ascending$4(a, b);
+	    return +defined(b) - +defined(a) || ascending$4(a, b);
 	}
-
 	function descendingDefined(a, b) {
-	  return defined(b) - defined(a) || descending(a, b);
+	    return +defined(b) - +defined(a) || descending(a, b);
 	}
-
 	function nonempty(x) {
-	  return x != null && `${x}` !== "";
+	    return x != null && `${x}` !== "";
 	}
-
 	function finite(x) {
-	  return isFinite(x) ? x : NaN;
+	    return isFinite(x) ? x : NaN;
 	}
-
 	function positive(x) {
-	  return x > 0 && isFinite(x) ? x : NaN;
+	    return x > 0 && isFinite(x) ? x : NaN;
 	}
-
 	function negative(x) {
-	  return x < 0 && isFinite(x) ? x : NaN;
+	    return x < 0 && isFinite(x) ? x : NaN;
 	}
 
 	let warnings = 0;
-
 	function consumeWarnings() {
-	  const w = warnings;
-	  warnings = 0;
-	  return w;
+	    const w = warnings;
+	    warnings = 0;
+	    return w;
 	}
-
 	function warn(message) {
-	  console.warn(message);
-	  ++warnings;
+	    console.warn(message);
+	    ++warnings;
 	}
 
 	const offset = typeof window !== "undefined" && window.devicePixelRatio > 1 ? 0 : 0.5;
-
 	let nextClipId = 0;
-
-	function styles(
-	  mark,
-	  {
-	    title,
-	    href,
-	    ariaLabel: variaLabel,
-	    ariaDescription,
-	    ariaHidden,
-	    target,
-	    fill,
-	    fillOpacity,
-	    stroke,
-	    strokeWidth,
-	    strokeOpacity,
-	    strokeLinejoin,
-	    strokeLinecap,
-	    strokeMiterlimit,
-	    strokeDasharray,
-	    strokeDashoffset,
-	    opacity,
-	    mixBlendMode,
-	    paintOrder,
-	    shapeRendering
-	  },
-	  {
-	    ariaLabel: cariaLabel,
-	    fill: defaultFill = "currentColor",
-	    fillOpacity: defaultFillOpacity,
-	    stroke: defaultStroke = "none",
-	    strokeOpacity: defaultStrokeOpacity,
-	    strokeWidth: defaultStrokeWidth,
-	    strokeLinecap: defaultStrokeLinecap,
-	    strokeLinejoin: defaultStrokeLinejoin,
-	    strokeMiterlimit: defaultStrokeMiterlimit,
-	    paintOrder: defaultPaintOrder
-	  }
-	) {
-
-	  // Some marks don’t support fill (e.g., tick and rule).
-	  if (defaultFill === null) {
-	    fill = null;
-	    fillOpacity = null;
-	  }
-
-	  // Some marks don’t support stroke (e.g., image).
-	  if (defaultStroke === null) {
-	    stroke = null;
-	    strokeOpacity = null;
-	  }
-
-	  // Some marks default to fill with no stroke, while others default to stroke
-	  // with no fill. For example, bar and area default to fill, while dot and line
-	  // default to stroke. For marks that fill by default, the default fill only
-	  // applies if the stroke is (constant) none; if you set a stroke, then the
-	  // default fill becomes none. Similarly for marks that stroke by stroke, the
-	  // default stroke only applies if the fill is (constant) none.
-	  if (isNoneish(defaultFill)) {
-	    if (!isNoneish(defaultStroke) && !isNoneish(fill)) defaultStroke = "none";
-	  } else {
-	    if (isNoneish(defaultStroke) && !isNoneish(stroke)) defaultFill = "none";
-	  }
-
-	  const [vfill, cfill] = maybeColorChannel(fill, defaultFill);
-	  const [vfillOpacity, cfillOpacity] = maybeNumberChannel(fillOpacity, defaultFillOpacity);
-	  const [vstroke, cstroke] = maybeColorChannel(stroke, defaultStroke);
-	  const [vstrokeOpacity, cstrokeOpacity] = maybeNumberChannel(strokeOpacity, defaultStrokeOpacity);
-	  const [vopacity, copacity] = maybeNumberChannel(opacity);
-
-	  // For styles that have no effect if there is no stroke, only apply the
-	  // defaults if the stroke is not the constant none. (If stroke is a channel,
-	  // then cstroke will be undefined, but there’s still a stroke; hence we don’t
-	  // use isNoneish here.)
-	  if (!isNone(cstroke)) {
-	    if (strokeWidth === undefined) strokeWidth = defaultStrokeWidth;
-	    if (strokeLinecap === undefined) strokeLinecap = defaultStrokeLinecap;
-	    if (strokeLinejoin === undefined) strokeLinejoin = defaultStrokeLinejoin;
-
-	    // The default stroke miterlimit need not be applied if the current stroke
-	    // is the constant round; this only has effect on miter joins.
-	    if (strokeMiterlimit === undefined && !isRound(strokeLinejoin)) strokeMiterlimit = defaultStrokeMiterlimit;
-
-	    // The paint order only takes effect if there is both a fill and a stroke
-	    // (at least if we ignore markers, which no built-in marks currently use).
-	    if (!isNone(cfill) && paintOrder === undefined) paintOrder = defaultPaintOrder;
-	  }
-
-	  const [vstrokeWidth, cstrokeWidth] = maybeNumberChannel(strokeWidth);
-
-	  // Some marks don’t support fill (e.g., tick and rule).
-	  if (defaultFill !== null) {
-	    mark.fill = impliedString(cfill, "currentColor");
-	    mark.fillOpacity = impliedNumber(cfillOpacity, 1);
-	  }
-
-	  // Some marks don’t support stroke (e.g., image).
-	  if (defaultStroke !== null) {
-	    mark.stroke = impliedString(cstroke, "none");
-	    mark.strokeWidth = impliedNumber(cstrokeWidth, 1);
-	    mark.strokeOpacity = impliedNumber(cstrokeOpacity, 1);
-	    mark.strokeLinejoin = impliedString(strokeLinejoin, "miter");
-	    mark.strokeLinecap = impliedString(strokeLinecap, "butt");
-	    mark.strokeMiterlimit = impliedNumber(strokeMiterlimit, 4);
-	    mark.strokeDasharray = impliedString(strokeDasharray, "none");
-	    mark.strokeDashoffset = impliedString(strokeDashoffset, "0");
-	  }
-
-	  mark.target = string(target);
-	  mark.ariaLabel = string(cariaLabel);
-	  mark.ariaDescription = string(ariaDescription);
-	  mark.ariaHidden = string(ariaHidden);
-	  mark.opacity = impliedNumber(copacity, 1);
-	  mark.mixBlendMode = impliedString(mixBlendMode, "normal");
-	  mark.paintOrder = impliedString(paintOrder, "normal");
-	  mark.shapeRendering = impliedString(shapeRendering, "auto");
-
-	  return [
-	    {name: "title", value: title, optional: true},
-	    {name: "href", value: href, optional: true},
-	    {name: "ariaLabel", value: variaLabel, optional: true},
-	    {name: "fill", value: vfill, scale: "color", optional: true},
-	    {name: "fillOpacity", value: vfillOpacity, scale: "opacity", optional: true},
-	    {name: "stroke", value: vstroke, scale: "color", optional: true},
-	    {name: "strokeOpacity", value: vstrokeOpacity, scale: "opacity", optional: true},
-	    {name: "strokeWidth", value: vstrokeWidth, optional: true},
-	    {name: "opacity", value: vopacity, scale: "opacity", optional: true}
-	  ];
+	function styles(mark, { title, href, ariaLabel: variaLabel, ariaDescription, ariaHidden, target, fill, fillOpacity, stroke, strokeWidth, strokeOpacity, strokeLinejoin, strokeLinecap, strokeMiterlimit, strokeDasharray, strokeDashoffset, opacity, mixBlendMode, paintOrder, pointerEvents, shapeRendering }, { ariaLabel: cariaLabel, fill: defaultFill = "currentColor", fillOpacity: defaultFillOpacity, stroke: defaultStroke = "none", strokeOpacity: defaultStrokeOpacity, strokeWidth: defaultStrokeWidth, strokeLinecap: defaultStrokeLinecap, strokeLinejoin: defaultStrokeLinejoin, strokeMiterlimit: defaultStrokeMiterlimit, paintOrder: defaultPaintOrder }) {
+	    // Some marks don’t support fill (e.g., tick and rule).
+	    if (defaultFill === null) {
+	        fill = null;
+	        fillOpacity = null;
+	    }
+	    // Some marks don’t support stroke (e.g., image).
+	    if (defaultStroke === null) {
+	        stroke = null;
+	        strokeOpacity = null;
+	    }
+	    // Some marks default to fill with no stroke, while others default to stroke
+	    // with no fill. For example, bar and area default to fill, while dot and line
+	    // default to stroke. For marks that fill by default, the default fill only
+	    // applies if the stroke is (constant) none; if you set a stroke, then the
+	    // default fill becomes none. Similarly for marks that stroke by stroke, the
+	    // default stroke only applies if the fill is (constant) none.
+	    if (isNoneish(defaultFill)) {
+	        if (!isNoneish(defaultStroke) && !isNoneish(fill))
+	            defaultStroke = "none";
+	    }
+	    else {
+	        if (isNoneish(defaultStroke) && !isNoneish(stroke))
+	            defaultFill = "none";
+	    }
+	    const [vfill, cfill] = maybeColorChannel(fill, defaultFill);
+	    const [vfillOpacity, cfillOpacity] = maybeNumberChannel(fillOpacity, defaultFillOpacity);
+	    const [vstroke, cstroke] = maybeColorChannel(stroke, defaultStroke);
+	    const [vstrokeOpacity, cstrokeOpacity] = maybeNumberChannel(strokeOpacity, defaultStrokeOpacity);
+	    const [vopacity, copacity] = maybeNumberChannel(opacity);
+	    // For styles that have no effect if there is no stroke, only apply the
+	    // defaults if the stroke is not the constant none. (If stroke is a channel,
+	    // then cstroke will be undefined, but there’s still a stroke; hence we don’t
+	    // use isNoneish here.)
+	    if (!isNone(cstroke)) {
+	        if (strokeWidth === undefined)
+	            strokeWidth = defaultStrokeWidth;
+	        if (strokeLinecap === undefined)
+	            strokeLinecap = defaultStrokeLinecap;
+	        if (strokeLinejoin === undefined)
+	            strokeLinejoin = defaultStrokeLinejoin;
+	        // The default stroke miterlimit need not be applied if the current stroke
+	        // is the constant round; this only has effect on miter joins.
+	        if (strokeMiterlimit === undefined && !isRound(strokeLinejoin))
+	            strokeMiterlimit = defaultStrokeMiterlimit;
+	        // The paint order only takes effect if there is both a fill and a stroke
+	        // (at least if we ignore markers, which no built-in marks currently use).
+	        if (!isNone(cfill) && paintOrder === undefined)
+	            paintOrder = defaultPaintOrder;
+	    }
+	    const [vstrokeWidth, cstrokeWidth] = maybeNumberChannel(strokeWidth);
+	    // Some marks don’t support fill (e.g., tick and rule).
+	    if (defaultFill !== null) {
+	        mark.fill = impliedString(cfill, "currentColor");
+	        mark.fillOpacity = impliedNumber(cfillOpacity, 1);
+	    }
+	    // Some marks don’t support stroke (e.g., image).
+	    if (defaultStroke !== null) {
+	        mark.stroke = impliedString(cstroke, "none");
+	        mark.strokeWidth = impliedNumber(cstrokeWidth, 1);
+	        mark.strokeOpacity = impliedNumber(cstrokeOpacity, 1);
+	        mark.strokeLinejoin = impliedString(strokeLinejoin, "miter");
+	        mark.strokeLinecap = impliedString(strokeLinecap, "butt");
+	        mark.strokeMiterlimit = impliedNumber(strokeMiterlimit, 4);
+	        mark.strokeDasharray = impliedString(strokeDasharray, "none");
+	        mark.strokeDashoffset = impliedString(strokeDashoffset, "0");
+	    }
+	    mark.target = string(target);
+	    mark.ariaLabel = string(cariaLabel);
+	    mark.ariaDescription = string(ariaDescription);
+	    mark.ariaHidden = string(ariaHidden);
+	    mark.opacity = impliedNumber(copacity, 1);
+	    mark.mixBlendMode = impliedString(mixBlendMode, "normal");
+	    mark.paintOrder = impliedString(paintOrder, "normal");
+	    mark.pointerEvents = impliedString(pointerEvents, "auto");
+	    mark.shapeRendering = impliedString(shapeRendering, "auto");
+	    return [
+	        { name: "title", value: title, optional: true },
+	        { name: "href", value: href, optional: true },
+	        { name: "ariaLabel", value: variaLabel, optional: true },
+	        { name: "fill", value: vfill, scale: "color", optional: true },
+	        { name: "fillOpacity", value: vfillOpacity, scale: "opacity", optional: true },
+	        { name: "stroke", value: vstroke, scale: "color", optional: true },
+	        { name: "strokeOpacity", value: vstrokeOpacity, scale: "opacity", optional: true },
+	        { name: "strokeWidth", value: vstrokeWidth, optional: true },
+	        { name: "opacity", value: vopacity, scale: "opacity", optional: true }
+	    ];
 	}
-
 	// Like applyTitle, but for grouped data (lines, areas).
 	function applyTitleGroup(selection, L) {
-	  if (L) selection.filter(([i]) => nonempty(L[i])).append("title").call(applyTextGroup, L);
+	    if (L)
+	        selection.filter(([i]) => nonempty(L[i])).append("title").call(applyTextGroup, L);
 	}
-
 	function applyTextGroup(selection, T) {
-	  if (T) selection.text(([i]) => formatDefault(T[i]));
+	    if (T)
+	        selection.text(([i]) => formatDefault(T[i]));
 	}
-
-	function applyGroupedChannelStyles(selection, {target}, {ariaLabel: AL, title: T, fill: F, fillOpacity: FO, stroke: S, strokeOpacity: SO, strokeWidth: SW, opacity: O, href: H}) {
-	  if (AL) applyAttr(selection, "aria-label", ([i]) => AL[i]);
-	  if (F) applyAttr(selection, "fill", ([i]) => F[i]);
-	  if (FO) applyAttr(selection, "fill-opacity", ([i]) => FO[i]);
-	  if (S) applyAttr(selection, "stroke", ([i]) => S[i]);
-	  if (SO) applyAttr(selection, "stroke-opacity", ([i]) => SO[i]);
-	  if (SW) applyAttr(selection, "stroke-width", ([i]) => SW[i]);
-	  if (O) applyAttr(selection, "opacity", ([i]) => O[i]);
-	  if (H) applyHref(selection, ([i]) => H[i], target);
-	  applyTitleGroup(selection, T);
+	function applyGroupedChannelStyles(selection, { target }, { ariaLabel: AL, title: T, fill: F, fillOpacity: FO, stroke: S, strokeOpacity: SO, strokeWidth: SW, opacity: O, href: H }) {
+	    if (AL)
+	        applyAttr(selection, "aria-label", ([i]) => AL[i]);
+	    if (F)
+	        applyAttr(selection, "fill", ([i]) => F[i]);
+	    if (FO)
+	        applyAttr(selection, "fill-opacity", ([i]) => FO[i]);
+	    if (S)
+	        applyAttr(selection, "stroke", ([i]) => S[i]);
+	    if (SO)
+	        applyAttr(selection, "stroke-opacity", ([i]) => SO[i]);
+	    if (SW)
+	        applyAttr(selection, "stroke-width", ([i]) => SW[i]);
+	    if (O)
+	        applyAttr(selection, "opacity", ([i]) => O[i]);
+	    if (H)
+	        applyHref(selection, ([i]) => H[i], target);
+	    applyTitleGroup(selection, T);
 	}
-
-	function groupAesthetics({ariaLabel: AL, title: T, fill: F, fillOpacity: FO, stroke: S, strokeOpacity: SO, strokeWidth: SW, opacity: O, href: H}) {
-	  return [AL, T, F, FO, S, SO, SW, O, H].filter(c => c !== undefined);
+	function groupAesthetics({ ariaLabel: AL, title: T, fill: F, fillOpacity: FO, stroke: S, strokeOpacity: SO, strokeWidth: SW, opacity: O, href: H }) {
+	    return [AL, T, F, FO, S, SO, SW, O, H].filter(c => c !== undefined);
 	}
-
 	function groupZ(I, Z, z) {
-	  const G = group(I, i => Z[i]);
-	  if (z === undefined && G.size > I.length >> 1) {
-	    warn(`Warning: the implicit z channel has high cardinality. This may occur when the fill or stroke channel is associated with quantitative data rather than ordinal or categorical data. You can suppress this warning by setting the z option explicitly; if this data represents a single series, set z to null.`);
-	  }
-	  return G.values();
-	}
-
-	function* groupIndex(I, position, {z}, channels) {
-	  const {z: Z} = channels; // group channel
-	  const A = groupAesthetics(channels); // aesthetic channels
-	  const C = [...position, ...A]; // all channels
-
-	  // Group the current index by Z (if any).
-	  for (const G of Z ? groupZ(I, Z, z) : [I]) {
-	    let Ag; // the A-values (aesthetics) of the current group, if any
-	    let Gg; // the current group index (a subset of G, and I), if any
-	    out: for (const i of G) {
-
-	      // If any channel has an undefined value for this index, skip it.
-	      for (const c of C) {
-	        if (!defined(c[i])) {
-	          if (Gg) Gg.push(-1);
-	          continue out;
-	        }
-	      }
-
-	      // Otherwise, if this is a new group, record the aesthetics for this
-	      // group. Yield the current group and start a new one.
-	      if (Ag === undefined) {
-	        if (Gg) yield Gg;
-	        Ag = A.map(c => keyof(c[i])), Gg = [i];
-	        continue;
-	      }
-
-	      // Otherwise, add the current index to the current group. Then, if any of
-	      // the aesthetics don’t match the current group, yield the current group
-	      // and start a new group of the current index.
-	      Gg.push(i);
-	      for (let j = 0; j < A.length; ++j) {
-	        const k = keyof(A[j][i]);
-	        if (k !== Ag[j]) {
-	          yield Gg;
-	          Ag = A.map(c => keyof(c[i])), Gg = [i];
-	          continue out;
-	        }
-	      }
+	    const G = group(I, i => Z[i]);
+	    if (z === undefined && G.size > I.length >> 1) {
+	        warn(`Warning: the implicit z channel has high cardinality. This may occur when the fill or stroke channel is associated with quantitative data rather than ordinal or categorical data. You can suppress this warning by setting the z option explicitly; if this data represents a single series, set z to null.`);
 	    }
-
-	    // Yield the current group, if any.
-	    if (Gg) yield Gg;
-	  }
+	    return G.values();
 	}
-
+	function* groupIndex(I, position, { z }, channels) {
+	    const { z: Z } = channels; // group channel
+	    const A = groupAesthetics(channels); // aesthetic channels
+	    const C = [...position, ...A]; // all channels
+	    // Group the current index by Z (if any).
+	    for (const G of Z ? groupZ(I, Z, z) : [I]) {
+	        let Ag; // the A-values (aesthetics) of the current group, if any
+	        let Gg; // the current group index (a subset of G, and I), if any
+	        out: for (const i of G) {
+	            // If any channel has an undefined value for this index, skip it.
+	            for (const c of C) {
+	                if (!defined(c[i])) {
+	                    if (Gg)
+	                        Gg.push(-1);
+	                    continue out;
+	                }
+	            }
+	            // Otherwise, if this is a new group, record the aesthetics for this
+	            // group. Yield the current group and start a new one.
+	            if (Ag === undefined) {
+	                if (Gg)
+	                    yield Gg;
+	                Ag = A.map(c => keyof(c[i])), Gg = [i];
+	                continue;
+	            }
+	            // Otherwise, add the current index to the current group. Then, if any of
+	            // the aesthetics don’t match the current group, yield the current group
+	            // and start a new group of the current index.
+	            Gg.push(i);
+	            for (let j = 0; j < A.length; ++j) {
+	                const k = keyof(A[j][i]);
+	                if (k !== Ag[j]) {
+	                    yield Gg;
+	                    Ag = A.map(c => keyof(c[i])), Gg = [i];
+	                    continue out;
+	                }
+	            }
+	        }
+	        // Yield the current group, if any.
+	        if (Gg)
+	            yield Gg;
+	    }
+	}
 	// clip: true clips to the frame
 	// TODO: accept other types of clips (paths, urls, x, y, other marks?…)
 	// https://github.com/observablehq/plot/issues/181
 	function maybeClip(clip) {
-	  if (clip === true) return "frame";
-	  if (clip == null || clip === false) return false;
-	  throw new Error(`invalid clip method: ${clip}`);
+	    if (clip === true)
+	        return "frame";
+	    if (clip == null || clip === false)
+	        return false;
+	    throw new Error(`invalid clip method: ${clip}`);
 	}
-
-	function applyIndirectStyles(selection, mark, {width, height, marginLeft, marginRight, marginTop, marginBottom}) {
-	  applyAttr(selection, "aria-label", mark.ariaLabel);
-	  applyAttr(selection, "aria-description", mark.ariaDescription);
-	  applyAttr(selection, "aria-hidden", mark.ariaHidden);
-	  applyAttr(selection, "fill", mark.fill);
-	  applyAttr(selection, "fill-opacity", mark.fillOpacity);
-	  applyAttr(selection, "stroke", mark.stroke);
-	  applyAttr(selection, "stroke-width", mark.strokeWidth);
-	  applyAttr(selection, "stroke-opacity", mark.strokeOpacity);
-	  applyAttr(selection, "stroke-linejoin", mark.strokeLinejoin);
-	  applyAttr(selection, "stroke-linecap", mark.strokeLinecap);
-	  applyAttr(selection, "stroke-miterlimit", mark.strokeMiterlimit);
-	  applyAttr(selection, "stroke-dasharray", mark.strokeDasharray);
-	  applyAttr(selection, "stroke-dashoffset", mark.strokeDashoffset);
-	  applyAttr(selection, "shape-rendering", mark.shapeRendering);
-	  applyAttr(selection, "paint-order", mark.paintOrder);
-	  if (mark.clip === "frame") {
-	    const id = `plot-clip-${++nextClipId}`;
-	    selection
-	        .attr("clip-path", `url(#${id})`)
-	      .append("clipPath")
-	        .attr("id", id)
-	      .append("rect")
-	        .attr("x", marginLeft)
-	        .attr("y", marginTop)
-	        .attr("width", width - marginRight - marginLeft)
-	        .attr("height", height - marginTop - marginBottom);
-	  }
+	function applyIndirectStyles(selection, mark, scales, dimensions) {
+	    applyAttr(selection, "aria-label", mark.ariaLabel);
+	    applyAttr(selection, "aria-description", mark.ariaDescription);
+	    applyAttr(selection, "aria-hidden", mark.ariaHidden);
+	    applyAttr(selection, "fill", mark.fill);
+	    applyAttr(selection, "fill-opacity", mark.fillOpacity);
+	    applyAttr(selection, "stroke", mark.stroke);
+	    applyAttr(selection, "stroke-width", mark.strokeWidth);
+	    applyAttr(selection, "stroke-opacity", mark.strokeOpacity);
+	    applyAttr(selection, "stroke-linejoin", mark.strokeLinejoin);
+	    applyAttr(selection, "stroke-linecap", mark.strokeLinecap);
+	    applyAttr(selection, "stroke-miterlimit", mark.strokeMiterlimit);
+	    applyAttr(selection, "stroke-dasharray", mark.strokeDasharray);
+	    applyAttr(selection, "stroke-dashoffset", mark.strokeDashoffset);
+	    applyAttr(selection, "shape-rendering", mark.shapeRendering);
+	    applyAttr(selection, "paint-order", mark.paintOrder);
+	    applyAttr(selection, "pointer-events", mark.pointerEvents);
+	    if (mark.clip === "frame") {
+	        const { x, y } = scales;
+	        const { width, height, marginLeft, marginRight, marginTop, marginBottom } = dimensions;
+	        const id = `plot-clip-${++nextClipId}`;
+	        selection
+	            .attr("clip-path", `url(#${id})`)
+	            .append("clipPath")
+	            .attr("id", id)
+	            .append("rect")
+	            .attr("x", marginLeft - (x?.bandwidth ? x.bandwidth() / 2 : 0))
+	            .attr("y", marginTop - (y?.bandwidth ? y.bandwidth() / 2 : 0))
+	            .attr("width", width - marginRight - marginLeft)
+	            .attr("height", height - marginTop - marginBottom);
+	    }
 	}
-
 	function applyDirectStyles(selection, mark) {
-	  applyStyle(selection, "mix-blend-mode", mark.mixBlendMode);
-	  applyAttr(selection, "opacity", mark.opacity);
+	    applyStyle(selection, "mix-blend-mode", mark.mixBlendMode);
+	    applyAttr(selection, "opacity", mark.opacity);
 	}
-
 	function applyHref(selection, href, target) {
-	  selection.each(function(i) {
-	    const h = href(i);
-	    if (h != null) {
-	      const a = document.createElementNS(namespaces.svg, "a");
-	      a.setAttributeNS(namespaces.xlink, "href", h);
-	      if (target != null) a.setAttribute("target", target);
-	      this.parentNode.insertBefore(a, this).appendChild(this);
-	    }
-	  });
+	    selection.each(function (i) {
+	        const h = href(i);
+	        if (h != null) {
+	            const a = this.ownerDocument.createElementNS(namespaces.svg, "a");
+	            a.setAttribute("fill", "inherit");
+	            a.setAttributeNS(namespaces.xlink, "href", h);
+	            if (target != null)
+	                a.setAttribute("target", target);
+	            this.parentNode.insertBefore(a, this).appendChild(this);
+	        }
+	    });
 	}
-
 	function applyAttr(selection, name, value) {
-	  if (value != null) selection.attr(name, value);
+	    if (value != null)
+	        selection.attr(name, value);
 	}
-
 	function applyStyle(selection, name, value) {
-	  if (value != null) selection.style(name, value);
+	    if (value != null)
+	        selection.style(name, value);
 	}
-
-	function applyTransform(selection, x, y, tx, ty) {
-	  if (x && x.bandwidth) tx += x.bandwidth() / 2;
-	  if (y && y.bandwidth) ty += y.bandwidth() / 2;
-	  if (tx || ty) selection.attr("transform", `translate(${tx},${ty})`);
+	function applyTransform(selection, mark, { x, y }, tx = offset, ty = offset) {
+	    tx += mark.dx;
+	    ty += mark.dy;
+	    if (x?.bandwidth)
+	        tx += x.bandwidth() / 2;
+	    if (y?.bandwidth)
+	        ty += y.bandwidth() / 2;
+	    if (tx || ty)
+	        selection.attr("transform", `translate(${tx},${ty})`);
 	}
-
 	function impliedString(value, impliedValue) {
-	  if ((value = string(value)) !== impliedValue) return value;
+	    if ((value = string(value)) !== impliedValue)
+	        return value;
 	}
-
 	function impliedNumber(value, impliedValue) {
-	  if ((value = number(value)) !== impliedValue) return value;
+	    if ((value = number(value)) !== impliedValue)
+	        return value;
 	}
-
 	const validClassName = /^-?([_a-z]|[\240-\377]|\\[0-9a-f]{1,6}(\r\n|[ \t\r\n\f])?|\\[^\r\n\f0-9a-f])([_a-z0-9-]|[\240-\377]|\\[0-9a-f]{1,6}(\r\n|[ \t\r\n\f])?|\\[^\r\n\f0-9a-f])*$/;
-
 	function maybeClassName(name) {
-	  if (name === undefined) return `plot-${Math.random().toString(16).slice(2)}`;
-	  name = `${name}`;
-	  if (!validClassName.test(name)) throw new Error(`invalid class name: ${name}`);
-	  return name;
+	    if (name === undefined)
+	        return `plot-${Math.random().toString(16).slice(2)}`;
+	    name = `${name}`;
+	    if (!validClassName.test(name))
+	        throw new Error(`invalid class name: ${name}`);
+	    return name;
 	}
-
 	function applyInlineStyles(selection, style) {
-	  if (typeof style === "string") {
-	    selection.property("style", style);
-	  } else if (style != null) {
-	    for (const element of selection) {
-	      Object.assign(element.style, style);
+	    if (typeof style === "string") {
+	        selection.property("style", style);
 	    }
-	  }
+	    else if (style != null) {
+	        for (const element of selection) {
+	            Object.assign(element.style, style);
+	        }
+	    }
 	}
 
 	class AxisX {
-	  constructor({
-	    name = "x",
-	    axis,
-	    ticks,
-	    tickSize = name === "fx" ? 0 : 6,
-	    tickPadding = tickSize === 0 ? 9 : 3,
-	    tickFormat,
-	    fontVariant,
-	    grid,
-	    label,
-	    labelAnchor,
-	    labelOffset,
-	    line,
-	    tickRotate,
-	    ariaLabel,
-	    ariaDescription
-	  } = {}) {
-	    this.name = name;
-	    this.axis = keyword(axis, "axis", ["top", "bottom"]);
-	    this.ticks = maybeTicks(ticks);
-	    this.tickSize = number(tickSize);
-	    this.tickPadding = number(tickPadding);
-	    this.tickFormat = maybeTickFormat(tickFormat);
-	    this.fontVariant = impliedString(fontVariant, "normal");
-	    this.grid = boolean(grid);
-	    this.label = string(label);
-	    this.labelAnchor = maybeKeyword(labelAnchor, "labelAnchor", ["center", "left", "right"]);
-	    this.labelOffset = number(labelOffset);
-	    this.line = boolean(line);
-	    this.tickRotate = number(tickRotate);
-	    this.ariaLabel = string(ariaLabel);
-	    this.ariaDescription = string(ariaDescription);
-	  }
-	  render(
-	    index,
-	    {[this.name]: x, fy},
-	    {
-	      width,
-	      height,
-	      marginTop,
-	      marginRight,
-	      marginBottom,
-	      marginLeft,
-	      offsetLeft = 0,
-	      facetMarginTop,
-	      facetMarginBottom,
-	      labelMarginLeft = 0,
-	      labelMarginRight = 0
+	    constructor({ name = "x", axis, ticks, tickSize = name === "fx" ? 0 : 6, tickPadding = tickSize === 0 ? 9 : 3, tickFormat, fontVariant, grid, label, labelAnchor, labelOffset, line, tickRotate, ariaLabel, ariaDescription } = {}) {
+	        this.name = name;
+	        this.axis = keyword(axis, "axis", ["top", "bottom"]);
+	        this.ticks = maybeTicks(ticks);
+	        this.tickSize = number(tickSize);
+	        this.tickPadding = number(tickPadding);
+	        this.tickFormat = maybeTickFormat(tickFormat);
+	        this.fontVariant = impliedString(fontVariant, "normal");
+	        this.grid = boolean(grid);
+	        this.label = string(label);
+	        this.labelAnchor = maybeKeyword(labelAnchor, "labelAnchor", ["center", "left", "right"]);
+	        this.labelOffset = number(labelOffset);
+	        this.line = boolean(line);
+	        this.tickRotate = number(tickRotate);
+	        this.ariaLabel = string(ariaLabel);
+	        this.ariaDescription = string(ariaDescription);
 	    }
-	  ) {
-	    const {
-	      axis,
-	      fontVariant,
-	      grid,
-	      label,
-	      labelAnchor,
-	      labelOffset,
-	      line,
-	      name,
-	      tickRotate
-	    } = this;
-	    const offset = name === "x" ? 0 : axis === "top" ? marginTop - facetMarginTop : marginBottom - facetMarginBottom;
-	    const offsetSign = axis === "top" ? -1 : 1;
-	    const ty = offsetSign * offset + (axis === "top" ? marginTop : height - marginBottom);
-	    return create("svg:g")
-	        .call(applyAria, this)
-	        .attr("transform", `translate(${offsetLeft},${ty})`)
-	        .call(createAxis(axis === "top" ? axisTop : axisBottom, x, this))
-	        .call(maybeTickRotate, tickRotate)
-	        .attr("font-size", null)
-	        .attr("font-family", null)
-	        .attr("font-variant", fontVariant)
-	        .call(!line ? g => g.select(".domain").remove() : () => {})
-	        .call(!grid ? () => {}
-	          : fy ? gridFacetX(index, fy, -ty)
-	          : gridX(offsetSign * (marginBottom + marginTop - height)))
-	        .call(!label ? () => {} : g => g.append("text")
+	    render(index, { [this.name]: x, fy }, { width, height, marginTop, marginRight, marginBottom, marginLeft, offsetLeft = 0, facetMarginTop, facetMarginBottom, labelMarginLeft = 0, labelMarginRight = 0 }, context) {
+	        const { axis, fontVariant, grid, label, labelAnchor, labelOffset, line, name, tickRotate } = this;
+	        const offset = name === "x" ? 0 : axis === "top" ? marginTop - facetMarginTop : marginBottom - facetMarginBottom;
+	        const offsetSign = axis === "top" ? -1 : 1;
+	        const ty = offsetSign * offset + (axis === "top" ? marginTop : height - marginBottom);
+	        return create("svg:g", context)
+	            .call(applyAria, this)
+	            .attr("transform", `translate(${offsetLeft},${ty})`)
+	            .call(createAxis(axis === "top" ? axisTop : axisBottom, x, this))
+	            .call(maybeTickRotate, tickRotate)
+	            .attr("font-size", null)
+	            .attr("font-family", null)
+	            .attr("font-variant", fontVariant)
+	            .call(!line ? g => g.select(".domain").remove() : () => { })
+	            .call(!grid ? () => { }
+	            : fy ? gridFacetX(index, fy, -ty)
+	                : gridX(offsetSign * (marginBottom + marginTop - height)))
+	            .call(!label ? () => { } : g => g.append("text")
 	            .attr("fill", "currentColor")
-	            .attr("transform", `translate(${
-                labelAnchor === "center" ? (width + marginLeft - marginRight) / 2
-                  : labelAnchor === "right" ? width + labelMarginRight
-                  : -labelMarginLeft
-              },${labelOffset * offsetSign})`)
+	            .attr("transform", `translate(${labelAnchor === "center" ? (width + marginLeft - marginRight) / 2
+            : labelAnchor === "right" ? width + labelMarginRight
+                : -labelMarginLeft},${labelOffset * offsetSign})`)
 	            .attr("dy", axis === "top" ? "1em" : "-0.32em")
 	            .attr("text-anchor", labelAnchor === "center" ? "middle"
-	                : labelAnchor === "right" ? "end"
+	            : labelAnchor === "right" ? "end"
 	                : "start")
 	            .text(label))
-	      .node();
-	  }
-	}
-
-	class AxisY {
-	  constructor({
-	    name = "y",
-	    axis,
-	    ticks,
-	    tickSize = name === "fy" ? 0 : 6,
-	    tickPadding = tickSize === 0 ? 9 : 3,
-	    tickFormat,
-	    fontVariant,
-	    grid,
-	    label,
-	    labelAnchor,
-	    labelOffset,
-	    line,
-	    tickRotate,
-	    ariaLabel,
-	    ariaDescription
-	  } = {}) {
-	    this.name = name;
-	    this.axis = keyword(axis, "axis", ["left", "right"]);
-	    this.ticks = maybeTicks(ticks);
-	    this.tickSize = number(tickSize);
-	    this.tickPadding = number(tickPadding);
-	    this.tickFormat = maybeTickFormat(tickFormat);
-	    this.fontVariant = impliedString(fontVariant, "normal");
-	    this.grid = boolean(grid);
-	    this.label = string(label);
-	    this.labelAnchor = maybeKeyword(labelAnchor, "labelAnchor", ["center", "top", "bottom"]);
-	    this.labelOffset = number(labelOffset);
-	    this.line = boolean(line);
-	    this.tickRotate = number(tickRotate);
-	    this.ariaLabel = string(ariaLabel);
-	    this.ariaDescription = string(ariaDescription);
-	  }
-	  render(
-	    index,
-	    {[this.name]: y, fx},
-	    {
-	      width,
-	      height,
-	      marginTop,
-	      marginRight,
-	      marginBottom,
-	      marginLeft,
-	      offsetTop = 0,
-	      facetMarginLeft,
-	      facetMarginRight
+	            .node();
 	    }
-	  ) {
-	    const {
-	      axis,
-	      fontVariant,
-	      grid,
-	      label,
-	      labelAnchor,
-	      labelOffset,
-	      line,
-	      name,
-	      tickRotate
-	    } = this;
-	    const offset = name === "y" ? 0 : axis === "left" ? marginLeft - facetMarginLeft : marginRight - facetMarginRight;
-	    const offsetSign = axis === "left" ? -1 : 1;
-	    const tx = offsetSign * offset + (axis === "right" ? width - marginRight : marginLeft);
-	    return create("svg:g")
-	        .call(applyAria, this)
-	        .attr("transform", `translate(${tx},${offsetTop})`)
-	        .call(createAxis(axis === "right" ? axisRight : axisLeft, y, this))
-	        .call(maybeTickRotate, tickRotate)
-	        .attr("font-size", null)
-	        .attr("font-family", null)
-	        .attr("font-variant", fontVariant)
-	        .call(!line ? g => g.select(".domain").remove() : () => {})
-	        .call(!grid ? () => {}
-	          : fx ? gridFacetY(index, fx, -tx)
-	          : gridY(offsetSign * (marginLeft + marginRight - width)))
-	        .call(!label ? () => {} : g => g.append("text")
+	}
+	class AxisY {
+	    constructor({ name = "y", axis, ticks, tickSize = name === "fy" ? 0 : 6, tickPadding = tickSize === 0 ? 9 : 3, tickFormat, fontVariant, grid, label, labelAnchor, labelOffset, line, tickRotate, ariaLabel, ariaDescription } = {}) {
+	        this.name = name;
+	        this.axis = keyword(axis, "axis", ["left", "right"]);
+	        this.ticks = maybeTicks(ticks);
+	        this.tickSize = number(tickSize);
+	        this.tickPadding = number(tickPadding);
+	        this.tickFormat = maybeTickFormat(tickFormat);
+	        this.fontVariant = impliedString(fontVariant, "normal");
+	        this.grid = boolean(grid);
+	        this.label = string(label);
+	        this.labelAnchor = maybeKeyword(labelAnchor, "labelAnchor", ["center", "top", "bottom"]);
+	        this.labelOffset = number(labelOffset);
+	        this.line = boolean(line);
+	        this.tickRotate = number(tickRotate);
+	        this.ariaLabel = string(ariaLabel);
+	        this.ariaDescription = string(ariaDescription);
+	    }
+	    render(index, { [this.name]: y, fx }, { width, height, marginTop, marginRight, marginBottom, marginLeft, offsetTop = 0, facetMarginLeft, facetMarginRight }, context) {
+	        const { axis, fontVariant, grid, label, labelAnchor, labelOffset, line, name, tickRotate } = this;
+	        const offset = name === "y" ? 0 : axis === "left" ? marginLeft - facetMarginLeft : marginRight - facetMarginRight;
+	        const offsetSign = axis === "left" ? -1 : 1;
+	        const tx = offsetSign * offset + (axis === "right" ? width - marginRight : marginLeft);
+	        return create("svg:g", context)
+	            .call(applyAria, this)
+	            .attr("transform", `translate(${tx},${offsetTop})`)
+	            .call(createAxis(axis === "right" ? axisRight : axisLeft, y, this))
+	            .call(maybeTickRotate, tickRotate)
+	            .attr("font-size", null)
+	            .attr("font-family", null)
+	            .attr("font-variant", fontVariant)
+	            .call(!line ? g => g.select(".domain").remove() : () => { })
+	            .call(!grid ? () => { }
+	            : fx ? gridFacetY(index, fx, -tx)
+	                : gridY(offsetSign * (marginLeft + marginRight - width)))
+	            .call(!label ? () => { } : g => g.append("text")
 	            .attr("fill", "currentColor")
 	            .attr("font-variant", fontVariant == null ? null : "normal")
-	            .attr("transform", `translate(${labelOffset * offsetSign},${
-                labelAnchor === "center" ? (height + marginTop - marginBottom) / 2
-                  : labelAnchor === "bottom" ? height - marginBottom
-                  : marginTop
-              })${labelAnchor === "center" ? ` rotate(-90)` : ""}`)
+	            .attr("transform", `translate(${labelOffset * offsetSign},${labelAnchor === "center" ? (height + marginTop - marginBottom) / 2
+            : labelAnchor === "bottom" ? height - marginBottom
+                : marginTop})${labelAnchor === "center" ? ` rotate(-90)` : ""}`)
 	            .attr("dy", labelAnchor === "center" ? (axis === "right" ? "-0.32em" : "0.75em")
-	                : labelAnchor === "bottom" ? "1.4em"
+	            : labelAnchor === "bottom" ? "1.4em"
 	                : "-1em")
 	            .attr("text-anchor", labelAnchor === "center" ? "middle"
-	                : axis === "right" ? "end"
+	            : axis === "right" ? "end"
 	                : "start")
 	            .text(label))
-	      .node();
-	  }
+	            .node();
+	    }
 	}
-
-	function applyAria(selection, {
-	  name,
-	  label,
-	  ariaLabel = `${name}-axis`,
-	  ariaDescription = label
-	}) {
-	  applyAttr(selection, "aria-label", ariaLabel);
-	  applyAttr(selection, "aria-description", ariaDescription);
+	function applyAria(selection, { name, label, ariaLabel = `${name}-axis`, ariaDescription = label }) {
+	    applyAttr(selection, "aria-label", ariaLabel);
+	    applyAttr(selection, "aria-description", ariaDescription);
 	}
-
 	function gridX(y2) {
-	  return g => g.selectAll(".tick line")
-	    .clone(true)
-	      .attr("stroke-opacity", 0.1)
-	      .attr("y2", y2);
+	    return g => g.selectAll(".tick line")
+	        .clone(true)
+	        .attr("stroke-opacity", 0.1)
+	        .attr("y2", y2);
 	}
-
 	function gridY(x2) {
-	  return g => g.selectAll(".tick line")
-	    .clone(true)
-	      .attr("stroke-opacity", 0.1)
-	      .attr("x2", x2);
+	    return g => g.selectAll(".tick line")
+	        .clone(true)
+	        .attr("stroke-opacity", 0.1)
+	        .attr("x2", x2);
 	}
-
 	function gridFacetX(index, fy, ty) {
-	  const dy = fy.bandwidth();
-	  const domain = fy.domain();
-	  return g => g.selectAll(".tick")
-	    .append("path")
-	      .attr("stroke", "currentColor")
-	      .attr("stroke-opacity", 0.1)
-	      .attr("d", (index ? take(domain, index) : domain).map(v => `M0,${fy(v) + ty}v${dy}`).join(""));
+	    const dy = fy.bandwidth();
+	    const domain = fy.domain();
+	    return g => g.selectAll(".tick")
+	        .append("path")
+	        .attr("stroke", "currentColor")
+	        .attr("stroke-opacity", 0.1)
+	        .attr("d", (index ? take(domain, index) : domain).map(v => `M0,${fy(v) + ty}v${dy}`).join(""));
 	}
-
 	function gridFacetY(index, fx, tx) {
-	  const dx = fx.bandwidth();
-	  const domain = fx.domain();
-	  return g => g.selectAll(".tick")
-	    .append("path")
-	      .attr("stroke", "currentColor")
-	      .attr("stroke-opacity", 0.1)
-	      .attr("d", (index ? take(domain, index) : domain).map(v => `M${fx(v) + tx},0h${dx}`).join(""));
+	    const dx = fx.bandwidth();
+	    const domain = fx.domain();
+	    return g => g.selectAll(".tick")
+	        .append("path")
+	        .attr("stroke", "currentColor")
+	        .attr("stroke-opacity", 0.1)
+	        .attr("d", (index ? take(domain, index) : domain).map(v => `M${fx(v) + tx},0h${dx}`).join(""));
 	}
-
 	function maybeTicks(ticks) {
-	  return ticks === null ? [] : ticks;
+	    return ticks === null ? [] : ticks;
 	}
-
 	function maybeTickFormat(tickFormat) {
-	  return tickFormat === null ? () => null : tickFormat;
+	    return tickFormat === null ? () => null : tickFormat;
 	}
-
 	// D3 doesn’t provide a tick format for ordinal scales; we want shorthand when
 	// an ordinal domain is numbers or dates, and we want null to mean the empty
 	// string, not the default identity format.
 	function maybeAutoTickFormat(tickFormat, domain) {
-	  return tickFormat === undefined ? (isTemporal(domain) ? formatIsoDate : string)
-	      : typeof tickFormat === "function" ? tickFormat
-	      : (typeof tickFormat === "string" ? (isTemporal(domain) ? utcFormat : format$1)
-	      : constant)(tickFormat);
+	    return tickFormat === undefined ? (isTemporal(domain) ? formatIsoDate : string)
+	        : typeof tickFormat === "function" ? tickFormat
+	            : (typeof tickFormat === "string" ? (isTemporal(domain) ? utcFormat : format$1)
+	                : constant)(tickFormat);
 	}
-
-	function createAxis(axis, scale, {ticks, tickSize, tickPadding, tickFormat}) {
-	  if (!scale.tickFormat) {
-	    tickFormat = maybeAutoTickFormat(tickFormat, scale.domain());
-	  }
-	  return axis(scale)
-	    .ticks(Array.isArray(ticks) ? null : ticks, typeof tickFormat === "function" ? null : tickFormat)
-	    .tickFormat(typeof tickFormat === "function" ? tickFormat : null)
-	    .tickSizeInner(tickSize)
-	    .tickSizeOuter(0)
-	    .tickPadding(tickPadding)
-	    .tickValues(Array.isArray(ticks) ? ticks : null);
-	}
-
-	function maybeTickRotate(g, rotate) {
-	  if (!(rotate = +rotate)) return;
-	  for (const text of g.selectAll("text")) {
-	    const x = +text.getAttribute("x");
-	    const y = +text.getAttribute("y");
-	    if (Math.abs(y) > Math.abs(x)) {
-	      const s = Math.sign(y);
-	      text.setAttribute("transform", `translate(0, ${y + s * 4 * Math.cos(rotate * radians)}) rotate(${rotate})`);
-	      text.setAttribute("text-anchor", Math.abs(rotate) < 10 ? "middle" : (rotate < 0) ^ (s > 0) ? "start" : "end");
-	    } else {
-	      const s = Math.sign(x);
-	      text.setAttribute("transform", `translate(${x + s * 4 * Math.abs(Math.sin(rotate * radians))}, 0) rotate(${rotate})`);
-	      text.setAttribute("text-anchor", Math.abs(rotate) > 60 ? "middle" : s > 0 ? "start" : "end");
+	function createAxis(axis, scale, { ticks, tickSize, tickPadding, tickFormat }) {
+	    if (!scale.tickFormat) {
+	        tickFormat = maybeAutoTickFormat(tickFormat, scale.domain());
 	    }
-	    text.removeAttribute("x");
-	    text.removeAttribute("y");
-	    text.setAttribute("dy", "0.32em");
-	  }
+	    return axis(scale)
+	        .ticks(Array.isArray(ticks) ? null : ticks, typeof tickFormat === "function" ? null : tickFormat)
+	        .tickFormat(typeof tickFormat === "function" ? tickFormat : null)
+	        .tickSizeInner(tickSize)
+	        .tickSizeOuter(0)
+	        .tickPadding(tickPadding)
+	        .tickValues(Array.isArray(ticks) ? ticks : null);
+	}
+	function maybeTickRotate(g, rotate) {
+	    if (!(rotate = +rotate))
+	        return;
+	    for (const text of g.selectAll("text")) {
+	        const x = +text.getAttribute("x");
+	        const y = +text.getAttribute("y");
+	        if (Math.abs(y) > Math.abs(x)) {
+	            const s = Math.sign(y);
+	            text.setAttribute("transform", `translate(0, ${y + s * 4 * Math.cos(rotate * radians)}) rotate(${rotate})`);
+	            text.setAttribute("text-anchor", Math.abs(rotate) < 10 ? "middle" : (rotate < 0) ^ (s > 0) ? "start" : "end");
+	        }
+	        else {
+	            const s = Math.sign(x);
+	            text.setAttribute("transform", `translate(${x + s * 4 * Math.abs(Math.sin(rotate * radians))}, 0) rotate(${rotate})`);
+	            text.setAttribute("text-anchor", Math.abs(rotate) > 60 ? "middle" : s > 0 ? "start" : "end");
+	        }
+	        text.removeAttribute("x");
+	        text.removeAttribute("y");
+	        text.setAttribute("dy", "0.32em");
+	    }
 	}
 
 	// Positional scales have associated axes, and for ordinal data, a point or band
 	// scale is used instead of an ordinal scale.
 	const position = Symbol("position");
-
 	// Color scales default to the turbo interpolator for quantitative data, and to
 	// the Tableau10 scheme for ordinal data. In the future, color scales may also
 	// have an associated legend.
 	const color = Symbol("color");
-
 	// Radius scales default to the sqrt type, have a default range of [0, 3], and a
 	// default domain from 0 to the median first quartile of associated channels.
 	const radius = Symbol("radius");
-
 	// Length scales default to the linear type, have a default range of [0, 12],
 	// and a default domain from 0 to the median median of associated channels.
 	const length = Symbol("length");
-
 	// Opacity scales have a default range of [0, 1], and a default domain from 0 to
 	// the maximum value of associated channels.
 	const opacity = Symbol("opacity");
-
 	// Symbol scales have a default range of d3.symbols.
 	const symbol = Symbol("symbol");
-
 	// TODO Rather than hard-coding the list of known scale names, collect the names
 	// and categories for each plot specification, so that custom marks can register
 	// custom scales.
 	const registry = new Map([
-	  ["x", position],
-	  ["y", position],
-	  ["fx", position],
-	  ["fy", position],
-	  ["r", radius],
-	  ["color", color],
-	  ["opacity", opacity],
-	  ["symbol", symbol],
-	  ["length", length]
+	    ["x", position],
+	    ["y", position],
+	    ["fx", position],
+	    ["fy", position],
+	    ["r", radius],
+	    ["color", color],
+	    ["opacity", opacity],
+	    ["symbol", symbol],
+	    ["length", length]
 	]);
 
 	const ordinalSchemes = new Map([
-	  // categorical
-	  ["accent", schemeAccent],
-	  ["category10", schemeCategory10],
-	  ["dark2", schemeDark2],
-	  ["paired", schemePaired],
-	  ["pastel1", schemePastel1],
-	  ["pastel2", schemePastel2],
-	  ["set1", schemeSet1],
-	  ["set2", schemeSet2],
-	  ["set3", schemeSet3],
-	  ["tableau10", schemeTableau10],
-
-	  // diverging
-	  ["brbg", scheme11(scheme$q, interpolateBrBG)],
-	  ["prgn", scheme11(scheme$p, interpolatePRGn)],
-	  ["piyg", scheme11(scheme$o, interpolatePiYG)],
-	  ["puor", scheme11(scheme$n, interpolatePuOr)],
-	  ["rdbu", scheme11(scheme$m, interpolateRdBu)],
-	  ["rdgy", scheme11(scheme$l, interpolateRdGy)],
-	  ["rdylbu", scheme11(scheme$k, interpolateRdYlBu)],
-	  ["rdylgn", scheme11(scheme$j, interpolateRdYlGn)],
-	  ["spectral", scheme11(scheme$i, interpolateSpectral)],
-
-	  // reversed diverging (for temperature data)
-	  ["burd", scheme11r(scheme$m, interpolateRdBu)],
-	  ["buylrd", scheme11r(scheme$k, interpolateRdYlBu)],
-
-	  // sequential (single-hue)
-	  ["blues", scheme9(scheme$5, interpolateBlues)],
-	  ["greens", scheme9(scheme$4, interpolateGreens)],
-	  ["greys", scheme9(scheme$3, interpolateGreys)],
-	  ["oranges", scheme9(scheme, interpolateOranges)],
-	  ["purples", scheme9(scheme$2, interpolatePurples)],
-	  ["reds", scheme9(scheme$1, interpolateReds)],
-
-	  // sequential (multi-hue)
-	  ["turbo", schemei(interpolateTurbo)],
-	  ["viridis", schemei(interpolateViridis)],
-	  ["magma", schemei(magma)],
-	  ["inferno", schemei(inferno)],
-	  ["plasma", schemei(plasma)],
-	  ["cividis", schemei(interpolateCividis)],
-	  ["cubehelix", schemei(interpolateCubehelixDefault)],
-	  ["warm", schemei(warm)],
-	  ["cool", schemei(cool)],
-	  ["bugn", scheme9(scheme$h, interpolateBuGn)],
-	  ["bupu", scheme9(scheme$g, interpolateBuPu)],
-	  ["gnbu", scheme9(scheme$f, interpolateGnBu)],
-	  ["orrd", scheme9(scheme$e, interpolateOrRd)],
-	  ["pubu", scheme9(scheme$c, interpolatePuBu)],
-	  ["pubugn", scheme9(scheme$d, interpolatePuBuGn)],
-	  ["purd", scheme9(scheme$b, interpolatePuRd)],
-	  ["rdpu", scheme9(scheme$a, interpolateRdPu)],
-	  ["ylgn", scheme9(scheme$8, interpolateYlGn)],
-	  ["ylgnbu", scheme9(scheme$9, interpolateYlGnBu)],
-	  ["ylorbr", scheme9(scheme$7, interpolateYlOrBr)],
-	  ["ylorrd", scheme9(scheme$6, interpolateYlOrRd)],
-
-	  // cyclical
-	  ["rainbow", schemeicyclical(interpolateRainbow)],
-	  ["sinebow", schemeicyclical(interpolateSinebow)]
+	    // categorical
+	    ["accent", schemeAccent],
+	    ["category10", schemeCategory10],
+	    ["dark2", schemeDark2],
+	    ["paired", schemePaired],
+	    ["pastel1", schemePastel1],
+	    ["pastel2", schemePastel2],
+	    ["set1", schemeSet1],
+	    ["set2", schemeSet2],
+	    ["set3", schemeSet3],
+	    ["tableau10", schemeTableau10],
+	    // diverging
+	    ["brbg", scheme11(scheme$q, interpolateBrBG)],
+	    ["prgn", scheme11(scheme$p, interpolatePRGn)],
+	    ["piyg", scheme11(scheme$o, interpolatePiYG)],
+	    ["puor", scheme11(scheme$n, interpolatePuOr)],
+	    ["rdbu", scheme11(scheme$m, interpolateRdBu)],
+	    ["rdgy", scheme11(scheme$l, interpolateRdGy)],
+	    ["rdylbu", scheme11(scheme$k, interpolateRdYlBu)],
+	    ["rdylgn", scheme11(scheme$j, interpolateRdYlGn)],
+	    ["spectral", scheme11(scheme$i, interpolateSpectral)],
+	    // reversed diverging (for temperature data)
+	    ["burd", scheme11r(scheme$m, interpolateRdBu)],
+	    ["buylrd", scheme11r(scheme$k, interpolateRdYlBu)],
+	    // sequential (single-hue)
+	    ["blues", scheme9(scheme$5, interpolateBlues)],
+	    ["greens", scheme9(scheme$4, interpolateGreens)],
+	    ["greys", scheme9(scheme$3, interpolateGreys)],
+	    ["oranges", scheme9(scheme, interpolateOranges)],
+	    ["purples", scheme9(scheme$2, interpolatePurples)],
+	    ["reds", scheme9(scheme$1, interpolateReds)],
+	    // sequential (multi-hue)
+	    ["turbo", schemei(interpolateTurbo)],
+	    ["viridis", schemei(interpolateViridis)],
+	    ["magma", schemei(magma)],
+	    ["inferno", schemei(inferno)],
+	    ["plasma", schemei(plasma)],
+	    ["cividis", schemei(interpolateCividis)],
+	    ["cubehelix", schemei(interpolateCubehelixDefault)],
+	    ["warm", schemei(warm)],
+	    ["cool", schemei(cool)],
+	    ["bugn", scheme9(scheme$h, interpolateBuGn)],
+	    ["bupu", scheme9(scheme$g, interpolateBuPu)],
+	    ["gnbu", scheme9(scheme$f, interpolateGnBu)],
+	    ["orrd", scheme9(scheme$e, interpolateOrRd)],
+	    ["pubu", scheme9(scheme$c, interpolatePuBu)],
+	    ["pubugn", scheme9(scheme$d, interpolatePuBuGn)],
+	    ["purd", scheme9(scheme$b, interpolatePuRd)],
+	    ["rdpu", scheme9(scheme$a, interpolateRdPu)],
+	    ["ylgn", scheme9(scheme$8, interpolateYlGn)],
+	    ["ylgnbu", scheme9(scheme$9, interpolateYlGnBu)],
+	    ["ylorbr", scheme9(scheme$7, interpolateYlOrBr)],
+	    ["ylorrd", scheme9(scheme$6, interpolateYlOrRd)],
+	    // cyclical
+	    ["rainbow", schemeicyclical(interpolateRainbow)],
+	    ["sinebow", schemeicyclical(interpolateSinebow)]
 	]);
-
 	function scheme9(scheme, interpolate) {
-	  return ({length: n}) => {
-	    if (n === 1) return [scheme[3][1]]; // favor midpoint
-	    if (n === 2) return [scheme[3][1], scheme[3][2]]; // favor darker
-	    n = Math.max(3, Math.floor(n));
-	    return n > 9 ? quantize(interpolate, n) : scheme[n];
-	  };
+	    return ({ length: n }) => {
+	        if (n === 1)
+	            return [scheme[3][1]]; // favor midpoint
+	        if (n === 2)
+	            return [scheme[3][1], scheme[3][2]]; // favor darker
+	        n = Math.max(3, Math.floor(n));
+	        return n > 9 ? quantize(interpolate, n) : scheme[n];
+	    };
 	}
-
 	function scheme11(scheme, interpolate) {
-	  return ({length: n}) => {
-	    if (n === 2) return [scheme[3][0], scheme[3][2]]; // favor diverging extrema
-	    n = Math.max(3, Math.floor(n));
-	    return n > 11 ? quantize(interpolate, n) : scheme[n];
-	  };
+	    return ({ length: n }) => {
+	        if (n === 2)
+	            return [scheme[3][0], scheme[3][2]]; // favor diverging extrema
+	        n = Math.max(3, Math.floor(n));
+	        return n > 11 ? quantize(interpolate, n) : scheme[n];
+	    };
 	}
-
 	function scheme11r(scheme, interpolate) {
-	  return ({length: n}) => {
-	    if (n === 2) return [scheme[3][2], scheme[3][0]]; // favor diverging extrema
-	    n = Math.max(3, Math.floor(n));
-	    return n > 11 ? quantize(t => interpolate(1 - t), n) : scheme[n].slice().reverse();
-	  };
+	    return ({ length: n }) => {
+	        if (n === 2)
+	            return [scheme[3][2], scheme[3][0]]; // favor diverging extrema
+	        n = Math.max(3, Math.floor(n));
+	        return n > 11 ? quantize(t => interpolate(1 - t), n) : scheme[n].slice().reverse();
+	    };
 	}
-
 	function schemei(interpolate) {
-	  return ({length: n}) => quantize(interpolate, Math.max(2, Math.floor(n)));
+	    return ({ length: n }) => quantize(interpolate, Math.max(2, Math.floor(n)));
 	}
-
 	function schemeicyclical(interpolate) {
-	  return ({length: n}) => quantize(interpolate, Math.floor(n) + 1).slice(0, -1);
+	    return ({ length: n }) => quantize(interpolate, Math.floor(n) + 1).slice(0, -1);
 	}
-
 	function ordinalScheme(scheme) {
-	  const s = `${scheme}`.toLowerCase();
-	  if (!ordinalSchemes.has(s)) throw new Error(`unknown scheme: ${s}`);
-	  return ordinalSchemes.get(s);
+	    const s = `${scheme}`.toLowerCase();
+	    if (!ordinalSchemes.has(s))
+	        throw new Error(`unknown scheme: ${s}`);
+	    return ordinalSchemes.get(s);
 	}
-
 	function ordinalRange(scheme, length) {
-	  const s = ordinalScheme(scheme);
-	  const r = typeof s === "function" ? s({length}) : s;
-	  return r.length !== length ? r.slice(0, length) : r;
+	    const s = ordinalScheme(scheme);
+	    const r = typeof s === "function" ? s({ length }) : s;
+	    return r.length !== length ? r.slice(0, length) : r;
 	}
-
 	// If the specified domain contains only booleans (ignoring null and undefined),
 	// returns a corresponding range where false is mapped to the low color and true
 	// is mapped to the high color of the specified scheme.
 	function maybeBooleanRange(domain, scheme = "greys") {
-	  const range = new Set();
-	  const [f, t] = ordinalRange(scheme, 2);
-	  for (const value of domain) {
-	    if (value == null) continue;
-	    if (value === true) range.add(t);
-	    else if (value === false) range.add(f);
-	    else return;
-	  }
-	  return [...range];
+	    const range = new Set();
+	    const [f, t] = ordinalRange(scheme, 2);
+	    for (const value of domain) {
+	        if (value == null)
+	            continue;
+	        if (value === true)
+	            range.add(t);
+	        else if (value === false)
+	            range.add(f);
+	        else
+	            return;
+	    }
+	    return [...range];
 	}
-
 	const quantitativeSchemes = new Map([
-	  // diverging
-	  ["brbg", interpolateBrBG],
-	  ["prgn", interpolatePRGn],
-	  ["piyg", interpolatePiYG],
-	  ["puor", interpolatePuOr],
-	  ["rdbu", interpolateRdBu],
-	  ["rdgy", interpolateRdGy],
-	  ["rdylbu", interpolateRdYlBu],
-	  ["rdylgn", interpolateRdYlGn],
-	  ["spectral", interpolateSpectral],
-
-	  // reversed diverging (for temperature data)
-	  ["burd", t => interpolateRdBu(1 - t)],
-	  ["buylrd", t => interpolateRdYlBu(1 - t)],
-
-	  // sequential (single-hue)
-	  ["blues", interpolateBlues],
-	  ["greens", interpolateGreens],
-	  ["greys", interpolateGreys],
-	  ["purples", interpolatePurples],
-	  ["reds", interpolateReds],
-	  ["oranges", interpolateOranges],
-
-	  // sequential (multi-hue)
-	  ["turbo", interpolateTurbo],
-	  ["viridis", interpolateViridis],
-	  ["magma", magma],
-	  ["inferno", inferno],
-	  ["plasma", plasma],
-	  ["cividis", interpolateCividis],
-	  ["cubehelix", interpolateCubehelixDefault],
-	  ["warm", warm],
-	  ["cool", cool],
-	  ["bugn", interpolateBuGn],
-	  ["bupu", interpolateBuPu],
-	  ["gnbu", interpolateGnBu],
-	  ["orrd", interpolateOrRd],
-	  ["pubugn", interpolatePuBuGn],
-	  ["pubu", interpolatePuBu],
-	  ["purd", interpolatePuRd],
-	  ["rdpu", interpolateRdPu],
-	  ["ylgnbu", interpolateYlGnBu],
-	  ["ylgn", interpolateYlGn],
-	  ["ylorbr", interpolateYlOrBr],
-	  ["ylorrd", interpolateYlOrRd],
-
-	  // cyclical
-	  ["rainbow", interpolateRainbow],
-	  ["sinebow", interpolateSinebow]
+	    // diverging
+	    ["brbg", interpolateBrBG],
+	    ["prgn", interpolatePRGn],
+	    ["piyg", interpolatePiYG],
+	    ["puor", interpolatePuOr],
+	    ["rdbu", interpolateRdBu],
+	    ["rdgy", interpolateRdGy],
+	    ["rdylbu", interpolateRdYlBu],
+	    ["rdylgn", interpolateRdYlGn],
+	    ["spectral", interpolateSpectral],
+	    // reversed diverging (for temperature data)
+	    ["burd", t => interpolateRdBu(1 - t)],
+	    ["buylrd", t => interpolateRdYlBu(1 - t)],
+	    // sequential (single-hue)
+	    ["blues", interpolateBlues],
+	    ["greens", interpolateGreens],
+	    ["greys", interpolateGreys],
+	    ["purples", interpolatePurples],
+	    ["reds", interpolateReds],
+	    ["oranges", interpolateOranges],
+	    // sequential (multi-hue)
+	    ["turbo", interpolateTurbo],
+	    ["viridis", interpolateViridis],
+	    ["magma", magma],
+	    ["inferno", inferno],
+	    ["plasma", plasma],
+	    ["cividis", interpolateCividis],
+	    ["cubehelix", interpolateCubehelixDefault],
+	    ["warm", warm],
+	    ["cool", cool],
+	    ["bugn", interpolateBuGn],
+	    ["bupu", interpolateBuPu],
+	    ["gnbu", interpolateGnBu],
+	    ["orrd", interpolateOrRd],
+	    ["pubugn", interpolatePuBuGn],
+	    ["pubu", interpolatePuBu],
+	    ["purd", interpolatePuRd],
+	    ["rdpu", interpolateRdPu],
+	    ["ylgnbu", interpolateYlGnBu],
+	    ["ylgn", interpolateYlGn],
+	    ["ylorbr", interpolateYlOrBr],
+	    ["ylorrd", interpolateYlOrRd],
+	    // cyclical
+	    ["rainbow", interpolateRainbow],
+	    ["sinebow", interpolateSinebow]
 	]);
-
 	function quantitativeScheme(scheme) {
-	  const s = `${scheme}`.toLowerCase();
-	  if (!quantitativeSchemes.has(s)) throw new Error(`unknown scheme: ${s}`);
-	  return quantitativeSchemes.get(s);
+	    const s = `${scheme}`.toLowerCase();
+	    if (!quantitativeSchemes.has(s))
+	        throw new Error(`unknown scheme: ${s}`);
+	    return quantitativeSchemes.get(s);
+	}
+	const divergingSchemes = new Set([
+	    "brbg",
+	    "prgn",
+	    "piyg",
+	    "puor",
+	    "rdbu",
+	    "rdgy",
+	    "rdylbu",
+	    "rdylgn",
+	    "spectral",
+	    "burd",
+	    "buylrd"
+	]);
+	function isDivergingScheme(scheme) {
+	    return scheme != null && divergingSchemes.has(`${scheme}`.toLowerCase());
 	}
 
-	const divergingSchemes = new Set([
-	  "brbg",
-	  "prgn",
-	  "piyg",
-	  "puor",
-	  "rdbu",
-	  "rdgy",
-	  "rdylbu",
-	  "rdylgn",
-	  "spectral",
-	  "burd",
-	  "buylrd"
-	]);
-
-	function isDivergingScheme(scheme) {
-	  return scheme != null && divergingSchemes.has(`${scheme}`.toLowerCase());
+	// TODO Allow the interval to be specified as a string, e.g. “day” or “hour”?
+	// This will require the interval knowing the type of the associated scale to
+	// chose between UTC and local time (or better, an explicit timeZone option).
+	function maybeInterval(interval) {
+	    if (interval == null)
+	        return;
+	    if (typeof interval === "number") {
+	        const n = interval;
+	        // Note: this offset doesn’t support the optional step argument for simplicity.
+	        return {
+	            floor: d => n * Math.floor(d / n),
+	            offset: d => d + n,
+	            range: (lo, hi) => range$1(Math.ceil(lo / n), hi / n).map(x => n * x)
+	        };
+	    }
+	    if (typeof interval.floor !== "function" || typeof interval.offset !== "function")
+	        throw new Error("invalid interval; missing floor or offset function");
+	    return interval;
 	}
 
 	const flip = i => t => i(1 - t);
 	const unit = [0, 1];
-
 	const interpolators = new Map([
-	  // numbers
-	  ["number", interpolateNumber],
-
-	  // color spaces
-	  ["rgb", interpolateRgb],
-	  ["hsl", interpolateHsl],
-	  ["hcl", interpolateHcl],
-	  ["lab", lab]
+	    // numbers
+	    ["number", interpolateNumber],
+	    // color spaces
+	    ["rgb", interpolateRgb],
+	    ["hsl", interpolateHsl],
+	    ["hcl", interpolateHcl],
+	    ["lab", lab]
 	]);
-
 	function Interpolator(interpolate) {
-	  const i = `${interpolate}`.toLowerCase();
-	  if (!interpolators.has(i)) throw new Error(`unknown interpolator: ${i}`);
-	  return interpolators.get(i);
+	    const i = `${interpolate}`.toLowerCase();
+	    if (!interpolators.has(i))
+	        throw new Error(`unknown interpolator: ${i}`);
+	    return interpolators.get(i);
 	}
-
-	function ScaleQ(key, scale, channels, {
-	  type,
-	  nice,
-	  clamp,
-	  zero,
-	  domain = inferAutoDomain(key, channels),
-	  unknown,
-	  round,
-	  scheme,
-	  range = registry.get(key) === radius ? inferRadialRange(channels, domain) : registry.get(key) === length ? inferLengthRange(channels, domain) : registry.get(key) === opacity ? unit : undefined,
-	  interpolate = registry.get(key) === color ? (scheme == null && range !== undefined ? interpolateRgb : quantitativeScheme(scheme !== undefined ? scheme : type === "cyclical" ? "rainbow" : "turbo")) : round ? interpolateRound : interpolateNumber,
-	  reverse: reverse$1
-	}) {
-	  if (type === "cyclical" || type === "sequential") type = "linear"; // shorthand for color schemes
-	  reverse$1 = !!reverse$1;
-
-	  // Sometimes interpolate is a named interpolator, such as "lab" for Lab color
-	  // space. Other times interpolate is a function that takes two arguments and
-	  // is used in conjunction with the range. And other times the interpolate
-	  // function is a “fixed” interpolator on the [0, 1] interval, as when a
-	  // color scheme such as interpolateRdBu is used.
-	  if (typeof interpolate !== "function") {
-	    interpolate = Interpolator(interpolate);
-	  }
-	  if (interpolate.length === 1) {
-	    if (reverse$1) {
-	      interpolate = flip(interpolate);
-	      reverse$1 = false;
+	function ScaleQ(key, scale, channels, { type, nice, clamp, zero, domain = inferAutoDomain(key, channels), unknown, round, scheme, interval, range = registry.get(key) === radius ? inferRadialRange(channels, domain) : registry.get(key) === length ? inferLengthRange(channels, domain) : registry.get(key) === opacity ? unit : undefined, interpolate = registry.get(key) === color ? (scheme == null && range !== undefined ? interpolateRgb : quantitativeScheme(scheme !== undefined ? scheme : type === "cyclical" ? "rainbow" : "turbo")) : round ? interpolateRound : interpolateNumber, reverse: reverse$1 }) {
+	    interval = maybeInterval(interval);
+	    if (type === "cyclical" || type === "sequential")
+	        type = "linear"; // shorthand for color schemes
+	    reverse$1 = !!reverse$1;
+	    // Sometimes interpolate is a named interpolator, such as "lab" for Lab color
+	    // space. Other times interpolate is a function that takes two arguments and
+	    // is used in conjunction with the range. And other times the interpolate
+	    // function is a “fixed” interpolator on the [0, 1] interval, as when a
+	    // color scheme such as interpolateRdBu is used.
+	    if (typeof interpolate !== "function") {
+	        interpolate = Interpolator(interpolate);
 	    }
-	    if (range === undefined) {
-	      range = Float64Array.from(domain, (_, i) => i / (domain.length - 1));
-	      if (range.length === 2) range = unit; // optimize common case of [0, 1]
+	    if (interpolate.length === 1) {
+	        if (reverse$1) {
+	            interpolate = flip(interpolate);
+	            reverse$1 = false;
+	        }
+	        if (range === undefined) {
+	            range = Float64Array.from(domain, (_, i) => i / (domain.length - 1));
+	            if (range.length === 2)
+	                range = unit; // optimize common case of [0, 1]
+	        }
+	        scale.interpolate((range === unit ? constant : interpolatePiecewise)(interpolate));
 	    }
-	    scale.interpolate((range === unit ? constant : interpolatePiecewise)(interpolate));
-	  } else {
-	    scale.interpolate(interpolate);
-	  }
-
-	  // If a zero option is specified, we assume that the domain is numeric, and we
-	  // want to ensure that the domain crosses zero. However, note that the domain
-	  // may be reversed (descending) so we shouldn’t assume that the first value is
-	  // smaller than the last; and also it’s possible that the domain has more than
-	  // two values for a “poly” scale. And lastly be careful not to mutate input!
-	  if (zero) {
-	    const [min, max] = extent(domain);
-	    if ((min > 0) || (max < 0)) {
-	      domain = slice(domain);
-	      if (order(domain) < 0) domain[domain.length - 1] = 0;
-	      else domain[0] = 0;
+	    else {
+	        scale.interpolate(interpolate);
 	    }
-	  }
-
-	  if (reverse$1) domain = reverse(domain);
-	  scale.domain(domain).unknown(unknown);
-	  if (nice) scale.nice(nice === true ? undefined : nice), domain = scale.domain();
-	  if (range !== undefined) scale.range(range);
-	  if (clamp) scale.clamp(clamp);
-	  return {type, domain, range, scale, interpolate};
+	    // If a zero option is specified, we assume that the domain is numeric, and we
+	    // want to ensure that the domain crosses zero. However, note that the domain
+	    // may be reversed (descending) so we shouldn’t assume that the first value is
+	    // smaller than the last; and also it’s possible that the domain has more than
+	    // two values for a “poly” scale. And lastly be careful not to mutate input!
+	    if (zero) {
+	        const [min, max] = extent(domain);
+	        if ((min > 0) || (max < 0)) {
+	            domain = slice(domain);
+	            if (order(domain) !== Math.sign(min))
+	                domain[domain.length - 1] = 0; // [2, 1] or [-2, -1]
+	            else
+	                domain[0] = 0; // [1, 2] or [-1, -2]
+	        }
+	    }
+	    if (reverse$1)
+	        domain = reverse(domain);
+	    scale.domain(domain).unknown(unknown);
+	    if (nice)
+	        scale.nice(nice === true ? undefined : nice), domain = scale.domain();
+	    if (range !== undefined)
+	        scale.range(range);
+	    if (clamp)
+	        scale.clamp(clamp);
+	    return { type, domain, range, scale, interpolate, interval };
 	}
-
 	function ScaleLinear(key, channels, options) {
-	  return ScaleQ(key, linear(), channels, options);
+	    return ScaleQ(key, linear(), channels, options);
 	}
-
 	function ScaleSqrt(key, channels, options) {
-	  return ScalePow(key, channels, {...options, exponent: 0.5});
+	    return ScalePow(key, channels, { ...options, exponent: 0.5 });
 	}
-
-	function ScalePow(key, channels, {exponent = 1, ...options}) {
-	  return ScaleQ(key, pow().exponent(exponent), channels, {...options, type: "pow"});
+	function ScalePow(key, channels, { exponent = 1, ...options }) {
+	    return ScaleQ(key, pow().exponent(exponent), channels, { ...options, type: "pow" });
 	}
-
-	function ScaleLog(key, channels, {base = 10, domain = inferLogDomain(channels), ...options}) {
-	  return ScaleQ(key, log().base(base), channels, {...options, domain});
+	function ScaleLog(key, channels, { base = 10, domain = inferLogDomain(channels), ...options }) {
+	    return ScaleQ(key, log().base(base), channels, { ...options, domain });
 	}
-
-	function ScaleSymlog(key, channels, {constant = 1, ...options}) {
-	  return ScaleQ(key, symlog().constant(constant), channels, options);
+	function ScaleSymlog(key, channels, { constant = 1, ...options }) {
+	    return ScaleQ(key, symlog().constant(constant), channels, options);
 	}
-
-	function ScaleQuantile(key, channels, {
-	  range,
-	  quantiles = range === undefined ? 5 : (range = [...range]).length, // deprecated; use n instead
-	  n = quantiles,
-	  scheme = "rdylbu",
-	  domain = inferQuantileDomain(channels),
-	  interpolate,
-	  reverse
-	}) {
-	  if (range === undefined) range = interpolate !== undefined ? quantize(interpolate, n) : registry.get(key) === color ? ordinalRange(scheme, n) : undefined;
-	  return ScaleThreshold(key, channels, {
-	    domain: quantile(domain, range === undefined ? {length: n} : range).quantiles(),
-	    range,
-	    reverse
-	  });
+	function ScaleQuantile(key, channels, { range, quantiles = range === undefined ? 5 : (range = [...range]).length, // deprecated; use n instead
+	n = quantiles, scheme = "rdylbu", domain = inferQuantileDomain(channels), interpolate, reverse }) {
+	    if (range === undefined)
+	        range = interpolate !== undefined ? quantize(interpolate, n) : registry.get(key) === color ? ordinalRange(scheme, n) : undefined;
+	    return ScaleThreshold(key, channels, {
+	        domain: quantile(domain, range === undefined ? { length: n } : range).quantiles(),
+	        range,
+	        reverse
+	    });
 	}
-
-	function ScaleQuantize(key, channels, {
-	  range,
-	  n = range === undefined ? 5 : (range = [...range]).length,
-	  scheme = "rdylbu",
-	  domain = inferAutoDomain(key, channels),
-	  interpolate,
-	  reverse
-	}) {
-	  const [min, max] = extent(domain);
-	  let thresholds;
-	  if (range === undefined) {
-	    thresholds = ticks(min, max, n); // approximate number of nice, round thresholds
-	    if (thresholds[0] <= min) thresholds.splice(0, 1); // drop exact lower bound
-	    if (thresholds[thresholds.length - 1] >= max) thresholds.pop(); // drop exact upper bound
-	    n = thresholds.length + 1;
-	    range = interpolate !== undefined ? quantize(interpolate, n) : registry.get(key) === color ? ordinalRange(scheme, n) : undefined;
-	  } else {
-	    thresholds = quantize(interpolateNumber(min, max), n + 1).slice(1, -1); // exactly n - 1 thresholds to match range
-	    if (min instanceof Date) thresholds = thresholds.map(x => new Date(x)); // preserve date types
-	  }
-	  if (order(arrayify(domain)) < 0) thresholds.reverse(); // preserve descending domain
-	  return ScaleThreshold(key, channels, {domain: thresholds, range, reverse});
+	function ScaleQuantize(key, channels, { range, n = range === undefined ? 5 : (range = [...range]).length, scheme = "rdylbu", domain = inferAutoDomain(key, channels), interpolate, reverse }) {
+	    const [min, max] = extent(domain);
+	    let thresholds;
+	    if (range === undefined) {
+	        thresholds = ticks(min, max, n); // approximate number of nice, round thresholds
+	        if (thresholds[0] <= min)
+	            thresholds.splice(0, 1); // drop exact lower bound
+	        if (thresholds[thresholds.length - 1] >= max)
+	            thresholds.pop(); // drop exact upper bound
+	        n = thresholds.length + 1;
+	        range = interpolate !== undefined ? quantize(interpolate, n) : registry.get(key) === color ? ordinalRange(scheme, n) : undefined;
+	    }
+	    else {
+	        thresholds = quantize(interpolateNumber(min, max), n + 1).slice(1, -1); // exactly n - 1 thresholds to match range
+	        if (min instanceof Date)
+	            thresholds = thresholds.map(x => new Date(x)); // preserve date types
+	    }
+	    if (order(arrayify(domain)) < 0)
+	        thresholds.reverse(); // preserve descending domain
+	    return ScaleThreshold(key, channels, { domain: thresholds, range, reverse });
 	}
-
-	function ScaleThreshold(key, channels, {
-	  domain = [0], // explicit thresholds in ascending order
-	  unknown,
-	  scheme = "rdylbu",
-	  interpolate,
-	  range = interpolate !== undefined ? quantize(interpolate, domain.length + 1) : registry.get(key) === color ? ordinalRange(scheme, domain.length + 1) : undefined,
-	  reverse: reverse$1
-	}) {
-	  const sign = order(arrayify(domain)); // preserve descending domain
-	  if (!pairs(domain).every(([a, b]) => isOrdered(a, b, sign))) throw new Error(`the ${key} scale has a non-monotonic domain`);
-	  if (reverse$1) range = reverse(range); // domain ascending, so reverse range
-	  return {
-	    type: "threshold",
-	    scale: threshold(sign < 0 ? reverse(domain) : domain, range === undefined ? [] : range).unknown(unknown),
-	    domain,
-	    range
-	  };
+	function ScaleThreshold(key, channels, { domain = [0], // explicit thresholds in ascending order
+	unknown, scheme = "rdylbu", interpolate, range = interpolate !== undefined ? quantize(interpolate, domain.length + 1) : registry.get(key) === color ? ordinalRange(scheme, domain.length + 1) : undefined, reverse: reverse$1 }) {
+	    const sign = order(arrayify(domain)); // preserve descending domain
+	    if (!pairs(domain).every(([a, b]) => isOrdered(a, b, sign)))
+	        throw new Error(`the ${key} scale has a non-monotonic domain`);
+	    if (reverse$1)
+	        range = reverse(range); // domain ascending, so reverse range
+	    return {
+	        type: "threshold",
+	        scale: threshold(sign < 0 ? reverse(domain) : domain, range === undefined ? [] : range).unknown(unknown),
+	        domain,
+	        range
+	    };
 	}
-
 	function isOrdered(a, b, sign) {
-	  const s = descending(a, b);
-	  return s === 0 || s === sign;
+	    const s = descending(a, b);
+	    return s === 0 || s === sign;
 	}
-
 	function ScaleIdentity() {
-	  return {type: "identity", scale: identity()};
+	    return { type: "identity", scale: identity() };
 	}
-
 	function inferDomain$1(channels, f = finite) {
-	  return channels.length ? [
-	    min$1(channels, ({value}) => value === undefined ? value : min$1(value, f)),
-	    max(channels, ({value}) => value === undefined ? value : max(value, f))
-	  ] : [0, 1];
+	    return channels.length ? [
+	        min$1(channels, ({ value }) => value === undefined ? value : min$1(value, f)),
+	        max(channels, ({ value }) => value === undefined ? value : max(value, f))
+	    ] : [0, 1];
 	}
-
 	function inferAutoDomain(key, channels) {
-	  const type = registry.get(key);
-	  return (type === radius || type === opacity || type === length ? inferZeroDomain : inferDomain$1)(channels);
+	    const type = registry.get(key);
+	    return (type === radius || type === opacity || type === length ? inferZeroDomain : inferDomain$1)(channels);
 	}
-
 	function inferZeroDomain(channels) {
-	  return [0, channels.length ? max(channels, ({value}) => value === undefined ? value : max(value, finite)) : 1];
+	    return [0, channels.length ? max(channels, ({ value }) => value === undefined ? value : max(value, finite)) : 1];
 	}
-
 	// We don’t want the upper bound of the radial domain to be zero, as this would
 	// be degenerate, so we ignore nonpositive values. We also don’t want the
 	// maximum default radius to exceed 30px.
 	function inferRadialRange(channels, domain) {
-	  const hint = channels.find(({radius}) => radius !== undefined);
-	  if (hint !== undefined) return [0, hint.radius]; // a natural maximum radius, e.g. hexbins
-	  const h25 = quantile$1(channels, 0.5, ({value}) => value === undefined ? NaN : quantile$1(value, 0.25, positive));
-	  const range = domain.map(d => 3 * Math.sqrt(d / h25));
-	  const k = 30 / max(range);
-	  return k < 1 ? range.map(r => r * k) : range;
+	    const hint = channels.find(({ radius }) => radius !== undefined);
+	    if (hint !== undefined)
+	        return [0, hint.radius]; // a natural maximum radius, e.g. hexbins
+	    const h25 = quantile$1(channels, 0.5, ({ value }) => value === undefined ? NaN : quantile$1(value, 0.25, positive));
+	    const range = domain.map(d => 3 * Math.sqrt(d / h25));
+	    const k = 30 / max(range);
+	    return k < 1 ? range.map(r => r * k) : range;
 	}
-
 	// We want a length scale’s domain to go from zero to a positive value, and to
 	// treat negative lengths if any as inverted vectors of equivalent magnitude. We
 	// also don’t want the maximum default length to exceed 60px.
 	function inferLengthRange(channels, domain) {
-	  const h50 = median(channels, ({value}) => value === undefined ? NaN : median(value, Math.abs));
-	  const range = domain.map(d => 12 * d / h50);
-	  const k = 60 / max(range);
-	  return k < 1 ? range.map(r => r * k) : range;
+	    const h50 = median(channels, ({ value }) => value === undefined ? NaN : median(value, Math.abs));
+	    const range = domain.map(d => 12 * d / h50);
+	    const k = 60 / max(range);
+	    return k < 1 ? range.map(r => r * k) : range;
 	}
-
 	function inferLogDomain(channels) {
-	  for (const {value} of channels) {
-	    if (value !== undefined) {
-	      for (let v of value) {
-	        v = +v;
-	        if (v > 0) return inferDomain$1(channels, positive);
-	        if (v < 0) return inferDomain$1(channels, negative);
-	      }
+	    for (const { value } of channels) {
+	        if (value !== undefined) {
+	            for (let v of value) {
+	                v = +v;
+	                if (v > 0)
+	                    return inferDomain$1(channels, positive);
+	                if (v < 0)
+	                    return inferDomain$1(channels, negative);
+	            }
+	        }
 	    }
-	  }
-	  return [1, 10];
+	    return [1, 10];
 	}
-
 	function inferQuantileDomain(channels) {
-	  const domain = [];
-	  for (const {value} of channels) {
-	    if (value === undefined) continue;
-	    for (const v of value) domain.push(v);
-	  }
-	  return domain;
+	    const domain = [];
+	    for (const { value } of channels) {
+	        if (value === undefined)
+	            continue;
+	        for (const v of value)
+	            domain.push(v);
+	    }
+	    return domain;
 	}
-
 	function interpolatePiecewise(interpolate) {
-	  return (i, j) => t => interpolate(i + t * (j - i));
+	    return (i, j) => t => interpolate(i + t * (j - i));
 	}
 
-	function ScaleD(key, scale, transform, channels, {
-	  type,
-	  nice,
-	  clamp,
-	  domain = inferDomain$1(channels),
-	  unknown,
-	  pivot = 0,
-	  scheme,
-	  range,
-	  symmetric = true,
-	  interpolate = registry.get(key) === color ? (scheme == null && range !== undefined ? interpolateRgb : quantitativeScheme(scheme !== undefined ? scheme : "rdbu")) : interpolateNumber,
-	  reverse
-	}) {
-	  pivot = +pivot;
-	  let [min, max] = domain;
-	  min = Math.min(min, pivot);
-	  max = Math.max(max, pivot);
-
-	  // Sometimes interpolate is a named interpolator, such as "lab" for Lab color
-	  // space. Other times interpolate is a function that takes two arguments and
-	  // is used in conjunction with the range. And other times the interpolate
-	  // function is a “fixed” interpolator on the [0, 1] interval, as when a
-	  // color scheme such as interpolateRdBu is used.
-	  if (typeof interpolate !== "function") {
-	    interpolate = Interpolator(interpolate);
-	  }
-
-	  // If an explicit range is specified, promote it to a piecewise interpolator.
-	  if (range !== undefined) {
-	    interpolate = interpolate.length === 1
-	      ? interpolatePiecewise(interpolate)(...range)
-	      : piecewise(interpolate, range);
-	  }
-
-	  // Reverse before normalization.
-	  if (reverse) interpolate = flip(interpolate);
-
-	  // Normalize the interpolator for symmetric difference around the pivot.
-	  if (symmetric) {
-	    const mid = transform.apply(pivot);
-	    const mindelta = mid - transform.apply(min);
-	    const maxdelta = transform.apply(max) - mid;
-	    if (mindelta < maxdelta) min = transform.invert(mid - maxdelta);
-	    else if (mindelta > maxdelta) max = transform.invert(mid + mindelta);
-	  }
-
-	  scale.domain([min, pivot, max]).unknown(unknown).interpolator(interpolate);
-	  if (clamp) scale.clamp(clamp);
-	  if (nice) scale.nice(nice);
-	  return {type, domain: [min, max], pivot, interpolate, scale};
+	function ScaleD(key, scale, transform, channels, { type, nice, clamp, domain = inferDomain$1(channels), unknown, pivot = 0, scheme, range, symmetric = true, interpolate = registry.get(key) === color ? (scheme == null && range !== undefined ? interpolateRgb : quantitativeScheme(scheme !== undefined ? scheme : "rdbu")) : interpolateNumber, reverse }) {
+	    pivot = +pivot;
+	    let [min, max] = domain;
+	    min = Math.min(min, pivot);
+	    max = Math.max(max, pivot);
+	    // Sometimes interpolate is a named interpolator, such as "lab" for Lab color
+	    // space. Other times interpolate is a function that takes two arguments and
+	    // is used in conjunction with the range. And other times the interpolate
+	    // function is a “fixed” interpolator on the [0, 1] interval, as when a
+	    // color scheme such as interpolateRdBu is used.
+	    if (typeof interpolate !== "function") {
+	        interpolate = Interpolator(interpolate);
+	    }
+	    // If an explicit range is specified, promote it to a piecewise interpolator.
+	    if (range !== undefined) {
+	        interpolate = interpolate.length === 1
+	            ? interpolatePiecewise(interpolate)(...range)
+	            : piecewise(interpolate, range);
+	    }
+	    // Reverse before normalization.
+	    if (reverse)
+	        interpolate = flip(interpolate);
+	    // Normalize the interpolator for symmetric difference around the pivot.
+	    if (symmetric) {
+	        const mid = transform.apply(pivot);
+	        const mindelta = mid - transform.apply(min);
+	        const maxdelta = transform.apply(max) - mid;
+	        if (mindelta < maxdelta)
+	            min = transform.invert(mid - maxdelta);
+	        else if (mindelta > maxdelta)
+	            max = transform.invert(mid + mindelta);
+	    }
+	    scale.domain([min, pivot, max]).unknown(unknown).interpolator(interpolate);
+	    if (clamp)
+	        scale.clamp(clamp);
+	    if (nice)
+	        scale.nice(nice);
+	    return { type, domain: [min, max], pivot, interpolate, scale };
 	}
-
 	function ScaleDiverging(key, channels, options) {
-	  return ScaleD(key, diverging(), transformIdentity, channels, options);
+	    return ScaleD(key, diverging(), transformIdentity, channels, options);
 	}
-
 	function ScaleDivergingSqrt(key, channels, options) {
-	  return ScaleDivergingPow(key, channels, {...options, exponent: 0.5});
+	    return ScaleDivergingPow(key, channels, { ...options, exponent: 0.5 });
 	}
-
-	function ScaleDivergingPow(key, channels, {exponent = 1, ...options}) {
-	  return ScaleD(key, divergingPow().exponent(exponent = +exponent), transformPow(exponent), channels, {...options, type: "diverging-pow"});
+	function ScaleDivergingPow(key, channels, { exponent = 1, ...options }) {
+	    return ScaleD(key, divergingPow().exponent(exponent = +exponent), transformPow(exponent), channels, { ...options, type: "diverging-pow" });
 	}
-
-	function ScaleDivergingLog(key, channels, {base = 10, pivot = 1, domain = inferDomain$1(channels, pivot < 0 ? negative : positive), ...options}) {
-	  return ScaleD(key, divergingLog().base(base = +base), transformLog, channels, {domain, pivot, ...options});
+	function ScaleDivergingLog(key, channels, { base = 10, pivot = 1, domain = inferDomain$1(channels, pivot < 0 ? negative : positive), ...options }) {
+	    return ScaleD(key, divergingLog().base(base = +base), transformLog, channels, { domain, pivot, ...options });
 	}
-
-	function ScaleDivergingSymlog(key, channels, {constant = 1, ...options}) {
-	  return ScaleD(key, divergingSymlog().constant(constant = +constant), transformSymlog(constant), channels, options);
+	function ScaleDivergingSymlog(key, channels, { constant = 1, ...options }) {
+	    return ScaleD(key, divergingSymlog().constant(constant = +constant), transformSymlog(constant), channels, options);
 	}
-
 	const transformIdentity = {
-	  apply(x) {
-	    return x;
-	  },
-	  invert(x) {
-	    return x;
-	  }
+	    apply(x) {
+	        return x;
+	    },
+	    invert(x) {
+	        return x;
+	    }
 	};
-
 	const transformLog = {
-	  apply: Math.log,
-	  invert: Math.exp
+	    apply: Math.log,
+	    invert: Math.exp
 	};
-
 	const transformSqrt = {
-	  apply(x) {
-	    return Math.sign(x) * Math.sqrt(Math.abs(x));
-	  },
-	  invert(x) {
-	    return Math.sign(x) * (x * x);
-	  }
+	    apply(x) {
+	        return Math.sign(x) * Math.sqrt(Math.abs(x));
+	    },
+	    invert(x) {
+	        return Math.sign(x) * (x * x);
+	    }
 	};
-
 	function transformPow(exponent) {
-	  return exponent === 0.5 ? transformSqrt : {
-	    apply(x) {
-	      return Math.sign(x) * Math.pow(Math.abs(x), exponent);
-	    },
-	    invert(x) {
-	      return Math.sign(x) * Math.pow(Math.abs(x), 1 / exponent);
-	    }
-	  };
+	    return exponent === 0.5 ? transformSqrt : {
+	        apply(x) {
+	            return Math.sign(x) * Math.pow(Math.abs(x), exponent);
+	        },
+	        invert(x) {
+	            return Math.sign(x) * Math.pow(Math.abs(x), 1 / exponent);
+	        }
+	    };
 	}
-
 	function transformSymlog(constant) {
-	  return {
-	    apply(x) {
-	      return Math.sign(x) * Math.log1p(Math.abs(x / constant));
-	    },
-	    invert(x) {
-	      return Math.sign(x) * Math.expm1(Math.abs(x)) * constant;
-	    }
-	  };
+	    return {
+	        apply(x) {
+	            return Math.sign(x) * Math.log1p(Math.abs(x / constant));
+	        },
+	        invert(x) {
+	            return Math.sign(x) * Math.expm1(Math.abs(x)) * constant;
+	        }
+	    };
 	}
 
 	function ScaleT(key, scale, channels, options) {
-	  return ScaleQ(key, scale, channels, options);
+	    return ScaleQ(key, scale, channels, options);
 	}
-
 	function ScaleTime(key, channels, options) {
-	  return ScaleT(key, time(), channels, options);
+	    return ScaleT(key, time(), channels, options);
 	}
-
 	function ScaleUtc(key, channels, options) {
-	  return ScaleT(key, utcTime(), channels, options);
+	    return ScaleT(key, utcTime(), channels, options);
 	}
 
 	const sqrt3 = Math.sqrt(3);
 	const sqrt4_3 = 2 / sqrt3;
-
 	const symbolHexagon = {
-	  draw(context, size) {
-	    const rx = Math.sqrt(size / Math.PI), ry = rx * sqrt4_3, hy = ry / 2;
-	    context.moveTo(0, ry);
-	    context.lineTo(rx, hy);
-	    context.lineTo(rx, -hy);
-	    context.lineTo(0, -ry);
-	    context.lineTo(-rx, -hy);
-	    context.lineTo(-rx, hy);
-	    context.closePath();
-	  }
+	    draw(context, size) {
+	        const rx = Math.sqrt(size / Math.PI), ry = rx * sqrt4_3, hy = ry / 2;
+	        context.moveTo(0, ry);
+	        context.lineTo(rx, hy);
+	        context.lineTo(rx, -hy);
+	        context.lineTo(0, -ry);
+	        context.lineTo(-rx, -hy);
+	        context.lineTo(-rx, hy);
+	        context.closePath();
+	    }
 	};
-
 	const symbols = new Map([
-	  ["asterisk", symbolAsterisk],
-	  ["circle", symbolCircle],
-	  ["cross", symbolCross],
-	  ["diamond", symbolDiamond],
-	  ["diamond2", symbolDiamond2],
-	  ["hexagon", symbolHexagon],
-	  ["plus", symbolPlus],
-	  ["square", symbolSquare],
-	  ["square2", symbolSquare2],
-	  ["star", symbolStar],
-	  ["times", symbolTimes],
-	  ["triangle", symbolTriangle],
-	  ["triangle2", symbolTriangle2],
-	  ["wye", symbolWye]
+	    ["asterisk", symbolAsterisk],
+	    ["circle", symbolCircle],
+	    ["cross", symbolCross],
+	    ["diamond", symbolDiamond],
+	    ["diamond2", symbolDiamond2],
+	    ["hexagon", symbolHexagon],
+	    ["plus", symbolPlus],
+	    ["square", symbolSquare],
+	    ["square2", symbolSquare2],
+	    ["star", symbolStar],
+	    ["times", symbolTimes],
+	    ["triangle", symbolTriangle],
+	    ["triangle2", symbolTriangle2],
+	    ["wye", symbolWye]
 	]);
-
 	function isSymbolObject(value) {
-	  return value && typeof value.draw === "function";
+	    return value && typeof value.draw === "function";
 	}
-
 	function isSymbol(value) {
-	  if (isSymbolObject(value)) return true;
-	  if (typeof value !== "string") return false;
-	  return symbols.has(value.toLowerCase());
+	    if (isSymbolObject(value))
+	        return true;
+	    if (typeof value !== "string")
+	        return false;
+	    return symbols.has(value.toLowerCase());
 	}
-
 	function maybeSymbol(symbol) {
-	  if (symbol == null || isSymbolObject(symbol)) return symbol;
-	  const value = symbols.get(`${symbol}`.toLowerCase());
-	  if (value) return value;
-	  throw new Error(`invalid symbol: ${symbol}`);
+	    if (symbol == null || isSymbolObject(symbol))
+	        return symbol;
+	    const value = symbols.get(`${symbol}`.toLowerCase());
+	    if (value)
+	        return value;
+	    throw new Error(`invalid symbol: ${symbol}`);
 	}
 
 	// This denotes an implicitly ordinal color scale: the scale type was not set,
@@ -71066,469 +70934,442 @@
 	// values are entirely boolean, the range will default to greys. You can opt out
 	// of this by setting the type explicitly.
 	const ordinalImplicit = Symbol("ordinal");
-
-	function ScaleO(scale, channels, {
-	  type,
-	  domain = inferDomain(channels),
-	  range,
-	  reverse: reverse$1,
-	  hint
-	}) {
-	  if (type === "categorical" || type === ordinalImplicit) type = "ordinal"; // shorthand for color schemes
-	  if (reverse$1) domain = reverse(domain);
-	  scale.domain(domain);
-	  if (range !== undefined) {
-	    // If the range is specified as a function, pass it the domain.
-	    if (typeof range === "function") range = range(domain);
-	    scale.range(range);
-	  }
-	  return {type, domain, range, scale, hint};
-	}
-
-	function ScaleOrdinal(key, channels, {
-	  type,
-	  domain = inferDomain(channels),
-	  range,
-	  scheme,
-	  unknown,
-	  ...options
-	}) {
-	  let hint;
-	  if (registry.get(key) === symbol) {
-	    hint = inferSymbolHint(channels);
-	    range = range === undefined ? inferSymbolRange(hint) : map(range, maybeSymbol);
-	  } else if (registry.get(key) === color) {
-	    if (range === undefined && (type === "ordinal" || type === ordinalImplicit)) {
-	      range = maybeBooleanRange(domain, scheme);
-	      if (range !== undefined) scheme = undefined; // Don’t re-apply scheme.
+	function ScaleO(key, scale, channels, { type, interval, domain, range, reverse: reverse$1, hint }) {
+	    interval = maybeInterval(interval);
+	    if (domain === undefined)
+	        domain = inferDomain(channels, interval, key);
+	    if (type === "categorical" || type === ordinalImplicit)
+	        type = "ordinal"; // shorthand for color schemes
+	    if (reverse$1)
+	        domain = reverse(domain);
+	    scale.domain(domain);
+	    if (range !== undefined) {
+	        // If the range is specified as a function, pass it the domain.
+	        if (typeof range === "function")
+	            range = range(domain);
+	        scale.range(range);
 	    }
-	    if (scheme === undefined && range === undefined) {
-	      scheme = type === "ordinal" ? "turbo" : "tableau10";
+	    return { type, domain, range, scale, hint, interval };
+	}
+	function ScaleOrdinal(key, channels, { type, interval, domain, range, scheme, unknown, ...options }) {
+	    interval = maybeInterval(interval);
+	    if (domain === undefined)
+	        domain = inferDomain(channels, interval, key);
+	    let hint;
+	    if (registry.get(key) === symbol) {
+	        hint = inferSymbolHint(channels);
+	        range = range === undefined ? inferSymbolRange(hint) : map(range, maybeSymbol);
 	    }
-	    if (scheme !== undefined) {
-	      if (range !== undefined) {
-	        const interpolate = quantitativeScheme(scheme);
-	        const t0 = range[0], d = range[1] - range[0];
-	        range = ({length: n}) => quantize(t => interpolate(t0 + d * t), n);
-	      } else {
-	        range = ordinalScheme(scheme);
-	      }
+	    else if (registry.get(key) === color) {
+	        if (range === undefined && (type === "ordinal" || type === ordinalImplicit)) {
+	            range = maybeBooleanRange(domain, scheme);
+	            if (range !== undefined)
+	                scheme = undefined; // Don’t re-apply scheme.
+	        }
+	        if (scheme === undefined && range === undefined) {
+	            scheme = type === "ordinal" ? "turbo" : "tableau10";
+	        }
+	        if (scheme !== undefined) {
+	            if (range !== undefined) {
+	                const interpolate = quantitativeScheme(scheme);
+	                const t0 = range[0], d = range[1] - range[0];
+	                range = ({ length: n }) => quantize(t => interpolate(t0 + d * t), n);
+	            }
+	            else {
+	                range = ordinalScheme(scheme);
+	            }
+	        }
 	    }
-	  }
-	  if (unknown === implicit) throw new Error("implicit unknown is not supported");
-	  return ScaleO(ordinal().unknown(unknown), channels, {...options, type, domain, range, hint});
+	    if (unknown === implicit)
+	        throw new Error("implicit unknown is not supported");
+	    return ScaleO(key, ordinal().unknown(unknown), channels, { ...options, type, domain, range, hint });
 	}
-
-	function ScalePoint(key, channels, {
-	  align = 0.5,
-	  padding = 0.5,
-	  ...options
-	}) {
-	  return maybeRound(
-	    point$4()
-	      .align(align)
-	      .padding(padding),
-	    channels,
-	    options
-	  );
+	function ScalePoint(key, channels, { align = 0.5, padding = 0.5, ...options }) {
+	    return maybeRound(point$4()
+	        .align(align)
+	        .padding(padding), channels, options, key);
 	}
-
-	function ScaleBand(key, channels, {
-	  align = 0.5,
-	  padding = 0.1,
-	  paddingInner = padding,
-	  paddingOuter = key === "fx" || key === "fy" ? 0 : padding,
-	  ...options
-	}) {
-	  return maybeRound(
-	    band()
-	      .align(align)
-	      .paddingInner(paddingInner)
-	      .paddingOuter(paddingOuter),
-	    channels,
-	    options
-	  );
+	function ScaleBand(key, channels, { align = 0.5, padding = 0.1, paddingInner = padding, paddingOuter = key === "fx" || key === "fy" ? 0 : padding, ...options }) {
+	    return maybeRound(band()
+	        .align(align)
+	        .paddingInner(paddingInner)
+	        .paddingOuter(paddingOuter), channels, options, key);
 	}
-
-	function maybeRound(scale, channels, options) {
-	  let {round} = options;
-	  if (round !== undefined) scale.round(round = !!round);
-	  scale = ScaleO(scale, channels, options);
-	  scale.round = round; // preserve for autoScaleRound
-	  return scale;
+	function maybeRound(scale, channels, options, key) {
+	    let { round } = options;
+	    if (round !== undefined)
+	        scale.round(round = !!round);
+	    scale = ScaleO(key, scale, channels, options);
+	    scale.round = round; // preserve for autoScaleRound
+	    return scale;
 	}
-
-	function inferDomain(channels) {
-	  const values = new InternSet();
-	  for (const {value, domain} of channels) {
-	    if (domain !== undefined) return domain(); // see channelDomain
-	    if (value === undefined) continue;
-	    for (const v of value) values.add(v);
-	  }
-	  return sort(values, ascendingDefined);
+	function inferDomain(channels, interval, key) {
+	    const values = new InternSet();
+	    for (const { value, domain } of channels) {
+	        if (domain !== undefined)
+	            return domain(); // see channelDomain
+	        if (value === undefined)
+	            continue;
+	        for (const v of value)
+	            values.add(v);
+	    }
+	    if (interval !== undefined) {
+	        const [min, max] = extent(values).map(interval.floor, interval);
+	        return interval.range(min, interval.offset(max));
+	    }
+	    if (values.size > 10e3 && registry.get(key) === position)
+	        throw new Error("implicit ordinal position domain has more than 10,000 values");
+	    return sort(values, ascendingDefined);
 	}
-
 	// If all channels provide a consistent hint, propagate it to the scale.
 	function inferHint(channels, key) {
-	  let value;
-	  for (const {hint} of channels) {
-	    const candidate = hint?.[key];
-	    if (candidate === undefined) continue; // no hint here
-	    if (value === undefined) value = candidate; // first hint
-	    else if (value !== candidate) return; // inconsistent hint
-	  }
-	  return value;
-	}
-
-	function inferSymbolHint(channels) {
-	  return {
-	    fill: inferHint(channels, "fill"),
-	    stroke: inferHint(channels, "stroke")
-	  };
-	}
-
-	function inferSymbolRange(hint) {
-	  return isNoneish(hint.fill) ? symbolsStroke : symbolsFill;
-	}
-
-	function Scales(channelsByScale, {
-	  inset: globalInset = 0,
-	  insetTop: globalInsetTop = globalInset,
-	  insetRight: globalInsetRight = globalInset,
-	  insetBottom: globalInsetBottom = globalInset,
-	  insetLeft: globalInsetLeft = globalInset,
-	  round,
-	  nice,
-	  clamp,
-	  zero,
-	  align,
-	  padding,
-	  ...options
-	} = {}) {
-	  const scales = {};
-	  for (const [key, channels] of channelsByScale) {
-	    const scaleOptions = options[key];
-	    const scale = Scale(key, channels, {
-	      round: registry.get(key) === position ? round : undefined, // only for position
-	      nice,
-	      clamp,
-	      zero,
-	      align,
-	      padding,
-	      ...scaleOptions
-	    });
-	    if (scale) {
-	      // populate generic scale options (percent, transform, insets)
-	      let {
-	        percent,
-	        transform,
-	        inset,
-	        insetTop = inset !== undefined ? inset : key === "y" ? globalInsetTop : 0, // not fy
-	        insetRight = inset !== undefined ? inset : key === "x" ? globalInsetRight : 0, // not fx
-	        insetBottom = inset !== undefined ? inset : key === "y" ? globalInsetBottom : 0, // not fy
-	        insetLeft = inset !== undefined ? inset : key === "x" ? globalInsetLeft : 0 // not fx
-	      } = scaleOptions || {};
-	      if (transform == null) transform = undefined;
-	      else if (typeof transform !== "function") throw new Error("invalid scale transform; not a function");
-	      scale.percent = !!percent;
-	      scale.transform = transform;
-	      if (key === "x" || key === "fx") {
-	        scale.insetLeft = +insetLeft;
-	        scale.insetRight = +insetRight;
-	      } else if (key === "y" || key === "fy") {
-	        scale.insetTop = +insetTop;
-	        scale.insetBottom = +insetBottom;
-	      }
-	      scales[key] = scale;
+	    let value;
+	    for (const { hint } of channels) {
+	        const candidate = hint?.[key];
+	        if (candidate === undefined)
+	            continue; // no hint here
+	        if (value === undefined)
+	            value = candidate; // first hint
+	        else if (value !== candidate)
+	            return; // inconsistent hint
 	    }
-	  }
-	  return scales;
+	    return value;
+	}
+	function inferSymbolHint(channels) {
+	    return {
+	        fill: inferHint(channels, "fill"),
+	        stroke: inferHint(channels, "stroke")
+	    };
+	}
+	function inferSymbolRange(hint) {
+	    return isNoneish(hint.fill) ? symbolsStroke : symbolsFill;
 	}
 
+	function Scales(channelsByScale, { inset: globalInset = 0, insetTop: globalInsetTop = globalInset, insetRight: globalInsetRight = globalInset, insetBottom: globalInsetBottom = globalInset, insetLeft: globalInsetLeft = globalInset, round, nice, clamp, zero, align, padding, ...options } = {}) {
+	    const scales = {};
+	    for (const [key, channels] of channelsByScale) {
+	        const scaleOptions = options[key];
+	        const scale = Scale(key, channels, {
+	            round: registry.get(key) === position ? round : undefined,
+	            nice,
+	            clamp,
+	            zero,
+	            align,
+	            padding,
+	            ...scaleOptions
+	        });
+	        if (scale) {
+	            // populate generic scale options (percent, transform, insets)
+	            let { percent, transform, inset, insetTop = inset !== undefined ? inset : key === "y" ? globalInsetTop : 0, // not fy
+	            insetRight = inset !== undefined ? inset : key === "x" ? globalInsetRight : 0, // not fx
+	            insetBottom = inset !== undefined ? inset : key === "y" ? globalInsetBottom : 0, // not fy
+	            insetLeft = inset !== undefined ? inset : key === "x" ? globalInsetLeft : 0 // not fx
+	             } = scaleOptions || {};
+	            if (transform == null)
+	                transform = undefined;
+	            else if (typeof transform !== "function")
+	                throw new Error("invalid scale transform; not a function");
+	            scale.percent = !!percent;
+	            scale.transform = transform;
+	            if (key === "x" || key === "fx") {
+	                scale.insetLeft = +insetLeft;
+	                scale.insetRight = +insetRight;
+	            }
+	            else if (key === "y" || key === "fy") {
+	                scale.insetTop = +insetTop;
+	                scale.insetBottom = +insetBottom;
+	            }
+	            scales[key] = scale;
+	        }
+	    }
+	    return scales;
+	}
 	function ScaleFunctions(scales) {
-	  return Object.fromEntries(Object.entries(scales).map(([name, {scale}]) => [name, scale]));
+	    return Object.fromEntries(Object.entries(scales).map(([name, { scale }]) => [name, scale]));
 	}
-
 	// Mutates scale.range!
-	function autoScaleRange({x, y, fx, fy}, dimensions) {
-	  if (fx) autoScaleRangeX(fx, dimensions);
-	  if (fy) autoScaleRangeY(fy, dimensions);
-	  if (x) autoScaleRangeX(x, fx ? {width: fx.scale.bandwidth()} : dimensions);
-	  if (y) autoScaleRangeY(y, fy ? {height: fy.scale.bandwidth()} : dimensions);
+	function autoScaleRange({ x, y, fx, fy }, dimensions) {
+	    if (fx)
+	        autoScaleRangeX(fx, dimensions);
+	    if (fy)
+	        autoScaleRangeY(fy, dimensions);
+	    if (x)
+	        autoScaleRangeX(x, fx ? { width: fx.scale.bandwidth() } : dimensions);
+	    if (y)
+	        autoScaleRangeY(y, fy ? { height: fy.scale.bandwidth() } : dimensions);
 	}
-
 	function autoScaleRangeX(scale, dimensions) {
-	  if (scale.range === undefined) {
-	    const {insetLeft, insetRight} = scale;
-	    const {width, marginLeft = 0, marginRight = 0} = dimensions;
-	    const left = marginLeft + insetLeft;
-	    const right = width - marginRight - insetRight;
-	    scale.range = [left, Math.max(left, right)];
-	    if (!isOrdinalScale(scale)) scale.range = piecewiseRange(scale);
-	    scale.scale.range(scale.range);
-	  }
-	  autoScaleRound(scale);
+	    if (scale.range === undefined) {
+	        const { insetLeft, insetRight } = scale;
+	        const { width, marginLeft = 0, marginRight = 0 } = dimensions;
+	        const left = marginLeft + insetLeft;
+	        const right = width - marginRight - insetRight;
+	        scale.range = [left, Math.max(left, right)];
+	        if (!isOrdinalScale(scale))
+	            scale.range = piecewiseRange(scale);
+	        scale.scale.range(scale.range);
+	    }
+	    autoScaleRound(scale);
 	}
-
 	function autoScaleRangeY(scale, dimensions) {
-	  if (scale.range === undefined) {
-	    const {insetTop, insetBottom} = scale;
-	    const {height, marginTop = 0, marginBottom = 0} = dimensions;
-	    const top = marginTop + insetTop;
-	    const bottom = height - marginBottom - insetBottom;
-	    scale.range = [Math.max(top, bottom), top];
-	    if (!isOrdinalScale(scale)) scale.range = piecewiseRange(scale);
-	    else scale.range.reverse();
-	    scale.scale.range(scale.range);
-	  }
-	  autoScaleRound(scale);
+	    if (scale.range === undefined) {
+	        const { insetTop, insetBottom } = scale;
+	        const { height, marginTop = 0, marginBottom = 0 } = dimensions;
+	        const top = marginTop + insetTop;
+	        const bottom = height - marginBottom - insetBottom;
+	        scale.range = [Math.max(top, bottom), top];
+	        if (!isOrdinalScale(scale))
+	            scale.range = piecewiseRange(scale);
+	        else
+	            scale.range.reverse();
+	        scale.scale.range(scale.range);
+	    }
+	    autoScaleRound(scale);
 	}
-
 	function autoScaleRound(scale) {
-	  if (scale.round === undefined && isBandScale(scale) && roundError(scale) <= 30) {
-	    scale.scale.round(true);
-	  }
+	    if (scale.round === undefined && isBandScale(scale) && roundError(scale) <= 30) {
+	        scale.scale.round(true);
+	    }
 	}
-
 	// If we were to turn on rounding for this band or point scale, how much wasted
 	// space would it introduce (on both ends of the range)? This must match
 	// d3.scaleBand’s rounding behavior:
 	// https://github.com/d3/d3-scale/blob/83555bd759c7314420bd4240642beda5e258db9e/src/band.js#L20-L32
-	function roundError({scale}) {
-	  const n = scale.domain().length;
-	  const [start, stop] = scale.range();
-	  const paddingInner = scale.paddingInner ? scale.paddingInner() : 1;
-	  const paddingOuter = scale.paddingOuter ? scale.paddingOuter() : scale.padding();
-	  const m = n - paddingInner;
-	  const step = Math.abs(stop - start) / Math.max(1, m + paddingOuter * 2);
-	  return (step - Math.floor(step)) * m;
+	function roundError({ scale }) {
+	    const n = scale.domain().length;
+	    const [start, stop] = scale.range();
+	    const paddingInner = scale.paddingInner ? scale.paddingInner() : 1;
+	    const paddingOuter = scale.paddingOuter ? scale.paddingOuter() : scale.padding();
+	    const m = n - paddingInner;
+	    const step = Math.abs(stop - start) / Math.max(1, m + paddingOuter * 2);
+	    return (step - Math.floor(step)) * m;
 	}
-
 	function piecewiseRange(scale) {
-	  const length = scale.scale.domain().length + isThresholdScale(scale);
-	  if (!(length > 2)) return scale.range;
-	  const [start, end] = scale.range;
-	  return Array.from({length}, (_, i) => start + i / (length - 1) * (end - start));
+	    const length = scale.scale.domain().length + isThresholdScale(scale);
+	    if (!(length > 2))
+	        return scale.range;
+	    const [start, end] = scale.range;
+	    return Array.from({ length }, (_, i) => start + i / (length - 1) * (end - start));
 	}
-
 	function Scale(key, channels = [], options = {}) {
-	  const type = inferScaleType(key, channels, options);
-
-	  // Warn for common misuses of implicit ordinal scales. We disable this test if
-	  // you set the domain or range explicitly, since setting the domain or range
-	  // (typically with a cardinality of more than two) is another indication that
-	  // you intended for the scale to be ordinal; we also disable it for facet
-	  // scales since these are always band scales.
-	  if (options.type === undefined
-	      && options.domain === undefined
-	      && options.range === undefined
-	      && key !== "fx"
-	      && key !== "fy"
-	      && isOrdinalScale({type})) {
-	    const values = channels.map(({value}) => value).filter(value => value !== undefined);
-	    if (values.some(isTemporal)) warn(`Warning: some data associated with the ${key} scale are dates. Dates are typically associated with a "utc" or "time" scale rather than a "${formatScaleType(type)}" scale. If you are using a bar mark, you probably want a rect mark with the interval option instead; if you are using a group transform, you probably want a bin transform instead. If you want to treat this data as ordinal, you can suppress this warning by setting the type of the ${key} scale to "${formatScaleType(type)}".`);
-	    else if (values.some(isTemporalString)) warn(`Warning: some data associated with the ${key} scale are strings that appear to be dates (e.g., YYYY-MM-DD). If these strings represent dates, you should parse them to Date objects. Dates are typically associated with a "utc" or "time" scale rather than a "${formatScaleType(type)}" scale. If you are using a bar mark, you probably want a rect mark with the interval option instead; if you are using a group transform, you probably want a bin transform instead. If you want to treat this data as ordinal, you can suppress this warning by setting the type of the ${key} scale to "${formatScaleType(type)}".`);
-	    else if (values.some(isNumericString)) warn(`Warning: some data associated with the ${key} scale are strings that appear to be numbers. If these strings represent numbers, you should parse or coerce them to numbers. Numbers are typically associated with a "linear" scale rather than a "${formatScaleType(type)}" scale. If you want to treat this data as ordinal, you can suppress this warning by setting the type of the ${key} scale to "${formatScaleType(type)}".`);
-	  }
-
-	  options.type = type; // Mutates input!
-
-	  // Once the scale type is known, coerce the associated channel values and any
-	  // explicitly-specified domain to the expected type.
-	  switch (type) {
-	    case "diverging":
-	    case "diverging-sqrt":
-	    case "diverging-pow":
-	    case "diverging-log":
-	    case "diverging-symlog":
-	    case "cyclical":
-	    case "sequential":
-	    case "linear":
-	    case "sqrt":
-	    case "threshold":
-	    case "quantile":
-	    case "pow":
-	    case "log":
-	    case "symlog":
-	      options = coerceType(channels, options, coerceNumbers);
-	      break;
-	    case "identity":
-	      switch (registry.get(key)) {
-	        case position: options = coerceType(channels, options, coerceNumbers); break;
-	        case symbol: options = coerceType(channels, options, coerceSymbols); break;
-	      }
-	      break;
-	    case "utc":
-	    case "time":
-	      options = coerceType(channels, options, coerceDates);
-	      break;
-	  }
-
-	  switch (type) {
-	    case "diverging": return ScaleDiverging(key, channels, options);
-	    case "diverging-sqrt": return ScaleDivergingSqrt(key, channels, options);
-	    case "diverging-pow": return ScaleDivergingPow(key, channels, options);
-	    case "diverging-log": return ScaleDivergingLog(key, channels, options);
-	    case "diverging-symlog": return ScaleDivergingSymlog(key, channels, options);
-	    case "categorical": case "ordinal": case ordinalImplicit: return ScaleOrdinal(key, channels, options);
-	    case "cyclical": case "sequential": case "linear": return ScaleLinear(key, channels, options);
-	    case "sqrt": return ScaleSqrt(key, channels, options);
-	    case "threshold": return ScaleThreshold(key, channels, options);
-	    case "quantile": return ScaleQuantile(key, channels, options);
-	    case "quantize": return ScaleQuantize(key, channels, options);
-	    case "pow": return ScalePow(key, channels, options);
-	    case "log": return ScaleLog(key, channels, options);
-	    case "symlog": return ScaleSymlog(key, channels, options);
-	    case "utc": return ScaleUtc(key, channels, options);
-	    case "time": return ScaleTime(key, channels, options);
-	    case "point": return ScalePoint(key, channels, options);
-	    case "band": return ScaleBand(key, channels, options);
-	    case "identity": return registry.get(key) === position ? ScaleIdentity() : {type: "identity"};
-	    case undefined: return;
-	    default: throw new Error(`unknown scale type: ${type}`);
-	  }
+	    const type = inferScaleType(key, channels, options);
+	    // Warn for common misuses of implicit ordinal scales. We disable this test if
+	    // you specify a scale interval or if you set the domain or range explicitly,
+	    // since setting the domain or range (typically with a cardinality of more than
+	    // two) is another indication that you intended for the scale to be ordinal; we
+	    // also disable it for facet scales since these are always band scales.
+	    if (options.type === undefined
+	        && options.domain === undefined
+	        && options.range === undefined
+	        && options.interval == null
+	        && key !== "fx"
+	        && key !== "fy"
+	        && isOrdinalScale({ type })) {
+	        const values = channels.map(({ value }) => value).filter(value => value !== undefined);
+	        if (values.some(isTemporal))
+	            warn(`Warning: some data associated with the ${key} scale are dates. Dates are typically associated with a "utc" or "time" scale rather than a "${formatScaleType(type)}" scale. If you are using a bar mark, you probably want a rect mark with the interval option instead; if you are using a group transform, you probably want a bin transform instead. If you want to treat this data as ordinal, you can specify the interval of the ${key} scale (e.g., d3.utcDay), or you can suppress this warning by setting the type of the ${key} scale to "${formatScaleType(type)}".`);
+	        else if (values.some(isTemporalString))
+	            warn(`Warning: some data associated with the ${key} scale are strings that appear to be dates (e.g., YYYY-MM-DD). If these strings represent dates, you should parse them to Date objects. Dates are typically associated with a "utc" or "time" scale rather than a "${formatScaleType(type)}" scale. If you are using a bar mark, you probably want a rect mark with the interval option instead; if you are using a group transform, you probably want a bin transform instead. If you want to treat this data as ordinal, you can suppress this warning by setting the type of the ${key} scale to "${formatScaleType(type)}".`);
+	        else if (values.some(isNumericString))
+	            warn(`Warning: some data associated with the ${key} scale are strings that appear to be numbers. If these strings represent numbers, you should parse or coerce them to numbers. Numbers are typically associated with a "linear" scale rather than a "${formatScaleType(type)}" scale. If you want to treat this data as ordinal, you can specify the interval of the ${key} scale (e.g., 1 for integers), or you can suppress this warning by setting the type of the ${key} scale to "${formatScaleType(type)}".`);
+	    }
+	    options.type = type; // Mutates input!
+	    // Once the scale type is known, coerce the associated channel values and any
+	    // explicitly-specified domain to the expected type.
+	    switch (type) {
+	        case "diverging":
+	        case "diverging-sqrt":
+	        case "diverging-pow":
+	        case "diverging-log":
+	        case "diverging-symlog":
+	        case "cyclical":
+	        case "sequential":
+	        case "linear":
+	        case "sqrt":
+	        case "threshold":
+	        case "quantile":
+	        case "pow":
+	        case "log":
+	        case "symlog":
+	            options = coerceType(channels, options, coerceNumbers);
+	            break;
+	        case "identity":
+	            switch (registry.get(key)) {
+	                case position:
+	                    options = coerceType(channels, options, coerceNumbers);
+	                    break;
+	                case symbol:
+	                    options = coerceType(channels, options, coerceSymbols);
+	                    break;
+	            }
+	            break;
+	        case "utc":
+	        case "time":
+	            options = coerceType(channels, options, coerceDates);
+	            break;
+	    }
+	    switch (type) {
+	        case "diverging": return ScaleDiverging(key, channels, options);
+	        case "diverging-sqrt": return ScaleDivergingSqrt(key, channels, options);
+	        case "diverging-pow": return ScaleDivergingPow(key, channels, options);
+	        case "diverging-log": return ScaleDivergingLog(key, channels, options);
+	        case "diverging-symlog": return ScaleDivergingSymlog(key, channels, options);
+	        case "categorical":
+	        case "ordinal":
+	        case ordinalImplicit: return ScaleOrdinal(key, channels, options);
+	        case "cyclical":
+	        case "sequential":
+	        case "linear": return ScaleLinear(key, channels, options);
+	        case "sqrt": return ScaleSqrt(key, channels, options);
+	        case "threshold": return ScaleThreshold(key, channels, options);
+	        case "quantile": return ScaleQuantile(key, channels, options);
+	        case "quantize": return ScaleQuantize(key, channels, options);
+	        case "pow": return ScalePow(key, channels, options);
+	        case "log": return ScaleLog(key, channels, options);
+	        case "symlog": return ScaleSymlog(key, channels, options);
+	        case "utc": return ScaleUtc(key, channels, options);
+	        case "time": return ScaleTime(key, channels, options);
+	        case "point": return ScalePoint(key, channels, options);
+	        case "band": return ScaleBand(key, channels, options);
+	        case "identity": return registry.get(key) === position ? ScaleIdentity() : { type: "identity" };
+	        case undefined: return;
+	        default: throw new Error(`unknown scale type: ${type}`);
+	    }
 	}
-
 	function formatScaleType(type) {
-	  return typeof type === "symbol" ? type.description : type;
+	    return typeof type === "symbol" ? type.description : type;
 	}
-
-	function inferScaleType(key, channels, {type, domain, range, scheme, pivot}) {
-	  // The facet scales are always band scales; this cannot be changed.
-	  if (key === "fx" || key === "fy") return "band";
-
-	  // If a channel dictates a scale type, make sure that it is consistent with
-	  // the user-specified scale type (if any) and all other channels. For example,
-	  // barY requires x to be a band scale and disallows any other scale type.
-	  for (const {type: t} of channels) {
-	    if (t === undefined) continue;
-	    else if (type === undefined) type = t;
-	    else if (type !== t) throw new Error(`scale incompatible with channel: ${type} !== ${t}`);
-	  }
-
-	  // If the scale, a channel, or user specified a (consistent) type, return it.
-	  if (type !== undefined) return type;
-
-	  // If there’s no data (and no type) associated with this scale, don’t create a scale.
-	  if (domain === undefined && !channels.some(({value}) => value !== undefined)) return;
-
-	  const kind = registry.get(key);
-
-	  // For color scales, if no range or scheme is specified and all associated
-	  // defined values (from the domain if present, and otherwise from channels)
-	  // are valid colors, then default to the identity scale. This allows, for
-	  // example, a fill channel to return literal colors; without this, the colors
-	  // would be remapped to a categorical scheme!
-	  if (kind === color
-	    && range === undefined
-	    && scheme === undefined
-	    && isAll(domain, channels, isColor)) return "identity";
-
-	  // Similarly for symbols…
-	  if (kind === symbol
-	    && range === undefined
-	    && isAll(domain, channels, isSymbol)) return "identity";
-
-	  // Some scales have default types.
-	  if (kind === radius) return "sqrt";
-	  if (kind === opacity || kind === length) return "linear";
-	  if (kind === symbol) return "ordinal";
-
-	  // If the domain or range has more than two values, assume it’s ordinal. You
-	  // can still use a “piecewise” (or “polylinear”) scale, but you must set the
-	  // type explicitly.
-	  if ((domain || range || []).length > 2) return asOrdinalType(kind);
-
-	  // Otherwise, infer the scale type from the data! Prefer the domain, if
-	  // present, over channels. (The domain and channels should be consistently
-	  // typed, and the domain is more explicit and typically much smaller.) We only
-	  // check the first defined value for expedience and simplicity; we expect
-	  // that the types are consistent.
-	  if (domain !== undefined) {
-	    if (isOrdinal(domain)) return asOrdinalType(kind);
-	    if (isTemporal(domain)) return "utc";
-	    if (kind === color && (pivot != null || isDivergingScheme(scheme))) return "diverging";
+	function inferScaleType(key, channels, { type, domain, range, scheme, pivot }) {
+	    // The facet scales are always band scales; this cannot be changed.
+	    if (key === "fx" || key === "fy")
+	        return "band";
+	    // If a channel dictates a scale type, make sure that it is consistent with
+	    // the user-specified scale type (if any) and all other channels. For example,
+	    // barY requires x to be a band scale and disallows any other scale type.
+	    for (const { type: t } of channels) {
+	        if (t === undefined)
+	            continue;
+	        else if (type === undefined)
+	            type = t;
+	        else if (type !== t)
+	            throw new Error(`scale incompatible with channel: ${type} !== ${t}`);
+	    }
+	    // If the scale, a channel, or user specified a (consistent) type, return it.
+	    if (type !== undefined)
+	        return type;
+	    // If there’s no data (and no type) associated with this scale, don’t create a scale.
+	    if (domain === undefined && !channels.some(({ value }) => value !== undefined))
+	        return;
+	    const kind = registry.get(key);
+	    // For color scales, if no range or scheme is specified and all associated
+	    // defined values (from the domain if present, and otherwise from channels)
+	    // are valid colors, then default to the identity scale. This allows, for
+	    // example, a fill channel to return literal colors; without this, the colors
+	    // would be remapped to a categorical scheme!
+	    if (kind === color
+	        && range === undefined
+	        && scheme === undefined
+	        && isAll(domain, channels, isColor))
+	        return "identity";
+	    // Similarly for symbols…
+	    if (kind === symbol
+	        && range === undefined
+	        && isAll(domain, channels, isSymbol))
+	        return "identity";
+	    // Some scales have default types.
+	    if (kind === radius)
+	        return "sqrt";
+	    if (kind === opacity || kind === length)
+	        return "linear";
+	    if (kind === symbol)
+	        return "ordinal";
+	    // If the domain or range has more than two values, assume it’s ordinal. You
+	    // can still use a “piecewise” (or “polylinear”) scale, but you must set the
+	    // type explicitly.
+	    if ((domain || range || []).length > 2)
+	        return asOrdinalType(kind);
+	    // Otherwise, infer the scale type from the data! Prefer the domain, if
+	    // present, over channels. (The domain and channels should be consistently
+	    // typed, and the domain is more explicit and typically much smaller.) We only
+	    // check the first defined value for expedience and simplicity; we expect
+	    // that the types are consistent.
+	    if (domain !== undefined) {
+	        if (isOrdinal(domain))
+	            return asOrdinalType(kind);
+	        if (isTemporal(domain))
+	            return "utc";
+	        if (kind === color && (pivot != null || isDivergingScheme(scheme)))
+	            return "diverging";
+	        return "linear";
+	    }
+	    // If any channel is ordinal or temporal, it takes priority.
+	    const values = channels.map(({ value }) => value).filter(value => value !== undefined);
+	    if (values.some(isOrdinal))
+	        return asOrdinalType(kind);
+	    if (values.some(isTemporal))
+	        return "utc";
+	    if (kind === color && (pivot != null || isDivergingScheme(scheme)))
+	        return "diverging";
 	    return "linear";
-	  }
-
-	  // If any channel is ordinal or temporal, it takes priority.
-	  const values = channels.map(({value}) => value).filter(value => value !== undefined);
-	  if (values.some(isOrdinal)) return asOrdinalType(kind);
-	  if (values.some(isTemporal)) return "utc";
-	  if (kind === color && (pivot != null || isDivergingScheme(scheme))) return "diverging";
-	  return "linear";
 	}
-
 	// Positional scales default to a point scale instead of an ordinal scale.
 	function asOrdinalType(kind) {
-	  switch (kind) {
-	    case position: return "point";
-	    case color: return ordinalImplicit;
-	    default: return "ordinal";
-	  }
-	}
-
-	function isAll(domain, channels, is) {
-	  return domain !== undefined
-	    ? isFirst(domain, is) && isEvery(domain, is)
-	    : channels.some(({value}) => value !== undefined && isFirst(value, is))
-	      && channels.every(({value}) => value === undefined || isEvery(value, is));
-	}
-
-	function isTemporalScale({type}) {
-	  return type === "time" || type === "utc";
-	}
-
-	function isOrdinalScale({type}) {
-	  return type === "ordinal" || type === "point" || type === "band" || type === ordinalImplicit;
-	}
-
-	function isThresholdScale({type}) {
-	  return type === "threshold";
-	}
-
-	function isBandScale({type}) {
-	  return type === "point" || type === "band";
-	}
-
-	// If the domain is undefined, we assume an identity scale.
-	function scaleOrder({range, domain = range}) {
-	  return Math.sign(order(domain)) * Math.sign(order(range));
-	}
-
-	// Mutates channel.value!
-	function coerceType(channels, {domain, ...options}, coerceValues) {
-	  for (const c of channels) {
-	    if (c.value !== undefined) {
-	      c.value = coerceValues(c.value);
+	    switch (kind) {
+	        case position: return "point";
+	        case color: return ordinalImplicit;
+	        default: return "ordinal";
 	    }
-	  }
-	  return {
-	    domain: domain === undefined ? domain : coerceValues(domain),
-	    ...options
-	  };
 	}
-
+	function isAll(domain, channels, is) {
+	    return domain !== undefined
+	        ? isFirst(domain, is) && isEvery(domain, is)
+	        : channels.some(({ value }) => value !== undefined && isFirst(value, is))
+	            && channels.every(({ value }) => value === undefined || isEvery(value, is));
+	}
+	function isTemporalScale({ type }) {
+	    return type === "time" || type === "utc";
+	}
+	function isOrdinalScale({ type }) {
+	    return type === "ordinal" || type === "point" || type === "band" || type === ordinalImplicit;
+	}
+	function isThresholdScale({ type }) {
+	    return type === "threshold";
+	}
+	function isBandScale({ type }) {
+	    return type === "point" || type === "band";
+	}
+	// If the domain is undefined, we assume an identity scale.
+	function scaleOrder({ range, domain = range }) {
+	    return Math.sign(order(domain)) * Math.sign(order(range));
+	}
+	// Mutates channel.value!
+	function coerceType(channels, { domain, ...options }, coerceValues) {
+	    for (const c of channels) {
+	        if (c.value !== undefined) {
+	            c.value = coerceValues(c.value);
+	        }
+	    }
+	    return {
+	        domain: domain === undefined ? domain : coerceValues(domain),
+	        ...options
+	    };
+	}
 	function coerceSymbols(values) {
-	  return map(values, maybeSymbol);
+	    return map(values, maybeSymbol);
 	}
-
 	function coerceDates(values) {
-	  return map(values, coerceDate);
+	    return map(values, coerceDate);
 	}
-
 	// If the values are specified as a typed array, no coercion is required.
 	function coerceNumbers(values) {
-	  return isTypedArray(values) ? values : map(values, coerceNumber, Float64Array);
+	    return isTypedArray(values) ? values : map(values, coerceNumber, Float64Array);
 	}
-
 	// Unlike Mark’s number, here we want to convert null and undefined to NaN,
 	// since the result will be stored in a Float64Array and we don’t want null to
 	// be coerced to zero.
 	function coerceNumber(x) {
-	  return x == null ? NaN : +x;
+	    return x == null ? NaN : +x;
 	}
-
 	// When coercing strings to dates, we only want to allow the ISO 8601 format
 	// since the built-in string parsing of the Date constructor varies across
 	// browsers. (In the future, this could be made more liberal if desired, though
@@ -71536,614 +71377,573 @@
 	// rather than rely on Plot.) Any non-string values are coerced to number first
 	// and treated as milliseconds since UNIX epoch.
 	function coerceDate(x) {
-	  return x instanceof Date && !isNaN(x) ? x
-	    : typeof x === "string" ? parse(x)
-	    : x == null || isNaN(x = +x) ? undefined
-	    : new Date(x);
+	    return x instanceof Date && !isNaN(x) ? x
+	        : typeof x === "string" ? parse(x)
+	            : x == null || isNaN(x = +x) ? undefined
+	                : new Date(x);
 	}
-
 	function exposeScales(scaleDescriptors) {
-	  return key => {
-	    if (!registry.has(key = `${key}`)) throw new Error(`unknown scale: ${key}`);
-	    return key in scaleDescriptors ? exposeScale(scaleDescriptors[key]) : undefined;
-	  };
+	    return key => {
+	        if (!registry.has(key = `${key}`))
+	            throw new Error(`unknown scale: ${key}`);
+	        return key in scaleDescriptors ? exposeScale(scaleDescriptors[key]) : undefined;
+	    };
+	}
+	function exposeScale({ scale, type, domain, range, label, interpolate, interval, transform, percent, pivot }) {
+	    if (type === "identity")
+	        return { type: "identity", apply: d => d, invert: d => d };
+	    const unknown = scale.unknown ? scale.unknown() : undefined;
+	    return {
+	        type,
+	        domain: slice(domain),
+	        ...range !== undefined && { range: slice(range) },
+	        ...transform !== undefined && { transform },
+	        ...percent && { percent },
+	        ...label !== undefined && { label },
+	        ...unknown !== undefined && { unknown },
+	        ...interval !== undefined && { interval },
+	        // quantitative
+	        ...interpolate !== undefined && { interpolate },
+	        ...scale.clamp && { clamp: scale.clamp() },
+	        // diverging (always asymmetric; we never want to apply the symmetric transform twice)
+	        ...pivot !== undefined && { pivot, symmetric: false },
+	        // log, diverging-log
+	        ...scale.base && { base: scale.base() },
+	        // pow, diverging-pow
+	        ...scale.exponent && { exponent: scale.exponent() },
+	        // symlog, diverging-symlog
+	        ...scale.constant && { constant: scale.constant() },
+	        // band, point
+	        ...scale.align && { align: scale.align(), round: scale.round() },
+	        ...scale.padding && (scale.paddingInner ? { paddingInner: scale.paddingInner(), paddingOuter: scale.paddingOuter() } : { padding: scale.padding() }),
+	        ...scale.bandwidth && { bandwidth: scale.bandwidth(), step: scale.step() },
+	        // utilities
+	        apply: t => scale(t),
+	        ...scale.invert && { invert: t => scale.invert(t) }
+	    };
 	}
 
-	function exposeScale({
-	  scale,
-	  type,
-	  domain,
-	  range,
-	  label,
-	  interpolate,
-	  transform,
-	  percent,
-	  pivot
-	}) {
-	  if (type === "identity") return {type: "identity", apply: d => d, invert: d => d};
-	  const unknown = scale.unknown ? scale.unknown() : undefined;
-	  return {
-	    type,
-	    domain: slice(domain), // defensive copy
-	    ...range !== undefined && {range: slice(range)}, // defensive copy
-	    ...transform !== undefined && {transform},
-	    ...percent && {percent}, // only exposed if truthy
-	    ...label !== undefined && {label},
-	    ...unknown !== undefined && {unknown},
-
-	    // quantitative
-	    ...interpolate !== undefined && {interpolate},
-	    ...scale.clamp && {clamp: scale.clamp()},
-
-	    // diverging (always asymmetric; we never want to apply the symmetric transform twice)
-	    ...pivot !== undefined && {pivot, symmetric: false},
-
-	    // log, diverging-log
-	    ...scale.base && {base: scale.base()},
-
-	    // pow, diverging-pow
-	    ...scale.exponent && {exponent: scale.exponent()},
-
-	    // symlog, diverging-symlog
-	    ...scale.constant && {constant: scale.constant()},
-
-	    // band, point
-	    ...scale.align && {align: scale.align(), round: scale.round()},
-	    ...scale.padding && (scale.paddingInner ? {paddingInner: scale.paddingInner(), paddingOuter: scale.paddingOuter()} : {padding: scale.padding()}),
-	    ...scale.bandwidth && {bandwidth: scale.bandwidth(), step: scale.step()},
-
-	    // utilities
-	    apply: t => scale(t),
-	    ...scale.invert && {invert: t => scale.invert(t)}
-	  };
+	function Axes({ x: xScale, y: yScale, fx: fxScale, fy: fyScale }, { x = {}, y = {}, fx = {}, fy = {}, axis = true, grid, line, label, facet: { axis: facetAxis = axis, grid: facetGrid, label: facetLabel = label } = {} } = {}) {
+	    let { axis: xAxis = axis } = x;
+	    let { axis: yAxis = axis } = y;
+	    let { axis: fxAxis = facetAxis } = fx;
+	    let { axis: fyAxis = facetAxis } = fy;
+	    if (!xScale)
+	        xAxis = null;
+	    else if (xAxis === true)
+	        xAxis = "bottom";
+	    if (!yScale)
+	        yAxis = null;
+	    else if (yAxis === true)
+	        yAxis = "left";
+	    if (!fxScale)
+	        fxAxis = null;
+	    else if (fxAxis === true)
+	        fxAxis = xAxis === "bottom" ? "top" : "bottom";
+	    if (!fyScale)
+	        fyAxis = null;
+	    else if (fyAxis === true)
+	        fyAxis = yAxis === "left" ? "right" : "left";
+	    return {
+	        ...xAxis && { x: new AxisX({ grid, line, label, fontVariant: inferFontVariant(xScale), ...x, axis: xAxis }) },
+	        ...yAxis && { y: new AxisY({ grid, line, label, fontVariant: inferFontVariant(yScale), ...y, axis: yAxis }) },
+	        ...fxAxis && { fx: new AxisX({ name: "fx", grid: facetGrid, label: facetLabel, fontVariant: inferFontVariant(fxScale), ...fx, axis: fxAxis }) },
+	        ...fyAxis && { fy: new AxisY({ name: "fy", grid: facetGrid, label: facetLabel, fontVariant: inferFontVariant(fyScale), ...fy, axis: fyAxis }) }
+	    };
 	}
-
-	function Axes(
-	  {x: xScale, y: yScale, fx: fxScale, fy: fyScale},
-	  {x = {}, y = {}, fx = {}, fy = {}, axis = true, grid, line, label, facet: {axis: facetAxis = axis, grid: facetGrid, label: facetLabel = label} = {}} = {}
-	) {
-	  let {axis: xAxis = axis} = x;
-	  let {axis: yAxis = axis} = y;
-	  let {axis: fxAxis = facetAxis} = fx;
-	  let {axis: fyAxis = facetAxis} = fy;
-	  if (!xScale) xAxis = null; else if (xAxis === true) xAxis = "bottom";
-	  if (!yScale) yAxis = null; else if (yAxis === true) yAxis = "left";
-	  if (!fxScale) fxAxis = null; else if (fxAxis === true) fxAxis = xAxis === "bottom" ? "top" : "bottom";
-	  if (!fyScale) fyAxis = null; else if (fyAxis === true) fyAxis = yAxis === "left" ? "right" : "left";
-	  return {
-	    ...xAxis && {x: new AxisX({grid, line, label, fontVariant: inferFontVariant(xScale), ...x, axis: xAxis})},
-	    ...yAxis && {y: new AxisY({grid, line, label, fontVariant: inferFontVariant(yScale), ...y, axis: yAxis})},
-	    ...fxAxis && {fx: new AxisX({name: "fx", grid: facetGrid, label: facetLabel, ...fx, axis: fxAxis})},
-	    ...fyAxis && {fy: new AxisY({name: "fy", grid: facetGrid, label: facetLabel, ...fy, axis: fyAxis})}
-	  };
-	}
-
 	// Mutates axis.ticks!
 	// TODO Populate tickFormat if undefined, too?
-	function autoAxisTicks({x, y, fx, fy}, {x: xAxis, y: yAxis, fx: fxAxis, fy: fyAxis}) {
-	  if (fxAxis) autoAxisTicksK(fx, fxAxis, 80);
-	  if (fyAxis) autoAxisTicksK(fy, fyAxis, 35);
-	  if (xAxis) autoAxisTicksK(x, xAxis, 80);
-	  if (yAxis) autoAxisTicksK(y, yAxis, 35);
+	function autoAxisTicks({ x, y, fx, fy }, { x: xAxis, y: yAxis, fx: fxAxis, fy: fyAxis }) {
+	    if (fxAxis)
+	        autoAxisTicksK(fx, fxAxis, 80);
+	    if (fyAxis)
+	        autoAxisTicksK(fy, fyAxis, 35);
+	    if (xAxis)
+	        autoAxisTicksK(x, xAxis, 80);
+	    if (yAxis)
+	        autoAxisTicksK(y, yAxis, 35);
 	}
-
 	function autoAxisTicksK(scale, axis, k) {
-	  if (axis.ticks === undefined) {
-	    const [min, max] = extent(scale.scale.range());
-	    axis.ticks = (max - min) / k;
-	  }
+	    if (axis.ticks === undefined) {
+	        const interval = scale.interval;
+	        if (interval !== undefined) {
+	            const [min, max] = extent(scale.scale.domain());
+	            axis.ticks = interval.range(interval.floor(min), interval.offset(interval.floor(max)));
+	        }
+	        else {
+	            const [min, max] = extent(scale.scale.range());
+	            axis.ticks = (max - min) / k;
+	        }
+	    }
+	    // D3’s ordinal scales simply use toString by default, but if the ordinal
+	    // scale domain (or ticks) are numbers or dates (say because we’re applying a
+	    // time interval to the ordinal scale), we want Plot’s default formatter.
+	    if (axis.tickFormat === undefined && isOrdinalScale(scale)) {
+	        axis.tickFormat = formatDefault;
+	    }
 	}
-
 	// Mutates axis.{label,labelAnchor,labelOffset} and scale.label!
-	function autoScaleLabels(channels, scales, {x, y, fx, fy}, dimensions, options) {
-	  if (fx) {
-	    autoAxisLabelsX(fx, scales.fx, channels.get("fx"));
-	    if (fx.labelOffset === undefined) {
-	      const {facetMarginTop, facetMarginBottom} = dimensions;
-	      fx.labelOffset = fx.axis === "top" ? facetMarginTop : facetMarginBottom;
+	function autoScaleLabels(channels, scales, { x, y, fx, fy }, dimensions, options) {
+	    if (fx) {
+	        autoAxisLabelsX(fx, scales.fx, channels.get("fx"));
+	        if (fx.labelOffset === undefined) {
+	            const { facetMarginTop, facetMarginBottom } = dimensions;
+	            fx.labelOffset = fx.axis === "top" ? facetMarginTop : facetMarginBottom;
+	        }
 	    }
-	  }
-	  if (fy) {
-	    autoAxisLabelsY(fy, fx, scales.fy, channels.get("fy"));
-	    if (fy.labelOffset === undefined) {
-	      const {facetMarginLeft, facetMarginRight} = dimensions;
-	      fy.labelOffset = fy.axis === "left" ? facetMarginLeft : facetMarginRight;
+	    if (fy) {
+	        autoAxisLabelsY(fy, fx, scales.fy, channels.get("fy"));
+	        if (fy.labelOffset === undefined) {
+	            const { facetMarginLeft, facetMarginRight } = dimensions;
+	            fy.labelOffset = fy.axis === "left" ? facetMarginLeft : facetMarginRight;
+	        }
 	    }
-	  }
-	  if (x) {
-	    autoAxisLabelsX(x, scales.x, channels.get("x"));
-	    if (x.labelOffset === undefined) {
-	      const {marginTop, marginBottom, facetMarginTop, facetMarginBottom} = dimensions;
-	      x.labelOffset = x.axis === "top" ? marginTop - facetMarginTop : marginBottom - facetMarginBottom;
+	    if (x) {
+	        autoAxisLabelsX(x, scales.x, channels.get("x"));
+	        if (x.labelOffset === undefined) {
+	            const { marginTop, marginBottom, facetMarginTop, facetMarginBottom } = dimensions;
+	            x.labelOffset = x.axis === "top" ? marginTop - facetMarginTop : marginBottom - facetMarginBottom;
+	        }
 	    }
-	  }
-	  if (y) {
-	    autoAxisLabelsY(y, x, scales.y, channels.get("y"));
-	    if (y.labelOffset === undefined) {
-	      const {marginRight, marginLeft, facetMarginLeft, facetMarginRight} = dimensions;
-	      y.labelOffset = y.axis === "left" ? marginLeft - facetMarginLeft : marginRight - facetMarginRight;
+	    if (y) {
+	        autoAxisLabelsY(y, x, scales.y, channels.get("y"));
+	        if (y.labelOffset === undefined) {
+	            const { marginRight, marginLeft, facetMarginLeft, facetMarginRight } = dimensions;
+	            y.labelOffset = y.axis === "left" ? marginLeft - facetMarginLeft : marginRight - facetMarginRight;
+	        }
 	    }
-	  }
-	  for (const [key, type] of registry) {
-	    if (type !== position && scales[key]) { // not already handled above
-	      autoScaleLabel(key, scales[key], channels.get(key), options[key]);
+	    for (const [key, type] of registry) {
+	        if (type !== position && scales[key]) { // not already handled above
+	            autoScaleLabel(key, scales[key], channels.get(key), options[key]);
+	        }
 	    }
-	  }
 	}
-
 	// Mutates axis.labelAnchor, axis.label, scale.label!
 	function autoAxisLabelsX(axis, scale, channels) {
-	  if (axis.labelAnchor === undefined) {
-	    axis.labelAnchor = isOrdinalScale(scale) ? "center"
-	      : scaleOrder(scale) < 0 ? "left"
-	      : "right";
-	  }
-	  if (axis.label === undefined) {
-	    axis.label = inferLabel(channels, scale, axis, "x");
-	  }
-	  scale.label = axis.label;
+	    if (axis.labelAnchor === undefined) {
+	        axis.labelAnchor = isOrdinalScale(scale) ? "center"
+	            : scaleOrder(scale) < 0 ? "left"
+	                : "right";
+	    }
+	    if (axis.label === undefined) {
+	        axis.label = inferLabel(channels, scale, axis, "x");
+	    }
+	    scale.label = axis.label;
 	}
-
 	// Mutates axis.labelAnchor, axis.label, scale.label!
 	function autoAxisLabelsY(axis, opposite, scale, channels) {
-	  if (axis.labelAnchor === undefined) {
-	    axis.labelAnchor = isOrdinalScale(scale) ? "center"
-	      : opposite && opposite.axis === "top" ? "bottom" // TODO scaleOrder?
-	      : "top";
-	  }
-	  if (axis.label === undefined) {
-	    axis.label = inferLabel(channels, scale, axis, "y");
-	  }
-	  scale.label = axis.label;
+	    if (axis.labelAnchor === undefined) {
+	        axis.labelAnchor = isOrdinalScale(scale) ? "center"
+	            : opposite && opposite.axis === "top" ? "bottom" // TODO scaleOrder?
+	                : "top";
+	    }
+	    if (axis.label === undefined) {
+	        axis.label = inferLabel(channels, scale, axis, "y");
+	    }
+	    scale.label = axis.label;
 	}
-
 	// Mutates scale.label!
 	function autoScaleLabel(key, scale, channels, options) {
-	  if (options) {
-	    scale.label = options.label;
-	  }
-	  if (scale.label === undefined) {
-	    scale.label = inferLabel(channels, scale, null, key);
-	  }
+	    if (options) {
+	        scale.label = options.label;
+	    }
+	    if (scale.label === undefined) {
+	        scale.label = inferLabel(channels, scale, null, key);
+	    }
 	}
-
 	// Channels can have labels; if all the channels for a given scale are
 	// consistently labeled (i.e., have the same value if not undefined), and the
 	// corresponding axis doesn’t already have an explicit label, then the channels’
 	// label is promoted to the corresponding axis.
 	function inferLabel(channels = [], scale, axis, key) {
-	  let candidate;
-	  for (const {label} of channels) {
-	    if (label === undefined) continue;
-	    if (candidate === undefined) candidate = label;
-	    else if (candidate !== label) return;
-	  }
-	  if (candidate !== undefined) {
-	    // Ignore the implicit label for temporal scales if it’s simply “date”.
-	    if (isTemporalScale(scale) && /^(date|time|year)$/i.test(candidate)) return;
-	    if (!isOrdinalScale(scale)) {
-	      if (scale.percent) candidate = `${candidate} (%)`;
-	      if (key === "x" || key === "y") {
-	        const order = scaleOrder(scale);
-	        if (order) {
-	          if (key === "x" || (axis && axis.labelAnchor === "center")) {
-	            candidate = key === "x" === order < 0 ? `← ${candidate}` : `${candidate} →`;
-	          } else {
-	            candidate = `${order < 0 ? "↑ " : "↓ "}${candidate}`;
-	          }
-	        }
-	      }
+	    let candidate;
+	    for (const { label } of channels) {
+	        if (label === undefined)
+	            continue;
+	        if (candidate === undefined)
+	            candidate = label;
+	        else if (candidate !== label)
+	            return;
 	    }
-	  }
-	  return candidate;
+	    if (candidate !== undefined) {
+	        // Ignore the implicit label for temporal scales if it’s simply “date”.
+	        if (isTemporalScale(scale) && /^(date|time|year)$/i.test(candidate))
+	            return;
+	        if (!isOrdinalScale(scale)) {
+	            if (scale.percent)
+	                candidate = `${candidate} (%)`;
+	            if (key === "x" || key === "y") {
+	                const order = scaleOrder(scale);
+	                if (order) {
+	                    if (key === "x" || (axis && axis.labelAnchor === "center")) {
+	                        candidate = key === "x" === order < 0 ? `← ${candidate}` : `${candidate} →`;
+	                    }
+	                    else {
+	                        candidate = `${order < 0 ? "↑ " : "↓ "}${candidate}`;
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return candidate;
 	}
-
 	function inferFontVariant(scale) {
-	  return isOrdinalScale(scale) ? undefined : "tabular-nums";
+	    return isOrdinalScale(scale) && scale.interval === undefined ? undefined : "tabular-nums";
 	}
 
 	// If both t1 and t2 are defined, returns a composite transform that first
 	// applies t1 and then applies t2.
-	function basic({
-	  filter: f1,
-	  sort: s1,
-	  reverse: r1,
-	  transform: t1,
-	  initializer: i1,
-	  ...options
-	} = {}, t2) {
-	  if (t1 === undefined) { // explicit transform overrides filter, sort, and reverse
-	    if (f1 != null) t1 = filterTransform(f1);
-	    if (s1 != null && !isDomainSort(s1)) t1 = composeTransform(t1, sortTransform(s1));
-	    if (r1) t1 = composeTransform(t1, reverseTransform);
-	  }
-	  if (t2 != null && i1 != null) throw new Error("transforms cannot be applied after initializers");
-	  return {
-	    ...options,
-	    ...(s1 === null || isDomainSort(s1)) && {sort: s1},
-	    transform: composeTransform(t1, t2)
-	  };
+	function basic({ filter: f1, sort: s1, reverse: r1, transform: t1, initializer: i1, ...options } = {}, t2) {
+	    if (t1 === undefined) { // explicit transform overrides filter, sort, and reverse
+	        if (f1 != null)
+	            t1 = filterTransform(f1);
+	        if (s1 != null && !isDomainSort(s1))
+	            t1 = composeTransform(t1, sortTransform(s1));
+	        if (r1)
+	            t1 = composeTransform(t1, reverseTransform);
+	    }
+	    if (t2 != null && i1 != null)
+	        throw new Error("transforms cannot be applied after initializers");
+	    return {
+	        ...options,
+	        ...(s1 === null || isDomainSort(s1)) && { sort: s1 },
+	        transform: composeTransform(t1, t2)
+	    };
 	}
-
 	// If both i1 and i2 are defined, returns a composite initializer that first
 	// applies i1 and then applies i2.
-	function initializer({
-	  filter: f1,
-	  sort: s1,
-	  reverse: r1,
-	  initializer: i1,
-	  ...options
-	} = {}, i2) {
-	  if (i1 === undefined) { // explicit initializer overrides filter, sort, and reverse
-	    if (f1 != null) i1 = filterTransform(f1);
-	    if (s1 != null && !isDomainSort(s1)) i1 = composeInitializer(i1, sortTransform(s1));
-	    if (r1) i1 = composeInitializer(i1, reverseTransform);
-	  }
-	  return {
-	    ...options,
-	    initializer: composeInitializer(i1, i2)
-	  };
+	function initializer({ filter: f1, sort: s1, reverse: r1, initializer: i1, ...options } = {}, i2) {
+	    if (i1 === undefined) { // explicit initializer overrides filter, sort, and reverse
+	        if (f1 != null)
+	            i1 = filterTransform(f1);
+	        if (s1 != null && !isDomainSort(s1))
+	            i1 = composeInitializer(i1, sortTransform(s1));
+	        if (r1)
+	            i1 = composeInitializer(i1, reverseTransform);
+	    }
+	    return {
+	        ...options,
+	        initializer: composeInitializer(i1, i2)
+	    };
 	}
-
 	function composeTransform(t1, t2) {
-	  if (t1 == null) return t2 === null ? undefined : t2;
-	  if (t2 == null) return t1 === null ? undefined : t1;
-	  return function(data, facets) {
-	    ({data, facets} = t1.call(this, data, facets));
-	    return t2.call(this, arrayify(data), facets);
-	  };
+	    if (t1 == null)
+	        return t2 === null ? undefined : t2;
+	    if (t2 == null)
+	        return t1 === null ? undefined : t1;
+	    return function (data, facets) {
+	        ({ data, facets } = t1.call(this, data, facets));
+	        return t2.call(this, arrayify(data), facets);
+	    };
 	}
-
 	function composeInitializer(i1, i2) {
-	  if (i1 == null) return i2 === null ? undefined : i2;
-	  if (i2 == null) return i1 === null ? undefined : i1;
-	  return function(data, facets, channels, scales, dimensions) {
-	    let c1, d1, f1, c2, d2, f2;
-	    ({data: d1 = data, facets: f1 = facets, channels: c1} = i1.call(this, data, facets, channels, scales, dimensions));
-	    ({data: d2 = d1, facets: f2 = f1, channels: c2} = i2.call(this, d1, f1, {...channels, ...c1}, scales, dimensions));
-	    return {data: d2, facets: f2, channels: {...c1, ...c2}};
-	  };
+	    if (i1 == null)
+	        return i2 === null ? undefined : i2;
+	    if (i2 == null)
+	        return i1 === null ? undefined : i1;
+	    return function (data, facets, channels, scales, dimensions) {
+	        let c1, d1, f1, c2, d2, f2;
+	        ({ data: d1 = data, facets: f1 = facets, channels: c1 } = i1.call(this, data, facets, channels, scales, dimensions));
+	        ({ data: d2 = d1, facets: f2 = f1, channels: c2 } = i2.call(this, d1, f1, { ...channels, ...c1 }, scales, dimensions));
+	        return { data: d2, facets: f2, channels: { ...c1, ...c2 } };
+	    };
 	}
-
 	function filterTransform(value) {
-	  return (data, facets) => {
-	    const V = valueof(data, value);
-	    return {data, facets: facets.map(I => I.filter(i => V[i]))};
-	  };
+	    return (data, facets) => {
+	        const V = valueof(data, value);
+	        return { data, facets: facets.map(I => I.filter(i => V[i])) };
+	    };
 	}
-
 	function reverseTransform(data, facets) {
-	  return {data, facets: facets.map(I => I.slice().reverse())};
+	    return { data, facets: facets.map(I => I.slice().reverse()) };
 	}
-
 	function sortTransform(value) {
-	  return (typeof value === "function" && value.length !== 1 ? sortData : sortValue)(value);
+	    return (typeof value === "function" && value.length !== 1 ? sortData : sortValue)(value);
 	}
-
 	function sortData(compare) {
-	  return (data, facets) => {
-	    const compareData = (i, j) => compare(data[i], data[j]);
-	    return {data, facets: facets.map(I => I.slice().sort(compareData))};
-	  };
+	    return (data, facets) => {
+	        const compareData = (i, j) => compare(data[i], data[j]);
+	        return { data, facets: facets.map(I => I.slice().sort(compareData)) };
+	    };
 	}
-
 	function sortValue(value) {
-	  let channel, order;
-	  ({channel, value, order = ascendingDefined} = {...maybeValue(value)});
-	  if (typeof order !== "function") {
-	    switch (`${order}`.toLowerCase()) {
-	      case "ascending": order = ascendingDefined; break;
-	      case "descending": order = descendingDefined; break;
-	      default: throw new Error(`invalid order: ${order}`);
+	    let channel, order;
+	    ({ channel, value, order = ascendingDefined } = { ...maybeValue(value) });
+	    if (typeof order !== "function") {
+	        switch (`${order}`.toLowerCase()) {
+	            case "ascending":
+	                order = ascendingDefined;
+	                break;
+	            case "descending":
+	                order = descendingDefined;
+	                break;
+	            default: throw new Error(`invalid order: ${order}`);
+	        }
 	    }
-	  }
-	  return (data, facets, channels) => {
-	    let V;
-	    if (channel === undefined) {
-	      V = valueof(data, value);
-	    } else {
-	      if (channels === undefined) throw new Error("channel sort requires an initializer");
-	      V = channels[channel];
-	      if (!V) return {}; // ignore missing channel
-	      V = V.value;
-	    }
-	    const compareValue = (i, j) => order(V[i], V[j]);
-	    return {data, facets: facets.map(I => I.slice().sort(compareValue))};
-	  };
+	    return (data, facets, channels) => {
+	        let V;
+	        if (channel === undefined) {
+	            V = valueof(data, value);
+	        }
+	        else {
+	            if (channels === undefined)
+	                throw new Error("channel sort requires an initializer");
+	            V = channels[channel];
+	            if (!V)
+	                return {}; // ignore missing channel
+	            V = V.value;
+	        }
+	        const compareValue = (i, j) => order(V[i], V[j]);
+	        return { data, facets: facets.map(I => I.slice().sort(compareValue)) };
+	    };
 	}
 
 	function maybeReduce(reduce, value) {
-	  if (reduce && typeof reduce.reduce === "function") return reduce;
-	  if (typeof reduce === "function") return reduceFunction(reduce);
-	  if (/^p\d{2}$/i.test(reduce)) return reduceAccessor(percentile(reduce));
-	  switch (`${reduce}`.toLowerCase()) {
-	    case "first": return reduceFirst;
-	    case "last": return reduceLast;
-	    case "count": return reduceCount;
-	    case "distinct": return reduceDistinct;
-	    case "sum": return value == null ? reduceCount : reduceSum;
-	    case "proportion": return reduceProportion(value, "data");
-	    case "proportion-facet": return reduceProportion(value, "facet");
-	    case "deviation": return reduceAccessor(deviation);
-	    case "min": return reduceAccessor(min$1);
-	    case "min-index": return reduceAccessor(minIndex);
-	    case "max": return reduceAccessor(max);
-	    case "max-index": return reduceAccessor(maxIndex);
-	    case "mean": return reduceAccessor(mean);
-	    case "median": return reduceAccessor(median);
-	    case "variance": return reduceAccessor(variance);
-	    case "mode": return reduceAccessor(mode);
-	    case "x": return reduceX;
-	    case "x1": return reduceX1;
-	    case "x2": return reduceX2;
-	    case "y": return reduceY;
-	    case "y1": return reduceY1;
-	    case "y2": return reduceY2;
-	  }
-	  throw new Error(`invalid reduce: ${reduce}`);
+	    if (reduce && typeof reduce.reduce === "function")
+	        return reduce;
+	    if (typeof reduce === "function")
+	        return reduceFunction(reduce);
+	    if (/^p\d{2}$/i.test(reduce))
+	        return reduceAccessor(percentile(reduce));
+	    switch (`${reduce}`.toLowerCase()) {
+	        case "first": return reduceFirst;
+	        case "last": return reduceLast;
+	        case "count": return reduceCount;
+	        case "distinct": return reduceDistinct;
+	        case "sum": return value == null ? reduceCount : reduceSum;
+	        case "proportion": return reduceProportion(value, "data");
+	        case "proportion-facet": return reduceProportion(value, "facet");
+	        case "deviation": return reduceAccessor(deviation);
+	        case "min": return reduceAccessor(min$1);
+	        case "min-index": return reduceAccessor(minIndex);
+	        case "max": return reduceAccessor(max);
+	        case "max-index": return reduceAccessor(maxIndex);
+	        case "mean": return reduceAccessor(mean);
+	        case "median": return reduceAccessor(median);
+	        case "variance": return reduceAccessor(variance);
+	        case "mode": return reduceAccessor(mode);
+	        case "x": return reduceX;
+	        case "x1": return reduceX1;
+	        case "x2": return reduceX2;
+	        case "y": return reduceY;
+	        case "y1": return reduceY1;
+	        case "y2": return reduceY2;
+	    }
+	    throw new Error(`invalid reduce: ${reduce}`);
 	}
-
 	function reduceFunction(f) {
-	  return {
-	    reduce(I, X, extent) {
-	      return f(take(X, I), extent);
-	    }
-	  };
+	    return {
+	        reduce(I, X, extent) {
+	            return f(take(X, I), extent);
+	        }
+	    };
 	}
-
 	function reduceAccessor(f) {
-	  return {
-	    reduce(I, X) {
-	      return f(I, i => X[i]);
-	    }
-	  };
+	    return {
+	        reduce(I, X) {
+	            return f(I, i => X[i]);
+	        }
+	    };
 	}
-
 	const reduceFirst = {
-	  reduce(I, X) {
-	    return X[I[0]];
-	  }
+	    reduce(I, X) {
+	        return X[I[0]];
+	    }
 	};
-
 	const reduceLast = {
-	  reduce(I, X) {
-	    return X[I[I.length - 1]];
-	  }
+	    reduce(I, X) {
+	        return X[I[I.length - 1]];
+	    }
 	};
-
 	const reduceCount = {
-	  label: "Frequency",
-	  reduce(I) {
-	    return I.length;
-	  }
+	    label: "Frequency",
+	    reduce(I) {
+	        return I.length;
+	    }
 	};
-
 	const reduceDistinct = {
-	  label: "Distinct",
-	  reduce: (I, X) => {
-	    const s = new InternSet();
-	    for (const i of I) s.add(X[i]);
-	    return s.size;
-	  }
+	    label: "Distinct",
+	    reduce: (I, X) => {
+	        const s = new InternSet();
+	        for (const i of I)
+	            s.add(X[i]);
+	        return s.size;
+	    }
 	};
-
 	const reduceSum = reduceAccessor(sum);
-
 	function reduceProportion(value, scope) {
-	  return value == null
-	      ? {scope, label: "Frequency", reduce: (I, V, basis = 1) => I.length / basis}
-	      : {scope, reduce: (I, V, basis = 1) => sum(I, i => V[i]) / basis};
+	    return value == null
+	        ? { scope, label: "Frequency", reduce: (I, V, basis = 1) => I.length / basis }
+	        : { scope, reduce: (I, V, basis = 1) => sum(I, i => V[i]) / basis };
 	}
-
 	function mid(x1, x2) {
-	  const m = (+x1 + +x2) / 2;
-	  return x1 instanceof Date ? new Date(m) : m;
+	    const m = (+x1 + +x2) / 2;
+	    return x1 instanceof Date ? new Date(m) : m;
 	}
-
 	const reduceX = {
-	  reduce(I, X, {x1, x2}) {
-	    return mid(x1, x2);
-	  }
+	    reduce(I, X, { x1, x2 }) {
+	        return mid(x1, x2);
+	    }
 	};
-
 	const reduceY = {
-	  reduce(I, X, {y1, y2}) {
-	    return mid(y1, y2);
-	  }
+	    reduce(I, X, { y1, y2 }) {
+	        return mid(y1, y2);
+	    }
 	};
-
 	const reduceX1 = {
-	  reduce(I, X, {x1}) {
-	    return x1;
-	  }
+	    reduce(I, X, { x1 }) {
+	        return x1;
+	    }
 	};
-
 	const reduceX2 = {
-	  reduce(I, X, {x2}) {
-	    return x2;
-	  }
+	    reduce(I, X, { x2 }) {
+	        return x2;
+	    }
 	};
-
 	const reduceY1 = {
-	  reduce(I, X, {y1}) {
-	    return y1;
-	  }
+	    reduce(I, X, { y1 }) {
+	        return y1;
+	    }
 	};
-
 	const reduceY2 = {
-	  reduce(I, X, {y2}) {
-	    return y2;
-	  }
+	    reduce(I, X, { y2 }) {
+	        return y2;
+	    }
 	};
 
 	// TODO Type coercion?
-	function Channel(data, {scale, type, value, filter, hint}) {
-	  return {
-	    scale,
-	    type,
-	    value: valueof(data, value),
-	    label: labelof(value),
-	    filter,
-	    hint
-	  };
+	function Channel(data, { scale, type, value, filter, hint }) {
+	    return {
+	        scale,
+	        type,
+	        value: valueof(data, value),
+	        label: labelof(value),
+	        filter,
+	        hint
+	    };
 	}
-
 	function channelObject(channelDescriptors, data) {
-	  const channels = {};
-	  for (const channel of channelDescriptors) {
-	    channels[channel.name] = Channel(data, channel);
-	  }
-	  return channels;
+	    const channels = {};
+	    for (const channel of channelDescriptors) {
+	        channels[channel.name] = Channel(data, channel);
+	    }
+	    return channels;
 	}
-
 	// TODO Use Float64Array for scales with numeric ranges, e.g. position?
 	function valueObject(channels, scales) {
-	  const values = {};
-	  for (const channelName in channels) {
-	    const {scale: scaleName, value} = channels[channelName];
-	    const scale = scales[scaleName];
-	    values[channelName] = scale === undefined ? value : map(value, scale);
-	  }
-	  return values;
+	    const values = {};
+	    for (const channelName in channels) {
+	        const { scale: scaleName, value } = channels[channelName];
+	        const scale = scales[scaleName];
+	        values[channelName] = scale === undefined ? value : map(value, scale);
+	    }
+	    return values;
 	}
-
 	// Note: mutates channel.domain! This is set to a function so that it is lazily
 	// computed; i.e., if the scale’s domain is set explicitly, that takes priority
 	// over the sort option, and we don’t need to do additional work.
 	function channelDomain(channels, facetChannels, data, options) {
-	  const {reverse: defaultReverse, reduce: defaultReduce = true, limit: defaultLimit} = options;
-	  for (const x in options) {
-	    if (!registry.has(x)) continue; // ignore unknown scale keys (including generic options)
-	    let {value: y, reverse = defaultReverse, reduce = defaultReduce, limit = defaultLimit} = maybeValue(options[x]);
-	    if (reverse === undefined) reverse = y === "width" || y === "height"; // default to descending for lengths
-	    if (reduce == null || reduce === false) continue; // disabled reducer
-	    const X = findScaleChannel(channels, x) || facetChannels && findScaleChannel(facetChannels, x);
-	    if (!X) throw new Error(`missing channel for scale: ${x}`);
-	    const XV = X.value;
-	    const [lo = 0, hi = Infinity] = isIterable(limit) ? limit : limit < 0 ? [limit] : [0, limit];
-	    if (y == null) {
-	      X.domain = () => {
-	        let domain = XV;
-	        if (reverse) domain = domain.slice().reverse();
-	        if (lo !== 0 || hi !== Infinity) domain = domain.slice(lo, hi);
-	        return domain;
-	      };
-	    } else {
-	      const YV = y === "data" ? data
-	          : y === "height" ? difference(channels, "y1", "y2")
-	          : y === "width" ? difference(channels, "x1", "x2")
-	          : values(channels, y, y === "y" ? "y2" : y === "x" ? "x2" : undefined);
-	      const reducer = maybeReduce(reduce === true ? "max" : reduce, YV);
-	      X.domain = () => {
-	        let domain = rollup(range(XV), I => reducer.reduce(I, YV), i => XV[i]);
-	        domain = sort(domain, reverse ? descendingGroup : ascendingGroup);
-	        if (lo !== 0 || hi !== Infinity) domain = domain.slice(lo, hi);
-	        return domain.map(first);
-	      };
+	    const { reverse: defaultReverse, reduce: defaultReduce = true, limit: defaultLimit } = options;
+	    for (const x in options) {
+	        if (!registry.has(x))
+	            continue; // ignore unknown scale keys (including generic options)
+	        let { value: y, reverse = defaultReverse, reduce = defaultReduce, limit = defaultLimit } = maybeValue(options[x]);
+	        if (reverse === undefined)
+	            reverse = y === "width" || y === "height"; // default to descending for lengths
+	        if (reduce == null || reduce === false)
+	            continue; // disabled reducer
+	        const X = findScaleChannel(channels, x) || facetChannels && findScaleChannel(facetChannels, x);
+	        if (!X)
+	            throw new Error(`missing channel for scale: ${x}`);
+	        const XV = X.value;
+	        const [lo = 0, hi = Infinity] = isIterable(limit) ? limit : limit < 0 ? [limit] : [0, limit];
+	        if (y == null) {
+	            X.domain = () => {
+	                let domain = XV;
+	                if (reverse)
+	                    domain = domain.slice().reverse();
+	                if (lo !== 0 || hi !== Infinity)
+	                    domain = domain.slice(lo, hi);
+	                return domain;
+	            };
+	        }
+	        else {
+	            const YV = y === "data" ? data
+	                : y === "height" ? difference(channels, "y1", "y2")
+	                    : y === "width" ? difference(channels, "x1", "x2")
+	                        : values(channels, y, y === "y" ? "y2" : y === "x" ? "x2" : undefined);
+	            const reducer = maybeReduce(reduce === true ? "max" : reduce, YV);
+	            X.domain = () => {
+	                let domain = rollup(range(XV), I => reducer.reduce(I, YV), i => XV[i]);
+	                domain = sort(domain, reverse ? descendingGroup : ascendingGroup);
+	                if (lo !== 0 || hi !== Infinity)
+	                    domain = domain.slice(lo, hi);
+	                return domain.map(first);
+	            };
+	        }
 	    }
-	  }
 	}
-
 	function findScaleChannel(channels, scale) {
-	  for (const name in channels) {
-	    const channel = channels[name];
-	    if (channel.scale === scale) return channel;
-	  }
+	    for (const name in channels) {
+	        const channel = channels[name];
+	        if (channel.scale === scale)
+	            return channel;
+	    }
 	}
-
 	function difference(channels, k1, k2) {
-	  const X1 = values(channels, k1);
-	  const X2 = values(channels, k2);
-	  return map(X2, (x2, i) => Math.abs(x2 - X1[i]), Float64Array);
+	    const X1 = values(channels, k1);
+	    const X2 = values(channels, k2);
+	    return map(X2, (x2, i) => Math.abs(x2 - X1[i]), Float64Array);
 	}
-
 	function values(channels, name, alias) {
-	  let channel = channels[name];
-	  if (!channel && alias !== undefined) channel = channels[alias];
-	  if (channel) return channel.value;
-	  throw new Error(`missing channel: ${name}`);
+	    let channel = channels[name];
+	    if (!channel && alias !== undefined)
+	        channel = channels[alias];
+	    if (channel)
+	        return channel.value;
+	    throw new Error(`missing channel: ${name}`);
 	}
-
 	function ascendingGroup([ak, av], [bk, bv]) {
-	  return ascending$4(av, bv) || ascending$4(ak, bk);
+	    return ascending$4(av, bv) || ascending$4(ak, bk);
 	}
-
 	function descendingGroup([ak, av], [bk, bv]) {
-	  return descending(av, bv) || ascending$4(ak, bk);
+	    return descending(av, bv) || ascending$4(ak, bk);
 	}
 
-	function Dimensions(
-	  scales,
-	  {
-	    x: {axis: xAxis} = {},
-	    y: {axis: yAxis} = {},
-	    fx: {axis: fxAxis} = {},
-	    fy: {axis: fyAxis} = {}
-	  },
-	  {
-	    width = 640,
-	    height = autoHeight(scales),
-	    facet: {
-	      margin: facetMargin,
-	      marginTop: facetMarginTop = facetMargin !== undefined ? facetMargin : fxAxis === "top" ? 30 : 0,
-	      marginRight: facetMarginRight = facetMargin !== undefined ? facetMargin : fyAxis === "right" ? 40 : 0,
-	      marginBottom: facetMarginBottom = facetMargin !== undefined ? facetMargin : fxAxis === "bottom" ? 30 : 0,
-	      marginLeft: facetMarginLeft = facetMargin !== undefined ? facetMargin : fyAxis === "left" ? 40 : 0
-	    } = {},
-	    margin,
-	    marginTop = margin !== undefined ? margin : Math.max((xAxis === "top" ? 30 : 0) + facetMarginTop, yAxis || fyAxis ? 20 : 0.5 - offset),
-	    marginRight = margin !== undefined ? margin : Math.max((yAxis === "right" ? 40 : 0) + facetMarginRight, xAxis || fxAxis ? 20 : 0.5 + offset),
-	    marginBottom = margin !== undefined ? margin : Math.max((xAxis === "bottom" ? 30 : 0) + facetMarginBottom, yAxis || fyAxis ? 20 : 0.5 + offset),
-	    marginLeft = margin !== undefined ? margin : Math.max((yAxis === "left" ? 40 : 0) + facetMarginLeft, xAxis || fxAxis ? 20 : 0.5 - offset)
-	  } = {}
-	) {
-	  return {
-	    width,
-	    height,
-	    marginTop,
-	    marginRight,
-	    marginBottom,
-	    marginLeft,
-	    facetMarginTop,
-	    facetMarginRight,
-	    facetMarginBottom,
-	    facetMarginLeft
-	  };
+	function Dimensions(scales, { x: { axis: xAxis } = {}, y: { axis: yAxis } = {}, fx: { axis: fxAxis } = {}, fy: { axis: fyAxis } = {} }, { width = 640, height = autoHeight(scales), facet: { margin: facetMargin, marginTop: facetMarginTop = facetMargin !== undefined ? facetMargin : fxAxis === "top" ? 30 : 0, marginRight: facetMarginRight = facetMargin !== undefined ? facetMargin : fyAxis === "right" ? 40 : 0, marginBottom: facetMarginBottom = facetMargin !== undefined ? facetMargin : fxAxis === "bottom" ? 30 : 0, marginLeft: facetMarginLeft = facetMargin !== undefined ? facetMargin : fyAxis === "left" ? 40 : 0 } = {}, margin, marginTop = margin !== undefined ? margin : Math.max((xAxis === "top" ? 30 : 0) + facetMarginTop, yAxis || fyAxis ? 20 : 0.5 - offset), marginRight = margin !== undefined ? margin : Math.max((yAxis === "right" ? 40 : 0) + facetMarginRight, xAxis || fxAxis ? 20 : 0.5 + offset), marginBottom = margin !== undefined ? margin : Math.max((xAxis === "bottom" ? 30 : 0) + facetMarginBottom, yAxis || fyAxis ? 20 : 0.5 + offset), marginLeft = margin !== undefined ? margin : Math.max((yAxis === "left" ? 40 : 0) + facetMarginLeft, xAxis || fxAxis ? 20 : 0.5 - offset) } = {}) {
+	    return {
+	        width,
+	        height,
+	        marginTop,
+	        marginRight,
+	        marginBottom,
+	        marginLeft,
+	        facetMarginTop,
+	        facetMarginRight,
+	        facetMarginBottom,
+	        facetMarginLeft
+	    };
+	}
+	function autoHeight({ y, fy, fx }) {
+	    const nfy = fy ? fy.scale.domain().length : 1;
+	    const ny = y ? (isOrdinalScale(y) ? y.scale.domain().length : Math.max(7, 17 / nfy)) : 1;
+	    return !!(y || fy) * Math.max(1, Math.min(60, ny * nfy)) * 20 + !!fx * 30 + 60;
 	}
 
-	function autoHeight({y, fy, fx}) {
-	  const nfy = fy ? fy.scale.domain().length : 1;
-	  const ny = y ? (isOrdinalScale(y) ? y.scale.domain().length : Math.max(7, 17 / nfy)) : 1;
-	  return !!(y || fy) * Math.max(1, Math.min(60, ny * nfy)) * 20 + !!fx * 30 + 60;
-	}
-
-	function legendRamp(color, {
-	  label = color.label,
-	  tickSize = 6,
-	  width = 240,
-	  height = 44 + tickSize,
-	  marginTop = 18,
-	  marginRight = 0,
-	  marginBottom = 16 + tickSize,
-	  marginLeft = 0,
-	  style,
-	  ticks = (width - marginLeft - marginRight) / 64,
-	  tickFormat,
-	  fontVariant = inferFontVariant(color),
-	  round = true,
-	  className
-	}) {
-	  className = maybeClassName(className);
-	  if (tickFormat === null) tickFormat = () => null;
-
-	  const svg = create("svg")
-	      .attr("class", className)
-	      .attr("font-family", "system-ui, sans-serif")
-	      .attr("font-size", 10)
-	      .attr("width", width)
-	      .attr("height", height)
-	      .attr("viewBox", `0 0 ${width} ${height}`)
-	      .call(svg => svg.append("style").text(`
+	function legendRamp(color, options) {
+	    let { label = color.label, tickSize = 6, width = 240, height = 44 + tickSize, marginTop = 18, marginRight = 0, marginBottom = 16 + tickSize, marginLeft = 0, style, ticks = (width - marginLeft - marginRight) / 64, tickFormat, fontVariant = inferFontVariant(color), round = true, className } = options;
+	    const context = Context(options);
+	    className = maybeClassName(className);
+	    if (tickFormat === null)
+	        tickFormat = () => null;
+	    const svg = create("svg", context)
+	        .attr("class", className)
+	        .attr("font-family", "system-ui, sans-serif")
+	        .attr("font-size", 10)
+	        .attr("width", width)
+	        .attr("height", height)
+	        .attr("viewBox", `0 0 ${width} ${height}`)
+	        .call(svg => svg.append("style").text(`
         .${className} {
           display: block;
           background: white;
@@ -72156,189 +71956,147 @@
           white-space: pre;
         }
       `))
-	      .call(applyInlineStyles, style);
-
-	  let tickAdjust = g => g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
-
-	  let x;
-
-	  // Some D3 scales use scale.interpolate, some scale.interpolator, and some
-	  // scale.round; this normalizes the API so it works with all scale types.
-	  const applyRange = round
-	      ? (x, range) => x.rangeRound(range)
-	      : (x, range) => x.range(range);
-
-	  const {type, domain, range, interpolate, scale, pivot} = color;
-
-	  // Continuous
-	  if (interpolate) {
-
-	    // Often interpolate is a “fixed” interpolator on the [0, 1] interval, as
-	    // with a built-in color scheme, but sometimes it is a function that takes
-	    // two arguments and is used in conjunction with the range.
-	    const interpolator = range === undefined ? interpolate
-	        : piecewise(interpolate.length === 1 ? interpolatePiecewise(interpolate)
-	        : interpolate, range);
-
-	    // Construct a D3 scale of the same type, but with a range that evenly
-	    // divides the horizontal extent of the legend. (In the common case, the
-	    // domain.length is two, and so the range is simply the extent.) For a
-	    // diverging scale, we need an extra point in the range for the pivot such
-	    // that the pivot is always drawn in the middle.
-	    x = applyRange(
-	      scale.copy(),
-	      quantize(
-	        interpolateNumber(marginLeft, width - marginRight),
-	        Math.min(
-	          domain.length + (pivot !== undefined),
-	          range === undefined ? Infinity : range.length
-	        )
-	      )
-	    );
-
-	    svg.append("image")
-	        .attr("x", marginLeft)
-	        .attr("y", marginTop)
-	        .attr("width", width - marginLeft - marginRight)
-	        .attr("height", height - marginTop - marginBottom)
-	        .attr("preserveAspectRatio", "none")
-	        .attr("xlink:href", ramp(interpolator).toDataURL());
-	  }
-
-	  // Threshold
-	  else if (type === "threshold") {
-	    const thresholds = domain;
-
-	    const thresholdFormat
-	        = tickFormat === undefined ? d => d
-	        : typeof tickFormat === "string" ? format$1(tickFormat)
-	        : tickFormat;
-
-	    // Construct a linear scale with evenly-spaced ticks for each of the
-	    // thresholds; the domain extends one beyond the threshold extent.
-	    x = applyRange(linear().domain([-1, range.length - 1]), [marginLeft, width - marginRight]);
-
+	        .call(applyInlineStyles, style);
+	    let tickAdjust = g => g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
+	    let x;
+	    // Some D3 scales use scale.interpolate, some scale.interpolator, and some
+	    // scale.round; this normalizes the API so it works with all scale types.
+	    const applyRange = round
+	        ? (x, range) => x.rangeRound(range)
+	        : (x, range) => x.range(range);
+	    const { type, domain, range, interpolate, scale, pivot } = color;
+	    // Continuous
+	    if (interpolate) {
+	        // Often interpolate is a “fixed” interpolator on the [0, 1] interval, as
+	        // with a built-in color scheme, but sometimes it is a function that takes
+	        // two arguments and is used in conjunction with the range.
+	        const interpolator = range === undefined ? interpolate
+	            : piecewise(interpolate.length === 1 ? interpolatePiecewise(interpolate)
+	                : interpolate, range);
+	        // Construct a D3 scale of the same type, but with a range that evenly
+	        // divides the horizontal extent of the legend. (In the common case, the
+	        // domain.length is two, and so the range is simply the extent.) For a
+	        // diverging scale, we need an extra point in the range for the pivot such
+	        // that the pivot is always drawn in the middle.
+	        x = applyRange(scale.copy(), quantize(interpolateNumber(marginLeft, width - marginRight), Math.min(domain.length + (pivot !== undefined), range === undefined ? Infinity : range.length)));
+	        // Construct a 256×1 canvas, filling each pixel using the interpolator.
+	        const n = 256;
+	        const canvas = context.document.createElement("canvas");
+	        canvas.width = n;
+	        canvas.height = 1;
+	        const context2 = canvas.getContext("2d");
+	        for (let i = 0, j = n - 1; i < n; ++i) {
+	            context2.fillStyle = interpolator(i / j);
+	            context2.fillRect(i, 0, 1, 1);
+	        }
+	        svg.append("image")
+	            .attr("x", marginLeft)
+	            .attr("y", marginTop)
+	            .attr("width", width - marginLeft - marginRight)
+	            .attr("height", height - marginTop - marginBottom)
+	            .attr("preserveAspectRatio", "none")
+	            .attr("xlink:href", canvas.toDataURL());
+	    }
+	    // Threshold
+	    else if (type === "threshold") {
+	        const thresholds = domain;
+	        const thresholdFormat = tickFormat === undefined ? d => d
+	            : typeof tickFormat === "string" ? format$1(tickFormat)
+	                : tickFormat;
+	        // Construct a linear scale with evenly-spaced ticks for each of the
+	        // thresholds; the domain extends one beyond the threshold extent.
+	        x = applyRange(linear().domain([-1, range.length - 1]), [marginLeft, width - marginRight]);
+	        svg.append("g")
+	            .selectAll()
+	            .data(range)
+	            .enter()
+	            .append("rect")
+	            .attr("x", (d, i) => x(i - 1))
+	            .attr("y", marginTop)
+	            .attr("width", (d, i) => x(i) - x(i - 1))
+	            .attr("height", height - marginTop - marginBottom)
+	            .attr("fill", d => d);
+	        ticks = map(thresholds, (_, i) => i);
+	        tickFormat = i => thresholdFormat(thresholds[i], i);
+	    }
+	    // Ordinal (hopefully!)
+	    else {
+	        x = applyRange(band().domain(domain), [marginLeft, width - marginRight]);
+	        svg.append("g")
+	            .selectAll()
+	            .data(domain)
+	            .enter()
+	            .append("rect")
+	            .attr("x", x)
+	            .attr("y", marginTop)
+	            .attr("width", Math.max(0, x.bandwidth() - 1))
+	            .attr("height", height - marginTop - marginBottom)
+	            .attr("fill", scale);
+	        tickAdjust = () => { };
+	    }
 	    svg.append("g")
-	      .selectAll()
-	      .data(range)
-	      .enter()
-	      .append("rect")
-	        .attr("x", (d, i) => x(i - 1))
-	        .attr("y", marginTop)
-	        .attr("width", (d, i) => x(i) - x(i - 1))
-	        .attr("height", height - marginTop - marginBottom)
-	        .attr("fill", d => d);
-
-	    ticks = map(thresholds, (_, i) => i);
-	    tickFormat = i => thresholdFormat(thresholds[i], i);
-	  }
-
-	  // Ordinal (hopefully!)
-	  else {
-	    x = applyRange(band().domain(domain), [marginLeft, width - marginRight]);
-
-	    svg.append("g")
-	      .selectAll()
-	      .data(domain)
-	      .enter()
-	      .append("rect")
-	        .attr("x", x)
-	        .attr("y", marginTop)
-	        .attr("width", Math.max(0, x.bandwidth() - 1))
-	        .attr("height", height - marginTop - marginBottom)
-	        .attr("fill", scale);
-
-	    tickAdjust = () => {};
-	  }
-
-	  svg.append("g")
-	      .attr("transform", `translate(0,${height - marginBottom})`)
-	      .call(axisBottom(x)
-	          .ticks(Array.isArray(ticks) ? null : ticks, typeof tickFormat === "string" ? tickFormat : undefined)
-	          .tickFormat(typeof tickFormat === "function" ? tickFormat : undefined)
-	          .tickSize(tickSize)
-	          .tickValues(Array.isArray(ticks) ? ticks : null))
-	      .attr("font-size", null)
-	      .attr("font-family", null)
-	      .attr("font-variant", impliedString(fontVariant, "normal"))
-	      .call(tickAdjust)
-	      .call(g => g.select(".domain").remove());
-
-	  if (label !== undefined) {
-	    svg.append("text")
-	        .attr("x", marginLeft)
-	        .attr("y", marginTop - 6)
-	        .attr("fill", "currentColor") // TODO move to stylesheet?
-	        .attr("font-weight", "bold")
-	        .text(label);
-	  }
-
-	  return svg.node();
-	}
-
-	function ramp(color, n = 256) {
-	  const canvas = create("canvas").attr("width", n).attr("height", 1).node();
-	  const context = canvas.getContext("2d");
-	  for (let i = 0; i < n; ++i) {
-	    context.fillStyle = color(i / (n - 1));
-	    context.fillRect(i, 0, 1, 1);
-	  }
-	  return canvas;
+	        .attr("transform", `translate(0,${height - marginBottom})`)
+	        .call(axisBottom(x)
+	        .ticks(Array.isArray(ticks) ? null : ticks, typeof tickFormat === "string" ? tickFormat : undefined)
+	        .tickFormat(typeof tickFormat === "function" ? tickFormat : undefined)
+	        .tickSize(tickSize)
+	        .tickValues(Array.isArray(ticks) ? ticks : null))
+	        .attr("font-size", null)
+	        .attr("font-family", null)
+	        .attr("font-variant", impliedString(fontVariant, "normal"))
+	        .call(tickAdjust)
+	        .call(g => g.select(".domain").remove());
+	    if (label !== undefined) {
+	        svg.append("text")
+	            .attr("x", marginLeft)
+	            .attr("y", marginTop - 6)
+	            .attr("fill", "currentColor") // TODO move to stylesheet?
+	            .attr("font-weight", "bold")
+	            .text(label);
+	    }
+	    return svg.node();
 	}
 
 	function maybeScale(scale, key) {
-	  if (key == null) return key;
-	  const s = scale(key);
-	  if (!s) throw new Error(`scale not found: ${key}`);
-	  return s;
+	    if (key == null)
+	        return key;
+	    const s = scale(key);
+	    if (!s)
+	        throw new Error(`scale not found: ${key}`);
+	    return s;
 	}
-
 	function legendSwatches(color, options) {
-	  return legendItems(
-	    color,
-	    options,
-	    selection => selection.style("--color", color.scale),
-	    className => `.${className}-swatch::before {
-        content: "";
+	    if (!isOrdinalScale(color) && !isThresholdScale(color))
+	        throw new Error(`swatches legend requires ordinal or threshold color scale (not ${color.type})`);
+	    return legendItems(color, options, (selection, scale) => selection.append("svg")
+	        .attr("fill", scale.scale)
+	        .append("rect")
+	        .attr("width", "100%")
+	        .attr("height", "100%"), className => `.${className}-swatch svg {
         width: var(--swatchWidth);
         height: var(--swatchHeight);
         margin-right: 0.5em;
-        background: var(--color);
-      }`
-	  );
+      }`);
 	}
-
-	function legendSymbols(symbol, {
-	  fill = symbol.hint?.fill !== undefined ? symbol.hint.fill : "none",
-	  fillOpacity = 1,
-	  stroke = symbol.hint?.stroke !== undefined ? symbol.hint.stroke : isNoneish(fill) ? "currentColor" : "none",
-	  strokeOpacity = 1,
-	  strokeWidth = 1.5,
-	  r = 4.5,
-	  ...options
-	} = {}, scale) {
-	  const [vf, cf] = maybeColorChannel(fill);
-	  const [vs, cs] = maybeColorChannel(stroke);
-	  const sf = maybeScale(scale, vf);
-	  const ss = maybeScale(scale, vs);
-	  const size = r * r * Math.PI;
-	  fillOpacity = maybeNumberChannel(fillOpacity)[1];
-	  strokeOpacity = maybeNumberChannel(strokeOpacity)[1];
-	  strokeWidth = maybeNumberChannel(strokeWidth)[1];
-	  return legendItems(
-	    symbol,
-	    options,
-	    selection => selection.append("svg")
+	function legendSymbols(symbol, { fill = symbol.hint?.fill !== undefined ? symbol.hint.fill : "none", fillOpacity = 1, stroke = symbol.hint?.stroke !== undefined ? symbol.hint.stroke : isNoneish(fill) ? "currentColor" : "none", strokeOpacity = 1, strokeWidth = 1.5, r = 4.5, ...options } = {}, scale) {
+	    const [vf, cf] = maybeColorChannel(fill);
+	    const [vs, cs] = maybeColorChannel(stroke);
+	    const sf = maybeScale(scale, vf);
+	    const ss = maybeScale(scale, vs);
+	    const size = r * r * Math.PI;
+	    fillOpacity = maybeNumberChannel(fillOpacity)[1];
+	    strokeOpacity = maybeNumberChannel(strokeOpacity)[1];
+	    strokeWidth = maybeNumberChannel(strokeWidth)[1];
+	    return legendItems(symbol, options, selection => selection.append("svg")
 	        .attr("viewBox", "-8 -8 16 16")
 	        .attr("fill", vf === "color" ? d => sf.scale(d) : null)
 	        .attr("stroke", vs === "color" ? d => ss.scale(d) : null)
-	      .append("path")
+	        .append("path")
 	        .attr("d", d => {
-	          const p = path();
-	          symbol.scale(d).draw(p, size);
-	          return p;
-	        }),
-	    className => `.${className}-swatch > svg {
+	        const p = path();
+	        symbol.scale(d).draw(p, size);
+	        return p;
+	    }), className => `.${className}-swatch > svg {
         width: var(--swatchWidth);
         height: var(--swatchHeight);
         margin-right: 0.5em;
@@ -72348,37 +72106,24 @@
         stroke: ${cs};
         stroke-width: ${strokeWidth}px;
         stroke-opacity: ${strokeOpacity};
-      }`
-	  );
+      }`);
 	}
-
-	function legendItems(scale, {
-	  columns,
-	  tickFormat,
-	  fontVariant = inferFontVariant(scale),
-	  // TODO label,
-	  swatchSize = 15,
-	  swatchWidth = swatchSize,
-	  swatchHeight = swatchSize,
-	  marginLeft = 0,
-	  className,
-	  style,
-	  width
-	} = {}, swatch, swatchStyle) {
-	  className = maybeClassName(className);
-	  tickFormat = maybeAutoTickFormat(tickFormat, scale.domain);
-
-	  const swatches = create("div")
-	      .attr("class", className)
-	      .attr("style", `
+	function legendItems(scale, options = {}, swatch, swatchStyle) {
+	    let { columns, tickFormat, fontVariant = inferFontVariant(scale), 
+	    // TODO label,
+	    swatchSize = 15, swatchWidth = swatchSize, swatchHeight = swatchSize, marginLeft = 0, className, style, width } = options;
+	    const context = Context(options);
+	    className = maybeClassName(className);
+	    tickFormat = maybeAutoTickFormat(tickFormat, scale.domain);
+	    const swatches = create("div", context)
+	        .attr("class", className)
+	        .attr("style", `
         --swatchWidth: ${+swatchWidth}px;
         --swatchHeight: ${+swatchHeight}px;
       `);
-
-	  let extraStyle;
-
-	  if (columns != null) {
-	    extraStyle = `
+	    let extraStyle;
+	    if (columns != null) {
+	        extraStyle = `
       .${className}-swatch {
         display: flex;
         align-items: center;
@@ -72394,21 +72139,21 @@
         text-overflow: ellipsis;
       }
     `;
-
-	    swatches
-	        .style("columns", columns)
-	      .selectAll()
-	      .data(scale.domain)
-	      .enter()
-	      .append("div")
-	        .attr("class", `${className}-swatch`)
-	        .call(swatch, scale)
-	        .call(item => item.append("div")
+	        swatches
+	            .style("columns", columns)
+	            .selectAll()
+	            .data(scale.domain)
+	            .enter()
+	            .append("div")
+	            .attr("class", `${className}-swatch`)
+	            .call(swatch, scale)
+	            .call(item => item.append("div")
 	            .attr("class", `${className}-label`)
 	            .attr("title", tickFormat)
 	            .text(tickFormat));
-	  } else {
-	    extraStyle = `
+	    }
+	    else {
+	        extraStyle = `
       .${className} {
         display: flex;
         align-items: center;
@@ -72421,21 +72166,19 @@
         margin-right: 1em;
       }
     `;
-
-	    swatches
-	      .selectAll()
-	      .data(scale.domain)
-	      .enter()
-	      .append("span")
-	        .attr("class", `${className}-swatch`)
-	        .call(swatch, scale)
-	        .append(function() {
-	          return document.createTextNode(tickFormat.apply(this, arguments));
+	        swatches
+	            .selectAll()
+	            .data(scale.domain)
+	            .enter()
+	            .append("span")
+	            .attr("class", `${className}-swatch`)
+	            .call(swatch, scale)
+	            .append(function () {
+	            return this.ownerDocument.createTextNode(tickFormat.apply(this, arguments));
 	        });
-	  }
-
-	  return swatches
-	      .call(div => div.insert("style", "*").text(`
+	    }
+	    return swatches
+	        .call(div => div.insert("style", "*").text(`
         .${className} {
           font-family: system-ui, sans-serif;
           font-size: 10px;
@@ -72446,197 +72189,186 @@
         ${swatchStyle(className)}
         ${extraStyle}
       `))
-	      .style("font-variant", impliedString(fontVariant, "normal"))
-	      .call(applyInlineStyles, style)
-	    .node();
+	        .style("font-variant", impliedString(fontVariant, "normal"))
+	        .call(applyInlineStyles, style)
+	        .node();
 	}
 
 	const legendRegistry = new Map([
-	  ["symbol", legendSymbols],
-	  ["color", legendColor],
-	  ["opacity", legendOpacity]
+	    ["symbol", legendSymbols],
+	    ["color", legendColor],
+	    ["opacity", legendOpacity]
 	]);
-
-	function exposeLegends(scales, defaults = {}) {
-	  return (key, options) => {
-	    if (!legendRegistry.has(key)) throw new Error(`unknown legend type: ${key}`);
-	    if (!(key in scales)) return;
-	    return legendRegistry.get(key)(scales[key], legendOptions(defaults[key], options), key => scales[key]);
-	  };
+	function exposeLegends(scales, context, defaults = {}) {
+	    return (key, options) => {
+	        if (!legendRegistry.has(key))
+	            throw new Error(`unknown legend type: ${key}`);
+	        if (!(key in scales))
+	            return;
+	        return legendRegistry.get(key)(scales[key], legendOptions(context, defaults[key], options), key => scales[key]);
+	    };
 	}
-
-	function legendOptions({label, ticks, tickFormat} = {}, options = {}) {
-	  return {label, ticks, tickFormat, ...options};
+	function legendOptions(context, { label, ticks, tickFormat } = {}, options) {
+	    return inherit(options, context, { label, ticks, tickFormat });
 	}
-
-	function legendColor(color, {
-	  legend = true,
-	  ...options
-	}) {
-	  if (legend === true) legend = color.type === "ordinal" ? "swatches" : "ramp";
-	  if (color.domain === undefined) return;
-	  switch (`${legend}`.toLowerCase()) {
-	    case "swatches": return legendSwatches(color, options);
-	    case "ramp": return legendRamp(color, options);
-	    default: throw new Error(`unknown legend type: ${legend}`);
-	  }
-	}
-
-	function legendOpacity({type, interpolate, ...scale}, {
-	  legend = true,
-	  color = rgb(0, 0, 0),
-	  ...options
-	}) {
-	  if (!interpolate) throw new Error(`${type} opacity scales are not supported`);
-	  if (legend === true) legend = "ramp";
-	  if (`${legend}`.toLowerCase() !== "ramp") throw new Error(`${legend} opacity legends are not supported`);
-	  return legendColor({type, ...scale, interpolate: interpolateOpacity(color)}, {legend, ...options});
-	}
-
-	function interpolateOpacity(color) {
-	  const {r, g, b} = rgb(color) || rgb(0, 0, 0); // treat invalid color as black
-	  return t => `rgba(${r},${g},${b},${t})`;
-	}
-
-	function Legends(scales, options) {
-	  const legends = [];
-	  for (const [key, value] of legendRegistry) {
-	    const o = options[key];
-	    if (o?.legend && (key in scales)) {
-	      const legend = value(scales[key], legendOptions(scales[key], o), key => scales[key]);
-	      if (legend != null) legends.push(legend);
+	function legendColor(color, { legend = true, ...options }) {
+	    if (legend === true)
+	        legend = color.type === "ordinal" ? "swatches" : "ramp";
+	    if (color.domain === undefined)
+	        return;
+	    switch (`${legend}`.toLowerCase()) {
+	        case "swatches": return legendSwatches(color, options);
+	        case "ramp": return legendRamp(color, options);
+	        default: throw new Error(`unknown legend type: ${legend}`);
 	    }
-	  }
-	  return legends;
+	}
+	function legendOpacity({ type, interpolate, ...scale }, { legend = true, color = rgb(0, 0, 0), ...options }) {
+	    if (!interpolate)
+	        throw new Error(`${type} opacity scales are not supported`);
+	    if (legend === true)
+	        legend = "ramp";
+	    if (`${legend}`.toLowerCase() !== "ramp")
+	        throw new Error(`${legend} opacity legends are not supported`);
+	    return legendColor({ type, ...scale, interpolate: interpolateOpacity(color) }, { legend, ...options });
+	}
+	function interpolateOpacity(color) {
+	    const { r, g, b } = rgb(color) || rgb(0, 0, 0); // treat invalid color as black
+	    return t => `rgba(${r},${g},${b},${t})`;
+	}
+	function Legends(scales, context, options) {
+	    const legends = [];
+	    for (const [key, value] of legendRegistry) {
+	        const o = options[key];
+	        if (o?.legend && (key in scales)) {
+	            const legend = value(scales[key], legendOptions(context, scales[key], o), key => scales[key]);
+	            if (legend != null)
+	                legends.push(legend);
+	        }
+	    }
+	    return legends;
 	}
 
 	function plot(options = {}) {
-	  const {facet, style, caption, ariaLabel, ariaDescription} = options;
-
-	  // className for inline styles
-	  const className = maybeClassName(options.className);
-
-	  // Flatten any nested marks.
-	  const marks = options.marks === undefined ? [] : options.marks.flat(Infinity).map(markify);
-
-	  // A Map from Mark instance to its render state, including:
-	  // index - the data index e.g. [0, 1, 2, 3, …]
-	  // channels - an array of materialized channels e.g. [["x", {value}], …]
-	  // faceted - a boolean indicating whether this mark is faceted
-	  // values - an object of scaled values e.g. {x: [40, 32, …], …}
-	  const stateByMark = new Map();
-
-	  // A Map from scale name to an array of associated channels.
-	  const channelsByScale = new Map();
-
-	  // If a scale is explicitly declared in options, initialize its associated
-	  // channels to the empty array; this will guarantee that a corresponding scale
-	  // will be created later (even if there are no other channels). But ignore
-	  // facet scale declarations if faceting is not enabled.
-	  for (const key of registry.keys()) {
-	    if (isScaleOptions(options[key]) && key !== "fx" && key !== "fy") {
-	      channelsByScale.set(key, []);
+	    const { facet, style, caption, ariaLabel, ariaDescription } = options;
+	    // className for inline styles
+	    const className = maybeClassName(options.className);
+	    // Flatten any nested marks.
+	    const marks = options.marks === undefined ? [] : options.marks.flat(Infinity).map(markify);
+	    // A Map from Mark instance to its render state, including:
+	    // index - the data index e.g. [0, 1, 2, 3, …]
+	    // channels - an array of materialized channels e.g. [["x", {value}], …]
+	    // faceted - a boolean indicating whether this mark is faceted
+	    // values - an object of scaled values e.g. {x: [40, 32, …], …}
+	    const stateByMark = new Map();
+	    // A Map from scale name to an array of associated channels.
+	    const channelsByScale = new Map();
+	    // If a scale is explicitly declared in options, initialize its associated
+	    // channels to the empty array; this will guarantee that a corresponding scale
+	    // will be created later (even if there are no other channels). But ignore
+	    // facet scale declarations if faceting is not enabled.
+	    for (const key of registry.keys()) {
+	        if (isScaleOptions(options[key]) && key !== "fx" && key !== "fy") {
+	            channelsByScale.set(key, []);
+	        }
 	    }
-	  }
-
-	  // Faceting!
-	  let facets; // array of facet definitions (e.g. [["foo", [0, 1, 3, …]], …])
-	  let facetIndex; // index over the facet data, e.g. [0, 1, 2, 3, …]
-	  let facetChannels; // e.g. {fx: {value}, fy: {value}}
-	  let facetsIndex; // nested array of facet indexes [[0, 1, 3, …], [2, 5, …], …]
-	  let facetsExclude; // lazily-constructed opposite of facetsIndex
-	  if (facet !== undefined) {
-	    const {x, y} = facet;
-	    if (x != null || y != null) {
-	      const facetData = arrayify(facet.data);
-	      facetChannels = {};
-	      if (x != null) {
-	        const fx = Channel(facetData, {value: x, scale: "fx"});
-	        facetChannels.fx = fx;
-	        channelsByScale.set("fx", [fx]);
-	      }
-	      if (y != null) {
-	        const fy = Channel(facetData, {value: y, scale: "fy"});
-	        facetChannels.fy = fy;
-	        channelsByScale.set("fy", [fy]);
-	      }
-	      facetIndex = range(facetData);
-	      facets = facetGroups(facetIndex, facetChannels);
-	      facetsIndex = facets.map(second);
+	    // Faceting!
+	    let facets; // array of facet definitions (e.g. [["foo", [0, 1, 3, …]], …])
+	    let facetIndex; // index over the facet data, e.g. [0, 1, 2, 3, …]
+	    let facetChannels; // e.g. {fx: {value}, fy: {value}}
+	    let facetsIndex; // nested array of facet indexes [[0, 1, 3, …], [2, 5, …], …]
+	    let facetsExclude; // lazily-constructed opposite of facetsIndex
+	    if (facet !== undefined) {
+	        const { x, y } = facet;
+	        if (x != null || y != null) {
+	            const facetData = arrayify(facet.data);
+	            if (facetData == null)
+	                throw new Error("missing facet data");
+	            facetChannels = {};
+	            if (x != null) {
+	                const fx = Channel(facetData, { value: x, scale: "fx" });
+	                facetChannels.fx = fx;
+	                channelsByScale.set("fx", [fx]);
+	            }
+	            if (y != null) {
+	                const fy = Channel(facetData, { value: y, scale: "fy" });
+	                facetChannels.fy = fy;
+	                channelsByScale.set("fy", [fy]);
+	            }
+	            facetIndex = range(facetData);
+	            facets = facetGroups(facetIndex, facetChannels);
+	            facetsIndex = facets.map(second);
+	        }
 	    }
-	  }
-
-	  // Initialize the marks’ state.
-	  for (const mark of marks) {
-	    if (stateByMark.has(mark)) throw new Error("duplicate mark; each mark must be unique");
-	    const markFacets = facetsIndex === undefined ? undefined
-	      : mark.facet === "auto" ? mark.data === facet.data ? facetsIndex : undefined
-	      : mark.facet === "include" ? facetsIndex
-	      : mark.facet === "exclude" ? facetsExclude || (facetsExclude = facetsIndex.map(f => Uint32Array.from(difference$1(facetIndex, f))))
-	      : undefined;
-	    const {data, facets, channels} = mark.initialize(markFacets, facetChannels);
-	    applyScaleTransforms(channels, options);
-	    stateByMark.set(mark, {data, facets, channels});
-	  }
-
-	  // Initalize the scales and axes.
-	  const scaleDescriptors = Scales(addScaleChannels(channelsByScale, stateByMark), options);
-	  const scales = ScaleFunctions(scaleDescriptors);
-	  const axes = Axes(scaleDescriptors, options);
-	  const dimensions = Dimensions(scaleDescriptors, axes, options);
-
-	  autoScaleRange(scaleDescriptors, dimensions);
-	  autoAxisTicks(scaleDescriptors, axes);
-
-	  const {fx, fy} = scales;
-	  const fyMargins = fy && {marginTop: 0, marginBottom: 0, height: fy.bandwidth()};
-	  const fxMargins = fx && {marginRight: 0, marginLeft: 0, width: fx.bandwidth()};
-	  const subdimensions = {...dimensions, ...fxMargins, ...fyMargins};
-
-	  // Reinitialize; for deriving channels dependent on other channels.
-	  const newByScale = new Set();
-	  for (const [mark, state] of stateByMark) {
-	    if (mark.initializer != null) {
-	      const {facets, channels} = mark.initializer(state.data, state.facets, state.channels, scales, subdimensions);
-	      if (facets !== undefined) state.facets = facets;
-	      if (channels !== undefined) {
-	        inferChannelScale(channels);
+	    // Initialize the marks’ state.
+	    for (const mark of marks) {
+	        if (stateByMark.has(mark))
+	            throw new Error("duplicate mark; each mark must be unique");
+	        const markFacets = facetsIndex === undefined ? undefined
+	            : mark.facet === "auto" ? mark.data === facet.data ? facetsIndex : undefined
+	                : mark.facet === "include" ? facetsIndex
+	                    : mark.facet === "exclude" ? facetsExclude || (facetsExclude = facetsIndex.map(f => Uint32Array.from(difference$1(facetIndex, f))))
+	                        : undefined;
+	        const { data, facets, channels } = mark.initialize(markFacets, facetChannels);
 	        applyScaleTransforms(channels, options);
-	        Object.assign(state.channels, channels);
-	        for (const {scale} of Object.values(channels)) if (scale != null) newByScale.add(scale);
-	      }
+	        stateByMark.set(mark, { data, facets, channels });
 	    }
-	  }
-
-	  // Reconstruct scales if new scaled channels were created during reinitialization.
-	  if (newByScale.size) {
-	    const newScaleDescriptors = Scales(addScaleChannels(new Map(), stateByMark, key => newByScale.has(key)), options);
-	    const newScales = ScaleFunctions(newScaleDescriptors);
-	    Object.assign(scaleDescriptors, newScaleDescriptors);
-	    Object.assign(scales, newScales);
-	  }
-
-	  autoScaleLabels(channelsByScale, scaleDescriptors, axes, dimensions, options);
-
-	  // Compute value objects, applying scales as needed.
-	  for (const state of stateByMark.values()) {
-	    state.values = valueObject(state.channels, scales);
-	  }
-
-	  const {width, height} = dimensions;
-
-	  const svg = create("svg")
-	      .attr("class", className)
-	      .attr("fill", "currentColor")
-	      .attr("font-family", "system-ui, sans-serif")
-	      .attr("font-size", 10)
-	      .attr("text-anchor", "middle")
-	      .attr("width", width)
-	      .attr("height", height)
-	      .attr("viewBox", `0 0 ${width} ${height}`)
-	      .attr("aria-label", ariaLabel)
-	      .attr("aria-description", ariaDescription)
-	      .call(svg => svg.append("style").text(`
+	    // Initalize the scales and axes.
+	    const scaleDescriptors = Scales(addScaleChannels(channelsByScale, stateByMark), options);
+	    const scales = ScaleFunctions(scaleDescriptors);
+	    const axes = Axes(scaleDescriptors, options);
+	    const dimensions = Dimensions(scaleDescriptors, axes, options);
+	    const context = Context(options);
+	    autoScaleRange(scaleDescriptors, dimensions);
+	    autoAxisTicks(scaleDescriptors, axes);
+	    const { fx, fy } = scales;
+	    const fyMargins = fy && { marginTop: 0, marginBottom: 0, height: fy.bandwidth() };
+	    const fxMargins = fx && { marginRight: 0, marginLeft: 0, width: fx.bandwidth() };
+	    const subdimensions = { ...dimensions, ...fxMargins, ...fyMargins };
+	    // Reinitialize; for deriving channels dependent on other channels.
+	    const newByScale = new Set();
+	    for (const [mark, state] of stateByMark) {
+	        if (mark.initializer != null) {
+	            const { facets, channels } = mark.initializer(state.data, state.facets, state.channels, scales, subdimensions);
+	            if (facets !== undefined)
+	                state.facets = facets;
+	            if (channels !== undefined) {
+	                inferChannelScale(channels);
+	                applyScaleTransforms(channels, options);
+	                Object.assign(state.channels, channels);
+	                for (const { scale } of Object.values(channels))
+	                    if (scale != null)
+	                        newByScale.add(scale);
+	            }
+	        }
+	    }
+	    // Reconstruct scales if new scaled channels were created during reinitialization.
+	    if (newByScale.size) {
+	        for (const key of newByScale)
+	            if (registry.get(key) === position)
+	                throw new Error(`initializers cannot declare position scales: ${key}`);
+	        const newScaleDescriptors = Scales(addScaleChannels(new Map(), stateByMark, key => newByScale.has(key)), options);
+	        const newScales = ScaleFunctions(newScaleDescriptors);
+	        Object.assign(scaleDescriptors, newScaleDescriptors);
+	        Object.assign(scales, newScales);
+	    }
+	    autoScaleLabels(channelsByScale, scaleDescriptors, axes, dimensions, options);
+	    // Compute value objects, applying scales as needed.
+	    for (const state of stateByMark.values()) {
+	        state.values = valueObject(state.channels, scales);
+	    }
+	    const { width, height } = dimensions;
+	    const svg = create("svg", context)
+	        .attr("class", className)
+	        .attr("fill", "currentColor")
+	        .attr("font-family", "system-ui, sans-serif")
+	        .attr("font-size", 10)
+	        .attr("text-anchor", "middle")
+	        .attr("width", width)
+	        .attr("height", height)
+	        .attr("viewBox", `0 0 ${width} ${height}`)
+	        .attr("aria-label", ariaLabel)
+	        .attr("aria-description", ariaDescription)
+	        .call(svg => svg.append("style").text(`
         .${className} {
           display: block;
           background: white;
@@ -72649,493 +72381,483 @@
           white-space: pre;
         }
       `))
-	      .call(applyInlineStyles, style)
-	    .node();
-
-	  // When faceting, render axes for fx and fy instead of x and y.
-	  const axisY = axes[facets !== undefined && fy ? "fy" : "y"];
-	  const axisX = axes[facets !== undefined && fx ? "fx" : "x"];
-	  if (axisY) svg.appendChild(axisY.render(null, scales, dimensions));
-	  if (axisX) svg.appendChild(axisX.render(null, scales, dimensions));
-
-	  // Render (possibly faceted) marks.
-	  if (facets !== undefined) {
-	    const fyDomain = fy && fy.domain();
-	    const fxDomain = fx && fx.domain();
-	    const indexByFacet = facetMap(facetChannels);
-	    facets.forEach(([key], i) => indexByFacet.set(key, i));
-	    const selection = select(svg);
-	    if (fy && axes.y) {
-	      const axis1 = axes.y, axis2 = nolabel(axis1);
-	      const j = axis1.labelAnchor === "bottom" ? fyDomain.length - 1 : axis1.labelAnchor === "center" ? fyDomain.length >> 1 : 0;
-	      selection.selectAll()
-	        .data(fyDomain)
-	        .enter()
-	        .append((ky, i) => (i === j ? axis1 : axis2).render(
-	          fx && where(fxDomain, kx => indexByFacet.has([kx, ky])),
-	          scales,
-	          {...dimensions, ...fyMargins, offsetTop: fy(ky)}
-	        ));
-	    }
-	    if (fx && axes.x) {
-	      const axis1 = axes.x, axis2 = nolabel(axis1);
-	      const j = axis1.labelAnchor === "right" ? fxDomain.length - 1 : axis1.labelAnchor === "center" ? fxDomain.length >> 1 : 0;
-	      const {marginLeft, marginRight} = dimensions;
-	      selection.selectAll()
-	        .data(fxDomain)
-	        .enter()
-	        .append((kx, i) => (i === j ? axis1 : axis2).render(
-	          fy && where(fyDomain, ky => indexByFacet.has([kx, ky])),
-	          scales,
-	          {...dimensions, ...fxMargins, labelMarginLeft: marginLeft, labelMarginRight: marginRight, offsetLeft: fx(kx)}
-	        ));
-	    }
-	    selection.selectAll()
-	      .data(facetKeys(scales).filter(indexByFacet.has, indexByFacet))
-	      .enter()
-	      .append("g")
-	        .attr("aria-label", "facet")
-	        .attr("transform", facetTranslate(fx, fy))
-	        .each(function(key) {
-	          const j = indexByFacet.get(key);
-	          for (const [mark, {channels, values, facets}] of stateByMark) {
-	            const facet = facets ? mark.filter(facets[j] ?? facets[0], channels, values) : null;
-	            const node = mark.render(facet, scales, values, subdimensions);
-	            if (node != null) this.appendChild(node);
-	          }
+	        .call(applyInlineStyles, style)
+	        .node();
+	    // When faceting, render axes for fx and fy instead of x and y.
+	    const axisY = axes[facets !== undefined && fy ? "fy" : "y"];
+	    const axisX = axes[facets !== undefined && fx ? "fx" : "x"];
+	    if (axisY)
+	        svg.appendChild(axisY.render(null, scales, dimensions, context));
+	    if (axisX)
+	        svg.appendChild(axisX.render(null, scales, dimensions, context));
+	    // Render (possibly faceted) marks.
+	    if (facets !== undefined) {
+	        const fyDomain = fy && fy.domain();
+	        const fxDomain = fx && fx.domain();
+	        const indexByFacet = facetMap(facetChannels);
+	        facets.forEach(([key], i) => indexByFacet.set(key, i));
+	        const selection = select(svg);
+	        if (fy && axes.y) {
+	            const axis1 = axes.y, axis2 = nolabel(axis1);
+	            const j = axis1.labelAnchor === "bottom" ? fyDomain.length - 1 : axis1.labelAnchor === "center" ? fyDomain.length >> 1 : 0;
+	            selection.selectAll()
+	                .data(fyDomain)
+	                .enter()
+	                .append((ky, i) => (i === j ? axis1 : axis2).render(fx && where(fxDomain, kx => indexByFacet.has([kx, ky])), scales, { ...dimensions, ...fyMargins, offsetTop: fy(ky) }, context));
+	        }
+	        if (fx && axes.x) {
+	            const axis1 = axes.x, axis2 = nolabel(axis1);
+	            const j = axis1.labelAnchor === "right" ? fxDomain.length - 1 : axis1.labelAnchor === "center" ? fxDomain.length >> 1 : 0;
+	            const { marginLeft, marginRight } = dimensions;
+	            selection.selectAll()
+	                .data(fxDomain)
+	                .enter()
+	                .append((kx, i) => (i === j ? axis1 : axis2).render(fy && where(fyDomain, ky => indexByFacet.has([kx, ky])), scales, { ...dimensions, ...fxMargins, labelMarginLeft: marginLeft, labelMarginRight: marginRight, offsetLeft: fx(kx) }, context));
+	        }
+	        selection.selectAll()
+	            .data(facetKeys(scales).filter(indexByFacet.has, indexByFacet))
+	            .enter()
+	            .append("g")
+	            .attr("aria-label", "facet")
+	            .attr("transform", facetTranslate(fx, fy))
+	            .each(function (key) {
+	            const j = indexByFacet.get(key);
+	            for (const [mark, { channels, values, facets }] of stateByMark) {
+	                const facet = facets ? mark.filter(facets[j] ?? facets[0], channels, values) : null;
+	                const node = mark.render(facet, scales, values, subdimensions, context);
+	                if (node != null)
+	                    this.appendChild(node);
+	            }
 	        });
-	  } else {
-	    for (const [mark, {channels, values, facets}] of stateByMark) {
-	      const facet = facets ? mark.filter(facets[0], channels, values) : null;
-	      const node = mark.render(facet, scales, values, dimensions);
-	      if (node != null) svg.appendChild(node);
 	    }
-	  }
-
-	  // Wrap the plot in a figure with a caption, if desired.
-	  let figure = svg;
-	  const legends = Legends(scaleDescriptors, options);
-	  if (caption != null || legends.length > 0) {
-	    figure = document.createElement("figure");
-	    figure.style.maxWidth = "initial";
-	    figure.append(...legends, svg);
-	    if (caption != null) {
-	      const figcaption = document.createElement("figcaption");
-	      figcaption.append(caption);
-	      figure.append(figcaption);
+	    else {
+	        for (const [mark, { channels, values, facets }] of stateByMark) {
+	            const facet = facets ? mark.filter(facets[0], channels, values) : null;
+	            const node = mark.render(facet, scales, values, dimensions, context);
+	            if (node != null)
+	                svg.appendChild(node);
+	        }
 	    }
-	  }
-
-	  figure.scale = exposeScales(scaleDescriptors);
-	  figure.legend = exposeLegends(scaleDescriptors, options);
-
-	  const w = consumeWarnings();
-	  if (w > 0) {
-	    select(svg).append("text")
-	        .attr("x", width)
-	        .attr("y", 20)
-	        .attr("dy", "-1em")
-	        .attr("text-anchor", "end")
-	        .attr("font-family", "initial") // fix emoji rendering in Chrome
-	        .text("\u26a0\ufe0f") // emoji variation selector
-	      .append("title")
-	        .text(`${w.toLocaleString("en-US")} warning${w === 1 ? "" : "s"}. Please check the console.`);
-	  }
-
-	  return figure;
+	    // Wrap the plot in a figure with a caption, if desired.
+	    let figure = svg;
+	    const legends = Legends(scaleDescriptors, context, options);
+	    if (caption != null || legends.length > 0) {
+	        const { document } = context;
+	        figure = document.createElement("figure");
+	        figure.style.maxWidth = "initial";
+	        for (const legend of legends)
+	            figure.appendChild(legend);
+	        figure.appendChild(svg);
+	        if (caption != null) {
+	            const figcaption = document.createElement("figcaption");
+	            figcaption.appendChild(caption instanceof Node ? caption : document.createTextNode(caption));
+	            figure.appendChild(figcaption);
+	        }
+	    }
+	    figure.scale = exposeScales(scaleDescriptors);
+	    figure.legend = exposeLegends(scaleDescriptors, context, options);
+	    const w = consumeWarnings();
+	    if (w > 0) {
+	        select(svg).append("text")
+	            .attr("x", width)
+	            .attr("y", 20)
+	            .attr("dy", "-1em")
+	            .attr("text-anchor", "end")
+	            .attr("font-family", "initial") // fix emoji rendering in Chrome
+	            .text("\u26a0\ufe0f") // emoji variation selector
+	            .append("title")
+	            .text(`${w.toLocaleString("en-US")} warning${w === 1 ? "" : "s"}. Please check the console.`);
+	    }
+	    return figure;
 	}
-
 	class Mark {
-	  constructor(data, channels = [], options = {}, defaults) {
-	    const {facet = "auto", sort, dx, dy, clip, channels: extraChannels} = options;
-	    const names = new Set();
-	    this.data = data;
-	    this.sort = isDomainSort(sort) ? sort : null;
-	    this.initializer = initializer(options).initializer;
-	    this.transform = this.initializer ? options.transform : basic(options).transform;
-	    this.facet = facet == null || facet === false ? null : keyword(facet === true ? "include" : facet, "facet", ["auto", "include", "exclude"]);
-	    if (extraChannels !== undefined) channels = [...channels, ...extraChannels.filter(e => !channels.some(c => c.name === e.name))];
-	    if (defaults !== undefined) channels = [...channels, ...styles(this, options, defaults)];
-	    this.channels = channels.filter(channel => {
-	      const {name, value, optional} = channel;
-	      if (value == null) {
-	        if (optional) return false;
-	        throw new Error(`missing channel value: ${name}`);
-	      }
-	      if (name == null) throw new Error("missing channel name");
-	      const key = `${name}`;
-	      if (key === "__proto__") throw new Error(`illegal channel name: ${key}`);
-	      if (names.has(key)) throw new Error(`duplicate channel: ${key}`);
-	      names.add(key);
-	      return true;
-	    });
-	    this.dx = +dx || 0;
-	    this.dy = +dy || 0;
-	    this.clip = maybeClip(clip);
-	  }
-	  initialize(facets, facetChannels) {
-	    let data = arrayify(this.data);
-	    if (facets === undefined && data != null) facets = [range(data)];
-	    if (this.transform != null) (({facets, data} = this.transform(data, facets))), data = arrayify(data);
-	    const channels = channelObject(this.channels, data);
-	    if (this.sort != null) channelDomain(channels, facetChannels, data, this.sort);
-	    return {data, facets, channels};
-	  }
-	  filter(index, channels, values) {
-	    for (const name in channels) {
-	      const {filter = defined} = channels[name];
-	      if (filter !== null) {
-	        const value = values[name];
-	        index = index.filter(i => filter(value[i]));
-	      }
+	    constructor(data, channels = [], options = {}, defaults) {
+	        const { facet = "auto", sort, dx, dy, clip, channels: extraChannels } = options;
+	        const names = new Set();
+	        this.data = data;
+	        this.sort = isDomainSort(sort) ? sort : null;
+	        this.initializer = initializer(options).initializer;
+	        this.transform = this.initializer ? options.transform : basic(options).transform;
+	        this.facet = facet == null || facet === false ? null : keyword(facet === true ? "include" : facet, "facet", ["auto", "include", "exclude"]);
+	        if (extraChannels !== undefined)
+	            channels = [...channels, ...extraChannels.filter(e => !channels.some(c => c.name === e.name))];
+	        if (defaults !== undefined)
+	            channels = [...channels, ...styles(this, options, defaults)];
+	        this.channels = channels.filter(channel => {
+	            const { name, value, optional } = channel;
+	            if (value == null) {
+	                if (optional)
+	                    return false;
+	                throw new Error(`missing channel value: ${name}`);
+	            }
+	            if (name == null)
+	                throw new Error("missing channel name");
+	            const key = `${name}`;
+	            if (key === "__proto__")
+	                throw new Error(`illegal channel name: ${key}`);
+	            if (names.has(key))
+	                throw new Error(`duplicate channel: ${key}`);
+	            names.add(key);
+	            return true;
+	        });
+	        this.dx = +dx || 0;
+	        this.dy = +dy || 0;
+	        this.clip = maybeClip(clip);
 	    }
-	    return index;
-	  }
-	  plot({marks = [], ...options} = {}) {
-	    return plot({...options, marks: [...marks, this]});
-	  }
+	    initialize(facets, facetChannels) {
+	        let data = arrayify(this.data);
+	        if (facets === undefined && data != null)
+	            facets = [range(data)];
+	        if (this.transform != null)
+	            (({ facets, data } = this.transform(data, facets))), data = arrayify(data);
+	        const channels = channelObject(this.channels, data);
+	        if (this.sort != null)
+	            channelDomain(channels, facetChannels, data, this.sort);
+	        return { data, facets, channels };
+	    }
+	    filter(index, channels, values) {
+	        for (const name in channels) {
+	            const { filter = defined } = channels[name];
+	            if (filter !== null) {
+	                const value = values[name];
+	                index = index.filter(i => filter(value[i]));
+	            }
+	        }
+	        return index;
+	    }
+	    plot({ marks = [], ...options } = {}) {
+	        return plot({ ...options, marks: [...marks, this] });
+	    }
 	}
-
 	function markify(mark) {
-	  return mark instanceof Mark ? mark : new Render(mark);
+	    return typeof mark?.render === "function" ? mark : new Render(mark);
 	}
-
 	class Render extends Mark {
-	  constructor(render) {
-	    super();
-	    if (render == null) return;
-	    if (typeof render !== "function") throw new TypeError("invalid mark; missing render function");
-	    this.render = render;
-	  }
-	  render() {}
+	    constructor(render) {
+	        super();
+	        if (render == null)
+	            return;
+	        if (typeof render !== "function")
+	            throw new TypeError("invalid mark; missing render function");
+	        this.render = render;
+	    }
+	    render() { }
 	}
-
 	// Note: mutates channel.value to apply the scale transform, if any.
 	function applyScaleTransforms(channels, options) {
-	  for (const name in channels) {
-	    const channel = channels[name];
-	    const {scale} = channel;
-	    if (scale != null) {
-	      const {percent, transform = percent ? x => x * 100 : undefined} = options[scale] || {};
-	      if (transform != null) channel.value = map(channel.value, transform);
+	    for (const name in channels) {
+	        const channel = channels[name];
+	        const { scale } = channel;
+	        if (scale != null) {
+	            const { percent, interval, transform = percent ? x => x * 100 : maybeInterval(interval)?.floor } = options[scale] || {};
+	            if (transform != null)
+	                channel.value = map(channel.value, transform);
+	        }
 	    }
-	  }
-	  return channels;
+	    return channels;
 	}
-
 	// An initializer may generate channels without knowing how the downstream mark
 	// will use them. Marks are typically responsible associated scales with
 	// channels, but here we assume common behavior across marks.
 	function inferChannelScale(channels) {
-	  for (const name in channels) {
-	    const channel = channels[name];
-	    let {scale} = channel;
-	    if (scale === true) {
-	      switch (name) {
-	        case "fill": case "stroke": scale = "color"; break;
-	        case "fillOpacity": case "strokeOpacity": case "opacity": scale = "opacity"; break;
-	        case "r": case "length": case "symbol": scale = name; break;
-	        default: scale = null;
-	      }
-	      channel.scale = scale;
-	    }
-	  }
-	}
-
-	function addScaleChannels(channelsByScale, stateByMark, filter = yes) {
-	  for (const {channels} of stateByMark.values()) {
 	    for (const name in channels) {
-	      const channel = channels[name];
-	      const {scale} = channel;
-	      if (scale != null && filter(scale)) {
-	        const channels = channelsByScale.get(scale);
-	        if (channels !== undefined) channels.push(channel);
-	        else channelsByScale.set(scale, [channel]);
-	      }
+	        const channel = channels[name];
+	        let { scale } = channel;
+	        if (scale === true) {
+	            switch (name) {
+	                case "fill":
+	                case "stroke":
+	                    scale = "color";
+	                    break;
+	                case "fillOpacity":
+	                case "strokeOpacity":
+	                case "opacity":
+	                    scale = "opacity";
+	                    break;
+	                default:
+	                    scale = registry.has(name) ? name : null;
+	                    break;
+	            }
+	            channel.scale = scale;
+	        }
 	    }
-	  }
-	  return channelsByScale;
 	}
-
+	function addScaleChannels(channelsByScale, stateByMark, filter = yes) {
+	    for (const { channels } of stateByMark.values()) {
+	        for (const name in channels) {
+	            const channel = channels[name];
+	            const { scale } = channel;
+	            if (scale != null && filter(scale)) {
+	                const channels = channelsByScale.get(scale);
+	                if (channels !== undefined)
+	                    channels.push(channel);
+	                else
+	                    channelsByScale.set(scale, [channel]);
+	            }
+	        }
+	    }
+	    return channelsByScale;
+	}
 	// Derives a copy of the specified axis with the label disabled.
 	function nolabel(axis) {
-	  return axis === undefined || axis.label === undefined
-	    ? axis // use the existing axis if unlabeled
-	    : Object.assign(Object.create(axis), {label: undefined});
+	    return axis === undefined || axis.label === undefined
+	        ? axis // use the existing axis if unlabeled
+	        : Object.assign(Object.create(axis), { label: undefined });
 	}
-
 	// Unlike facetGroups, which returns groups in order of input data, this returns
 	// keys in order of the associated scale’s domains.
-	function facetKeys({fx, fy}) {
-	  return fx && fy ? cross(fx.domain(), fy.domain())
-	    : fx ? fx.domain()
-	    : fy.domain();
+	function facetKeys({ fx, fy }) {
+	    return fx && fy ? cross(fx.domain(), fy.domain())
+	        : fx ? fx.domain()
+	            : fy.domain();
 	}
-
 	// Returns an array of [[key1, index1], [key2, index2], …] representing the data
 	// indexes associated with each facet. For two-dimensional faceting, each key
 	// is a two-element array; see also facetMap.
-	function facetGroups(index, {fx, fy}) {
-	  return fx && fy ? facetGroup2(index, fx, fy)
-	    : fx ? facetGroup1(index, fx)
-	    : facetGroup1(index, fy);
+	function facetGroups(index, { fx, fy }) {
+	    return fx && fy ? facetGroup2(index, fx, fy)
+	        : fx ? facetGroup1(index, fx)
+	            : facetGroup1(index, fy);
 	}
-
-	function facetGroup1(index, {value: F}) {
-	  return groups(index, i => F[i]);
+	function facetGroup1(index, { value: F }) {
+	    return groups(index, i => F[i]);
 	}
-
-	function facetGroup2(index, {value: FX}, {value: FY}) {
-	  return groups(index, i => FX[i], i => FY[i])
-	    .flatMap(([x, xgroup]) => xgroup
-	    .map(([y, ygroup]) => [[x, y], ygroup]));
+	function facetGroup2(index, { value: FX }, { value: FY }) {
+	    return groups(index, i => FX[i], i => FY[i])
+	        .flatMap(([x, xgroup]) => xgroup
+	        .map(([y, ygroup]) => [[x, y], ygroup]));
 	}
-
 	// This must match the key structure returned by facetGroups.
 	function facetTranslate(fx, fy) {
-	  return fx && fy ? ([kx, ky]) => `translate(${fx(kx)},${fy(ky)})`
-	    : fx ? kx => `translate(${fx(kx)},0)`
-	    : ky => `translate(0,${fy(ky)})`;
+	    return fx && fy ? ([kx, ky]) => `translate(${fx(kx)},${fy(ky)})`
+	        : fx ? kx => `translate(${fx(kx)},0)`
+	            : ky => `translate(0,${fy(ky)})`;
 	}
-
-	function facetMap({fx, fy}) {
-	  return new (fx && fy ? FacetMap2 : FacetMap);
+	function facetMap({ fx, fy }) {
+	    return new (fx && fy ? FacetMap2 : FacetMap);
 	}
-
 	class FacetMap {
-	  constructor() {
-	    this._ = new InternMap();
-	  }
-	  has(key) {
-	    return this._.has(key);
-	  }
-	  get(key) {
-	    return this._.get(key);
-	  }
-	  set(key, value) {
-	    return this._.set(key, value), this;
-	  }
+	    constructor() {
+	        this._ = new InternMap();
+	    }
+	    has(key) {
+	        return this._.has(key);
+	    }
+	    get(key) {
+	        return this._.get(key);
+	    }
+	    set(key, value) {
+	        return this._.set(key, value), this;
+	    }
 	}
-
 	// A Map-like interface that supports paired keys.
 	class FacetMap2 extends FacetMap {
-	  has([key1, key2]) {
-	    const map = super.get(key1);
-	    return map ? map.has(key2) : false;
-	  }
-	  get([key1, key2]) {
-	    const map = super.get(key1);
-	    return map && map.get(key2);
-	  }
-	  set([key1, key2], value) {
-	    const map = super.get(key1);
-	    if (map) map.set(key2, value);
-	    else super.set(key1, new InternMap([[key2, value]]));
-	    return this;
-	  }
+	    has([key1, key2]) {
+	        const map = super.get(key1);
+	        return map ? map.has(key2) : false;
+	    }
+	    get([key1, key2]) {
+	        const map = super.get(key1);
+	        return map && map.get(key2);
+	    }
+	    set([key1, key2], value) {
+	        const map = super.get(key1);
+	        if (map)
+	            map.set(key2, value);
+	        else
+	            super.set(key1, new InternMap([[key2, value]]));
+	        return this;
+	    }
 	}
 
 	const curves = new Map([
-	  ["basis", curveBasis],
-	  ["basis-closed", curveBasisClosed],
-	  ["basis-open", curveBasisOpen],
-	  ["bundle", curveBundle],
-	  ["bump-x", bumpX],
-	  ["bump-y", bumpY],
-	  ["cardinal", curveCardinal],
-	  ["cardinal-closed", curveCardinalClosed],
-	  ["cardinal-open", curveCardinalOpen],
-	  ["catmull-rom", curveCatmullRom],
-	  ["catmull-rom-closed", curveCatmullRomClosed],
-	  ["catmull-rom-open", curveCatmullRomOpen],
-	  ["linear", curveLinear],
-	  ["linear-closed", curveLinearClosed],
-	  ["monotone-x", monotoneX],
-	  ["monotone-y", monotoneY],
-	  ["natural", curveNatural],
-	  ["step", curveStep],
-	  ["step-after", stepAfter],
-	  ["step-before", stepBefore]
+	    ["basis", curveBasis],
+	    ["basis-closed", curveBasisClosed],
+	    ["basis-open", curveBasisOpen],
+	    ["bundle", curveBundle],
+	    ["bump-x", bumpX],
+	    ["bump-y", bumpY],
+	    ["cardinal", curveCardinal],
+	    ["cardinal-closed", curveCardinalClosed],
+	    ["cardinal-open", curveCardinalOpen],
+	    ["catmull-rom", curveCatmullRom],
+	    ["catmull-rom-closed", curveCatmullRomClosed],
+	    ["catmull-rom-open", curveCatmullRomOpen],
+	    ["linear", curveLinear],
+	    ["linear-closed", curveLinearClosed],
+	    ["monotone-x", monotoneX],
+	    ["monotone-y", monotoneY],
+	    ["natural", curveNatural],
+	    ["step", curveStep],
+	    ["step-after", stepAfter],
+	    ["step-before", stepBefore]
 	]);
-
 	function Curve(curve = curveLinear, tension) {
-	  if (typeof curve === "function") return curve; // custom curve
-	  const c = curves.get(`${curve}`.toLowerCase());
-	  if (!c) throw new Error(`unknown curve: ${curve}`);
-	  if (tension !== undefined) {
-	    switch (c) {
-	      case curveBundle: return c.beta(tension);
-	      case curveCardinalClosed:
-	      case curveCardinalOpen:
-	      case curveCardinal: return c.tension(tension);
-	      case curveCatmullRomClosed:
-	      case curveCatmullRomOpen:
-	      case curveCatmullRom: return c.alpha(tension);
+	    if (typeof curve === "function")
+	        return curve; // custom curve
+	    const c = curves.get(`${curve}`.toLowerCase());
+	    if (!c)
+	        throw new Error(`unknown curve: ${curve}`);
+	    if (tension !== undefined) {
+	        if ("beta" in c) {
+	            return c.beta(tension);
+	        }
+	        else if ("tension" in c) {
+	            return c.tension(tension);
+	        }
+	        else if ("alpha" in c) {
+	            return c.alpha(tension);
+	        }
 	    }
-	  }
-	  return c;
+	    return c;
 	}
 
-	function markers(mark, {
-	  marker,
-	  markerStart = marker,
-	  markerMid = marker,
-	  markerEnd = marker
-	} = {}) {
-	  mark.markerStart = maybeMarker(markerStart);
-	  mark.markerMid = maybeMarker(markerMid);
-	  mark.markerEnd = maybeMarker(markerEnd);
+	function markers(mark, { marker, markerStart = marker, markerMid = marker, markerEnd = marker } = {}) {
+	    mark.markerStart = maybeMarker(markerStart);
+	    mark.markerMid = maybeMarker(markerMid);
+	    mark.markerEnd = maybeMarker(markerEnd);
 	}
-
 	function maybeMarker(marker) {
-	  if (marker == null || marker === false) return null;
-	  if (marker === true) return markerCircleFill;
-	  if (typeof marker === "function") return marker;
-	  switch (`${marker}`.toLowerCase()) {
-	    case "none": return null;
-	    case "arrow": return markerArrow;
-	    case "dot": return markerDot;
-	    case "circle": case "circle-fill": return markerCircleFill;
-	    case "circle-stroke": return markerCircleStroke;
-	  }
-	  throw new Error(`invalid marker: ${marker}`);
+	    if (marker == null || marker === false)
+	        return null;
+	    if (marker === true)
+	        return markerCircleFill;
+	    if (typeof marker === "function")
+	        return marker;
+	    switch (`${marker}`.toLowerCase()) {
+	        case "none": return null;
+	        case "arrow": return markerArrow;
+	        case "dot": return markerDot;
+	        case "circle":
+	        case "circle-fill": return markerCircleFill;
+	        case "circle-stroke": return markerCircleStroke;
+	    }
+	    throw new Error(`invalid marker: ${marker}`);
 	}
-
-	function markerArrow(color) {
-	  return create("svg:marker")
-	      .attr("viewBox", "-5 -5 10 10")
-	      .attr("markerWidth", 6.67)
-	      .attr("markerHeight", 6.67)
-	      .attr("orient", "auto")
-	      .attr("fill", "none")
-	      .attr("stroke", color)
-	      .attr("stroke-width", 1.5)
-	      .attr("stroke-linecap", "round")
-	      .attr("stroke-linejoin", "round")
-	      .call(marker => marker.append("path").attr("d", "M-1.5,-3l3,3l-3,3"))
-	    .node();
+	function markerArrow(color, context) {
+	    return create("svg:marker", context)
+	        .attr("viewBox", "-5 -5 10 10")
+	        .attr("markerWidth", 6.67)
+	        .attr("markerHeight", 6.67)
+	        .attr("orient", "auto")
+	        .attr("fill", "none")
+	        .attr("stroke", color)
+	        .attr("stroke-width", 1.5)
+	        .attr("stroke-linecap", "round")
+	        .attr("stroke-linejoin", "round")
+	        .call(marker => marker.append("path").attr("d", "M-1.5,-3l3,3l-3,3"))
+	        .node();
 	}
-
-	function markerDot(color) {
-	  return create("svg:marker")
-	      .attr("viewBox", "-5 -5 10 10")
-	      .attr("markerWidth", 6.67)
-	      .attr("markerHeight", 6.67)
-	      .attr("fill", color)
-	      .attr("stroke", "none")
-	      .call(marker => marker.append("circle").attr("r", 2.5))
-	    .node();
+	function markerDot(color, context) {
+	    return create("svg:marker", context)
+	        .attr("viewBox", "-5 -5 10 10")
+	        .attr("markerWidth", 6.67)
+	        .attr("markerHeight", 6.67)
+	        .attr("fill", color)
+	        .attr("stroke", "none")
+	        .call(marker => marker.append("circle").attr("r", 2.5))
+	        .node();
 	}
-
-	function markerCircleFill(color) {
-	  return create("svg:marker")
-	      .attr("viewBox", "-5 -5 10 10")
-	      .attr("markerWidth", 6.67)
-	      .attr("markerHeight", 6.67)
-	      .attr("fill", color)
-	      .attr("stroke", "white")
-	      .attr("stroke-width", 1.5)
-	      .call(marker => marker.append("circle").attr("r", 3))
-	    .node();
+	function markerCircleFill(color, context) {
+	    return create("svg:marker", context)
+	        .attr("viewBox", "-5 -5 10 10")
+	        .attr("markerWidth", 6.67)
+	        .attr("markerHeight", 6.67)
+	        .attr("fill", color)
+	        .attr("stroke", "white")
+	        .attr("stroke-width", 1.5)
+	        .call(marker => marker.append("circle").attr("r", 3))
+	        .node();
 	}
-
-	function markerCircleStroke(color) {
-	  return create("svg:marker")
-	      .attr("viewBox", "-5 -5 10 10")
-	      .attr("markerWidth", 6.67)
-	      .attr("markerHeight", 6.67)
-	      .attr("fill", "white")
-	      .attr("stroke", color)
-	      .attr("stroke-width", 1.5)
-	      .call(marker => marker.append("circle").attr("r", 3))
-	    .node();
+	function markerCircleStroke(color, context) {
+	    return create("svg:marker", context)
+	        .attr("viewBox", "-5 -5 10 10")
+	        .attr("markerWidth", 6.67)
+	        .attr("markerHeight", 6.67)
+	        .attr("fill", "white")
+	        .attr("stroke", color)
+	        .attr("stroke-width", 1.5)
+	        .call(marker => marker.append("circle").attr("r", 3))
+	        .node();
 	}
-
 	let nextMarkerId = 0;
-
-	function applyGroupedMarkers(path, mark, {stroke: S}) {
-	  return applyMarkersColor(path, mark, S && (([i]) => S[i]));
+	function applyGroupedMarkers(path, mark, { stroke: S } = {}) {
+	    return applyMarkersColor(path, mark, S && (([i]) => S[i]));
 	}
-
-	function applyMarkersColor(path, {markerStart, markerMid, markerEnd, stroke}, strokeof = () => stroke) {
-	  const iriByMarkerColor = new Map();
-
-	  function applyMarker(marker) {
-	    return function(i) {
-	      const color = strokeof(i);
-	      let iriByColor = iriByMarkerColor.get(marker);
-	      if (!iriByColor) iriByMarkerColor.set(marker, iriByColor = new Map());
-	      let iri = iriByColor.get(color);
-	      if (!iri) {
-	        const node = this.parentNode.insertBefore(marker(color), this);
-	        const id = `plot-marker-${++nextMarkerId}`;
-	        node.setAttribute("id", id);
-	        iriByColor.set(color, iri = `url(#${id})`);
-	      }
-	      return iri;
-	    };
-	  }
-
-	  if (markerStart) path.attr("marker-start", applyMarker(markerStart));
-	  if (markerMid) path.attr("marker-mid", applyMarker(markerMid));
-	  if (markerEnd) path.attr("marker-end", applyMarker(markerEnd));
+	function applyMarkersColor(path, { markerStart, markerMid, markerEnd, stroke }, strokeof = () => stroke) {
+	    const iriByMarkerColor = new Map();
+	    function applyMarker(marker) {
+	        return function (i) {
+	            const color = strokeof(i);
+	            let iriByColor = iriByMarkerColor.get(marker);
+	            if (!iriByColor)
+	                iriByMarkerColor.set(marker, iriByColor = new Map());
+	            let iri = iriByColor.get(color);
+	            if (!iri) {
+	                const context = { document: this.ownerDocument };
+	                const node = this.parentNode.insertBefore(marker(color, context), this);
+	                const id = `plot-marker-${++nextMarkerId}`;
+	                node.setAttribute("id", id);
+	                iriByColor.set(color, iri = `url(#${id})`);
+	            }
+	            return iri;
+	        };
+	    }
+	    if (markerStart)
+	        path.attr("marker-start", applyMarker(markerStart));
+	    if (markerMid)
+	        path.attr("marker-mid", applyMarker(markerMid));
+	    if (markerEnd)
+	        path.attr("marker-end", applyMarker(markerEnd));
 	}
 
 	const defaults = {
-	  ariaLabel: "line",
-	  fill: "none",
-	  stroke: "currentColor",
-	  strokeWidth: 1.5,
-	  strokeLinecap: "round",
-	  strokeLinejoin: "round",
-	  strokeMiterlimit: 1
+	    ariaLabel: "line",
+	    fill: "none",
+	    stroke: "currentColor",
+	    strokeWidth: 1.5,
+	    strokeLinecap: "round",
+	    strokeLinejoin: "round",
+	    strokeMiterlimit: 1
 	};
-
 	class Line extends Mark {
-	  constructor(data, options = {}) {
-	    const {x, y, z, curve, tension} = options;
-	    super(
-	      data,
-	      [
-	        {name: "x", value: x, scale: "x"},
-	        {name: "y", value: y, scale: "y"},
-	        {name: "z", value: maybeZ(options), optional: true}
-	      ],
-	      options,
-	      defaults
-	    );
-	    this.z = z;
-	    this.curve = Curve(curve, tension);
-	    markers(this, options);
-	  }
-	  filter(index) {
-	    return index;
-	  }
-	  render(I, {x, y}, channels, dimensions) {
-	    const {x: X, y: Y} = channels;
-	    const {dx, dy} = this;
-	    return create("svg:g")
-	        .call(applyIndirectStyles, this, dimensions)
-	        .call(applyTransform, x, y, offset + dx, offset + dy)
-	        .call(g => g.selectAll()
-	          .data(groupIndex(I, [X, Y], this, channels))
-	          .enter()
-	          .append("path")
+	    constructor(data, options = {}) {
+	        const { x, y, z, curve, tension } = options;
+	        super(data, [
+	            { name: "x", value: x, scale: "x" },
+	            { name: "y", value: y, scale: "y" },
+	            { name: "z", value: maybeZ(options), optional: true }
+	        ], options, defaults);
+	        this.z = z;
+	        this.curve = Curve(curve, tension);
+	        markers(this, options);
+	    }
+	    filter(index) {
+	        return index;
+	    }
+	    render(index, scales, channels, dimensions, context) {
+	        const { x: X, y: Y } = channels;
+	        return create("svg:g", context)
+	            .call(applyIndirectStyles, this, scales, dimensions)
+	            .call(applyTransform, this, scales)
+	            .call(g => g.selectAll()
+	            .data(groupIndex(index, [X, Y], this, channels))
+	            .enter()
+	            .append("path")
 	            .call(applyDirectStyles, this)
 	            .call(applyGroupedChannelStyles, this, channels)
 	            .call(applyGroupedMarkers, this, channels)
 	            .attr("d", shapeLine()
-	              .curve(this.curve)
-	              .defined(i => i >= 0)
-	              .x(i => X[i])
-	              .y(i => Y[i])))
-	      .node();
-	  }
+	            .curve(this.curve)
+	            .defined(i => i >= 0)
+	            .x(i => X[i])
+	            .y(i => Y[i])))
+	            .node();
+	    }
 	}
-
-	function line(data, {x, y, ...options} = {}) {
-	  ([x, y] = maybeTuple(x, y));
-	  return new Line(data, {...options, x, y});
+	function line(data, { x, y, ...options } = {}) {
+	    ([x, y] = maybeTuple(x, y));
+	    return new Line(data, { ...options, x, y });
 	}
 
 	// (a, y, c, l, h) = (array, y[, cmp, lo, hi])
@@ -73558,7 +73280,6 @@
 	/**
 	 * Live price feed component.
 	 */
-	// import FabricBridge from '@fabric/react';
 	// Define our component
 
 	class Feed extends React$1.Component {
@@ -73576,7 +73297,9 @@
 
 	  constructor(props = {}) {
 	    super(props);
-	    this.settings = Object.assign({}, props);
+	    this.settings = Object.assign({
+	      currency: 'BTC'
+	    }, props);
 	    this._state = {
 	      content: this.state // TODO: inherit get state () from Actor
 
@@ -73749,7 +73472,7 @@
 	    symbols: ['BTC', 'NMC', 'LTC'],
 	    quotes: [{
 	      created: new Date().toISOString(),
-	      rate: 29349.54,
+	      rate: 19349.54,
 	      currency: 'USD',
 	      symbol: 'BTC'
 	    }]
@@ -73805,12 +73528,23 @@
 	    source.on('log', this._handleSourceLog.bind(this));
 	  }
 
+	  _handleBridgeChange(change) {
+	    console.log('[FEED] Bridge Reported Change:', change);
+	  }
+
 	  _handleBridgeReady(info) {
 	    console.log('[FEED] Bridge Reported Ready:', info);
 	  }
 
 	  _handleSourceLog(log) {
 	    this.emit('log', `Source log: ${log}`);
+	  }
+
+	  registerSymbol(symbol) {
+	    this._state.assets[symbol] = {
+	      symbol,
+	      quotes: []
+	    }; // return new Actor(this._state.assets[symbol]);
 	  }
 
 	  render() {
