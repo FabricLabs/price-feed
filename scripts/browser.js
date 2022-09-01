@@ -1,3 +1,5 @@
+if (!window) throw new Error('Not running in browser.  Exiting.');
+
 // Dependencies
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';

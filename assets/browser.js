@@ -73280,6 +73280,7 @@
 	/**
 	 * Live price feed component.
 	 */
+	// import FabricBridge from '@fabric/react';
 	// Define our component
 
 	class Feed extends React$1.Component {
@@ -73602,7 +73603,7 @@
 
 	}
 
-	// Dependencies
+	if (!window) throw new Error('Not running in browser.  Exiting.'); // Dependencies
 
 	const settings = {
 	  currency: 'USD',

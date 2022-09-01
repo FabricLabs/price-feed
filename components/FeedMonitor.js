@@ -26,7 +26,7 @@ export default class FeedMonitor extends React.Component {
     quotes: [
       {
         created: (new Date()).toISOString(),
-        rate: 29349.54,
+        rate: 21029.4,
         currency: 'USD',
         symbol: 'BTC'
       }
@@ -81,6 +81,10 @@ export default class FeedMonitor extends React.Component {
 
   trust (source) {
     source.on('log', this._handleSourceLog.bind(this));
+  }
+
+  _handleBridgeChange (change) {
+    console.log('[FEED] Bridge Reported Change:', change);
   }
 
   _handleBridgeReady (info) {
@@ -155,7 +159,7 @@ export default class FeedMonitor extends React.Component {
             </Card> : undefined}
           </div>
         </Segment>
-        {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}
+        {/* <FabricBridge path="/" onChange={this._handleBridgeChange.bind(this)} host="localhost" port="3000" secure="false" /> */}
       </fabric-content-page>
     );
   }

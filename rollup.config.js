@@ -39,10 +39,10 @@ function handleWarning (warning, warn) {
 
 const builds = [
   {
-    input: 'scripts/index.js',
+    input: 'scripts/browser.js',
     output: [
       {
-        file: 'assets/index.js',
+        file: 'assets/browser.js',
         format: 'iife',
         name: 'PortalFeedMonitor',
         globals: {

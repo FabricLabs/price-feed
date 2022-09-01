@@ -1,5 +1,7 @@
 'use strict';
 
+// const log = require('why-is-node-running');
+
 const assert = require('assert');
 const Feed = require('../services/feed');
 const settings = require('../settings/test');
@@ -20,6 +22,38 @@ describe('@portal/feed', function () {
       await feed.start();
       await feed.stop();
       assert.ok(feed);
+    });
+
+    xit('can be started with test configuration', async function () {
+      const feed = new Feed(settings);
+      await feed.start();
+      await feed.stop();
+      assert.ok(feed);
+      setTimeout(log, 5000);
+    });
+
+    xit('can serve a websocket', function (done) {
+      async function test () {
+        const feed = new Feed();
+        await feed.start();
+
+        const socket = new WebSocket('ws://localhost:8080');
+
+        // Connection opened
+        socket.addEventListener('open', function (event) {
+            socket.send('Hello Server!');
+        });
+
+        // Listen for messages
+        socket.addEventListener('message', function (event) {
+            console.log('Message from server ', event.data);
+        });
+
+        assert.ok(feed);
+        done();
+      }
+
+      test();
     });
 
     xit('generates a sane quote', async function () {
