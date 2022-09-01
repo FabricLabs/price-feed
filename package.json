@@ -4,8 +4,8 @@
   "description": "digital asset pricefeed",
   "main": "services/feed.js",
   "scripts": {
-    "build": "npm run build:semantic && npm run build:assets",
-    "build:assets": "rollup -c",
+    "build": "npm run build:semantic && npm run build:browser",
+    "build:browser": "rollup -c",
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes ../../assets && cd ../..",
     "dev": "npx concurrently \"npm run watch\" \"npm start\"",
     "coverage": "nyc npm test",
@@ -33,8 +33,8 @@
   },
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#feature/federation",
-    "@fabric/http": "FabricLabs/fabric-http#feature/federation"
+    "@fabric/core": "FabricLabs/fabric#master",
+    "@fabric/http": "FabricLabs/fabric-http#feature/node-16"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.17.12",
