@@ -3,7 +3,7 @@
 const Service = require('@fabric/core/types/service');
 const Remote = require('@fabric/http/types/remote');
 
-class CoinMarketCap extends Service {
+class Coinbase extends Service {
   constructor (settings = {}) {
     super(settings);
 
@@ -15,8 +15,14 @@ class CoinMarketCap extends Service {
     }, this.settings, settings);
 
     this.remote = new Remote({
-      authority: 'pro-api.coinmarketcap.com'
+      authority: 'api.coinbase.com'
     });
+
+    this._state = {
+      content: {
+        prices: {}
+      }
+    }
 
     return this;
   }
@@ -31,36 +37,34 @@ class CoinMarketCap extends Service {
   }
 
   async getQuoteForSymbol (symbol) {
-    const result = await this.remote._GET('/' + [
-      'v1',
-      'cryptocurrency',
-      'quotes',
-      'latest'
-    ].join('/') + `?symbol=${symbol}&convert=${this.currency}&CMC_PRO_API_KEY=${this.settings.key}`);
+    if (symbol !== 'BTC') throw new Error('Only the "BTC" symbol is supported.');
 
-    if (!result || !result.data) throw new Error('Unable to retrieve result.');
+    const currency = this.currency;
 
-    const asset = result.data[symbol];
-    const created = new Date(asset.last_updated);
-    const ageInMS = Date.now() - created;
-    const age = Math.log(ageInMS);
+    // Request from Coinbase
+    const start = new Date();
+    const result = await this.remote._GET(`/v2/exchange-rates?currency=${symbol}`);
+    const age = Math.log(new Date() - start);
 
+    // Return valid Quote
     return {
       age: age,
-      created: created,
-      currency: this.currency,
-      price: asset.quote[this.currency].price
+      created: start,
+      currency: currency,
+      price: parseFloat(result.data.rates[currency])
     };
   }
 
   async getAssetForSymbol (symbol) {
     const quote = await this.getQuoteForSymbol(symbol);
 
+    // Return valid asset, with quote
     return {
       quote: quote,
-      original: asset
+      name: 'Bitcoin',
+      symbol: symbol
     };
   }
 }
 
-module.exports = CoinMarketCap;
+module.exports = Coinbase;

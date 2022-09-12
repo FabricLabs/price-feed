@@ -1,14 +1,24 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+/**
+ * Live price feed component.
+ */
 
+// Dependencies
+import React from 'react';
+
+// Styles
 import '../styles/feed.css';
 import '../libraries/fomantic/dist/semantic.css';
 import {
   Card,
+  Icon,
   Label
 } from 'semantic-ui-react';
 
-class Feed extends Component {
+// Fabric Components
+// import FabricBridge from '@fabric/react';
+
+// Define our component
+export default class Feed extends React.Component {
   state = {
     currency: 'BTC',
     prices: {
@@ -21,19 +31,50 @@ class Feed extends Component {
     }
   }
 
+  constructor (props = {}) {
+    super(props);
+
+    this.settings = Object.assign({
+      currency: 'BTC'
+    }, props);
+
+    this._state = {
+      content: this.state // TODO: inherit get state () from Actor
+    };
+
+    return this;
+  }
+
+  trust (source) {
+    source.on('log', this._handleSourceLog.bind(this));
+  }
+
+  _handleBridgeReady (info) {
+    console.log('[FEED] Bridge Reported Ready:', info);
+    // TODO: bind events
+    // i.e., this.trust( info.emitter )
+  }
+
+  _handleSourceLog (log) {
+    this.emit('log', `Source log: ${log}`);
+  }
+
   render () {
     return (
-      <div className="ui page">
-        <div><strong>Price:</strong> <code>{this.state.quote.rate}</code></div>
-        <hr />
-        <Card>
-          <Card.Content>
-            <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
-          </Card.Content>
-        </Card>
-      </div>
+      <>
+        <fabric-content-block>
+          <Card fluid>
+            <Card.Content>
+              <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
+            </Card.Content>
+            <Card.Content extra>
+              <a>
+                <Icon name='linkify' />
+              </a>
+            </Card.Content>
+          </Card>
+        </fabric-content-block>
+      </>
     );
   }
-}
-
-ReactDOM.render(<Feed />, document.getElementById('feed'));
+};
