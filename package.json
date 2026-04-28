@@ -1,6 +1,6 @@
 {
-  "name": "@portal/feed",
-  "version": "0.1.0",
+  "name": "@fabric/price",
+  "version": "0.2.0",
   "description": "digital asset pricefeed",
   "main": "services/feed.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "coverage": "nyc npm test",
     "make:coverage": "npm run coverage && nyc report --reporter html",
     "quote": "node scripts/report.js",
+    "report:install": "rm -rf node_modules && echo \"\n\" > package-lock.json && echo \"$ npm i\" > reports/install.log && npm i >> reports/install.log",
     "review:coverage": "npm run make:coverage && http-server -p 8000 reports/coverage",
     "serve": "http-server assets",
     "start": "node scripts/node.js",
@@ -33,9 +34,9 @@
   },
   "homepage": "https://github.com/FabricLabs/portal-feed#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#feature/node-16",
-    "@fabric/http": "FabricLabs/fabric-http#feature/node-16",
-    "@fabric/react": "FabricLabs/fabric-react#feature/node-16"
+    "@fabric/core": "FabricLabs/fabric#feature/v0.1.0-RC1",
+    "@fabric/http": "FabricLabs/fabric-http#feature/v0.1.0-RC1",
+    "@fabric/react": "FabricLabs/fabric-react#eric/develop"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.17.12",
