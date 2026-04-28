@@ -9,6 +9,8 @@ const Hash256 = require('@fabric/core/types/hash256');
 const Key = require('@fabric/core/types/key');
 const HTTPServer = require('@fabric/http/types/server');
 
+const { generate: generateObserverPatches } = require('fast-json-patch');
+
 const BitPay = require('./bitpay');
 const Coinbase = require('./coinbase');
 const CoinMarketCap = require('./coinmarketcap');
@@ -90,8 +92,6 @@ class Feed extends Service {
       quotes: {},
       status: 'PAUSED'
     };
-
-    return this;
   }
 
   get currency () {
@@ -109,7 +109,7 @@ class Feed extends Service {
 
     if (this.observer) {
       try {
-        const patches = manager.generate(this.observer);
+        const patches = generateObserverPatches(this.observer);
         if (patches.length) {
           this.history.push(patches);
           this.emit('patches', patches);
@@ -135,8 +135,7 @@ class Feed extends Service {
     let estimate = null;
 
     switch (ESTIMATE_MODE) {
-      default:
-      case 'weighted':
+      case 'weighted': {
         let mass = 0;
         let sum = 0;
 
@@ -151,11 +150,14 @@ class Feed extends Service {
 
         estimate = sum / mass;
         break;
+      }
       case 'average':
         estimate = quotes
-          .map(quote => quote.price)
+          .map((quote) => quote.price)
           .reduce((sum, value) => sum + value) / quotes.length;
         break;
+      default:
+        throw new Error(`Unsupported ESTIMATE_MODE: ${ESTIMATE_MODE}`);
     }
 
     return estimate;

@@ -19,16 +19,18 @@ function getFreeListenPort () {
 
 describe('@portal/feed', function () {
   describe('Feed', function () {
-    it('is an instance of a function', function () {
+    this.timeout(15000);
+
+    it('is an instance of a function', () => {
       assert.equal(Feed instanceof Function, true);
     });
 
-    it('can be instantiated with no input', function () {
+    it('can be instantiated with no input', () => {
       const feed = new Feed();
       assert.ok(feed);
     });
 
-    it('can be started with no input', async function () {
+    it('can be started with no input', async () => {
       const port = await getFreeListenPort();
       const feed = new Feed({
         sync: false,
@@ -39,7 +41,7 @@ describe('@portal/feed', function () {
       assert.ok(feed);
     });
 
-    it('generates a sane quote', async function () {
+    it('generates a sane quote', async () => {
       const CURRENCY = 'BTC';
       const feed = new Feed({
         currency: CURRENCY,

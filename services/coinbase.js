@@ -22,9 +22,7 @@ class Coinbase extends Service {
       content: {
         prices: {}
       }
-    }
-
-    return this;
+    };
   }
 
   get currency () {
@@ -41,24 +39,26 @@ class Coinbase extends Service {
 
     const currency = this.currency;
 
-    // Request from Coinbase
-    const start = new Date();
+    const startMs = Date.now();
     const result = await this.remote._GET(`/v2/exchange-rates?currency=${symbol}`);
-    const age = Math.log(new Date() - start);
+    const age = Math.log(Date.now() - startMs);
 
-    // Return valid Quote
+    const rates = result?.data?.rates;
+    const priceRaw = rates && Object.prototype.hasOwnProperty.call(rates, currency)
+      ? rates[currency]
+      : undefined;
+
     return {
       age: age,
-      created: start,
+      created: new Date(startMs),
       currency: currency,
-      price: parseFloat(result.data.rates[currency])
+      price: parseFloat(priceRaw)
     };
   }
 
   async getAssetForSymbol (symbol) {
     const quote = await this.getQuoteForSymbol(symbol);
 
-    // Return valid asset, with quote
     return {
       quote: quote,
       name: 'Bitcoin',

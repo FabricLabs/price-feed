@@ -2,32 +2,28 @@
  * Live price feed component.
  */
 
-// Dependencies
 import React, {
   Component
 } from 'react';
 
-// Fomantic
 import {
   Segment,
   Table
 } from 'semantic-ui-react';
 
-// Styles
 const label = {
   textAlign: 'right'
 };
 
-// Define our component
 export default class Quote extends Component {
   constructor (props = {}) {
     super(props);
 
+    this.state = { ...props };
+
     this.settings = Object.assign({
       frequency: 0.007
-    }, this.state, props);
-
-    this.state = { ...this.props };
+    }, this.state);
 
     this._state = {
       content: Object.assign({
@@ -36,10 +32,8 @@ export default class Quote extends Component {
         currency: 'USD',
         rate: 29349.54,
         symbol: 'BTC'
-      }, this.state) // TODO: inherit get state () from Actor
+      }, this.state)
     };
-
-    return this;
   }
 
   get locale () {
@@ -53,61 +47,62 @@ export default class Quote extends Component {
   componentDidMount () {
     const self = this;
     self._timekeeper = setInterval(() => {
-      self._state.content.age = Date.now() - Date.parse(this.state.created);
+      self._state.content.age = Date.now() - Date.parse(this.state.created ?? self._state.content.created);
       self.setState(self._state.content);
     }, self.settings.frequency);
   }
 
   withLocale (value) {
-    if (typeof value !== 'Number') value = parseFloat(value);
-    return value.toLocaleString(this.locale);
+    let n = value;
+    if (typeof n !== 'number') n = parseFloat(String(value));
+    return typeof n === 'number' && !Number.isNaN(n)
+      ? n.toLocaleString(this.locale)
+      : '';
   }
 
   render () {
     return (
-      <>
-        <portal-feed-quote>
-          <Segment compact>
-            <Table>
-              <Table.Header></Table.Header>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell style={label}>
-                    <strong htmlFor="symbol">Symbol:</strong>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <code data-bind="symbol">{this.state.symbol}</code>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell style={label}>
-                    <strong htmlFor="currency">Currency:</strong>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <code data-bind="currency">{this.state.currency}</code>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell style={label}>
-                    <strong htmlFor="rate">Rate:</strong>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <code data-bind="rate">{this.state.rate.toFixed(2)}</code>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell style={label}>
-                    <strong htmlFor="symbol">Age:</strong>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <abbr data-bind="age" title={this.state.created}>{this.state.age} ms</abbr>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-          </Segment>
-        </portal-feed-quote>
-      </>
+      <portal-feed-quote>
+        <Segment compact>
+          <Table>
+            <Table.Header />
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell style={label}>
+                  <label htmlFor="quote-symbol-id"><strong>Symbol:</strong></label>
+                </Table.Cell>
+                <Table.Cell>
+                  <code id="quote-symbol-id" data-bind="symbol">{this.state.symbol}</code>
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell style={label}>
+                  <label htmlFor="quote-currency-id"><strong>Currency:</strong></label>
+                </Table.Cell>
+                <Table.Cell>
+                  <code id="quote-currency-id" data-bind="currency">{this.state.currency}</code>
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell style={label}>
+                  <label htmlFor="quote-rate-id"><strong>Rate:</strong></label>
+                </Table.Cell>
+                <Table.Cell>
+                  <code id="quote-rate-id" data-bind="rate">{this.state.rate.toFixed(2)}</code>
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell style={label}>
+                  <label htmlFor="quote-age-id"><strong>Age:</strong></label>
+                </Table.Cell>
+                <Table.Cell>
+                  <abbr id="quote-age-id" data-bind="age" title={this.state.created}>{this.state.age} ms</abbr>
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </Segment>
+      </portal-feed-quote>
     );
   }
-};
+}

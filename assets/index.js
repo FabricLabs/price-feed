@@ -57279,12 +57279,7 @@
 	/**
 	 * Live price feed component.
 	 */
-	// Dependencies
 
-	// Fabric Components
-	// import FabricBridge from '@fabric/react';
-
-	// Define our component
 	class Feed extends React.Component {
 	  state = {
 	    currency: 'BTC',
@@ -57301,29 +57296,32 @@
 	    super(props);
 	    this.settings = Object.assign({}, props);
 	    this._state = {
-	      content: this.state // TODO: inherit get state () from Actor
+	      content: this.state
 	    };
-	    return this;
 	  }
 	  trust(source) {
 	    source.on('log', this._handleSourceLog.bind(this));
 	  }
 	  _handleBridgeReady(info) {
 	    console.log('[FEED] Bridge Reported Ready:', info);
-	    // TODO: bind events
-	    // i.e., this.trust( info.emitter )
 	  }
 	  _handleSourceLog(log) {
 	    this.emit('log', `Source log: ${log}`);
 	  }
 	  render() {
-	    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("fabric-content-block", null, /*#__PURE__*/React.createElement(Card, {
+	    return /*#__PURE__*/React.createElement("fabric-content-block", null, /*#__PURE__*/React.createElement(Card, {
 	      fluid: true
 	    }, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Label, null, "Price: ", /*#__PURE__*/React.createElement(Label.Detail, null, this.state.quote.rate))), /*#__PURE__*/React.createElement(Card.Content, {
 	      extra: true
-	    }, /*#__PURE__*/React.createElement("a", null, /*#__PURE__*/React.createElement(Icon, {
+	    }, /*#__PURE__*/React.createElement("a", {
+	      href: "#",
+	      onClick: e => {
+	        e.preventDefault();
+	      },
+	      "aria-label": "Link placeholder"
+	    }, /*#__PURE__*/React.createElement(Icon, {
 	      name: "linkify"
-	    }))))));
+	    })))));
 	  }
 	}
 
@@ -57331,22 +57329,18 @@
 	 * Live price feed component.
 	 */
 
-
-	// Styles
 	const label = {
 	  textAlign: 'right'
 	};
-
-	// Define our component
 	class Quote extends reactExports.Component {
 	  constructor(props = {}) {
 	    super(props);
+	    this.state = {
+	      ...props
+	    };
 	    this.settings = Object.assign({
 	      frequency: 0.007
-	    }, this.state, props);
-	    this.state = {
-	      ...this.props
-	    };
+	    }, this.state);
 	    this._state = {
 	      content: Object.assign({
 	        age: 0,
@@ -57354,9 +57348,8 @@
 	        currency: 'USD',
 	        rate: 29349.54,
 	        symbol: 'BTC'
-	      }, this.state) // TODO: inherit get state () from Actor
+	      }, this.state)
 	    };
-	    return this;
 	  }
 	  get locale() {
 	    return Intl.NumberFormat().resolvedOptions().locale;
@@ -57367,43 +57360,48 @@
 	  componentDidMount() {
 	    const self = this;
 	    self._timekeeper = setInterval(() => {
-	      self._state.content.age = Date.now() - Date.parse(this.state.created);
+	      self._state.content.age = Date.now() - Date.parse(this.state.created ?? self._state.content.created);
 	      self.setState(self._state.content);
 	    }, self.settings.frequency);
 	  }
 	  withLocale(value) {
-	    if (typeof value !== 'Number') value = parseFloat(value);
-	    return value.toLocaleString(this.locale);
+	    let n = value;
+	    if (typeof n !== 'number') n = parseFloat(String(value));
+	    return typeof n === 'number' && !Number.isNaN(n) ? n.toLocaleString(this.locale) : '';
 	  }
 	  render() {
-	    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("portal-feed-quote", null, /*#__PURE__*/React.createElement(Segment, {
+	    return /*#__PURE__*/React.createElement("portal-feed-quote", null, /*#__PURE__*/React.createElement(Segment, {
 	      compact: true
 	    }, /*#__PURE__*/React.createElement(Table, null, /*#__PURE__*/React.createElement(Table.Header, null), /*#__PURE__*/React.createElement(Table.Body, null, /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
 	      style: label
-	    }, /*#__PURE__*/React.createElement("strong", {
-	      htmlFor: "symbol"
-	    }, "Symbol:")), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
+	    }, /*#__PURE__*/React.createElement("label", {
+	      htmlFor: "quote-symbol-id"
+	    }, /*#__PURE__*/React.createElement("strong", null, "Symbol:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
+	      id: "quote-symbol-id",
 	      "data-bind": "symbol"
 	    }, this.state.symbol))), /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
 	      style: label
-	    }, /*#__PURE__*/React.createElement("strong", {
-	      htmlFor: "currency"
-	    }, "Currency:")), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
+	    }, /*#__PURE__*/React.createElement("label", {
+	      htmlFor: "quote-currency-id"
+	    }, /*#__PURE__*/React.createElement("strong", null, "Currency:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
+	      id: "quote-currency-id",
 	      "data-bind": "currency"
 	    }, this.state.currency))), /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
 	      style: label
-	    }, /*#__PURE__*/React.createElement("strong", {
-	      htmlFor: "rate"
-	    }, "Rate:")), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
+	    }, /*#__PURE__*/React.createElement("label", {
+	      htmlFor: "quote-rate-id"
+	    }, /*#__PURE__*/React.createElement("strong", null, "Rate:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
+	      id: "quote-rate-id",
 	      "data-bind": "rate"
 	    }, this.state.rate.toFixed(2)))), /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
 	      style: label
-	    }, /*#__PURE__*/React.createElement("strong", {
-	      htmlFor: "symbol"
-	    }, "Age:")), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("abbr", {
+	    }, /*#__PURE__*/React.createElement("label", {
+	      htmlFor: "quote-age-id"
+	    }, /*#__PURE__*/React.createElement("strong", null, "Age:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("abbr", {
+	      id: "quote-age-id",
 	      "data-bind": "age",
 	      title: this.state.created
-	    }, this.state.age, " ms"))))))));
+	    }, this.state.age, " ms")))))));
 	  }
 	}
 
@@ -57411,8 +57409,6 @@
 	 * Live price feed component.
 	 */
 
-
-	// Define our component
 	class Rate extends reactExports.Component {
 	  state = {
 	    value: 29349.54,
@@ -57423,9 +57419,8 @@
 	    super(props);
 	    this.settings = Object.assign({}, this.state, props);
 	    this._state = {
-	      content: this.state // TODO: inherit get state () from Actor
+	      content: this.state
 	    };
-	    return this;
 	  }
 	  get locale() {
 	    return Intl.NumberFormat().resolvedOptions().locale;
@@ -57434,25 +57429,34 @@
 	    return this.state.value;
 	  }
 	  withLocale(value) {
-	    if (typeof value !== 'Number') value = parseFloat(value);
-	    return value.toLocaleString(this.locale);
+	    let n = value;
+	    if (typeof n !== 'number') n = parseFloat(String(value));
+	    return typeof n === 'number' && !Number.isNaN(n) ? n.toLocaleString(this.locale) : '';
 	  }
 	  render() {
-	    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("portal-feed-rate", null, /*#__PURE__*/React.createElement(Segment, {
+	    return /*#__PURE__*/React.createElement("portal-feed-rate", null, /*#__PURE__*/React.createElement(Segment, {
 	      compact: true
 	    }, /*#__PURE__*/React.createElement(Label, {
-	      htmlFor: "currency"
+	      htmlFor: "rate-price-label"
 	    }, this.state.currency), /*#__PURE__*/React.createElement("code", {
+	      id: "rate-price-label",
 	      "data-bind": "price",
 	      style: {
 	        display: 'inline-block',
 	        marginLeft: '1em'
 	      }
-	    }, this.withLocale(this.state.value)))));
+	    }, this.withLocale(this.state.value))));
 	  }
 	}
 
 	const LIMIT_PER_PAGE = 3;
+	function cryptoRandomSignedUnit() {
+	  const buf = new Uint32Array(2);
+	  globalThis.crypto.getRandomValues(buf);
+	  const sign = (buf[0] & 1) === 0 ? -1 : 1;
+	  const magnitude = buf[1] / 0xffffffff;
+	  return sign * magnitude;
+	}
 	class FeedMonitor extends React.Component {
 	  state = {
 	    currency: 'USD',
@@ -57468,40 +57472,45 @@
 	    super(props);
 	    this._state = {
 	      assets: {},
-	      content: this.state // TODO: inherit get state () from Actor
+	      content: this.state
 	    };
 	    this.ref = /*#__PURE__*/React.createRef();
-	    this.chart = /*#__PURE__*/React.createRef();
-	    return this;
+	    this.chartOuterRef = /*#__PURE__*/React.createRef();
 	  }
 	  componentDidMount() {
 	    const self = this;
 	    self._monitor = setInterval(async () => {
 	      const _GET = async function _GET(path) {
-	        const delta = (Math.random() < 0.5 ? 1 : -1) * Math.random();
+	        const delta = cryptoRandomSignedUnit();
 	        switch (path) {
-	          default:
-	            return {
-	              quotes: self.state.quotes
-	            };
 	          case '/quotes':
 	            return self.state.quotes.concat({
 	              created: new Date().toISOString(),
-	              delta: delta,
+	              delta,
 	              rate: self.state.quotes[self.state.quotes.length - 1].rate + delta,
 	              currency: 'USD',
 	              symbol: 'BTC'
 	            });
+	          default:
+	            return {
+	              quotes: self.state.quotes
+	            };
 	        }
 	      };
 	      const simulator = {
 	        _GET
 	      };
-	      const remote = simulator; // new Remote({ authority: 'localhost:3000' });
+	      const remote = simulator;
 	      const result = await remote._GET('/quotes');
 	      self._state.content.quotes = result;
-	      self.setState(self._state.content);
+	      self.setState(self._state.content, () => self._syncChartIntoDom());
 	    }, 2500);
+	    self._syncChartIntoDom();
+	  }
+	  componentDidUpdate(_, prevState) {
+	    if (prevState.quotes !== this.state.quotes) {
+	      this._syncChartIntoDom();
+	    }
 	  }
 	  trust(source) {
 	    source.on('log', this._handleSourceLog.bind(this));
@@ -57512,13 +57521,23 @@
 	  _handleSourceLog(log) {
 	    this.emit('log', `Source log: ${log}`);
 	  }
-	  render() {
+	  _syncChartIntoDom() {
+	    const mount = this.chartOuterRef?.current;
+	    if (!mount) return;
+	    while (mount.firstChild) {
+	      mount.removeChild(mount.firstChild);
+	    }
+	    const svg = this._buildChartSvgEl();
+	    if (svg) {
+	      mount.appendChild(svg);
+	    }
+	  }
+	  _buildChartSvgEl() {
 	    const quotes = [].concat(this.state.quotes).sort((a, b) => {
 	      return Date.parse(a.created) > Date.parse(b.created) ? -1 : 1;
 	    });
-	    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
-	    const outOfBounds = quotes.length - quoteView.length;
-	    const chart = line(quotes.map(x => {
+	    const width = this.chartOuterRef?.current?.offsetWidth ? this.chartOuterRef.current.offsetWidth : 600;
+	    return line(quotes.map(x => {
 	      return {
 	        ...x,
 	        created: new Date(x.created)
@@ -57529,29 +57548,31 @@
 	    }).plot({
 	      marginBottom: 50,
 	      marginLeft: 75,
-	      width: this.chart.current ? this.chart.current.offsetWidth : 600,
+	      width,
 	      x: {
 	        tickRotate: 45
 	      }
 	    });
+	  }
+	  render() {
+	    const quotes = [].concat(this.state.quotes).sort((a, b) => {
+	      return Date.parse(a.created) > Date.parse(b.created) ? -1 : 1;
+	    });
+	    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
+	    const outOfBounds = quotes.length - quoteView.length;
 	    return /*#__PURE__*/React.createElement("fabric-content-page", {
 	      className: "ui page",
 	      ref: this.ref
 	    }, /*#__PURE__*/React.createElement(Segment, null, /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h1", null, "Price")), /*#__PURE__*/React.createElement(Feed, null), /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h2", null, "Symbols")), /*#__PURE__*/React.createElement("div", {
 	      className: "ui cards"
-	    }, this.state.symbols.map((symbol, i) => {
-	      return /*#__PURE__*/React.createElement(Card, {
-	        key: i
-	      }, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Header, null, symbol), /*#__PURE__*/React.createElement(Rate, {
-	        currency: this.state.currency,
-	        symbol: symbol
-	      })));
-	    })), /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h2", null, "Quotes")), /*#__PURE__*/React.createElement(Segment, {
-	      ref: this.chart,
-	      class: "chart",
-	      dangerouslySetInnerHTML: {
-	        __html: chart.outerHTML
-	      }
+	    }, this.state.symbols.map(symbol => /*#__PURE__*/React.createElement(Card, {
+	      key: symbol
+	    }, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Header, null, symbol), /*#__PURE__*/React.createElement(Rate, {
+	      currency: this.state.currency,
+	      symbol: symbol
+	    }))))), /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h2", null, "Quotes")), /*#__PURE__*/React.createElement(Segment, {
+	      ref: this.chartOuterRef,
+	      className: "chart ui segment"
 	    }), /*#__PURE__*/React.createElement("div", {
 	      className: "ui cards"
 	    }, quoteView.map((quote, i) => {

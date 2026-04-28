@@ -1,10 +1,9 @@
 /**
  * Live price feed component.
  */
-// Dependencies
+
 import React from 'react';
 
-// Styles
 import '../styles/feed.css';
 import '../libraries/fomantic/dist/semantic.css';
 import {
@@ -13,10 +12,6 @@ import {
   Label
 } from 'semantic-ui-react';
 
-// Fabric Components
-// import FabricBridge from '@fabric/react';
-
-// Define our component
 export default class Feed extends React.Component {
   state = {
     currency: 'BTC',
@@ -28,17 +23,15 @@ export default class Feed extends React.Component {
       currency: 'BTC',
       rate: 1
     }
-  }
+  };
 
   constructor (props = {}) {
     super(props);
 
     this.settings = Object.assign({}, props);
     this._state = {
-      content: this.state // TODO: inherit get state () from Actor
+      content: this.state
     };
-
-    return this;
   }
 
   trust (source) {
@@ -47,8 +40,6 @@ export default class Feed extends React.Component {
 
   _handleBridgeReady (info) {
     console.log('[FEED] Bridge Reported Ready:', info);
-    // TODO: bind events
-    // i.e., this.trust( info.emitter )
   }
 
   _handleSourceLog (log) {
@@ -57,20 +48,20 @@ export default class Feed extends React.Component {
 
   render () {
     return (
-      <>
-        <fabric-content-block>
-          <Card fluid>
-            <Card.Content>
-              <Label>Price: <Label.Detail>{this.state.quote.rate}</Label.Detail></Label>
-            </Card.Content>
-            <Card.Content extra>
-              <a>
-                <Icon name='linkify' />
-              </a>
-            </Card.Content>
-          </Card>
-        </fabric-content-block>
-      </>
+      <fabric-content-block>
+        <Card fluid>
+          <Card.Content>
+            <Label>
+              Price: <Label.Detail>{this.state.quote.rate}</Label.Detail>
+            </Label>
+          </Card.Content>
+          <Card.Content extra>
+            <a href="#" onClick={(e) => { e.preventDefault(); }} aria-label="Link placeholder">
+              <Icon name='linkify' />
+            </a>
+          </Card.Content>
+        </Card>
+      </fabric-content-block>
     );
   }
-};
+}

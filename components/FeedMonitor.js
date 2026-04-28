@@ -2,7 +2,6 @@ const LIMIT_PER_PAGE = 3;
 
 import React from 'react';
 import '../styles/feed.css';
-// import '../libraries/fomantic/dist/semantic.css';
 
 import {
   Button,
@@ -11,13 +10,19 @@ import {
   Segment
 } from 'semantic-ui-react';
 
-// import d3 from 'd3';
 import * as Plot from '@observablehq/plot';
 
-// Internal Components
 import Feed from './Feed';
 import Quote from './Quote';
 import Rate from './Rate';
+
+function cryptoRandomSignedUnit () {
+  const buf = new Uint32Array(2);
+  globalThis.crypto.getRandomValues(buf);
+  const sign = (buf[0] & 1) === 0 ? -1 : 1;
+  const magnitude = buf[1] / 0xffffffff;
+  return sign * magnitude;
+}
 
 export default class FeedMonitor extends React.Component {
   state = {
@@ -31,20 +36,18 @@ export default class FeedMonitor extends React.Component {
         symbol: 'BTC'
       }
     ]
-  }
+  };
 
   constructor (props = {}) {
     super(props);
 
     this._state = {
       assets: {},
-      content: this.state // TODO: inherit get state () from Actor
+      content: this.state
     };
 
     this.ref = React.createRef();
-    this.chart = React.createRef();
-
-    return this;
+    this.chartOuterRef = React.createRef();
   }
 
   componentDidMount () {
@@ -52,31 +55,39 @@ export default class FeedMonitor extends React.Component {
 
     self._monitor = setInterval(async () => {
       const _GET = async function _GET (path) {
-        const delta = (((Math.random() < 0.5) ? 1 : -1) * Math.random());
+        const delta = cryptoRandomSignedUnit();
 
         switch (path) {
+          case '/quotes':
+            return self.state.quotes.concat({
+              created: (new Date()).toISOString(),
+              delta,
+              rate: self.state.quotes[self.state.quotes.length - 1].rate + delta,
+              currency: 'USD',
+              symbol: 'BTC'
+            });
           default:
             return {
               quotes: self.state.quotes
             };
-          case '/quotes':
-            return self.state.quotes.concat({
-              created: (new Date()).toISOString(),
-              delta: delta,
-              rate: self.state.quotes[ self.state.quotes.length - 1 ].rate + delta,
-              currency: 'USD',
-              symbol: 'BTC'
-            });
         }
-      }
+      };
 
       const simulator = { _GET };
 
-      const remote = simulator; // new Remote({ authority: 'localhost:3000' });
+      const remote = simulator;
       const result = await remote._GET('/quotes');
       self._state.content.quotes = result;
-      self.setState(self._state.content);
+      self.setState(self._state.content, () => self._syncChartIntoDom());
     }, 2500);
+
+    self._syncChartIntoDom();
+  }
+
+  componentDidUpdate (_, prevState) {
+    if (prevState.quotes !== this.state.quotes) {
+      this._syncChartIntoDom();
+    }
   }
 
   trust (source) {
@@ -91,15 +102,29 @@ export default class FeedMonitor extends React.Component {
     this.emit('log', `Source log: ${log}`);
   }
 
-  render () {
+  _syncChartIntoDom () {
+    const mount = this.chartOuterRef?.current;
+    if (!mount) return;
+    while (mount.firstChild) {
+      mount.removeChild(mount.firstChild);
+    }
+    const svg = this._buildChartSvgEl();
+    if (svg) {
+      mount.appendChild(svg);
+    }
+  }
+
+  _buildChartSvgEl () {
     const quotes = [].concat(this.state.quotes).sort((a, b) => {
       return (Date.parse(a.created) > Date.parse(b.created)) ? -1 : 1;
     });
 
-    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
-    const outOfBounds = quotes.length - quoteView.length;
+    const width =
+      this.chartOuterRef?.current?.offsetWidth
+        ? this.chartOuterRef.current.offsetWidth
+        : 600;
 
-    const chart = Plot.line(quotes.map(x => {
+    return Plot.line(quotes.map((x) => {
       return {
         ...x,
         created: new Date(x.created)
@@ -110,9 +135,18 @@ export default class FeedMonitor extends React.Component {
     }).plot({
       marginBottom: 50,
       marginLeft: 75,
-      width: (this.chart.current) ? this.chart.current.offsetWidth : 600,
+      width,
       x: { tickRotate: 45 }
     });
+  }
+
+  render () {
+    const quotes = [].concat(this.state.quotes).sort((a, b) => {
+      return (Date.parse(a.created) > Date.parse(b.created)) ? -1 : 1;
+    });
+
+    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
+    const outOfBounds = quotes.length - quoteView.length;
 
     return (
       <fabric-content-page className="ui page" ref={this.ref}>
@@ -122,20 +156,21 @@ export default class FeedMonitor extends React.Component {
 
           <Header><h2>Symbols</h2></Header>
           <div className="ui cards">
-            {this.state.symbols.map((symbol, i) => {
-              return (
-                <Card key={i}>
-                  <Card.Content>
-                    <Header>{symbol}</Header>
-                    <Rate currency={this.state.currency} symbol={symbol} />
-                  </Card.Content>
-                </Card>
-              );
-            })}
+            {this.state.symbols.map((symbol) => (
+              <Card key={symbol}>
+                <Card.Content>
+                  <Header>{symbol}</Header>
+                  <Rate currency={this.state.currency} symbol={symbol} />
+                </Card.Content>
+              </Card>
+            ))}
           </div>
 
           <Header><h2>Quotes</h2></Header>
-          <Segment ref={this.chart} class="chart" dangerouslySetInnerHTML={{ __html: chart.outerHTML }}></Segment>
+          <Segment
+            ref={this.chartOuterRef}
+            className="chart ui segment"
+          />
           <div className="ui cards">
             {quoteView.map((quote, i) => {
               const id = quotes.length - i;
@@ -148,11 +183,13 @@ export default class FeedMonitor extends React.Component {
                 </Card>
               );
             })}
-            {(outOfBounds) ? <Card>
-              <Card.Content>
-                <Button>{outOfBounds} more</Button>
-              </Card.Content>
-            </Card> : undefined}
+            {(outOfBounds) ? (
+              <Card>
+                <Card.Content>
+                  <Button>{outOfBounds} more</Button>
+                </Card.Content>
+              </Card>
+            ) : undefined}
           </div>
         </Segment>
         {/* <FabricBridge host="localhost" secure="false" port="3000" /> */}

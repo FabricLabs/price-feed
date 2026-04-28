@@ -2,30 +2,26 @@
  * Live price feed component.
  */
 
-// Dependencies
 import React, { Component } from 'react';
 import {
   Label,
   Segment
 } from 'semantic-ui-react';
 
-// Define our component
 export default class Rate extends Component {
   state = {
     value: 29349.54,
     currency: 'USD',
     symbol: 'BTC'
-  }
+  };
 
   constructor (props = {}) {
     super(props);
 
     this.settings = Object.assign({}, this.state, props);
     this._state = {
-      content: this.state // TODO: inherit get state () from Actor
+      content: this.state
     };
-
-    return this;
   }
 
   get locale () {
@@ -37,20 +33,27 @@ export default class Rate extends Component {
   }
 
   withLocale (value) {
-    if (typeof value !== 'Number') value = parseFloat(value);
-    return value.toLocaleString(this.locale);
+    let n = value;
+    if (typeof n !== 'number') n = parseFloat(String(value));
+    return typeof n === 'number' && !Number.isNaN(n)
+      ? n.toLocaleString(this.locale)
+      : '';
   }
 
   render () {
     return (
-      <>
-        <portal-feed-rate>
-          <Segment compact>
-            <Label htmlFor="currency">{this.state.currency}</Label>
-            <code data-bind="price" style={{ display: 'inline-block', marginLeft: '1em' }}>{this.withLocale(this.state.value)}</code>
-          </Segment>
-        </portal-feed-rate>
-      </>
+      <portal-feed-rate>
+        <Segment compact>
+          <Label htmlFor="rate-price-label">{this.state.currency}</Label>
+          <code
+            id="rate-price-label"
+            data-bind="price"
+            style={{ display: 'inline-block', marginLeft: '1em' }}
+          >
+            {this.withLocale(this.state.value)}
+          </code>
+        </Segment>
+      </portal-feed-rate>
     );
   }
-};
+}
