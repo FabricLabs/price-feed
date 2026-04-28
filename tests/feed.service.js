@@ -39,7 +39,7 @@ describe('@portal/feed', function () {
       assert.ok(feed);
     });
 
-    xit('generates a sane quote', async function () {
+    it('generates a sane quote', async function () {
       const CURRENCY = 'BTC';
       const feed = new Feed({
         currency: CURRENCY,
@@ -56,7 +56,7 @@ describe('@portal/feed', function () {
       assert.strictEqual(report.currency, CURRENCY);
     });
 
-    xit('can get a quote without configuration', async function () {
+    it('can get a quote without configuration', async function () {
       const feed = new Feed();
       const report = await feed.generateReport();
       assert.ok(report);

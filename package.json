@@ -5,7 +5,8 @@
   "main": "services/feed.js",
   "scripts": {
     "build": "npm run build:semantic && npm run build:assets",
-    "build:assets": "rollup -c",
+    "build:assets": "rollup -c rollup.config.mjs",
+    "build:ci": "npm run build:assets && npm test",
     "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes ../../assets && cd ../..",
     "dev": "npx concurrently \"npm run watch\" \"npm start\"",
     "coverage": "nyc npm test",
@@ -16,7 +17,10 @@
     "serve": "http-server assets",
     "start": "node scripts/node.js",
     "test": "mocha tests",
-    "watch": "rollup -c -w"
+    "watch": "rollup -c rollup.config.mjs -w"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
@@ -39,28 +43,29 @@
     "@fabric/react": "FabricLabs/fabric-react#eric/develop"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
     "@babel/preset-react": "^7.17.12",
     "@observablehq/plot": "^0.5.0",
-    "@rollup/plugin-babel": "^5.3.1",
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-url": "^7.0.0",
+    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-commonjs": "^28.0.9",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
+    "@rollup/plugin-url": "^8.0.2",
     "d3": "^7.4.4",
     "d3-graphviz": "^4.1.1",
     "fomantic-ui": "^2.8.8",
     "fomantic-ui-css": "^2.8.8",
     "http-server": "^14.1.0",
     "lodash.merge": "^4.6.2",
-    "mocha": "^10.0.0",
+    "mocha": "^11.7.5",
     "nyc": "^15.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "rollup": "^2.74.1",
+    "rollup": "^4.60.2",
     "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-polyfill-node": "^0.9.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-serve": "^1.1.0",
     "semantic-ui-react": "^2.1.2"
   },
