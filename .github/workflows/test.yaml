@@ -9,6 +9,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Git deps (e.g. Fabric packages) run nested npm install; Puppeteer must not download Chrome in CI.
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: "true"
 
     steps:
       - uses: actions/checkout@v4
