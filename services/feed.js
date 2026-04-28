@@ -87,6 +87,7 @@ class Feed extends Service {
       },
       history: [],
       states: {},
+      quotes: {},
       status: 'PAUSED'
     };
 
@@ -248,7 +249,8 @@ class Feed extends Service {
       const symbol = this.settings.symbols[i];
       const quote = await this.getQuoteForSymbol(symbol);
       if (quote && quote.price != null && Number.isFinite(quote.price)) {
-        this._state.content.values[symbol] = quote;
+        const values = this._state.content.values;
+        Reflect.set(values, symbol, quote);
       }
     }
 

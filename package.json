@@ -81,5 +81,12 @@
     ],
     "report-dir": "./reports/coverage",
     "temp-dir": "./reports/nyc"
+  },
+  "overrides": {
+    "@fabric/react": {
+      "elliptic": "6.6.1",
+      "rollup": "2.80.0"
+    },
+    "elliptic": "6.6.1"
   }
 }

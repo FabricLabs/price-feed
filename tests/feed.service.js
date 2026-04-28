@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const net = require('net');
+const net = require('node:net');
 const Feed = require('../services/feed');
 
 function getFreeListenPort () {
@@ -56,7 +56,7 @@ describe('@portal/feed', function () {
       assert.strictEqual(report.currency, CURRENCY);
     });
 
-    it('can get a quote without configuration', async function () {
+    it('can get a quote without configuration', async () => {
       const feed = new Feed();
       const report = await feed.generateReport();
       assert.ok(report);
