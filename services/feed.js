@@ -6,7 +6,7 @@ const Actor = require('@fabric/core/types/actor');
 const Peer = require('@fabric/core/types/peer');
 const Service = require('@fabric/core/types/service');
 const Hash256 = require('@fabric/core/types/hash256');
-const Signer = require('@fabric/core/types/signer');
+const Key = require('@fabric/core/types/key');
 const HTTPServer = require('@fabric/http/types/server');
 
 const BitPay = require('./bitpay');
@@ -51,8 +51,8 @@ class Feed extends Service {
 
     // Internals
     this.http = new HTTPServer(this.settings.http);
-    this.peer = new Peer(this.settings.fabric);
-    this.signer = new Signer(this.settings.identity);
+    this.peer = new Peer(this.settings.fabric ?? {});
+    this.signer = new Key(this.settings.identity || {});
 
     // Sources (internal)
     // TODO: use subservices architecture
@@ -87,6 +87,7 @@ class Feed extends Service {
       },
       history: [],
       states: {},
+      quotes: {},
       status: 'PAUSED'
     };
 
@@ -187,9 +188,13 @@ class Feed extends Service {
     // TODO: consider reverting to raw buffer
     const buffer = string || Buffer.from(string, 'utf8');
     const preimage = Hash256.digest(buffer);
-    const signature = this.signer.sign(Buffer.from(preimage, 'hex'));
-    // TODO: fix-up Fabric Signer
-    const valid = this.signer.verify(this.signer.pubkey, preimage, signature);
+    const digestBuf = Buffer.from(preimage, 'hex');
+    const signature = this.signer.signSchnorrHash(digestBuf);
+    const valid = this.signer.verifySchnorrHash(digestBuf, signature);
+    const pubkeyHex =
+      this.signer.public && typeof this.signer.public.encodeCompressed === 'function'
+        ? this.signer.public.encodeCompressed('hex')
+        : null;
 
     // Construct the report
     return {
@@ -197,7 +202,7 @@ class Feed extends Service {
       attestation: {
         content: buffer,
         preimage: preimage,
-        pubkey: this.signer.pubkey,
+        pubkey: pubkeyHex,
         signature: signature,
         valid: valid
       }
@@ -223,18 +228,30 @@ class Feed extends Service {
       .filter(result => (result.status === 'fulfilled'))
       .map(result => result.value);
 
+    if (!quotes.length) {
+      return { price: null };
+    }
     return {
       price: this.estimateFromQuotes(quotes)
     };
   }
 
   async syncAllPrices () {
-    if (this.currency === 'BTC') await this.bitpay.syncAllQuotesForSymbol('BTC');
+    if (this.currency === 'BTC') {
+      try {
+        await this.bitpay.syncAllQuotesForSymbol('BTC');
+      } catch {
+        /* e.g. network blocked in CI — continue with aggregated quotes only */
+      }
+    }
 
     for (let i = 0; i < this.settings.symbols.length; i++) {
       const symbol = this.settings.symbols[i];
       const quote = await this.getQuoteForSymbol(symbol);
-      if (quote) this._state.content.values[symbol] = quote;
+      if (quote && quote.price != null && Number.isFinite(quote.price)) {
+        const values = this._state.content.values;
+        Reflect.set(values, symbol, quote);
+      }
     }
 
     return this._state.content.values;

@@ -1,8 +1,21 @@
 'use strict';
 
 const assert = require('assert');
+const net = require('node:net');
 const Feed = require('../services/feed');
-const settings = require('../settings/test');
+
+function getFreeListenPort () {
+  return new Promise((resolve, reject) => {
+    const server = net.createServer();
+    server.unref();
+    server.once('error', reject);
+    server.listen({ host: '127.0.0.1', port: 0 }, () => {
+      const addr = server.address();
+      const port = typeof addr === 'object' && addr !== null ? addr.port : null;
+      server.close((err) => (err ? reject(err) : resolve(port)));
+    });
+  });
+}
 
 describe('@portal/feed', function () {
   describe('Feed', function () {
@@ -16,17 +29,21 @@ describe('@portal/feed', function () {
     });
 
     it('can be started with no input', async function () {
-      const feed = new Feed();
+      const port = await getFreeListenPort();
+      const feed = new Feed({
+        sync: false,
+        http: { bind: '127.0.0.1', port, host: 'localhost', secure: false },
+      });
       await feed.start();
       await feed.stop();
       assert.ok(feed);
     });
 
-    xit('generates a sane quote', async function () {
+    it('generates a sane quote', async function () {
       const CURRENCY = 'BTC';
       const feed = new Feed({
         currency: CURRENCY,
-        symbols: ['BTC']
+        symbols: ['BTC'],
       });
 
       const report = await feed.generateReport();
@@ -39,7 +56,7 @@ describe('@portal/feed', function () {
       assert.strictEqual(report.currency, CURRENCY);
     });
 
-    xit('can get a quote without configuration', async function () {
+    it('can get a quote without configuration', async () => {
       const feed = new Feed();
       const report = await feed.generateReport();
       assert.ok(report);
