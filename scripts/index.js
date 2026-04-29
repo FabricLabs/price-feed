@@ -5,7 +5,6 @@ import FeedMonitor from '../components/FeedMonitor';
 const settings = {
   currency: 'USD',
   pollIntervalMs: 1050,
-  webSocketStallFallbackMs: 8000,
   webSocketEnabled: true,
   feedApiBase: '',
   historicalOhlcUrl: 'data/btc-usd-daily-ohlc.json'
@@ -26,7 +25,6 @@ async function main (input = {}) {
       currency={input.currency}
       feedApiBase={input.feedApiBase}
       pollIntervalMs={input.pollIntervalMs}
-      webSocketStallFallbackMs={input.webSocketStallFallbackMs}
       webSocketEnabled={input.webSocketEnabled}
       historicalOhlcUrl={input.historicalOhlcUrl}
     />

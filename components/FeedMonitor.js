@@ -1,9 +1,11 @@
 'use strict';
 
 /**
- * Primary path: plain JSON WebSocket `…/quotes/stream` (initial snapshot + server push).
- * Fallback: `GET …/quotes/snapshot` only when WebSockets are disabled, unavailable, stalled,
- * or after an unexpected disconnect (one-shot). Fabric Hub upgrade on `/` is unchanged.
+ * Primary path: plain JSON WebSocket `…/quotes/stream` — initial snapshot on connect plus
+ * debounced full-report broadcasts after each feed commit (same JSON as HTTP snapshot).
+ * Fabric-shaped side frames (`feedStream: true`, ZMQ tip, etc.) merge without replacing the report.
+ * HTTP `GET` split endpoints run **only** when {@link #webSocketEnabled} is false (no WebSocket).
+ * Fabric Hub upgrade on `/` is unchanged.
  */
 
 import { Component } from 'react';
@@ -50,12 +52,7 @@ export default class FeedMonitor extends Component {
     currency: 'USD',
     /** Interval for HTTP-only periodic refresh ({@link #webSocketEnabled} false). */
     pollIntervalMs: 1050,
-    /**
-     * If the stream does not deliver a report snapshot within this time (milliseconds),
-     * perform a one-shot {@code GET /quotes/snapshot}.
-     */
-    webSocketStallFallbackMs: 8000,
-    /** Set false to use HTTP polling only ({@link #pollIntervalMs}). */
+    /** Set false to use HTTP split endpoints + interval polling only (no WebSocket). */
     webSocketEnabled: true,
     /** Base URL of the running Feed HTTP service (no trailing slash). Same origin when empty. */
     feedApiBase: '',
@@ -69,7 +66,7 @@ export default class FeedMonitor extends Component {
   state = {
     quotes: [],
     spotsBySymbol: {},
-    /** Cleared after the first poll attempt finishes (success or handled error). */
+    /** Cleared after the first report snapshot (WebSocket or HTTP). */
     reportLoading: true,
     pollError: null,
     /** From `/quotes/snapshot` quoteCurrency when present. */
@@ -103,8 +100,6 @@ export default class FeedMonitor extends Component {
     this._unmounted = false;
     this._reportWs = null;
     this._wsReconnectTimer = null;
-    /** @type {ReturnType<typeof setTimeout>|null} */
-    this._wsStallFallbackTimer = null;
 
     this._openInspectQuote = this._openInspectQuote.bind(this);
     this._closeInspectQuote = this._closeInspectQuote.bind(this);
@@ -171,10 +166,6 @@ export default class FeedMonitor extends Component {
       clearInterval(this._pollTimer);
       this._pollTimer = null;
     }
-    if (this._wsStallFallbackTimer) {
-      clearTimeout(this._wsStallFallbackTimer);
-      this._wsStallFallbackTimer = null;
-    }
     this._unmounted = true;
   }
 
@@ -184,7 +175,6 @@ export default class FeedMonitor extends Component {
         this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
       if (useWs) {
         this._disconnectReportStream(true);
-        this._clearWsStallFallback();
         if (!this._unmounted) {
           this.setState({ reportLoading: true, pollError: null });
         }
@@ -313,6 +303,9 @@ export default class FeedMonitor extends Component {
       });
   }
 
+  /**
+   * Interval polling for {@link #webSocketEnabled} false only.
+   */
   _restartHttpPollTimer () {
     if (this._pollTimer) {
       clearInterval(this._pollTimer);
@@ -331,39 +324,11 @@ export default class FeedMonitor extends Component {
     }, ms);
   }
 
-  _clearWsStallFallback () {
-    if (this._wsStallFallbackTimer) {
-      clearTimeout(this._wsStallFallbackTimer);
-      this._wsStallFallbackTimer = null;
-    }
-  }
-
-  _scheduleWsStallFallback () {
-    this._clearWsStallFallback();
-    if (
-      this._unmounted ||
-      this.props.webSocketEnabled === false ||
-      typeof WebSocket === 'undefined'
-    ) {
-      return;
-    }
-    const raw = this.props.webSocketStallFallbackMs;
-    const ms =
-      typeof raw === 'number' && Number.isFinite(raw) && raw > 0 ? raw : 8000;
-    this._wsStallFallbackTimer = setTimeout(() => {
-      this._wsStallFallbackTimer = null;
-      if (this._unmounted) return;
-      if (!this.state.reportLoading) return;
-      void this._poll();
-    }, ms);
-  }
-
   _disconnectReportStream (clearReconnect) {
     if (clearReconnect) {
       clearTimeout(this._wsReconnectTimer);
       this._wsReconnectTimer = null;
     }
-    this._clearWsStallFallback();
     if (this._reportWs) {
       const ws = this._reportWs;
       this._reportWs = null;
@@ -409,19 +374,12 @@ export default class FeedMonitor extends Component {
         this._handleFeedStreamSideMessage(body);
         return;
       }
-      this._applyReportBody(body);
+      this._applyStreamSnapshot(body);
     };
 
     ws.onclose = () => {
       if (this._reportWs !== ws) return;
       this._disconnectReportStream(false);
-      if (
-        !this._unmounted &&
-        this.props.webSocketEnabled !== false &&
-        typeof WebSocket !== 'undefined'
-      ) {
-        void this._poll();
-      }
       if (!this._unmounted && this.props.webSocketEnabled !== false) {
         clearTimeout(this._wsReconnectTimer);
         this._wsReconnectTimer = setTimeout(
@@ -434,8 +392,15 @@ export default class FeedMonitor extends Component {
     ws.onerror = () => {
       /* onclose runs next */
     };
+  }
 
-    this._scheduleWsStallFallback();
+  /**
+   * Full report JSON from {@code /quotes/stream} (connect snapshot + each commit broadcast).
+   * Not used for {@code feedStream} side-channels — those use {@link #_handleFeedStreamSideMessage}.
+   * @param {object} body
+   */
+  _applyStreamSnapshot (body) {
+    this._applyReportBody(body);
   }
 
   /**
@@ -472,13 +437,21 @@ export default class FeedMonitor extends Component {
 
   /**
    * @param {object} body Parsed `/quotes/snapshot` or WebSocket JSON
+   * @param {{ partial?: boolean, transportErrors?: string|null }} [opts]
    */
-  _applyReportBody (body) {
+  _applyReportBody (body, opts = {}) {
     if (this._unmounted || !body || typeof body !== 'object') return;
+
+    const partial = opts.partial === true;
+    const transportErrors =
+      opts.transportErrors != null && String(opts.transportErrors).trim() !== ''
+        ? String(opts.transportErrors).trim()
+        : null;
 
     const quoteSym = QUOTE_SYMBOL;
 
-    const values = body.values && typeof body.values === 'object' ? body.values : {};
+    const values =
+      body.values && typeof body.values === 'object' ? body.values : {};
     const spotsBySymbol = {};
     const sourceCountBySymbol = {};
 
@@ -487,19 +460,18 @@ export default class FeedMonitor extends Component {
     const btcRow = values[quoteSym];
     const price =
       btcRow && btcRow.price != null ? Number(btcRow.price) : NaN;
-    if (Number.isFinite(price)) {
-      spotsBySymbol[quoteSym] = price;
-      const sc =
-        btcRow && btcRow.sourceCount != null ? Number(btcRow.sourceCount) : undefined;
-      if (Number.isFinite(sc)) {
-        sourceCountBySymbol[quoteSym] = sc;
+    if (Object.prototype.hasOwnProperty.call(body, 'values')) {
+      if (Number.isFinite(price)) {
+        spotsBySymbol[quoteSym] = price;
+        const sc =
+          btcRow && btcRow.sourceCount != null ? Number(btcRow.sourceCount) : undefined;
+        if (Number.isFinite(sc)) {
+          sourceCountBySymbol[quoteSym] = sc;
+        }
+      } else {
+        failures.push(`${quoteSym}: no price`);
       }
-    } else {
-      failures.push(`${quoteSym}: no price`);
     }
-
-    let nextQuotes = this.state.quotes;
-    const leadPrice = price;
 
     const fiatEarly =
       body.quoteCurrency != null && String(body.quoteCurrency).trim() !== ''
@@ -510,113 +482,258 @@ export default class FeedMonitor extends Component {
     const hasServerHistory =
       Array.isArray(priceHist) && priceHist.length > 0;
 
-    if (hasServerHistory && quoteSym) {
-      nextQuotes = chartQuotesFromPriceHistory(
-        priceHist,
-        quoteSym,
-        fiatEarly
-      );
-      if (nextQuotes.length > MAX_QUOTE_HISTORY) {
-        nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+    const leadPrice = price;
+
+    /** @param {typeof this.state} prev */
+    const buildQuotesPatch = (prev) => {
+      let nextQuotes = prev.quotes;
+      if (hasServerHistory && quoteSym) {
+        nextQuotes = chartQuotesFromPriceHistory(
+          priceHist,
+          quoteSym,
+          fiatEarly
+        );
+        if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+          nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+        }
+      } else if (
+        Object.prototype.hasOwnProperty.call(body, 'values') &&
+        Number.isFinite(leadPrice) &&
+        quoteSym
+      ) {
+        const scAgg =
+          btcRow &&
+          typeof btcRow.sourceCount === 'number'
+            ? btcRow.sourceCount
+            : undefined;
+
+        /** @type {unknown[] | undefined} */
+        const contrib =
+          Array.isArray(btcRow.sources)
+            ? [].concat(btcRow.sources)
+            : undefined;
+
+        const row = {
+          created: new Date().toISOString(),
+          rate: leadPrice,
+          currency: body.quoteCurrency || this.props.currency,
+          symbol: quoteSym,
+          source: 'Feed',
+          sourceCount: scAgg,
+          ...(contrib && contrib.length
+            ? { sources: contrib }
+            : {})
+        };
+
+        nextQuotes = prev.quotes.concat(row);
+        if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+          nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+        }
       }
-    } else if (Number.isFinite(leadPrice) && quoteSym) {
-      const scAgg =
-        btcRow &&
-        typeof btcRow.sourceCount === 'number'
-          ? btcRow.sourceCount
-          : undefined;
-
-      /** @type {unknown[] | undefined} */
-      const contrib =
-        Array.isArray(btcRow.sources)
-          ? [].concat(btcRow.sources)
-          : undefined;
-
-      const row = {
-        created: new Date().toISOString(),
-        rate: leadPrice,
-        currency: body.quoteCurrency || this.props.currency,
-        symbol: quoteSym,
-        source: 'Feed',
-        sourceCount: scAgg,
-        ...(contrib && contrib.length
-          ? { sources: contrib }
-          : {})
-      };
-
-      nextQuotes = this.state.quotes.concat(row);
-      if (nextQuotes.length > MAX_QUOTE_HISTORY) {
-        nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
-      }
-    }
-
-    const patch = {
-      spotsBySymbol,
-      sourceCountBySymbol,
-      quotes: nextQuotes,
-      pollError: failures.length ? failures.join(' · ') : null
+      return nextQuotes;
     };
-    if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
-      patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
-    }
 
-    if (Array.isArray(body.quoteProviders)) {
-      patch.quoteProviders = [].concat(body.quoteProviders);
-    }
-
-    const ucx = body.utxoracleChain;
-    if (
-      ucx &&
-      typeof ucx === 'object' &&
-      Number.isFinite(Number(ucx.tip))
-    ) {
-      const tip = Math.floor(Number(ucx.tip));
-      patch.utxoracleChain = {
-        tip,
-        tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
-        difficulty:
-          ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty))
-            ? Number(ucx.difficulty)
-            : null,
-        chain: typeof ucx.chain === 'string' ? ucx.chain : '',
-        headers:
-          ucx.headers != null && Number.isFinite(Number(ucx.headers))
-            ? Math.floor(Number(ucx.headers))
-            : tip,
-        verificationProgress:
-          ucx.verificationProgress != null &&
-          Number.isFinite(Number(ucx.verificationProgress))
-            ? Number(ucx.verificationProgress)
-            : null,
-        initialBlockDownload: ucx.initialBlockDownload === true,
-        pruned: ucx.pruned === true,
-        circulatingSupplyBtc:
-          ucx.circulatingSupplyBtc != null &&
-          Number.isFinite(Number(ucx.circulatingSupplyBtc))
-            ? Number(ucx.circulatingSupplyBtc)
-            : null,
-        tipBlockOutputBtc:
-          ucx.tipBlockOutputBtc != null &&
-          Number.isFinite(Number(ucx.tipBlockOutputBtc))
-            ? Number(ucx.tipBlockOutputBtc)
-            : null
-      };
-    } else {
-      patch.utxoracleChain = null;
-    }
-
-    this._clearWsStallFallback();
+    const localErr =
+      Object.prototype.hasOwnProperty.call(body, 'values') && failures.length
+        ? failures.join(' · ')
+        : null;
+    const pollErr =
+      [transportErrors, localErr].filter(Boolean).join(' · ') || null;
 
     if (!this._unmounted) {
-      this.setState({
-        ...patch,
-        reportLoading: false
+      if (!partial) {
+        let nextQuotes = this.state.quotes;
+        if (hasServerHistory && quoteSym) {
+          nextQuotes = chartQuotesFromPriceHistory(
+            priceHist,
+            quoteSym,
+            fiatEarly
+          );
+          if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+            nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+          }
+        } else if (Number.isFinite(leadPrice) && quoteSym) {
+          const scAgg =
+            btcRow &&
+            typeof btcRow.sourceCount === 'number'
+              ? btcRow.sourceCount
+              : undefined;
+
+          /** @type {unknown[] | undefined} */
+          const contrib =
+            Array.isArray(btcRow.sources)
+              ? [].concat(btcRow.sources)
+              : undefined;
+
+          const row = {
+            created: new Date().toISOString(),
+            rate: leadPrice,
+            currency: body.quoteCurrency || this.props.currency,
+            symbol: quoteSym,
+            source: 'Feed',
+            sourceCount: scAgg,
+            ...(contrib && contrib.length
+              ? { sources: contrib }
+              : {})
+          };
+
+          nextQuotes = this.state.quotes.concat(row);
+          if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+            nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+          }
+        }
+
+        const patch = {
+          spotsBySymbol,
+          sourceCountBySymbol,
+          quotes: nextQuotes,
+          pollError: pollErr
+        };
+        if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
+          patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
+        }
+
+        if (Array.isArray(body.quoteProviders)) {
+          patch.quoteProviders = [].concat(body.quoteProviders);
+        }
+
+        const ucx = body.utxoracleChain;
+        if (
+          ucx &&
+          typeof ucx === 'object' &&
+          Number.isFinite(Number(ucx.tip))
+        ) {
+          const tip = Math.floor(Number(ucx.tip));
+          patch.utxoracleChain = {
+            tip,
+            tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
+            difficulty:
+              ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty))
+                ? Number(ucx.difficulty)
+                : null,
+            chain: typeof ucx.chain === 'string' ? ucx.chain : '',
+            headers:
+              ucx.headers != null && Number.isFinite(Number(ucx.headers))
+                ? Math.floor(Number(ucx.headers))
+                : tip,
+            verificationProgress:
+              ucx.verificationProgress != null &&
+              Number.isFinite(Number(ucx.verificationProgress))
+                ? Number(ucx.verificationProgress)
+                : null,
+            initialBlockDownload: ucx.initialBlockDownload === true,
+            pruned: ucx.pruned === true,
+            circulatingSupplyBtc:
+              ucx.circulatingSupplyBtc != null &&
+              Number.isFinite(Number(ucx.circulatingSupplyBtc))
+                ? Number(ucx.circulatingSupplyBtc)
+                : null,
+            tipBlockOutputBtc:
+              ucx.tipBlockOutputBtc != null &&
+              Number.isFinite(Number(ucx.tipBlockOutputBtc))
+                ? Number(ucx.tipBlockOutputBtc)
+                : null
+          };
+        } else {
+          patch.utxoracleChain = null;
+        }
+
+        this.setState({
+          ...patch,
+          reportLoading: false
+        });
+        return;
+      }
+
+      this.setState((prev) => {
+        const patch = {
+          quotes: prev.quotes,
+          pollError: pollErr,
+          reportLoading: false
+        };
+
+        if (Object.prototype.hasOwnProperty.call(body, 'values')) {
+          patch.spotsBySymbol = spotsBySymbol;
+          patch.sourceCountBySymbol = sourceCountBySymbol;
+        } else {
+          patch.spotsBySymbol = prev.spotsBySymbol;
+          patch.sourceCountBySymbol = prev.sourceCountBySymbol;
+        }
+
+        if (Object.prototype.hasOwnProperty.call(body, 'priceHistory')) {
+          patch.quotes = buildQuotesPatch(prev);
+        } else if (Object.prototype.hasOwnProperty.call(body, 'values')) {
+          patch.quotes = buildQuotesPatch(prev);
+        } else {
+          patch.quotes = prev.quotes;
+        }
+
+        if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
+          patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
+        } else {
+          patch.reportQuoteCurrency = prev.reportQuoteCurrency;
+        }
+
+        if (Array.isArray(body.quoteProviders)) {
+          patch.quoteProviders = [].concat(body.quoteProviders);
+        } else {
+          patch.quoteProviders = prev.quoteProviders;
+        }
+
+        if (Object.prototype.hasOwnProperty.call(body, 'utxoracleChain')) {
+          const ucx = body.utxoracleChain;
+          if (
+            ucx &&
+            typeof ucx === 'object' &&
+            Number.isFinite(Number(ucx.tip))
+          ) {
+            const tip = Math.floor(Number(ucx.tip));
+            patch.utxoracleChain = {
+              tip,
+              tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
+              difficulty:
+                ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty))
+                  ? Number(ucx.difficulty)
+                  : null,
+              chain: typeof ucx.chain === 'string' ? ucx.chain : '',
+              headers:
+                ucx.headers != null && Number.isFinite(Number(ucx.headers))
+                  ? Math.floor(Number(ucx.headers))
+                  : tip,
+              verificationProgress:
+                ucx.verificationProgress != null &&
+                Number.isFinite(Number(ucx.verificationProgress))
+                  ? Number(ucx.verificationProgress)
+                  : null,
+              initialBlockDownload: ucx.initialBlockDownload === true,
+              pruned: ucx.pruned === true,
+              circulatingSupplyBtc:
+                ucx.circulatingSupplyBtc != null &&
+                Number.isFinite(Number(ucx.circulatingSupplyBtc))
+                  ? Number(ucx.circulatingSupplyBtc)
+                  : null,
+              tipBlockOutputBtc:
+                ucx.tipBlockOutputBtc != null &&
+                Number.isFinite(Number(ucx.tipBlockOutputBtc))
+                  ? Number(ucx.tipBlockOutputBtc)
+                  : null
+            };
+          } else {
+            patch.utxoracleChain = null;
+          }
+        } else {
+          patch.utxoracleChain = prev.utxoracleChain;
+        }
+
+        return patch;
       });
     }
   }
 
   /**
-   * One-shot or interval {@code GET /quotes/snapshot}; not used when push updates are sufficient.
+   * HTTP-only refresh: split {@code GET} endpoints plus optional snapshot fallback.
+   * When {@link #webSocketEnabled} is true, quote updates come only from {@code /quotes/stream}
+   * ({@link #_applyStreamSnapshot}); this method is not called on that path.
    */
   async _poll () {
     if (this._pollInFlight) return;
@@ -626,42 +743,85 @@ export default class FeedMonitor extends Component {
     this._pollAbort = ac;
 
     try {
-      const fetchJson = async (url, required = false) => {
-        const res = await fetch(url, {
-          signal: ac.signal,
-          credentials: 'same-origin',
-          headers: { Accept: 'application/json' },
-          referrerPolicy: 'no-referrer-when-downgrade'
-        });
-        if (!res.ok) {
-          if (required) {
-            throw new Error(`${res.status} ${res.statusText}`);
+      /**
+       * Split endpoints so one timeout (524) or bad request (400) does not abort the whole poll.
+       * @param {string} label
+       * @param {string} url
+       */
+      const fetchSplit = async (label, url) => {
+        try {
+          const res = await fetch(url, {
+            signal: ac.signal,
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json' },
+            referrerPolicy: 'no-referrer-when-downgrade'
+          });
+          if (!res.ok) {
+            return {
+              label,
+              ok: false,
+              status: res.status,
+              body: null
+            };
           }
-          return null;
+          const j = await res.json();
+          return {
+            label,
+            ok: true,
+            status: res.status,
+            body: j && typeof j === 'object' ? j : {}
+          };
+        } catch (e) {
+          if (e?.name === 'AbortError') throw e;
+          return {
+            label,
+            ok: false,
+            status: 0,
+            body: null,
+            err: e?.message || String(e)
+          };
         }
-        return res.json();
       };
 
-      let body;
-      try {
-        const [spot, providers, history, chain] = await Promise.all([
-          fetchJson(resolveQuotesSpotUrl(this.props.feedApiBase), true),
-          fetchJson(resolveQuotesProvidersUrl(this.props.feedApiBase), false),
-          fetchJson(
-            `${resolveQuotesHistoryUrl(this.props.feedApiBase)}?limit=${MAX_QUOTE_HISTORY}`,
-            false
-          ),
-          fetchJson(resolveQuotesChainUrl(this.props.feedApiBase), false)
-        ]);
-        body = {
-          ...(spot && typeof spot === 'object' ? spot : {}),
-          ...(providers && typeof providers === 'object' ? providers : {}),
-          ...(history && typeof history === 'object' ? history : {}),
-          ...(chain && typeof chain === 'object' ? chain : {})
-        };
-      } catch (err) {
-        if (err?.name === 'AbortError') return;
-        // compatibility fallback while instances roll out split endpoints
+      const spotUrl = resolveQuotesSpotUrl(this.props.feedApiBase);
+      const providersUrl = resolveQuotesProvidersUrl(this.props.feedApiBase);
+      const historyUrl = `${resolveQuotesHistoryUrl(this.props.feedApiBase)}?limit=${MAX_QUOTE_HISTORY}`;
+      const chainUrl = resolveQuotesChainUrl(this.props.feedApiBase);
+
+      const results = await Promise.all([
+        fetchSplit('spot', spotUrl),
+        fetchSplit('providers', providersUrl),
+        fetchSplit('history', historyUrl),
+        fetchSplit('chain', chainUrl)
+      ]);
+
+      const transportErrors = [];
+      /** @type {Record<string, unknown>} */
+      let body = {};
+
+      for (let i = 0; i < results.length; i++) {
+        const r = results[i];
+        if (r.ok && r.body) {
+          body = { ...body, ...r.body };
+        } else {
+          const bit =
+            r.status != null && r.status > 0
+              ? `${r.label} ${r.status}`
+              : `${r.label}: ${r.err || 'failed'}`;
+          transportErrors.push(bit);
+        }
+      }
+
+      const sym = QUOTE_SYMBOL;
+      const hasSpotPrice =
+        body.values &&
+        typeof body.values === 'object' &&
+        body.values[sym] &&
+        Number.isFinite(Number(/** @type {{ price?: unknown }} */ (body.values[sym]).price));
+      const hasHistory =
+        Array.isArray(body.priceHistory) && body.priceHistory.length > 0;
+
+      if (!hasSpotPrice && !hasHistory) {
         try {
           const res = await fetch(resolveQuotesSnapshotUrl(this.props.feedApiBase), {
             signal: ac.signal,
@@ -669,20 +829,34 @@ export default class FeedMonitor extends Component {
             headers: { Accept: 'application/json' },
             referrerPolicy: 'no-referrer-when-downgrade'
           });
-          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-          body = await res.json();
+          if (res.ok) {
+            const snap = await res.json();
+            if (this._unmounted) return;
+            this._applyReportBody(
+              snap && typeof snap === 'object' ? snap : {},
+              {
+                partial: false,
+                transportErrors:
+                  transportErrors.length > 0 ? transportErrors.join(' · ') : null
+              }
+            );
+            return;
+          }
+          transportErrors.push(`snapshot ${res.status}`);
         } catch (fallbackErr) {
           if (fallbackErr?.name === 'AbortError') return;
-          const msg = fallbackErr?.message || String(fallbackErr);
-          if (!this._unmounted) {
-            this.setState({ pollError: msg });
-          }
-          return;
+          transportErrors.push(
+            `snapshot: ${fallbackErr?.message || String(fallbackErr)}`
+          );
         }
       }
 
       if (this._unmounted) return;
-      this._applyReportBody(body);
+      this._applyReportBody(body, {
+        partial: true,
+        transportErrors:
+          transportErrors.length > 0 ? transportErrors.join(' · ') : null
+      });
     } finally {
       this._pollInFlight = false;
       if (this._pollAbort === ac) {

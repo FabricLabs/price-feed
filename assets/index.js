@@ -68115,7 +68115,9 @@
 	  };
 	  state = {
 	    historicalSeries: [],
-	    historicalLoadState: 'idle'
+	    historicalLoadState: 'idle',
+	    /** Mouse-wheel zoom override for current chart window (milliseconds). */
+	    zoomWindowMs: null
 	  };
 	  constructor(props = {}) {
 	    super(props);
@@ -68126,6 +68128,7 @@
 	    this._chartResizeTimer = null;
 	    this._unmounted = false;
 	    this._chartRowsFromOhlcBundle = this._chartRowsFromOhlcBundle.bind(this);
+	    this._handleWheelZoom = this._handleWheelZoom.bind(this);
 	  }
 
 	  /**
@@ -68239,8 +68242,21 @@
 	      });
 	      this._chartResizeObs.observe(mount);
 	    }
+	    if (mount) {
+	      mount.addEventListener('wheel', this._handleWheelZoom, {
+	        passive: false
+	      });
+	    }
 	  }
 	  componentWillUnmount() {
+	    const mount = this.chartOuterRef?.current;
+	    if (mount) {
+	      try {
+	        mount.removeEventListener('wheel', this._handleWheelZoom);
+	      } catch {
+	        /* noop */
+	      }
+	    }
 	    if (this._chartResizeObs) {
 	      try {
 	        this._chartResizeObs.disconnect();
@@ -68256,9 +68272,47 @@
 	    this._unmounted = true;
 	  }
 	  componentDidUpdate(prevProps, prevState) {
+	    if (prevProps.deltaRangeKey !== this.props.deltaRangeKey) {
+	      this.setState({
+	        zoomWindowMs: null
+	      });
+	      return;
+	    }
 	    if (prevProps.quotes !== this.props.quotes || prevProps.deltaRangeKey !== this.props.deltaRangeKey || prevProps.reportQuoteCurrency !== this.props.reportQuoteCurrency || prevProps.pollError !== this.props.pollError || prevProps.currency !== this.props.currency || prevProps.utxoEstimateSeries !== this.props.utxoEstimateSeries || prevState.historicalSeries !== this.state.historicalSeries) {
 	      this._syncChartIntoDom();
 	    }
+	  }
+
+	  /**
+	   * Mouse wheel zoom for the active chart range.
+	   * - zoom in: wheel up
+	   * - zoom out: wheel down
+	   * Disabled for all-time range.
+	   * @param {WheelEvent} ev
+	   */
+	  _handleWheelZoom(ev) {
+	    const rangeOpt = resolveDeltaRangeOption(this.props.deltaRangeKey);
+	    if (rangeOpt.ms == null) return;
+	    if (this._unmounted) return;
+	    ev.preventDefault();
+	    const baseMs = Number.isFinite(this.state.zoomWindowMs) && this.state.zoomWindowMs > 0 ? this.state.zoomWindowMs : rangeOpt.ms;
+	    const factor = ev.deltaY < 0 ? 0.82 : 1.22;
+	    const quoteRows = Array.isArray(this.props.quotes) ? this.props.quotes : [];
+	    let minTs = Infinity;
+	    let maxTs = -Infinity;
+	    for (let i = 0; i < quoteRows.length; i++) {
+	      const t = Date.parse(String(quoteRows[i]?.created ?? ''));
+	      if (!Number.isFinite(t)) continue;
+	      if (t < minTs) minTs = t;
+	      if (t > maxTs) maxTs = t;
+	    }
+	    const observedSpanMs = Number.isFinite(minTs) && Number.isFinite(maxTs) && maxTs > minTs ? maxTs - minTs : 24 * 60 * 60 * 1000;
+	    const minMs = 15_000;
+	    const maxMs = Math.max(observedSpanMs * 1.25, rangeOpt.ms * 4, 15 * 60_000);
+	    const nextMs = Math.max(minMs, Math.min(maxMs, Math.round(baseMs * factor)));
+	    this.setState({
+	      zoomWindowMs: nextMs
+	    });
 	  }
 	  _syncChartIntoDom() {
 	    const run = () => {
@@ -68305,7 +68359,9 @@
 	  _buildChartSvgEl() {
 	    const nowMs = Date.now();
 	    const rangeOpt = resolveDeltaRangeOption(this.props.deltaRangeKey);
-	    const allTime = rangeOpt.ms == null;
+	    const zoomWindowMs = Number.isFinite(this.state.zoomWindowMs) && this.state.zoomWindowMs > 0 ? this.state.zoomWindowMs : null;
+	    const effectiveWindowMs = rangeOpt.ms == null ? null : zoomWindowMs ?? rangeOpt.ms;
+	    const allTime = effectiveWindowMs == null;
 	    let quotes = dropBadRates(dedupeByTimestampKeepLatest(this.props.quotes || []));
 	    quotes = quotes.sort((a, b) => Date.parse(a.created) - Date.parse(b.created));
 	    const historicalRaw = dropBadRates([].concat(this.state.historicalSeries || []).sort((a, b) => Date.parse(a.created) - Date.parse(b.created)));
@@ -68345,7 +68401,7 @@
 	      }
 	      startMs = times.length ? Math.min(...times) : nowMs - 60_000;
 	    } else {
-	      const windowMs = /** @type {number} */rangeOpt.ms;
+	      const windowMs = /** @type {number} */effectiveWindowMs;
 	      startMs = nowMs - windowMs;
 	      historicalInWin = this._filterPointsInRange(historicalContext, startMs, nowMs);
 	      liveInWin = this._filterPointsInRange(quotes, startMs, nowMs);
@@ -68353,6 +68409,25 @@
 
 	    /** @type {Array<{ t: Date, price: number, height: number }>} */
 	    const utxoInWin = [];
+	    const liveForCompare = [].concat(liveInWin).sort((a, b) => Date.parse(a.created) - Date.parse(b.created));
+	    /**
+	     * @param {number} ms
+	     * @returns {number|null}
+	     */
+	    const feedPriceAtOrBefore = ms => {
+	      let out = null;
+	      let outTs = -Infinity;
+	      for (let i = 0; i < liveForCompare.length; i++) {
+	        const row = liveForCompare[i];
+	        const ts = Date.parse(row.created);
+	        if (!Number.isFinite(ts) || ts > ms || ts < outTs) continue;
+	        const px = Number(row.rate);
+	        if (!Number.isFinite(px) || px <= 0) continue;
+	        out = px;
+	        outTs = ts;
+	      }
+	      return out;
+	    };
 	    for (let i = 0; i < utxoSeriesRaw.length; i++) {
 	      const p = utxoSeriesRaw[i];
 	      const price = Number(p?.price);
@@ -68360,10 +68435,16 @@
 	      const hRaw = p?.height;
 	      const h = Number(hRaw);
 	      if (!Number.isFinite(price) || !Number.isFinite(ms)) continue;
+	      const feedPx = feedPriceAtOrBefore(ms);
+	      const diffAbs = Number.isFinite(feedPx) ? price - (/** @type {number} */feedPx) : null;
+	      const diffPct = Number.isFinite(feedPx) && feedPx !== 0 ? diffAbs / feedPx * 100 : null;
 	      utxoInWin.push({
 	        t: new Date(ms),
 	        price,
-	        height: Number.isFinite(h) ? Math.floor(h) : i
+	        height: Number.isFinite(h) ? Math.floor(h) : i,
+	        feedPrice: Number.isFinite(feedPx) ? feedPx : null,
+	        diffAbs,
+	        diffPct
 	      });
 	    }
 	    let plotStartMs = startMs;
@@ -68441,7 +68522,29 @@
 	    }
 	    marks.push(...dataMarks);
 	    const utxoDotR = utxoInWin.length > 200 ? 2 : utxoInWin.length > 80 ? 2.5 : 3;
+	    /**
+	     * @param {{ height: number, price: number, feedPrice?: number|null, diffAbs?: number|null, diffPct?: number|null }} d
+	     */
+	    const utxoHoverTitle = d => {
+	      const parts = [`UTXOracle h ${d.height}`, formatFiatPrice(d.price, fiat)];
+	      if (Number.isFinite(d.feedPrice)) {
+	        parts.push(`Feed ${formatFiatPrice(d.feedPrice, fiat)}`);
+	      }
+	      if (Number.isFinite(d.diffAbs) && Number.isFinite(d.diffPct)) {
+	        const abs = /** @type {number} */d.diffAbs;
+	        const pct = /** @type {number} */d.diffPct;
+	        const sign = abs > 0 ? '+' : '';
+	        parts.push(`Diff ${sign}${formatFiatPrice(abs, fiat)} (${sign}${pct.toFixed(2)}%)`);
+	      }
+	      return parts.join(' · ');
+	    };
 	    if (utxoInWin.length) {
+	      marks.push(line(utxoInWin, {
+	        x: 't',
+	        y: 'price',
+	        stroke: 'rgba(132, 57, 168, 0.95)',
+	        strokeWidth: 1.4
+	      }));
 	      marks.push(dot(utxoInWin, {
 	        x: 't',
 	        y: 'price',
@@ -68449,7 +68552,7 @@
 	        stroke: 'rgba(255,255,255,0.35)',
 	        strokeWidth: 0.4,
 	        r: utxoDotR,
-	        title: d => `UTXOracle h ${d.height} · ${formatFiatPrice(d.price, fiat)}`
+	        title: utxoHoverTitle
 	      }));
 	    }
 	    return plot({
@@ -68516,10 +68619,10 @@
 	                style: {
 	                  color: 'rgba(132, 57, 168, 0.95)'
 	                },
-	                children: "Violet dots"
+	                children: "Violet line + dots"
 	              }), " are on-chain ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
 	                children: "UTXOracle"
-	              }), " estimates (hover for block height and price)."]
+	              }), " estimates (hover for block height, UTXOracle price, and delta vs feed)."]
 	            }) : null, this.props.utxoEstimateSeriesLoading ? /*#__PURE__*/jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {
 	              children: " Loading UTXOracle block estimates\u2026"
 	            }) : null]
@@ -69579,8 +69682,6 @@
 	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Provider"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
-	            children: "Fabric service"
-	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Last success"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Next update"
@@ -69608,8 +69709,6 @@
 	          lastTls?: Record<string, unknown> | null
 	          }} */
 	          p;
-	          const svc = row.service && typeof row.service === 'object' ? row.service : null;
-	          const svcTxt = svc && svc.status != null ? `${String(svc.status)}${svc.id ? ` · ${String(svc.id).slice(0, 8)}…` : ''}` : '—';
 	          const err = row.lastError != null && String(row.lastError).trim() !== '' ? String(row.lastError) : '—';
 	          return /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
 	            children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Table.Cell, {
@@ -69623,12 +69722,6 @@
 	                },
 	                children: row.resource && row.resource.key ? `resource: ${String(row.resource.key)}` : ''
 	              })]
-	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
-	              style: {
-	                fontSize: '0.9em',
-	                wordBreak: 'break-word'
-	              },
-	              children: svcTxt
 	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
 	              children: formatProviderTs(row.lastSuccessAt)
 	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
@@ -70277,12 +70370,7 @@
 	    currency: 'USD',
 	    /** Interval for HTTP-only periodic refresh ({@link #webSocketEnabled} false). */
 	    pollIntervalMs: 1050,
-	    /**
-	     * If the stream does not deliver a report snapshot within this time (milliseconds),
-	     * perform a one-shot {@code GET /quotes/snapshot}.
-	     */
-	    webSocketStallFallbackMs: 8000,
-	    /** Set false to use HTTP polling only ({@link #pollIntervalMs}). */
+	    /** Set false to use HTTP split endpoints + interval polling only (no WebSocket). */
 	    webSocketEnabled: true,
 	    /** Base URL of the running Feed HTTP service (no trailing slash). Same origin when empty. */
 	    feedApiBase: '',
@@ -70295,7 +70383,7 @@
 	  state = {
 	    quotes: [],
 	    spotsBySymbol: {},
-	    /** Cleared after the first poll attempt finishes (success or handled error). */
+	    /** Cleared after the first report snapshot (WebSocket or HTTP). */
 	    reportLoading: true,
 	    pollError: null,
 	    /** From `/quotes/snapshot` quoteCurrency when present. */
@@ -70328,8 +70416,6 @@
 	    this._unmounted = false;
 	    this._reportWs = null;
 	    this._wsReconnectTimer = null;
-	    /** @type {ReturnType<typeof setTimeout>|null} */
-	    this._wsStallFallbackTimer = null;
 	    this._openInspectQuote = this._openInspectQuote.bind(this);
 	    this._closeInspectQuote = this._closeInspectQuote.bind(this);
 	    this._setDeltaRange = this._setDeltaRange.bind(this);
@@ -70397,10 +70483,6 @@
 	      clearInterval(this._pollTimer);
 	      this._pollTimer = null;
 	    }
-	    if (this._wsStallFallbackTimer) {
-	      clearTimeout(this._wsStallFallbackTimer);
-	      this._wsStallFallbackTimer = null;
-	    }
 	    this._unmounted = true;
 	  }
 	  componentDidUpdate(prevProps, prevState) {
@@ -70408,7 +70490,6 @@
 	      const useWs = this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
 	      if (useWs) {
 	        this._disconnectReportStream(true);
-	        this._clearWsStallFallback();
 	        if (!this._unmounted) {
 	          this.setState({
 	            reportLoading: true,
@@ -70506,6 +70587,10 @@
 	      }
 	    });
 	  }
+
+	  /**
+	   * Interval polling for {@link #webSocketEnabled} false only.
+	   */
 	  _restartHttpPollTimer() {
 	    if (this._pollTimer) {
 	      clearInterval(this._pollTimer);
@@ -70520,32 +70605,11 @@
 	      void this._poll();
 	    }, ms);
 	  }
-	  _clearWsStallFallback() {
-	    if (this._wsStallFallbackTimer) {
-	      clearTimeout(this._wsStallFallbackTimer);
-	      this._wsStallFallbackTimer = null;
-	    }
-	  }
-	  _scheduleWsStallFallback() {
-	    this._clearWsStallFallback();
-	    if (this._unmounted || this.props.webSocketEnabled === false || typeof WebSocket === 'undefined') {
-	      return;
-	    }
-	    const raw = this.props.webSocketStallFallbackMs;
-	    const ms = typeof raw === 'number' && Number.isFinite(raw) && raw > 0 ? raw : 8000;
-	    this._wsStallFallbackTimer = setTimeout(() => {
-	      this._wsStallFallbackTimer = null;
-	      if (this._unmounted) return;
-	      if (!this.state.reportLoading) return;
-	      void this._poll();
-	    }, ms);
-	  }
 	  _disconnectReportStream(clearReconnect) {
 	    if (clearReconnect) {
 	      clearTimeout(this._wsReconnectTimer);
 	      this._wsReconnectTimer = null;
 	    }
-	    this._clearWsStallFallback();
 	    if (this._reportWs) {
 	      const ws = this._reportWs;
 	      this._reportWs = null;
@@ -70585,14 +70649,11 @@
 	        this._handleFeedStreamSideMessage(body);
 	        return;
 	      }
-	      this._applyReportBody(body);
+	      this._applyStreamSnapshot(body);
 	    };
 	    ws.onclose = () => {
 	      if (this._reportWs !== ws) return;
 	      this._disconnectReportStream(false);
-	      if (!this._unmounted && this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined') {
-	        void this._poll();
-	      }
 	      if (!this._unmounted && this.props.webSocketEnabled !== false) {
 	        clearTimeout(this._wsReconnectTimer);
 	        this._wsReconnectTimer = setTimeout(() => this._connectReportStream(), 2500);
@@ -70601,7 +70662,15 @@
 	    ws.onerror = () => {
 	      /* onclose runs next */
 	    };
-	    this._scheduleWsStallFallback();
+	  }
+
+	  /**
+	   * Full report JSON from {@code /quotes/stream} (connect snapshot + each commit broadcast).
+	   * Not used for {@code feedStream} side-channels — those use {@link #_handleFeedStreamSideMessage}.
+	   * @param {object} body
+	   */
+	  _applyStreamSnapshot(body) {
+	    this._applyReportBody(body);
 	  }
 
 	  /**
@@ -70638,9 +70707,12 @@
 
 	  /**
 	   * @param {object} body Parsed `/quotes/snapshot` or WebSocket JSON
+	   * @param {{ partial?: boolean, transportErrors?: string|null }} [opts]
 	   */
-	  _applyReportBody(body) {
+	  _applyReportBody(body, opts = {}) {
 	    if (this._unmounted || !body || typeof body !== 'object') return;
+	    const partial = opts.partial === true;
+	    const transportErrors = opts.transportErrors != null && String(opts.transportErrors).trim() !== '' ? String(opts.transportErrors).trim() : null;
 	    const quoteSym = QUOTE_SYMBOL;
 	    const values = body.values && typeof body.values === 'object' ? body.values : {};
 	    const spotsBySymbol = {};
@@ -70648,87 +70720,181 @@
 	    const failures = [];
 	    const btcRow = values[quoteSym];
 	    const price = btcRow && btcRow.price != null ? Number(btcRow.price) : NaN;
-	    if (Number.isFinite(price)) {
-	      spotsBySymbol[quoteSym] = price;
-	      const sc = btcRow && btcRow.sourceCount != null ? Number(btcRow.sourceCount) : undefined;
-	      if (Number.isFinite(sc)) {
-	        sourceCountBySymbol[quoteSym] = sc;
+	    if (Object.prototype.hasOwnProperty.call(body, 'values')) {
+	      if (Number.isFinite(price)) {
+	        spotsBySymbol[quoteSym] = price;
+	        const sc = btcRow && btcRow.sourceCount != null ? Number(btcRow.sourceCount) : undefined;
+	        if (Number.isFinite(sc)) {
+	          sourceCountBySymbol[quoteSym] = sc;
+	        }
+	      } else {
+	        failures.push(`${quoteSym}: no price`);
 	      }
-	    } else {
-	      failures.push(`${quoteSym}: no price`);
 	    }
-	    let nextQuotes = this.state.quotes;
-	    const leadPrice = price;
 	    const fiatEarly = body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '' ? String(body.quoteCurrency).trim().toUpperCase() : this.props.currency;
 	    const priceHist = body.priceHistory;
 	    const hasServerHistory = Array.isArray(priceHist) && priceHist.length > 0;
-	    if (hasServerHistory && quoteSym) {
-	      nextQuotes = chartQuotesFromPriceHistory(priceHist, quoteSym, fiatEarly);
-	      if (nextQuotes.length > MAX_QUOTE_HISTORY) {
-	        nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
-	      }
-	    } else if (Number.isFinite(leadPrice) && quoteSym) {
-	      const scAgg = btcRow && typeof btcRow.sourceCount === 'number' ? btcRow.sourceCount : undefined;
+	    const leadPrice = price;
 
-	      /** @type {unknown[] | undefined} */
-	      const contrib = Array.isArray(btcRow.sources) ? [].concat(btcRow.sources) : undefined;
-	      const row = {
-	        created: new Date().toISOString(),
-	        rate: leadPrice,
-	        currency: body.quoteCurrency || this.props.currency,
-	        symbol: quoteSym,
-	        source: 'Feed',
-	        sourceCount: scAgg,
-	        ...(contrib && contrib.length ? {
-	          sources: contrib
-	        } : {})
-	      };
-	      nextQuotes = this.state.quotes.concat(row);
-	      if (nextQuotes.length > MAX_QUOTE_HISTORY) {
-	        nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	    /** @param {typeof this.state} prev */
+	    const buildQuotesPatch = prev => {
+	      let nextQuotes = prev.quotes;
+	      if (hasServerHistory && quoteSym) {
+	        nextQuotes = chartQuotesFromPriceHistory(priceHist, quoteSym, fiatEarly);
+	        if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+	          nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	        }
+	      } else if (Object.prototype.hasOwnProperty.call(body, 'values') && Number.isFinite(leadPrice) && quoteSym) {
+	        const scAgg = btcRow && typeof btcRow.sourceCount === 'number' ? btcRow.sourceCount : undefined;
+
+	        /** @type {unknown[] | undefined} */
+	        const contrib = Array.isArray(btcRow.sources) ? [].concat(btcRow.sources) : undefined;
+	        const row = {
+	          created: new Date().toISOString(),
+	          rate: leadPrice,
+	          currency: body.quoteCurrency || this.props.currency,
+	          symbol: quoteSym,
+	          source: 'Feed',
+	          sourceCount: scAgg,
+	          ...(contrib && contrib.length ? {
+	            sources: contrib
+	          } : {})
+	        };
+	        nextQuotes = prev.quotes.concat(row);
+	        if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+	          nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	        }
 	      }
-	    }
-	    const patch = {
-	      spotsBySymbol,
-	      sourceCountBySymbol,
-	      quotes: nextQuotes,
-	      pollError: failures.length ? failures.join(' · ') : null
+	      return nextQuotes;
 	    };
-	    if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
-	      patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
-	    }
-	    if (Array.isArray(body.quoteProviders)) {
-	      patch.quoteProviders = [].concat(body.quoteProviders);
-	    }
-	    const ucx = body.utxoracleChain;
-	    if (ucx && typeof ucx === 'object' && Number.isFinite(Number(ucx.tip))) {
-	      const tip = Math.floor(Number(ucx.tip));
-	      patch.utxoracleChain = {
-	        tip,
-	        tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
-	        difficulty: ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty)) ? Number(ucx.difficulty) : null,
-	        chain: typeof ucx.chain === 'string' ? ucx.chain : '',
-	        headers: ucx.headers != null && Number.isFinite(Number(ucx.headers)) ? Math.floor(Number(ucx.headers)) : tip,
-	        verificationProgress: ucx.verificationProgress != null && Number.isFinite(Number(ucx.verificationProgress)) ? Number(ucx.verificationProgress) : null,
-	        initialBlockDownload: ucx.initialBlockDownload === true,
-	        pruned: ucx.pruned === true,
-	        circulatingSupplyBtc: ucx.circulatingSupplyBtc != null && Number.isFinite(Number(ucx.circulatingSupplyBtc)) ? Number(ucx.circulatingSupplyBtc) : null,
-	        tipBlockOutputBtc: ucx.tipBlockOutputBtc != null && Number.isFinite(Number(ucx.tipBlockOutputBtc)) ? Number(ucx.tipBlockOutputBtc) : null
-	      };
-	    } else {
-	      patch.utxoracleChain = null;
-	    }
-	    this._clearWsStallFallback();
+	    const localErr = Object.prototype.hasOwnProperty.call(body, 'values') && failures.length ? failures.join(' · ') : null;
+	    const pollErr = [transportErrors, localErr].filter(Boolean).join(' · ') || null;
 	    if (!this._unmounted) {
-	      this.setState({
-	        ...patch,
-	        reportLoading: false
+	      if (!partial) {
+	        let nextQuotes = this.state.quotes;
+	        if (hasServerHistory && quoteSym) {
+	          nextQuotes = chartQuotesFromPriceHistory(priceHist, quoteSym, fiatEarly);
+	          if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+	            nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	          }
+	        } else if (Number.isFinite(leadPrice) && quoteSym) {
+	          const scAgg = btcRow && typeof btcRow.sourceCount === 'number' ? btcRow.sourceCount : undefined;
+
+	          /** @type {unknown[] | undefined} */
+	          const contrib = Array.isArray(btcRow.sources) ? [].concat(btcRow.sources) : undefined;
+	          const row = {
+	            created: new Date().toISOString(),
+	            rate: leadPrice,
+	            currency: body.quoteCurrency || this.props.currency,
+	            symbol: quoteSym,
+	            source: 'Feed',
+	            sourceCount: scAgg,
+	            ...(contrib && contrib.length ? {
+	              sources: contrib
+	            } : {})
+	          };
+	          nextQuotes = this.state.quotes.concat(row);
+	          if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+	            nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	          }
+	        }
+	        const patch = {
+	          spotsBySymbol,
+	          sourceCountBySymbol,
+	          quotes: nextQuotes,
+	          pollError: pollErr
+	        };
+	        if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
+	          patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
+	        }
+	        if (Array.isArray(body.quoteProviders)) {
+	          patch.quoteProviders = [].concat(body.quoteProviders);
+	        }
+	        const ucx = body.utxoracleChain;
+	        if (ucx && typeof ucx === 'object' && Number.isFinite(Number(ucx.tip))) {
+	          const tip = Math.floor(Number(ucx.tip));
+	          patch.utxoracleChain = {
+	            tip,
+	            tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
+	            difficulty: ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty)) ? Number(ucx.difficulty) : null,
+	            chain: typeof ucx.chain === 'string' ? ucx.chain : '',
+	            headers: ucx.headers != null && Number.isFinite(Number(ucx.headers)) ? Math.floor(Number(ucx.headers)) : tip,
+	            verificationProgress: ucx.verificationProgress != null && Number.isFinite(Number(ucx.verificationProgress)) ? Number(ucx.verificationProgress) : null,
+	            initialBlockDownload: ucx.initialBlockDownload === true,
+	            pruned: ucx.pruned === true,
+	            circulatingSupplyBtc: ucx.circulatingSupplyBtc != null && Number.isFinite(Number(ucx.circulatingSupplyBtc)) ? Number(ucx.circulatingSupplyBtc) : null,
+	            tipBlockOutputBtc: ucx.tipBlockOutputBtc != null && Number.isFinite(Number(ucx.tipBlockOutputBtc)) ? Number(ucx.tipBlockOutputBtc) : null
+	          };
+	        } else {
+	          patch.utxoracleChain = null;
+	        }
+	        this.setState({
+	          ...patch,
+	          reportLoading: false
+	        });
+	        return;
+	      }
+	      this.setState(prev => {
+	        const patch = {
+	          quotes: prev.quotes,
+	          pollError: pollErr,
+	          reportLoading: false
+	        };
+	        if (Object.prototype.hasOwnProperty.call(body, 'values')) {
+	          patch.spotsBySymbol = spotsBySymbol;
+	          patch.sourceCountBySymbol = sourceCountBySymbol;
+	        } else {
+	          patch.spotsBySymbol = prev.spotsBySymbol;
+	          patch.sourceCountBySymbol = prev.sourceCountBySymbol;
+	        }
+	        if (Object.prototype.hasOwnProperty.call(body, 'priceHistory')) {
+	          patch.quotes = buildQuotesPatch(prev);
+	        } else if (Object.prototype.hasOwnProperty.call(body, 'values')) {
+	          patch.quotes = buildQuotesPatch(prev);
+	        } else {
+	          patch.quotes = prev.quotes;
+	        }
+	        if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
+	          patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
+	        } else {
+	          patch.reportQuoteCurrency = prev.reportQuoteCurrency;
+	        }
+	        if (Array.isArray(body.quoteProviders)) {
+	          patch.quoteProviders = [].concat(body.quoteProviders);
+	        } else {
+	          patch.quoteProviders = prev.quoteProviders;
+	        }
+	        if (Object.prototype.hasOwnProperty.call(body, 'utxoracleChain')) {
+	          const ucx = body.utxoracleChain;
+	          if (ucx && typeof ucx === 'object' && Number.isFinite(Number(ucx.tip))) {
+	            const tip = Math.floor(Number(ucx.tip));
+	            patch.utxoracleChain = {
+	              tip,
+	              tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
+	              difficulty: ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty)) ? Number(ucx.difficulty) : null,
+	              chain: typeof ucx.chain === 'string' ? ucx.chain : '',
+	              headers: ucx.headers != null && Number.isFinite(Number(ucx.headers)) ? Math.floor(Number(ucx.headers)) : tip,
+	              verificationProgress: ucx.verificationProgress != null && Number.isFinite(Number(ucx.verificationProgress)) ? Number(ucx.verificationProgress) : null,
+	              initialBlockDownload: ucx.initialBlockDownload === true,
+	              pruned: ucx.pruned === true,
+	              circulatingSupplyBtc: ucx.circulatingSupplyBtc != null && Number.isFinite(Number(ucx.circulatingSupplyBtc)) ? Number(ucx.circulatingSupplyBtc) : null,
+	              tipBlockOutputBtc: ucx.tipBlockOutputBtc != null && Number.isFinite(Number(ucx.tipBlockOutputBtc)) ? Number(ucx.tipBlockOutputBtc) : null
+	            };
+	          } else {
+	            patch.utxoracleChain = null;
+	          }
+	        } else {
+	          patch.utxoracleChain = prev.utxoracleChain;
+	        }
+	        return patch;
 	      });
 	    }
 	  }
 
 	  /**
-	   * One-shot or interval {@code GET /quotes/snapshot}; not used when push updates are sufficient.
+	   * HTTP-only refresh: split {@code GET} endpoints plus optional snapshot fallback.
+	   * When {@link #webSocketEnabled} is true, quote updates come only from {@code /quotes/stream}
+	   * ({@link #_applyStreamSnapshot}); this method is not called on that path.
 	   */
 	  async _poll() {
 	    if (this._pollInFlight) return;
@@ -70736,35 +70902,71 @@
 	    const ac = new AbortController();
 	    this._pollAbort = ac;
 	    try {
-	      const fetchJson = async (url, required = false) => {
-	        const res = await fetch(url, {
-	          signal: ac.signal,
-	          credentials: 'same-origin',
-	          headers: {
-	            Accept: 'application/json'
-	          },
-	          referrerPolicy: 'no-referrer-when-downgrade'
-	        });
-	        if (!res.ok) {
-	          if (required) {
-	            throw new Error(`${res.status} ${res.statusText}`);
+	      /**
+	       * Split endpoints so one timeout (524) or bad request (400) does not abort the whole poll.
+	       * @param {string} label
+	       * @param {string} url
+	       */
+	      const fetchSplit = async (label, url) => {
+	        try {
+	          const res = await fetch(url, {
+	            signal: ac.signal,
+	            credentials: 'same-origin',
+	            headers: {
+	              Accept: 'application/json'
+	            },
+	            referrerPolicy: 'no-referrer-when-downgrade'
+	          });
+	          if (!res.ok) {
+	            return {
+	              label,
+	              ok: false,
+	              status: res.status,
+	              body: null
+	            };
 	          }
-	          return null;
+	          const j = await res.json();
+	          return {
+	            label,
+	            ok: true,
+	            status: res.status,
+	            body: j && typeof j === 'object' ? j : {}
+	          };
+	        } catch (e) {
+	          if (e?.name === 'AbortError') throw e;
+	          return {
+	            label,
+	            ok: false,
+	            status: 0,
+	            body: null,
+	            err: e?.message || String(e)
+	          };
 	        }
-	        return res.json();
 	      };
-	      let body;
-	      try {
-	        const [spot, providers, history, chain] = await Promise.all([fetchJson(resolveQuotesSpotUrl(this.props.feedApiBase), true), fetchJson(resolveQuotesProvidersUrl(this.props.feedApiBase), false), fetchJson(`${resolveQuotesHistoryUrl(this.props.feedApiBase)}?limit=${MAX_QUOTE_HISTORY}`, false), fetchJson(resolveQuotesChainUrl(this.props.feedApiBase), false)]);
-	        body = {
-	          ...(spot && typeof spot === 'object' ? spot : {}),
-	          ...(providers && typeof providers === 'object' ? providers : {}),
-	          ...(history && typeof history === 'object' ? history : {}),
-	          ...(chain && typeof chain === 'object' ? chain : {})
-	        };
-	      } catch (err) {
-	        if (err?.name === 'AbortError') return;
-	        // compatibility fallback while instances roll out split endpoints
+	      const spotUrl = resolveQuotesSpotUrl(this.props.feedApiBase);
+	      const providersUrl = resolveQuotesProvidersUrl(this.props.feedApiBase);
+	      const historyUrl = `${resolveQuotesHistoryUrl(this.props.feedApiBase)}?limit=${MAX_QUOTE_HISTORY}`;
+	      const chainUrl = resolveQuotesChainUrl(this.props.feedApiBase);
+	      const results = await Promise.all([fetchSplit('spot', spotUrl), fetchSplit('providers', providersUrl), fetchSplit('history', historyUrl), fetchSplit('chain', chainUrl)]);
+	      const transportErrors = [];
+	      /** @type {Record<string, unknown>} */
+	      let body = {};
+	      for (let i = 0; i < results.length; i++) {
+	        const r = results[i];
+	        if (r.ok && r.body) {
+	          body = {
+	            ...body,
+	            ...r.body
+	          };
+	        } else {
+	          const bit = r.status != null && r.status > 0 ? `${r.label} ${r.status}` : `${r.label}: ${r.err || 'failed'}`;
+	          transportErrors.push(bit);
+	        }
+	      }
+	      const sym = QUOTE_SYMBOL;
+	      const hasSpotPrice = body.values && typeof body.values === 'object' && body.values[sym] && Number.isFinite(Number(/** @type {{ price?: unknown }} */body.values[sym].price));
+	      const hasHistory = Array.isArray(body.priceHistory) && body.priceHistory.length > 0;
+	      if (!hasSpotPrice && !hasHistory) {
 	        try {
 	          const res = await fetch(resolveQuotesSnapshotUrl(this.props.feedApiBase), {
 	            signal: ac.signal,
@@ -70774,21 +70976,26 @@
 	            },
 	            referrerPolicy: 'no-referrer-when-downgrade'
 	          });
-	          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-	          body = await res.json();
+	          if (res.ok) {
+	            const snap = await res.json();
+	            if (this._unmounted) return;
+	            this._applyReportBody(snap && typeof snap === 'object' ? snap : {}, {
+	              partial: false,
+	              transportErrors: transportErrors.length > 0 ? transportErrors.join(' · ') : null
+	            });
+	            return;
+	          }
+	          transportErrors.push(`snapshot ${res.status}`);
 	        } catch (fallbackErr) {
 	          if (fallbackErr?.name === 'AbortError') return;
-	          const msg = fallbackErr?.message || String(fallbackErr);
-	          if (!this._unmounted) {
-	            this.setState({
-	              pollError: msg
-	            });
-	          }
-	          return;
+	          transportErrors.push(`snapshot: ${fallbackErr?.message || String(fallbackErr)}`);
 	        }
 	      }
 	      if (this._unmounted) return;
-	      this._applyReportBody(body);
+	      this._applyReportBody(body, {
+	        partial: true,
+	        transportErrors: transportErrors.length > 0 ? transportErrors.join(' · ') : null
+	      });
 	    } finally {
 	      this._pollInFlight = false;
 	      if (this._pollAbort === ac) {
@@ -70980,7 +71187,6 @@
 	const settings = {
 	  currency: 'USD',
 	  pollIntervalMs: 1050,
-	  webSocketStallFallbackMs: 8000,
 	  webSocketEnabled: true,
 	  feedApiBase: '',
 	  historicalOhlcUrl: 'data/btc-usd-daily-ohlc.json'
@@ -70996,7 +71202,6 @@
 	    currency: input.currency,
 	    feedApiBase: input.feedApiBase,
 	    pollIntervalMs: input.pollIntervalMs,
-	    webSocketStallFallbackMs: input.webSocketStallFallbackMs,
 	    webSocketEnabled: input.webSocketEnabled,
 	    historicalOhlcUrl: input.historicalOhlcUrl
 	  }));

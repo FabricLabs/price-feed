@@ -96,6 +96,7 @@ describe('Feed HTTP (/quotes/snapshot)', function () {
       });
 
       await feed.start();
+      await feed.syncAllPrices();
 
       const report = await fetchReportJson(Number(port));
 
@@ -214,6 +215,7 @@ describe('Feed HTTP (/quotes/* decomposed)', function () {
       });
 
       await feed.start();
+      await feed.syncAllPrices();
 
       const spotRes = await fetch(`http://127.0.0.1:${port}/quotes/spot`);
       assert.strictEqual(spotRes.ok, true, `${spotRes.status}`);
@@ -290,6 +292,7 @@ describe('Feed HTTP SSE (/quotes/sse)', function () {
       });
 
       await feed.start();
+      await feed.syncAllPrices();
 
       const ac = new AbortController();
       const res = await fetch(`http://127.0.0.1:${port}/quotes/sse`, {

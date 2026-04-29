@@ -29,7 +29,6 @@ export default function QuoteProvidersTable ({ providers }) {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Provider</Table.HeaderCell>
-            <Table.HeaderCell>Fabric service</Table.HeaderCell>
             <Table.HeaderCell>Last success</Table.HeaderCell>
             <Table.HeaderCell>Next update</Table.HeaderCell>
             <Table.HeaderCell>BTC quote</Table.HeaderCell>
@@ -51,11 +50,6 @@ export default function QuoteProvidersTable ({ providers }) {
               lastError?: unknown,
               lastTls?: Record<string, unknown> | null
             }} */ (p);
-            const svc = row.service && typeof row.service === 'object' ? row.service : null;
-            const svcTxt =
-              svc && svc.status != null
-                ? `${String(svc.status)}${svc.id ? ` · ${String(svc.id).slice(0, 8)}…` : ''}`
-                : '—';
             const err =
               row.lastError != null && String(row.lastError).trim() !== ''
                 ? String(row.lastError)
@@ -75,14 +69,6 @@ export default function QuoteProvidersTable ({ providers }) {
                       ? `resource: ${String(row.resource.key)}`
                       : ''}
                   </div>
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: '0.9em',
-                    wordBreak: 'break-word'
-                  }}
-                >
-                  {svcTxt}
                 </Table.Cell>
                 <Table.Cell>
                   {formatProviderTs(row.lastSuccessAt)}

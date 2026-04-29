@@ -380,8 +380,7 @@ class Feed extends Service {
 
     const handleQuotesSnapshot = (req, res) =>
       json(req, res, async () => {
-        const snapshot = await self._latestData();
-        res.json(snapshot);
+        res.json(await self._buildReportPayload());
       });
 
     const handleQuotesSpot = (req, res) =>
@@ -805,11 +804,6 @@ class Feed extends Service {
       heartbeatMs: 15_000,
       retryMs: 10_000,
       snapshotProvider: async () => {
-        try {
-          await this.syncAllPrices();
-        } catch (_) {
-          /* tolerate partial provider failure; snapshot still useful */
-        }
         return this._buildReportPayload();
       }
     });
@@ -1774,7 +1768,6 @@ class Feed extends Service {
   }
 
   async _latestSpotPayload () {
-    await this._sync();
     return {
       currency: this.currency,
       quoteCurrency: this.settings.quoteCurrency,
@@ -1801,8 +1794,7 @@ class Feed extends Service {
 
   /**
    * Same JSON shape as {@link #_latestData} without running {@link #_sync}.
-   * Callers MUST run {@link #syncAllPrices} first when the snapshot must reflect the current
-   * aggregate headline and persisted price history (same as **{@code GET /quotes/snapshot}**).
+   * Callers that need a fresh network sync should run {@link #syncAllPrices} first.
    */
   async _buildReportPayload () {
     const persist = this.settings.persist || {};
@@ -1882,11 +1874,6 @@ class Feed extends Service {
   }
 
   async _sendReportPayloadToSocket (ws) {
-    try {
-      await this.syncAllPrices();
-    } catch (_) {
-      /* tolerate partial RPC / provider failure; snapshot still aids first paint */
-    }
     let payload;
     try {
       payload = await this._buildReportPayload();
@@ -1902,11 +1889,6 @@ class Feed extends Service {
   async _broadcastFeedReportToStream () {
     if (!this._feedReportWss || this._feedStreamClients.size === 0) {
       return;
-    }
-    try {
-      await this.syncAllPrices();
-    } catch (_) {
-      /* tolerate; broadcast best-effort */
     }
     let payload;
     try {

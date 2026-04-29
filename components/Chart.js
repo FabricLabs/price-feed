@@ -215,7 +215,9 @@ export default class Chart extends Component {
 
   state = {
     historicalSeries: [],
-    historicalLoadState: 'idle'
+    historicalLoadState: 'idle',
+    /** Mouse-wheel zoom override for current chart window (milliseconds). */
+    zoomWindowMs: null
   };
 
   constructor (props = {}) {
@@ -229,6 +231,7 @@ export default class Chart extends Component {
     this._unmounted = false;
 
     this._chartRowsFromOhlcBundle = this._chartRowsFromOhlcBundle.bind(this);
+    this._handleWheelZoom = this._handleWheelZoom.bind(this);
   }
 
   /**
@@ -339,9 +342,20 @@ export default class Chart extends Component {
       });
       this._chartResizeObs.observe(mount);
     }
+    if (mount) {
+      mount.addEventListener('wheel', this._handleWheelZoom, { passive: false });
+    }
   }
 
   componentWillUnmount () {
+    const mount = this.chartOuterRef?.current;
+    if (mount) {
+      try {
+        mount.removeEventListener('wheel', this._handleWheelZoom);
+      } catch {
+        /* noop */
+      }
+    }
     if (this._chartResizeObs) {
       try {
         this._chartResizeObs.disconnect();
@@ -358,6 +372,10 @@ export default class Chart extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    if (prevProps.deltaRangeKey !== this.props.deltaRangeKey) {
+      this.setState({ zoomWindowMs: null });
+      return;
+    }
     if (
       prevProps.quotes !== this.props.quotes ||
       prevProps.deltaRangeKey !== this.props.deltaRangeKey ||
@@ -369,6 +387,44 @@ export default class Chart extends Component {
     ) {
       this._syncChartIntoDom();
     }
+  }
+
+  /**
+   * Mouse wheel zoom for the active chart range.
+   * - zoom in: wheel up
+   * - zoom out: wheel down
+   * Disabled for all-time range.
+   * @param {WheelEvent} ev
+   */
+  _handleWheelZoom (ev) {
+    const rangeOpt = resolveDeltaRangeOption(this.props.deltaRangeKey);
+    if (rangeOpt.ms == null) return;
+    if (this._unmounted) return;
+    ev.preventDefault();
+
+    const baseMs =
+      Number.isFinite(this.state.zoomWindowMs) && this.state.zoomWindowMs > 0
+        ? this.state.zoomWindowMs
+        : rangeOpt.ms;
+    const factor = ev.deltaY < 0 ? 0.82 : 1.22;
+
+    const quoteRows = Array.isArray(this.props.quotes) ? this.props.quotes : [];
+    let minTs = Infinity;
+    let maxTs = -Infinity;
+    for (let i = 0; i < quoteRows.length; i++) {
+      const t = Date.parse(String(quoteRows[i]?.created ?? ''));
+      if (!Number.isFinite(t)) continue;
+      if (t < minTs) minTs = t;
+      if (t > maxTs) maxTs = t;
+    }
+    const observedSpanMs =
+      Number.isFinite(minTs) && Number.isFinite(maxTs) && maxTs > minTs
+        ? maxTs - minTs
+        : 24 * 60 * 60 * 1000;
+    const minMs = 15_000;
+    const maxMs = Math.max(observedSpanMs * 1.25, rangeOpt.ms * 4, 15 * 60_000);
+    const nextMs = Math.max(minMs, Math.min(maxMs, Math.round(baseMs * factor)));
+    this.setState({ zoomWindowMs: nextMs });
   }
 
   _syncChartIntoDom () {
@@ -418,7 +474,13 @@ export default class Chart extends Component {
   _buildChartSvgEl () {
     const nowMs = Date.now();
     const rangeOpt = resolveDeltaRangeOption(this.props.deltaRangeKey);
-    const allTime = rangeOpt.ms == null;
+    const zoomWindowMs =
+      Number.isFinite(this.state.zoomWindowMs) && this.state.zoomWindowMs > 0
+        ? this.state.zoomWindowMs
+        : null;
+    const effectiveWindowMs =
+      rangeOpt.ms == null ? null : (zoomWindowMs ?? rangeOpt.ms);
+    const allTime = effectiveWindowMs == null;
 
     let quotes = dropBadRates(
       dedupeByTimestampKeepLatest(this.props.quotes || [])
@@ -482,7 +544,7 @@ export default class Chart extends Component {
       }
       startMs = times.length ? Math.min(...times) : nowMs - 60_000;
     } else {
-      const windowMs = /** @type {number} */ (rangeOpt.ms);
+      const windowMs = /** @type {number} */ (effectiveWindowMs);
       startMs = nowMs - windowMs;
       historicalInWin = this._filterPointsInRange(
         historicalContext,
@@ -494,6 +556,27 @@ export default class Chart extends Component {
 
     /** @type {Array<{ t: Date, price: number, height: number }>} */
     const utxoInWin = [];
+    const liveForCompare = [].concat(liveInWin).sort(
+      (a, b) => Date.parse(a.created) - Date.parse(b.created)
+    );
+    /**
+     * @param {number} ms
+     * @returns {number|null}
+     */
+    const feedPriceAtOrBefore = (ms) => {
+      let out = null;
+      let outTs = -Infinity;
+      for (let i = 0; i < liveForCompare.length; i++) {
+        const row = liveForCompare[i];
+        const ts = Date.parse(row.created);
+        if (!Number.isFinite(ts) || ts > ms || ts < outTs) continue;
+        const px = Number(row.rate);
+        if (!Number.isFinite(px) || px <= 0) continue;
+        out = px;
+        outTs = ts;
+      }
+      return out;
+    };
     for (let i = 0; i < utxoSeriesRaw.length; i++) {
       const p = utxoSeriesRaw[i];
       const price = Number(p?.price);
@@ -501,10 +584,20 @@ export default class Chart extends Component {
       const hRaw = p?.height;
       const h = Number(hRaw);
       if (!Number.isFinite(price) || !Number.isFinite(ms)) continue;
+      const feedPx = feedPriceAtOrBefore(ms);
+      const diffAbs =
+        Number.isFinite(feedPx) ? price - /** @type {number} */ (feedPx) : null;
+      const diffPct =
+        Number.isFinite(feedPx) && feedPx !== 0
+          ? (diffAbs / feedPx) * 100
+          : null;
       utxoInWin.push({
         t: new Date(ms),
         price,
-        height: Number.isFinite(h) ? Math.floor(h) : i
+        height: Number.isFinite(h) ? Math.floor(h) : i,
+        feedPrice: Number.isFinite(feedPx) ? feedPx : null,
+        diffAbs,
+        diffPct
       });
     }
 
@@ -618,8 +711,35 @@ export default class Chart extends Component {
     marks.push(...dataMarks);
 
     const utxoDotR = utxoInWin.length > 200 ? 2 : utxoInWin.length > 80 ? 2.5 : 3;
+    /**
+     * @param {{ height: number, price: number, feedPrice?: number|null, diffAbs?: number|null, diffPct?: number|null }} d
+     */
+    const utxoHoverTitle = (d) => {
+      const parts = [
+        `UTXOracle h ${d.height}`,
+        formatFiatPrice(d.price, fiat)
+      ];
+      if (Number.isFinite(d.feedPrice)) {
+        parts.push(`Feed ${formatFiatPrice(d.feedPrice, fiat)}`);
+      }
+      if (Number.isFinite(d.diffAbs) && Number.isFinite(d.diffPct)) {
+        const abs = /** @type {number} */ (d.diffAbs);
+        const pct = /** @type {number} */ (d.diffPct);
+        const sign = abs > 0 ? '+' : '';
+        parts.push(`Diff ${sign}${formatFiatPrice(abs, fiat)} (${sign}${pct.toFixed(2)}%)`);
+      }
+      return parts.join(' · ');
+    };
 
     if (utxoInWin.length) {
+      marks.push(
+        Plot.line(utxoInWin, {
+          x: 't',
+          y: 'price',
+          stroke: 'rgba(132, 57, 168, 0.95)',
+          strokeWidth: 1.4
+        })
+      );
       marks.push(
         Plot.dot(utxoInWin, {
           x: 't',
@@ -628,8 +748,7 @@ export default class Chart extends Component {
           stroke: 'rgba(255,255,255,0.35)',
           strokeWidth: 0.4,
           r: utxoDotR,
-          title: (d) =>
-            `UTXOracle h ${d.height} · ${formatFiatPrice(d.price, fiat)}`
+          title: utxoHoverTitle
         })
       );
     }
@@ -696,8 +815,9 @@ export default class Chart extends Component {
               this.props.utxoEstimateSeries.length > 0 ? (
                 <>
                   {' '}
-                  <strong style={{ color: 'rgba(132, 57, 168, 0.95)' }}>Violet dots</strong> are
-                  on-chain <strong>UTXOracle</strong> estimates (hover for block height and price).
+                  <strong style={{ color: 'rgba(132, 57, 168, 0.95)' }}>Violet line + dots</strong> are
+                  on-chain <strong>UTXOracle</strong> estimates (hover for block height, UTXOracle price,
+                  and delta vs feed).
                 </>
               ) : null}
               {this.props.utxoEstimateSeriesLoading ? (
