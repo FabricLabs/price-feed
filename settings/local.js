@@ -3,7 +3,7 @@ module.exports = {
   debug: true,
   /** Port and optional `host`: Fabric HTTP uses `host` as the bind address (`listen`). */
   http: {
-    port: 8080
+    port: 5555
   },
   /**
    * Fabric `Bitcoin` service (RPC + optional ZMQ). The Feed constructs one shared instance as
