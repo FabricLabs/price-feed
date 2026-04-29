@@ -1,67 +1,88 @@
 /**
- * Live price feed component.
+ * Headline BTC spot (aggregated).
  */
 
-import React from 'react';
+'use strict';
 
-import '../styles/feed.css';
-import '../libraries/fomantic/dist/semantic.css';
+import { Component } from 'react';
+
 import {
-  Card,
-  Icon,
-  Label
+  Grid,
+  Loader,
+  Segment,
+  Statistic
 } from 'semantic-ui-react';
 
-export default class Feed extends React.Component {
-  state = {
-    currency: 'BTC',
-    prices: {
-      'BTC': 1
-    },
-    quote: {
-      created: (new Date()).toISOString(),
-      currency: 'BTC',
-      rate: 1
-    }
-  };
+import { formatFiatPrice } from './localeNumber';
 
-  constructor (props = {}) {
-    super(props);
-
-    this.settings = Object.assign({}, props);
-    this._state = {
-      content: this.state
-    };
-  }
-
-  trust (source) {
-    source.on('log', this._handleSourceLog.bind(this));
-  }
-
-  _handleBridgeReady (info) {
-    console.log('[FEED] Bridge Reported Ready:', info);
-  }
-
-  _handleSourceLog (log) {
-    this.emit('log', `Source log: ${log}`);
-  }
-
+export default class Feed extends Component {
   render () {
+    const v = this.props.spotUsd;
+    const label =
+      typeof this.props.label === 'string' && this.props.label.trim() !== ''
+        ? this.props.label.trim()
+        : 'BTC → USD';
+
+    const trailing = this.props.trailing;
+    const aside = this.props.aside;
+
+    const spotCurrency =
+      typeof this.props.spotCurrency === 'string' &&
+      this.props.spotCurrency.trim() !== ''
+        ? this.props.spotCurrency.trim().toUpperCase()
+        : 'USD';
+
+    const statisticOrLoader =
+      typeof v === 'number' && Number.isFinite(v) ? (
+        <Statistic style={{ marginBottom: 0 }}>
+          <Statistic.Value>{formatFiatPrice(v, spotCurrency)}</Statistic.Value>
+          <Statistic.Label>{label}</Statistic.Label>
+        </Statistic>
+      ) : (
+        <Loader active inline="centered" size="small">
+          Loading feed…
+        </Loader>
+      );
+
+    const hasAside = aside != null;
+
+    if (!trailing && !hasAside) {
+      return <Segment>{statisticOrLoader}</Segment>;
+    }
+
+    if (typeof v !== 'number' || !Number.isFinite(v)) {
+      return <Segment>{statisticOrLoader}</Segment>;
+    }
+
+    const leftBlock = (
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'flex-start',
+          gap: '0.85rem 1.25rem'
+        }}
+      >
+        {statisticOrLoader}
+        {trailing || null}
+      </div>
+    );
+
+    if (!hasAside) {
+      return <Segment basic>{leftBlock}</Segment>;
+    }
+
     return (
-      <fabric-content-block>
-        <Card fluid>
-          <Card.Content>
-            <Label>
-              Price: <Label.Detail>{this.state.quote.rate}</Label.Detail>
-            </Label>
-          </Card.Content>
-          <Card.Content extra>
-            <a href="#" onClick={(e) => { e.preventDefault(); }} aria-label="Link placeholder">
-              <Icon name='linkify' />
-            </a>
-          </Card.Content>
-        </Card>
-      </fabric-content-block>
+      <Segment basic>
+        <Grid stackable verticalAlign="top">
+          <Grid.Column computer={10} tablet={16} mobile={16}>
+            {leftBlock}
+          </Grid.Column>
+          <Grid.Column computer={6} tablet={16} mobile={16}>
+            {aside}
+          </Grid.Column>
+        </Grid>
+      </Segment>
     );
   }
 }

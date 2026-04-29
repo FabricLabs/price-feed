@@ -7,16 +7,21 @@
     "build": "npm run build:semantic && npm run build:assets",
     "build:assets": "rollup -c rollup.config.mjs",
     "build:ci": "npm run build:assets && npm test",
-    "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes ../../assets && cd ../..",
+    "build:semantic": "cd libraries/fomantic && npx gulp build && cp -r dist/themes ../../assets && cd ../.. && node scripts/merge-theme-css.js",
     "dev": "npx concurrently \"npm run watch\" \"npm start\"",
     "coverage": "nyc npm test",
     "make:coverage": "npm run coverage && nyc report --reporter html",
+    "backfill:daily": "node scripts/backfill-history.js --start 2009-01-01 --end $(node -e 'console.log(Math.floor(Date.now()/1000))') --interval 86400 --providers coinbase,bitstamp --delay-ms 350 --out assets/data/btc-usd-daily-ohlc.json",
+    "backfill:history": "node scripts/backfill-history.js",
     "quote": "node scripts/report.js",
+    "utxoracle:per-block": "node scripts/utxoracle-per-block.js",
     "report:install": "rm -rf node_modules && echo \"\n\" > package-lock.json && echo \"$ npm i\" > reports/install.log && npm i >> reports/install.log",
     "review:coverage": "npm run make:coverage && http-server -p 8000 reports/coverage",
     "serve": "http-server assets",
     "start": "node scripts/node.js",
-    "test": "mocha tests",
+    "start:watch": "node scripts/feed-watch.js",
+    "test": "mocha tests --ignore 'tests/integration/**'",
+    "test:integration": "mocha tests/integration",
     "watch": "rollup -c rollup.config.mjs -w"
   },
   "engines": {
@@ -24,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FabricLabs/portal-feed.git"
+    "url": "git+https://github.com/FabricLabs/feed.git"
   },
   "keywords": [
     "portal",
@@ -34,9 +39,9 @@
   "author": "Fabric Labs",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/FabricLabs/portal-feed/issues"
+    "url": "https://github.com/FabricLabs/price-feed/issues"
   },
-  "homepage": "https://github.com/FabricLabs/portal-feed#readme",
+  "homepage": "https://github.com/FabricLabs/price-feed#readme",
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#feature/v0.1.0-RC1",
     "@fabric/http": "FabricLabs/fabric-http#feature/v0.1.0-RC1",
@@ -53,18 +58,38 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-url": "^8.0.2",
+    "better-console": "^1.0.1",
     "d3": "^7.4.4",
     "d3-graphviz": "^4.1.1",
     "fomantic-ui": "^2.8.8",
     "fomantic-ui-css": "^2.8.8",
+    "gulp": "^5.0.1",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-chmod": "^3.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-dedupe": "^0.0.2",
+    "gulp-flatten": "^0.4.0",
+    "gulp-header": "^2.0.12",
+    "gulp-if": "^3.0.0",
+    "gulp-less": "^5.0.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-print": "^5.0.2",
+    "gulp-rename": "^2.1.0",
+    "gulp-replace": "^1.1.4",
+    "gulp-rtlcss": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
     "http-server": "^14.1.0",
+    "less": "^4.6.4",
     "lodash.merge": "^4.6.2",
     "mocha": "^11.7.5",
+    "normalize-path": "^3.0.0",
     "nyc": "^15.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "replace-ext": "^2.0.0",
     "rollup": "^4.60.2",
-    "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-serve": "^1.1.0",
@@ -89,6 +114,6 @@
       "rollup": "2.80.0"
     },
     "elliptic": "6.6.1",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
   }
 }

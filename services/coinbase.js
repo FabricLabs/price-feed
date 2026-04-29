@@ -1,69 +1,61 @@
 'use strict';
 
-const Service = require('@fabric/core/types/service');
-const Remote = require('@fabric/http/types/remote');
+/**
+ * Coinbase **Exchange** public ticker — venue `time` + `price` (exact UTC instant).
+ * @see https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getproductticker
+ */
+const QuoteProvider = require('../types/quoteProvider');
+const Worker = require('../types/worker');
+const { throwIfFabricHttpError } = require('../types/remoteResponse');
+const { normalizeSpotQuote } = require('../types/spotQuote');
 
-class Coinbase extends Service {
+class Coinbase extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
-    this.settings = Object.assign({
-      currency: 'USD',
-      symbols: [
-        'BTC'
-      ]
-    }, this.settings, settings);
+    this.settings = Object.assign(
+      {
+        symbols: ['BTC']
+      },
+      this.settings,
+      settings
+    );
 
-    this.remote = new Remote({
-      authority: 'api.coinbase.com'
+    this.http = new Worker({
+      serviceId: 'coinbase',
+      label: 'Coinbase Exchange',
+      authority: 'api.exchange.coinbase.com',
+      secure: true,
+      port: 443,
+      timeoutMs: this.settings.timeoutMs
     });
-
-    this._state = {
-      content: {
-        prices: {}
-      }
-    };
-  }
-
-  get currency () {
-    return this.settings.currency;
-  }
-
-  async getPriceForSymbol (symbol) {
-    const asset = await this.getQuoteForSymbol(symbol);
-    return asset.price;
+    this.remote = this.http.remote;
   }
 
   async getQuoteForSymbol (symbol) {
-    if (symbol !== 'BTC') throw new Error('Only the "BTC" symbol is supported.');
+    this.assertBtc(symbol);
 
     const currency = this.currency;
+    const data = await this.http.get('/products/BTC-USD/ticker');
+    throwIfFabricHttpError(data, 'Coinbase Exchange');
 
-    const startMs = Date.now();
-    const result = await this.remote._GET(`/v2/exchange-rates?currency=${symbol}`);
-    const age = Math.log(Date.now() - startMs);
+    const price = Number(data?.price);
+    if (!Number.isFinite(price)) {
+      throw new Error('Coinbase Exchange: invalid or missing price.');
+    }
 
-    const rates = result?.data?.rates;
-    const priceRaw = rates && Object.prototype.hasOwnProperty.call(rates, currency)
-      ? rates[currency]
-      : undefined;
+    const timeIso = data?.time;
+    const asOfMs = Date.parse(String(timeIso || ''));
+    if (!Number.isFinite(asOfMs)) {
+      throw new Error('Coinbase Exchange: missing or invalid ticker time.');
+    }
 
-    return {
-      age: age,
-      created: new Date(startMs),
-      currency: currency,
-      price: parseFloat(priceRaw)
-    };
-  }
-
-  async getAssetForSymbol (symbol) {
-    const quote = await this.getQuoteForSymbol(symbol);
-
-    return {
-      quote: quote,
-      name: 'Bitcoin',
-      symbol: symbol
-    };
+    return normalizeSpotQuote({
+      price,
+      currency,
+      asOfMs,
+      asOfSource: 'venue'
+    });
   }
 }
 

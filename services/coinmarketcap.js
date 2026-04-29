@@ -1,63 +1,91 @@
 'use strict';
 
-const Service = require('@fabric/core/types/service');
-const Remote = require('@fabric/http/types/remote');
+const QuoteProvider = require('../types/quoteProvider');
+const Worker = require('../types/worker');
+const { throwIfFabricHttpError } = require('../types/remoteResponse');
+const { normalizeSpotQuote } = require('../types/spotQuote');
 
-class CoinMarketCap extends Service {
+class CoinMarketCap extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
-    this.settings = Object.assign({
-      currency: 'USD',
-      symbols: [
-        'BTC'
-      ]
-    }, this.settings, settings);
+    this.settings = Object.assign(
+      {
+        symbols: ['BTC']
+      },
+      this.settings,
+      settings
+    );
 
-    this.remote = new Remote({
-      authority: 'pro-api.coinmarketcap.com'
+    this.http = new Worker({
+      serviceId: 'coinmarketcap',
+      label: 'CoinMarketCap',
+      authority: 'pro-api.coinmarketcap.com',
+      secure: true,
+      port: 443,
+      timeoutMs: this.settings.timeoutMs
     });
-
-    return this;
+    this.remote = this.http.remote;
   }
 
-  get currency () {
-    return this.settings.currency;
+  /** @returns {{ quote: object, asset: object }} */
+  async _latestDataForSymbol (symbol) {
+    this.assertBtc(symbol);
+
+    const path =
+      `/${['v1', 'cryptocurrency', 'quotes', 'latest'].join('/')}` +
+      `?symbol=${symbol}&convert=${this.currency}&CMC_PRO_API_KEY=${this.settings.key}`;
+
+    const result = await this.http.get(path);
+    throwIfFabricHttpError(result, 'CoinMarketCap');
+
+    if (!result?.data) {
+      throw new Error('CoinMarketCap: empty data envelope.');
+    }
+
+    const asset = result.data[symbol];
+    if (!asset) {
+      throw new Error(`CoinMarketCap: no row for ${symbol}.`);
+    }
+
+    const row = asset.quote && typeof asset.quote === 'object'
+      ? asset.quote[this.currency]
+      : null;
+    const price = row != null ? Number(row.price) : NaN;
+    if (!Number.isFinite(price)) {
+      throw new Error(`CoinMarketCap: invalid ${this.currency} price.`);
+    }
+
+    const created = new Date(asset.last_updated);
+    const asOfMs = created.getTime();
+    if (!Number.isFinite(asOfMs)) {
+      throw new Error('CoinMarketCap: invalid last_updated timestamp.');
+    }
+
+    const quote = normalizeSpotQuote({
+      price,
+      currency: this.currency,
+      asOfMs,
+      asOfSource: 'venue'
+    });
+
+    return { quote, asset };
   }
 
   async getPriceForSymbol (symbol) {
-    const asset = await this.getQuoteForSymbol(symbol);
-    return asset.price;
+    const { quote } = await this._latestDataForSymbol(symbol);
+    return quote.price;
   }
 
   async getQuoteForSymbol (symbol) {
-    const result = await this.remote._GET('/' + [
-      'v1',
-      'cryptocurrency',
-      'quotes',
-      'latest'
-    ].join('/') + `?symbol=${symbol}&convert=${this.currency}&CMC_PRO_API_KEY=${this.settings.key}`);
-
-    if (!result || !result.data) throw new Error('Unable to retrieve result.');
-
-    const asset = result.data[symbol];
-    const created = new Date(asset.last_updated);
-    const ageInMS = Date.now() - created;
-    const age = Math.log(ageInMS);
-
-    return {
-      age: age,
-      created: created,
-      currency: this.currency,
-      price: asset.quote[this.currency].price
-    };
+    const { quote } = await this._latestDataForSymbol(symbol);
+    return quote;
   }
 
   async getAssetForSymbol (symbol) {
-    const quote = await this.getQuoteForSymbol(symbol);
-
+    const { quote, asset } = await this._latestDataForSymbol(symbol);
     return {
-      quote: quote,
+      quote,
       original: asset
     };
   }

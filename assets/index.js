@@ -5,6 +5,12 @@
 		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 	}
 
+	var client = {};
+
+	var reactDom = {exports: {}};
+
+	var reactDom_development = {};
+
 	var react = {exports: {}};
 
 	var react_development = {exports: {}};
@@ -2768,15 +2774,6 @@
 		}
 		return react.exports;
 	}
-
-	var reactExports = requireReact();
-	var React = /*@__PURE__*/getDefaultExportFromCjs(reactExports);
-
-	var client = {};
-
-	var reactDom = {exports: {}};
-
-	var reactDom_development = {};
 
 	var scheduler = {exports: {}};
 
@@ -33357,6 +33354,9 @@
 
 	var clientExports = requireClient();
 
+	var reactExports = requireReact();
+	var React = /*@__PURE__*/getDefaultExportFromCjs(reactExports);
+
 	function _objectWithoutPropertiesLoose(r, e) {
 	  if (null == r) return {};
 	  var t = {};
@@ -33608,6 +33608,13 @@
 	    ref.current = node;
 	  }
 	};
+	/** Checks that the passed object is a valid React ref object. */
+
+	var isRefObject = function isRefObject(ref) {
+	  return (// https://github.com/facebook/react/blob/v16.8.2/packages/react-reconciler/src/ReactFiberCommitWork.js#L665
+	    ref !== null && typeof ref === 'object' && ref.hasOwnProperty('current')
+	  );
+	};
 
 	// react/packages/react-reconciler/src/ReactFiber.js
 	// ========================================================
@@ -33765,10 +33772,10 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$f = Object.prototype;
+	var objectProto$g = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$c = objectProto$f.hasOwnProperty;
+	var hasOwnProperty$c = objectProto$g.hasOwnProperty;
 
 	/**
 	 * The base implementation of `_.has` without support for deep paths.
@@ -33820,17 +33827,17 @@
 	var Symbol$1 = root$2.Symbol;
 
 	/** Used for built-in method references. */
-	var objectProto$e = Object.prototype;
+	var objectProto$f = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$b = objectProto$e.hasOwnProperty;
+	var hasOwnProperty$b = objectProto$f.hasOwnProperty;
 
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
-	var nativeObjectToString$1 = objectProto$e.toString;
+	var nativeObjectToString$2 = objectProto$f.toString;
 
 	/** Built-in value references. */
 	var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : undefined;
@@ -33851,7 +33858,7 @@
 	    var unmasked = true;
 	  } catch (e) {}
 
-	  var result = nativeObjectToString$1.call(value);
+	  var result = nativeObjectToString$2.call(value);
 	  if (unmasked) {
 	    if (isOwn) {
 	      value[symToStringTag$1] = tag;
@@ -33863,14 +33870,14 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$d = Object.prototype;
+	var objectProto$e = Object.prototype;
 
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
-	var nativeObjectToString = objectProto$d.toString;
+	var nativeObjectToString$1 = objectProto$e.toString;
 
 	/**
 	 * Converts `value` to a string using `Object.prototype.toString`.
@@ -33880,7 +33887,7 @@
 	 * @returns {string} Returns the converted string.
 	 */
 	function objectToString$1(value) {
-	  return nativeObjectToString.call(value);
+	  return nativeObjectToString$1.call(value);
 	}
 
 	/** `Object#toString` result references. */
@@ -34096,24 +34103,24 @@
 	 * Used to match `RegExp`
 	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
 	 */
-	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+	var reRegExpChar$1 = /[\\^$.*+?()[\]{}|]/g;
 
 	/** Used to detect host constructors (Safari). */
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
 	/** Used for built-in method references. */
 	var funcProto$1 = Function.prototype,
-	    objectProto$c = Object.prototype;
+	    objectProto$d = Object.prototype;
 
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString$1 = funcProto$1.toString;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$a = objectProto$c.hasOwnProperty;
+	var hasOwnProperty$a = objectProto$d.hasOwnProperty;
 
 	/** Used to detect if a method is native. */
 	var reIsNative = RegExp('^' +
-	  funcToString$1.call(hasOwnProperty$a).replace(reRegExpChar, '\\$&')
+	  funcToString$1.call(hasOwnProperty$a).replace(reRegExpChar$1, '\\$&')
 	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 	);
 
@@ -34193,10 +34200,10 @@
 	var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
 
 	/** Used for built-in method references. */
-	var objectProto$b = Object.prototype;
+	var objectProto$c = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$9 = objectProto$b.hasOwnProperty;
+	var hasOwnProperty$9 = objectProto$c.hasOwnProperty;
 
 	/**
 	 * Gets the hash value for `key`.
@@ -34217,10 +34224,10 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$a = Object.prototype;
+	var objectProto$b = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
+	var hasOwnProperty$8 = objectProto$b.hasOwnProperty;
 
 	/**
 	 * Checks if a hash value for `key` exists.
@@ -34809,13 +34816,13 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$9 = Object.prototype;
+	var objectProto$a = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+	var hasOwnProperty$7 = objectProto$a.hasOwnProperty;
 
 	/** Built-in value references. */
-	var propertyIsEnumerable$1 = objectProto$9.propertyIsEnumerable;
+	var propertyIsEnumerable$1 = objectProto$a.propertyIsEnumerable;
 
 	/**
 	 * Checks if `value` is likely an `arguments` object.
@@ -34985,7 +34992,7 @@
 	 * @param {Array} args The arguments to invoke `func` with.
 	 * @returns {*} Returns the result of `func`.
 	 */
-	function apply(func, thisArg, args) {
+	function apply$1(func, thisArg, args) {
 	  switch (args.length) {
 	    case 0: return func.call(thisArg);
 	    case 1: return func.call(thisArg, args[0]);
@@ -35090,7 +35097,7 @@
 	  path = castPath(path, object);
 	  object = parent(object, path);
 	  var func = object == null ? object : object[toKey(last(path))];
-	  return func == null ? undefined : apply(func, object, args);
+	  return func == null ? undefined : apply$1(func, object, args);
 	}
 
 	/**
@@ -35109,12 +35116,12 @@
 	 * console.log(_.identity(object) === object);
 	 * // => true
 	 */
-	function identity$6(value) {
+	function identity$7(value) {
 	  return value;
 	}
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
-	var nativeMax$2 = Math.max;
+	var nativeMax$3 = Math.max;
 
 	/**
 	 * A specialized version of `baseRest` which transforms the rest array.
@@ -35126,11 +35133,11 @@
 	 * @returns {Function} Returns the new function.
 	 */
 	function overRest(func, start, transform) {
-	  start = nativeMax$2(start === undefined ? (func.length - 1) : start, 0);
+	  start = nativeMax$3(start === undefined ? (func.length - 1) : start, 0);
 	  return function() {
 	    var args = arguments,
 	        index = -1,
-	        length = nativeMax$2(args.length - start, 0),
+	        length = nativeMax$3(args.length - start, 0),
 	        array = Array(length);
 
 	    while (++index < length) {
@@ -35142,7 +35149,7 @@
 	      otherArgs[index] = args[index];
 	    }
 	    otherArgs[start] = transform(array);
-	    return apply(func, this, otherArgs);
+	    return apply$1(func, this, otherArgs);
 	  };
 	}
 
@@ -35187,7 +35194,7 @@
 	 * @param {Function} string The `toString` result.
 	 * @returns {Function} Returns `func`.
 	 */
-	var baseSetToString = !defineProperty ? identity$6 : function(func, string) {
+	var baseSetToString = !defineProperty ? identity$7 : function(func, string) {
 	  return defineProperty(func, 'toString', {
 	    'configurable': true,
 	    'enumerable': false,
@@ -35251,7 +35258,7 @@
 	 * @returns {Function} Returns the new function.
 	 */
 	function baseRest(func, start) {
-	  return setToString(overRest(func, start, identity$6), func + '');
+	  return setToString(overRest(func, start, identity$7), func + '');
 	}
 
 	/**
@@ -36745,11 +36752,11 @@
 	    dateTag$1 = '[object Date]',
 	    errorTag$1 = '[object Error]',
 	    funcTag = '[object Function]',
-	    mapTag$3 = '[object Map]',
+	    mapTag$4 = '[object Map]',
 	    numberTag$2 = '[object Number]',
 	    objectTag$3 = '[object Object]',
 	    regexpTag$1 = '[object RegExp]',
-	    setTag$3 = '[object Set]',
+	    setTag$4 = '[object Set]',
 	    stringTag$2 = '[object String]',
 	    weakMapTag$1 = '[object WeakMap]';
 
@@ -36776,9 +36783,9 @@
 	typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$2] =
 	typedArrayTags[dataViewTag$2] = typedArrayTags[dateTag$1] =
 	typedArrayTags[errorTag$1] = typedArrayTags[funcTag] =
-	typedArrayTags[mapTag$3] = typedArrayTags[numberTag$2] =
+	typedArrayTags[mapTag$4] = typedArrayTags[numberTag$2] =
 	typedArrayTags[objectTag$3] = typedArrayTags[regexpTag$1] =
-	typedArrayTags[setTag$3] = typedArrayTags[stringTag$2] =
+	typedArrayTags[setTag$4] = typedArrayTags[stringTag$2] =
 	typedArrayTags[weakMapTag$1] = false;
 
 	/**
@@ -36856,10 +36863,10 @@
 	var isTypedArray$1 = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
 
 	/** Used for built-in method references. */
-	var objectProto$8 = Object.prototype;
+	var objectProto$9 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+	var hasOwnProperty$6 = objectProto$9.hasOwnProperty;
 
 	/**
 	 * Creates an array of the enumerable property names of the array-like `value`.
@@ -36897,7 +36904,7 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$7 = Object.prototype;
+	var objectProto$8 = Object.prototype;
 
 	/**
 	 * Checks if `value` is likely a prototype object.
@@ -36908,7 +36915,7 @@
 	 */
 	function isPrototype(value) {
 	  var Ctor = value && value.constructor,
-	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$7;
+	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$8;
 
 	  return value === proto;
 	}
@@ -36931,10 +36938,10 @@
 	var nativeKeys = overArg(Object.keys, Object);
 
 	/** Used for built-in method references. */
-	var objectProto$6 = Object.prototype;
+	var objectProto$7 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+	var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
 
 	/**
 	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
@@ -37400,10 +37407,10 @@
 	var boolTag$1 = '[object Boolean]',
 	    dateTag = '[object Date]',
 	    errorTag = '[object Error]',
-	    mapTag$2 = '[object Map]',
+	    mapTag$3 = '[object Map]',
 	    numberTag$1 = '[object Number]',
 	    regexpTag = '[object RegExp]',
-	    setTag$2 = '[object Set]',
+	    setTag$3 = '[object Set]',
 	    stringTag$1 = '[object String]',
 	    symbolTag = '[object Symbol]';
 
@@ -37465,10 +37472,10 @@
 	      // for more details.
 	      return object == (other + '');
 
-	    case mapTag$2:
+	    case mapTag$3:
 	      var convert = mapToArray;
 
-	    case setTag$2:
+	    case setTag$3:
 	      var isPartial = bitmask & COMPARE_PARTIAL_FLAG$4;
 	      convert || (convert = setToArray);
 
@@ -37554,10 +37561,10 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$5 = Object.prototype;
+	var objectProto$6 = Object.prototype;
 
 	/** Built-in value references. */
-	var propertyIsEnumerable = objectProto$5.propertyIsEnumerable;
+	var propertyIsEnumerable = objectProto$6.propertyIsEnumerable;
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeGetSymbols = Object.getOwnPropertySymbols;
@@ -37594,10 +37601,10 @@
 	var COMPARE_PARTIAL_FLAG$3 = 1;
 
 	/** Used for built-in method references. */
-	var objectProto$4 = Object.prototype;
+	var objectProto$5 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$4 = objectProto$4.hasOwnProperty;
+	var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
 
 	/**
 	 * A specialized version of `baseIsEqualDeep` for objects with support for
@@ -37690,10 +37697,10 @@
 	var WeakMap$1 = getNative(root$2, 'WeakMap');
 
 	/** `Object#toString` result references. */
-	var mapTag$1 = '[object Map]',
+	var mapTag$2 = '[object Map]',
 	    objectTag$2 = '[object Object]',
 	    promiseTag = '[object Promise]',
-	    setTag$1 = '[object Set]',
+	    setTag$2 = '[object Set]',
 	    weakMapTag = '[object WeakMap]';
 
 	var dataViewTag = '[object DataView]';
@@ -37716,9 +37723,9 @@
 
 	// Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
 	if ((DataView$1 && getTag(new DataView$1(new ArrayBuffer(1))) != dataViewTag) ||
-	    (Map$1 && getTag(new Map$1) != mapTag$1) ||
+	    (Map$1 && getTag(new Map$1) != mapTag$2) ||
 	    (Promise$1 && getTag(Promise$1.resolve()) != promiseTag) ||
-	    (Set$1 && getTag(new Set$1) != setTag$1) ||
+	    (Set$1 && getTag(new Set$1) != setTag$2) ||
 	    (WeakMap$1 && getTag(new WeakMap$1) != weakMapTag)) {
 	  getTag = function(value) {
 	    var result = baseGetTag(value),
@@ -37728,9 +37735,9 @@
 	    if (ctorString) {
 	      switch (ctorString) {
 	        case dataViewCtorString: return dataViewTag;
-	        case mapCtorString: return mapTag$1;
+	        case mapCtorString: return mapTag$2;
 	        case promiseCtorString: return promiseTag;
-	        case setCtorString: return setTag$1;
+	        case setCtorString: return setTag$2;
 	        case weakMapCtorString: return weakMapTag;
 	      }
 	    }
@@ -37747,10 +37754,10 @@
 	    objectTag$1 = '[object Object]';
 
 	/** Used for built-in method references. */
-	var objectProto$3 = Object.prototype;
+	var objectProto$4 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$3 = objectProto$3.hasOwnProperty;
+	var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
 
 	/**
 	 * A specialized version of `baseIsEqual` for arrays and objects which performs
@@ -38120,7 +38127,7 @@
 	    return value;
 	  }
 	  if (value == null) {
-	    return identity$6;
+	    return identity$7;
 	  }
 	  if (typeof value == 'object') {
 	    return isArray(value)
@@ -38177,14 +38184,14 @@
 	}
 
 	/** `Object#toString` result references. */
-	var mapTag = '[object Map]',
-	    setTag = '[object Set]';
+	var mapTag$1 = '[object Map]',
+	    setTag$1 = '[object Set]';
 
 	/** Used for built-in method references. */
-	var objectProto$2 = Object.prototype;
+	var objectProto$3 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
+	var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
 
 	/**
 	 * Checks if `value` is an empty object, collection, map, or set.
@@ -38229,7 +38236,7 @@
 	    return !value.length;
 	  }
 	  var tag = getTag(value);
-	  if (tag == mapTag || tag == setTag) {
+	  if (tag == mapTag$1 || tag == setTag$1) {
 	    return !value.size;
 	  }
 	  if (isPrototype(value)) {
@@ -38484,7 +38491,7 @@
 	 * @returns {Function} Returns cast function.
 	 */
 	function castFunction(value) {
-	  return typeof value == 'function' ? value : identity$6;
+	  return typeof value == 'function' ? value : identity$7;
 	}
 
 	/**
@@ -38693,6 +38700,114 @@
 	}(React.Component);
 
 	/**
+	 * Creates a `_.find` or `_.findLast` function.
+	 *
+	 * @private
+	 * @param {Function} findIndexFunc The function to find the collection index.
+	 * @returns {Function} Returns the new find function.
+	 */
+	function createFind(findIndexFunc) {
+	  return function(collection, predicate, fromIndex) {
+	    var iterable = Object(collection);
+	    if (!isArrayLike(collection)) {
+	      var iteratee = baseIteratee(predicate);
+	      collection = keys(collection);
+	      predicate = function(key) { return iteratee(iterable[key], key, iterable); };
+	    }
+	    var index = findIndexFunc(collection, predicate, fromIndex);
+	    return index > -1 ? iterable[iteratee ? collection[index] : index] : undefined;
+	  };
+	}
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeMax$2 = Math.max;
+
+	/**
+	 * This method is like `_.find` except that it returns the index of the first
+	 * element `predicate` returns truthy for instead of the element itself.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 1.1.0
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @returns {number} Returns the index of the found element, else `-1`.
+	 * @example
+	 *
+	 * var users = [
+	 *   { 'user': 'barney',  'active': false },
+	 *   { 'user': 'fred',    'active': false },
+	 *   { 'user': 'pebbles', 'active': true }
+	 * ];
+	 *
+	 * _.findIndex(users, function(o) { return o.user == 'barney'; });
+	 * // => 0
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.findIndex(users, { 'user': 'fred', 'active': false });
+	 * // => 1
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.findIndex(users, ['active', false]);
+	 * // => 0
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.findIndex(users, 'active');
+	 * // => 2
+	 */
+	function findIndex(array, predicate, fromIndex) {
+	  var length = array == null ? 0 : array.length;
+	  if (!length) {
+	    return -1;
+	  }
+	  var index = fromIndex == null ? 0 : toInteger(fromIndex);
+	  if (index < 0) {
+	    index = nativeMax$2(length + index, 0);
+	  }
+	  return baseFindIndex(array, baseIteratee(predicate), index);
+	}
+
+	/**
+	 * Iterates over elements of `collection`, returning the first element
+	 * `predicate` returns truthy for. The predicate is invoked with three
+	 * arguments: (value, index|key, collection).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to inspect.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @returns {*} Returns the matched element, else `undefined`.
+	 * @example
+	 *
+	 * var users = [
+	 *   { 'user': 'barney',  'age': 36, 'active': true },
+	 *   { 'user': 'fred',    'age': 40, 'active': false },
+	 *   { 'user': 'pebbles', 'age': 1,  'active': true }
+	 * ];
+	 *
+	 * _.find(users, function(o) { return o.age < 40; });
+	 * // => object for 'barney'
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.find(users, { 'age': 1, 'active': true });
+	 * // => object for 'pebbles'
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.find(users, ['active', false]);
+	 * // => object for 'fred'
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.find(users, 'active');
+	 * // => object for 'barney'
+	 */
+	var find$2 = createFind(findIndex);
+
+	/**
 	 * The base implementation of `_.some` without support for iteratee shorthands.
 	 *
 	 * @private
@@ -38776,6 +38891,18 @@
 	  return func(collection, baseIteratee(predicate));
 	}
 
+	/**
+	 * Determine if child by type exists in children.
+	 * @param {Object} children The children prop of a component.
+	 * @param {string|Function} type An html tag name string or React component.
+	 * @returns {Boolean}
+	 */
+
+	var someByType = function someByType(children, type) {
+	  return some(reactExports.Children.toArray(children), {
+	    type: type
+	  });
+	};
 	/**
 	 * Tests if children are nil in React and Preact.
 	 * @param {Object} children The children prop of a component.
@@ -38875,6 +39002,28 @@
 	var useKeyOrValueAndKey = function useKeyOrValueAndKey(val, key) {
 	  return val && (val === true ? key : val + " " + key);
 	}; //
+	// Prop to className exceptions
+	//
+
+	/**
+	 * The "multiple" prop implements control of visibility and reserved classes for Grid subcomponents.
+	 *
+	 * @param {*} val The value of the "multiple" prop
+	 * @param {*} key A props key
+	 *
+	 * @example
+	 * <Grid.Row only='mobile' />
+	 * <Grid.Row only='mobile tablet' />
+	 * <div class="mobile only row"></div>
+	 * <div class="mobile only tablet only row"></div>
+	 */
+
+	var useMultipleProp = function useMultipleProp(val, key) {
+	  if (!val || val === true) return null;
+	  return val.replace('large screen', 'large-screen').replace(/ vertically/g, '-vertically').split(' ').map(function (prop) {
+	    return prop.replace('-', ' ') + " " + key;
+	  }).join(' ');
+	};
 	/**
 	 * The "textAlign" prop follows the useValueAndKey except when the value is "justified'.
 	 * In this case, only the class "justified" is used, ignoring the "aligned" class.
@@ -39040,11 +39189,212 @@
 	      {
 	        arrayPush(result, value);
 	      }
-	    } else {
+	    } else if (!isStrict) {
 	      result[result.length] = value;
 	    }
 	  }
 	  return result;
+	}
+
+	/**
+	 * Creates an array of `array` values not included in the other given arrays
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons. The order and references of result values are
+	 * determined by the first array.
+	 *
+	 * **Note:** Unlike `_.pullAll`, this method returns a new array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @param {...Array} [values] The values to exclude.
+	 * @returns {Array} Returns the new array of filtered values.
+	 * @see _.without, _.xor
+	 * @example
+	 *
+	 * _.difference([2, 1], [2, 3]);
+	 * // => [1]
+	 */
+	var difference$2 = baseRest(function(array, values) {
+	  return isArrayLikeObject(array)
+	    ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true))
+	    : [];
+	});
+
+	/**
+	 * Casts `array` to a slice if it's needed.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {number} start The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the cast slice.
+	 */
+	function castSlice(array, start, end) {
+	  var length = array.length;
+	  end = end === undefined ? length : end;
+	  return (!start && end >= length) ? array : baseSlice(array, start, end);
+	}
+
+	/**
+	 * Used by `_.trim` and `_.trimEnd` to get the index of the last string symbol
+	 * that is not found in the character symbols.
+	 *
+	 * @private
+	 * @param {Array} strSymbols The string symbols to inspect.
+	 * @param {Array} chrSymbols The character symbols to find.
+	 * @returns {number} Returns the index of the last unmatched string symbol.
+	 */
+	function charsEndIndex(strSymbols, chrSymbols) {
+	  var index = strSymbols.length;
+
+	  while (index-- && baseIndexOf(chrSymbols, strSymbols[index], 0) > -1) {}
+	  return index;
+	}
+
+	/**
+	 * Used by `_.trim` and `_.trimStart` to get the index of the first string symbol
+	 * that is not found in the character symbols.
+	 *
+	 * @private
+	 * @param {Array} strSymbols The string symbols to inspect.
+	 * @param {Array} chrSymbols The character symbols to find.
+	 * @returns {number} Returns the index of the first unmatched string symbol.
+	 */
+	function charsStartIndex(strSymbols, chrSymbols) {
+	  var index = -1,
+	      length = strSymbols.length;
+
+	  while (++index < length && baseIndexOf(chrSymbols, strSymbols[index], 0) > -1) {}
+	  return index;
+	}
+
+	/**
+	 * Converts an ASCII `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	function asciiToArray(string) {
+	  return string.split('');
+	}
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange$2 = '\\ud800-\\udfff',
+	    rsComboMarksRange$3 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$3 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$3 = '\\u20d0-\\u20ff',
+	    rsComboRange$3 = rsComboMarksRange$3 + reComboHalfMarksRange$3 + rsComboSymbolsRange$3,
+	    rsVarRange$2 = '\\ufe0e\\ufe0f';
+
+	/** Used to compose unicode capture groups. */
+	var rsZWJ$2 = '\\u200d';
+
+	/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
+	var reHasUnicode = RegExp('[' + rsZWJ$2 + rsAstralRange$2  + rsComboRange$3 + rsVarRange$2 + ']');
+
+	/**
+	 * Checks if `string` contains Unicode symbols.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {boolean} Returns `true` if a symbol is found, else `false`.
+	 */
+	function hasUnicode(string) {
+	  return reHasUnicode.test(string);
+	}
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange$1 = '\\ud800-\\udfff',
+	    rsComboMarksRange$2 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$2 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$2 = '\\u20d0-\\u20ff',
+	    rsComboRange$2 = rsComboMarksRange$2 + reComboHalfMarksRange$2 + rsComboSymbolsRange$2,
+	    rsVarRange$1 = '\\ufe0e\\ufe0f';
+
+	/** Used to compose unicode capture groups. */
+	var rsAstral$1 = '[' + rsAstralRange$1 + ']',
+	    rsCombo$2 = '[' + rsComboRange$2 + ']',
+	    rsFitz$1 = '\\ud83c[\\udffb-\\udfff]',
+	    rsModifier$1 = '(?:' + rsCombo$2 + '|' + rsFitz$1 + ')',
+	    rsNonAstral$1 = '[^' + rsAstralRange$1 + ']',
+	    rsRegional$1 = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+	    rsSurrPair$1 = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+	    rsZWJ$1 = '\\u200d';
+
+	/** Used to compose unicode regexes. */
+	var reOptMod$1 = rsModifier$1 + '?',
+	    rsOptVar$1 = '[' + rsVarRange$1 + ']?',
+	    rsOptJoin$1 = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral$1, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsOptVar$1 + reOptMod$1 + ')*',
+	    rsSeq$1 = rsOptVar$1 + reOptMod$1 + rsOptJoin$1,
+	    rsSymbol$1 = '(?:' + [rsNonAstral$1 + rsCombo$2 + '?', rsCombo$2, rsRegional$1, rsSurrPair$1, rsAstral$1].join('|') + ')';
+
+	/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+	var reUnicode$1 = RegExp(rsFitz$1 + '(?=' + rsFitz$1 + ')|' + rsSymbol$1 + rsSeq$1, 'g');
+
+	/**
+	 * Converts a Unicode `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	function unicodeToArray(string) {
+	  return string.match(reUnicode$1) || [];
+	}
+
+	/**
+	 * Converts `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	function stringToArray(string) {
+	  return hasUnicode(string)
+	    ? unicodeToArray(string)
+	    : asciiToArray(string);
+	}
+
+	/**
+	 * Removes leading and trailing whitespace or specified characters from `string`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to trim.
+	 * @param {string} [chars=whitespace] The characters to trim.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {string} Returns the trimmed string.
+	 * @example
+	 *
+	 * _.trim('  abc  ');
+	 * // => 'abc'
+	 *
+	 * _.trim('-_-abc-_-', '_-');
+	 * // => 'abc'
+	 *
+	 * _.map(['  foo  ', '  bar  '], _.trim);
+	 * // => ['foo', 'bar']
+	 */
+	function trim(string, chars, guard) {
+	  string = toString(string);
+	  if (string && (chars === undefined)) {
+	    return baseTrim(string);
+	  }
+	  if (!string || !(chars = baseToString(chars))) {
+	    return string;
+	  }
+	  var strSymbols = stringToArray(string),
+	      chrSymbols = stringToArray(chars),
+	      start = charsStartIndex(strSymbols, chrSymbols),
+	      end = charsEndIndex(strSymbols, chrSymbols) + 1;
+
+	  return castSlice(strSymbols, start, end).join('');
 	}
 
 	/**
@@ -39070,10 +39420,10 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto$1 = Object.prototype;
+	var objectProto$2 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+	var hasOwnProperty$1 = objectProto$2.hasOwnProperty;
 
 	/**
 	 * Assigns `value` to `key` of `object` if the existing value is not equivalent
@@ -39236,13 +39586,13 @@
 
 	/** Used for built-in method references. */
 	var funcProto = Function.prototype,
-	    objectProto = Object.prototype;
+	    objectProto$1 = Object.prototype;
 
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString = funcProto.toString;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+	var hasOwnProperty = objectProto$1.hasOwnProperty;
 
 	/** Used to infer the `Object` constructor. */
 	var objectCtorString = funcToString.call(Object);
@@ -39372,9 +39722,9 @@
 	 * _.min([]);
 	 * // => undefined
 	 */
-	function min$2(array) {
+	function min$3(array) {
 	  return (array && array.length)
-	    ? baseExtremum(array, identity$6, baseLt)
+	    ? baseExtremum(array, identity$7, baseLt)
 	    : undefined;
 	}
 
@@ -39417,7 +39767,7 @@
 	 */
 	function sum$1(array) {
 	  return (array && array.length)
-	    ? baseSum(array, identity$6)
+	    ? baseSum(array, identity$7)
 	    : 0;
 	}
 
@@ -39605,7 +39955,7 @@
 	      return iteratee;
 	    });
 	  } else {
-	    iteratees = [identity$6];
+	    iteratees = [identity$7];
 	  }
 
 	  var index = -1;
@@ -39772,13 +40122,13 @@
 	        return map$2(suggestionWords, function (y) {
 	          return leven(x, y);
 	        });
-	      }), min$2));
+	      }), min$3));
 
 	      var suggestionScore = sum$1(map$2(map$2(suggestionWords, function (x) {
 	        return map$2(propValueWords, function (y) {
 	          return leven(x, y);
 	        });
-	      }), min$2));
+	      }), min$3));
 
 	      return {
 	        suggestion: suggestion,
@@ -39852,7 +40202,7 @@
 	 * @param {function[]} validators An array of propType functions.
 	 */
 
-	var every = function every(validators) {
+	var every$1 = function every(validators) {
 	  return function (props, propName, componentName) {
 	    for (var _len = arguments.length, rest = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
 	      rest[_key - 3] = arguments[_key];
@@ -39943,11 +40293,37 @@
 	  };
 	};
 	/**
+	 * Ensure an multiple prop contains a string with only possible values.
+	 * @param {string[]} possible An array of possible values to prop.
+	 */
+
+	var multipleProp = function multipleProp(possible) {
+	  return function (props, propName, componentName) {
+	    if (!Array.isArray(possible)) {
+	      throw new Error(['Invalid argument supplied to some, expected an instance of array.', "See `" + propName + "` prop in `" + componentName + "`."].join(' '));
+	    }
+
+	    var propValue = props[propName]; // skip if prop is undefined
+
+	    if (isNil(propValue) || propValue === false) return;
+	    var values = propValue.replace('large screen', 'large-screen').replace(/ vertically/g, '-vertically').split(' ').map(function (val) {
+	      return trim(val).replace('-', ' ');
+	    });
+
+	    var invalid = difference$2(values, possible); // fail only if there are invalid values
+
+
+	    if (invalid.length > 0) {
+	      return new Error("`" + propName + "` prop in `" + componentName + "` has invalid values: `" + invalid.join('`, `') + "`.");
+	    }
+	  };
+	};
+	/**
 	 * Ensure a component can render as a node passed as a prop value in place of children.
 	 */
 
 	var contentShorthand = function contentShorthand() {
-	  return every([disallow(['children']), PropTypes.node]).apply(void 0, arguments);
+	  return every$1([disallow(['children']), PropTypes.node]).apply(void 0, arguments);
 	};
 	/**
 	 * Item shorthand is a description of a component that can be a literal,
@@ -39955,14 +40331,14 @@
 	 */
 
 	var itemShorthand = function itemShorthand() {
-	  return every([disallow(['children']), PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.object, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.node, PropTypes.object]))])]).apply(void 0, arguments);
+	  return every$1([disallow(['children']), PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.object, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.node, PropTypes.object]))])]).apply(void 0, arguments);
 	};
 	/**
 	 * Collection shorthand ensures a prop is an array of item shorthand.
 	 */
 
 	var collectionShorthand = function collectionShorthand() {
-	  return every([disallow(['children']), PropTypes.arrayOf(itemShorthand)]).apply(void 0, arguments);
+	  return every$1([disallow(['children']), PropTypes.arrayOf(itemShorthand)]).apply(void 0, arguments);
 	};
 	/** A checker that matches the React.RefObject type. */
 
@@ -40617,6 +40993,8 @@
 	var libExports = requireLib();
 	var EventStack = /*@__PURE__*/getDefaultExportFromCjs(libExports);
 
+	var eventStack = libExports.instance;
+
 	/**
 	 * This method returns `undefined`.
 	 *
@@ -40972,6 +41350,29 @@
 	    return createShorthand(Component, mapValueToProps, val, options);
 	  };
 	} // ============================================================
+	// HTML Factories
+	// ============================================================
+
+	var createHTMLDivision = /* #__PURE__ */createShorthandFactory('div', function (val) {
+	  return {
+	    children: val
+	  };
+	});
+	var createHTMLInput = /* #__PURE__ */createShorthandFactory('input', function (val) {
+	  return {
+	    type: val
+	  };
+	});
+	var createHTMLLabel = /* #__PURE__ */createShorthandFactory('label', function (val) {
+	  return {
+	    children: val
+	  };
+	});
+	var createHTMLParagraph = /* #__PURE__ */createShorthandFactory('p', function (val) {
+	  return {
+	    children: val
+	  };
+	});
 
 	/**
 	 * Returns an object consisting of props beyond the scope of the Component.
@@ -41307,6 +41708,7 @@
 	var SIZES = ['mini', 'tiny', 'small', 'medium', 'large', 'big', 'huge', 'massive'];
 	var TEXT_ALIGNMENTS = ['left', 'center', 'right', 'justified'];
 	var VERTICAL_ALIGNMENTS = ['bottom', 'middle', 'top'];
+	var VISIBILITY = ['mobile', 'tablet', 'computer', 'large screen', 'widescreen'];
 	var WIDTHS = [].concat(keys(numberToWordMap), keys(numberToWordMap).map(Number), values$1(numberToWordMap));
 	// https://github.com/Semantic-Org/Semantic-UI/blob/master/dist/components/icon.css
 
@@ -41351,6 +41753,182 @@
 	var COMPONENT_CONTEXT_SPECIFIC_ICONS = ['left dropdown' // nested dropdown menu direction icon
 	];
 	var ALL_ICONS_IN_ALL_CONTEXTS = uniq([].concat(ICONS_AND_ALIASES, COMPONENT_CONTEXT_SPECIFIC_ICONS));
+
+	/**
+	 * Performs a deep comparison between two values to determine if they are
+	 * equivalent.
+	 *
+	 * **Note:** This method supports comparing arrays, array buffers, booleans,
+	 * date objects, error objects, maps, numbers, `Object` objects, regexes,
+	 * sets, strings, symbols, and typed arrays. `Object` objects are compared
+	 * by their own, not inherited, enumerable properties. Functions and DOM
+	 * nodes are compared by strict equality, i.e. `===`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 * var other = { 'a': 1 };
+	 *
+	 * _.isEqual(object, other);
+	 * // => true
+	 *
+	 * object === other;
+	 * // => false
+	 */
+	function isEqual$1(value, other) {
+	  return baseIsEqual(value, other);
+	}
+
+	// https://medium.com/@alexandereardon/uselayouteffect-and-ssr-192986cdcf7a
+
+	var useIsomorphicLayoutEffect$1 = isBrowser() && "development" !== 'test' ? React.useLayoutEffect : React.useEffect;
+
+	var CLASS_NAME_DELITIMITER = /\s+/;
+	/**
+	 * Accepts a set of ref objects that contain classnames as a string and returns an array of unique
+	 * classNames.
+	 *
+	 * @param {Set<React.RefObject>|undefined} classNameRefs
+	 * @returns String[]
+	 */
+
+	function computeClassNames(classNameRefs) {
+	  var classNames = [];
+
+	  if (classNameRefs) {
+	    classNameRefs.forEach(function (classNameRef) {
+	      if (typeof classNameRef.current === 'string') {
+	        var classNamesForRef = classNameRef.current.split(CLASS_NAME_DELITIMITER);
+	        classNamesForRef.forEach(function (className) {
+	          classNames.push(className);
+	        });
+	      }
+	    });
+	    return classNames.filter(function (className, i, array) {
+	      return className.length > 0 && array.indexOf(className) === i;
+	    });
+	  }
+
+	  return [];
+	}
+	/**
+	 * Computes classnames that should be removed and added to a node based on input differences.
+	 *
+	 * @param {String[]} prevClassNames
+	 * @param {String[]} currentClassNames
+	 */
+
+	function computeClassNamesDifference(prevClassNames, currentClassNames) {
+	  return [currentClassNames.filter(function (className) {
+	    return prevClassNames.indexOf(className) === -1;
+	  }), prevClassNames.filter(function (className) {
+	    return currentClassNames.indexOf(className) === -1;
+	  })];
+	}
+	var prevClassNames = new Map();
+	/**
+	 * @param {HTMLElement} node
+	 * @param {Set<React.RefObject>|undefined} classNameRefs
+	 */
+
+	var handleClassNamesChange = function handleClassNamesChange(node, classNameRefs) {
+	  var currentClassNames = computeClassNames(classNameRefs);
+
+	  var _computeClassNamesDif = computeClassNamesDifference(prevClassNames.get(node) || [], currentClassNames),
+	      forAdd = _computeClassNamesDif[0],
+	      forRemoval = _computeClassNamesDif[1];
+
+	  if (node) {
+	    forAdd.forEach(function (className) {
+	      return node.classList.add(className);
+	    });
+	    forRemoval.forEach(function (className) {
+	      return node.classList.remove(className);
+	    });
+	  }
+
+	  prevClassNames.set(node, currentClassNames);
+	};
+	var NodeRegistry = function NodeRegistry() {
+	  var _this = this;
+
+	  this.add = function (node, classNameRef) {
+	    if (_this.nodes.has(node)) {
+	      var _set = _this.nodes.get(node);
+
+	      _set.add(classNameRef);
+
+	      return;
+	    } // IE11 does not support constructor params
+
+
+	    var set = new Set();
+	    set.add(classNameRef);
+
+	    _this.nodes.set(node, set);
+	  };
+
+	  this.del = function (node, classNameRef) {
+	    if (!_this.nodes.has(node)) {
+	      return;
+	    }
+
+	    var set = _this.nodes.get(node);
+
+	    if (set.size === 1) {
+	      _this.nodes.delete(node);
+
+	      return;
+	    }
+
+	    set.delete(classNameRef);
+	  };
+
+	  this.emit = function (node, callback) {
+	    callback(node, _this.nodes.get(node));
+	  };
+
+	  this.nodes = new Map();
+	};
+	var nodeRegistry = new NodeRegistry();
+	/**
+	 * A React hooks that allows to manage classNames on a DOM node in declarative manner. Accepts
+	 * a HTML element or React ref objects with it.
+	 *
+	 * @param {HTMLElement|React.RefObject} node
+	 * @param {String} className
+	 */
+
+	function useClassNamesOnNode(node, className) {
+	  var classNameRef = React.useRef();
+	  var isMounted = React.useRef(false);
+	  useIsomorphicLayoutEffect$1(function () {
+	    classNameRef.current = className;
+
+	    if (isMounted.current) {
+	      var element = isRefObject(node) ? node.current : node;
+	      nodeRegistry.emit(element, handleClassNamesChange);
+	    }
+
+	    isMounted.current = true;
+	  }, [className]);
+	  useIsomorphicLayoutEffect$1(function () {
+	    var element = isRefObject(node) ? node.current : node;
+	    nodeRegistry.add(element, classNameRef);
+	    nodeRegistry.emit(element, handleClassNamesChange);
+	    return function () {
+	      nodeRegistry.del(element, classNameRef);
+	      nodeRegistry.emit(element, handleClassNamesChange);
+	    };
+	  }, [node]);
+	}
 
 	/**
 	 * Creates an array excluding all given values using
@@ -43040,7 +43618,7 @@
 	  floated: PropTypes.oneOf(FLOATS),
 
 	  /** An image can take up the width of its container. */
-	  fluid: every([PropTypes.bool, disallow(['size'])]),
+	  fluid: every$1([PropTypes.bool, disallow(['size'])]),
 
 	  /** An image can be hidden. */
 	  hidden: PropTypes.bool,
@@ -43288,7 +43866,7 @@
 	  detail: itemShorthand,
 
 	  /** Formats the label as a dot. */
-	  empty: every([PropTypes.bool, demand(['circular'])]),
+	  empty: every$1([PropTypes.bool, demand(['circular'])]),
 
 	  /** Float above another element in the upper right corner. */
 	  floating: PropTypes.bool,
@@ -43694,7 +44272,7 @@
 	  basic: PropTypes.bool,
 
 	  /** Primary content. */
-	  children: every([PropTypes.node, disallow(['label']), givenProps({
+	  children: every$1([PropTypes.node, disallow(['label']), givenProps({
 	    icon: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.object.isRequired, PropTypes.element.isRequired])
 	  }, disallow(['icon']))]),
 
@@ -43782,6 +44360,5044 @@
 	    content: value
 	  };
 	});
+
+	/**
+	 * A specialized version of `_.reduce` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @param {boolean} [initAccum] Specify using the first element of `array` as
+	 *  the initial value.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	function arrayReduce(array, iteratee, accumulator, initAccum) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  if (initAccum && length) {
+	    accumulator = array[++index];
+	  }
+	  while (++index < length) {
+	    accumulator = iteratee(accumulator, array[index], index, array);
+	  }
+	  return accumulator;
+	}
+
+	/**
+	 * The base implementation of `_.reduce` and `_.reduceRight`, without support
+	 * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} accumulator The initial value.
+	 * @param {boolean} initAccum Specify using the first or last element of
+	 *  `collection` as the initial value.
+	 * @param {Function} eachFunc The function to iterate over `collection`.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	function baseReduce(collection, iteratee, accumulator, initAccum, eachFunc) {
+	  eachFunc(collection, function(value, index, collection) {
+	    accumulator = initAccum
+	      ? (initAccum = false, value)
+	      : iteratee(accumulator, value, index, collection);
+	  });
+	  return accumulator;
+	}
+
+	/**
+	 * Reduces `collection` to a value which is the accumulated result of running
+	 * each element in `collection` thru `iteratee`, where each successive
+	 * invocation is supplied the return value of the previous. If `accumulator`
+	 * is not given, the first element of `collection` is used as the initial
+	 * value. The iteratee is invoked with four arguments:
+	 * (accumulator, value, index|key, collection).
+	 *
+	 * Many lodash methods are guarded to work as iteratees for methods like
+	 * `_.reduce`, `_.reduceRight`, and `_.transform`.
+	 *
+	 * The guarded methods are:
+	 * `assign`, `defaults`, `defaultsDeep`, `includes`, `merge`, `orderBy`,
+	 * and `sortBy`
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @returns {*} Returns the accumulated value.
+	 * @see _.reduceRight
+	 * @example
+	 *
+	 * _.reduce([1, 2], function(sum, n) {
+	 *   return sum + n;
+	 * }, 0);
+	 * // => 3
+	 *
+	 * _.reduce({ 'a': 1, 'b': 2, 'c': 1 }, function(result, value, key) {
+	 *   (result[value] || (result[value] = [])).push(key);
+	 *   return result;
+	 * }, {});
+	 * // => { '1': ['a', 'c'], '2': ['b'] } (iteration order is not guaranteed)
+	 */
+	function reduce(collection, iteratee, accumulator) {
+	  var func = isArray(collection) ? arrayReduce : baseReduce,
+	      initAccum = arguments.length < 3;
+
+	  return func(collection, baseIteratee(iteratee), accumulator, initAccum, baseEach);
+	}
+
+	var shallowequal;
+	var hasRequiredShallowequal;
+
+	function requireShallowequal () {
+		if (hasRequiredShallowequal) return shallowequal;
+		hasRequiredShallowequal = 1;
+		//
+
+		shallowequal = function shallowEqual(objA, objB, compare, compareContext) {
+		  var ret = compare ? compare.call(compareContext, objA, objB) : void 0;
+
+		  if (ret !== void 0) {
+		    return !!ret;
+		  }
+
+		  if (objA === objB) {
+		    return true;
+		  }
+
+		  if (typeof objA !== "object" || !objA || typeof objB !== "object" || !objB) {
+		    return false;
+		  }
+
+		  var keysA = Object.keys(objA);
+		  var keysB = Object.keys(objB);
+
+		  if (keysA.length !== keysB.length) {
+		    return false;
+		  }
+
+		  var bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB);
+
+		  // Test for A's keys different from B.
+		  for (var idx = 0; idx < keysA.length; idx++) {
+		    var key = keysA[idx];
+
+		    if (!bHasOwnProperty(key)) {
+		      return false;
+		    }
+
+		    var valueA = objA[key];
+		    var valueB = objB[key];
+
+		    ret = compare ? compare.call(compareContext, valueA, valueB, key) : void 0;
+
+		    if (ret === false || (ret === void 0 && valueA !== valueB)) {
+		      return false;
+		    }
+		  }
+
+		  return true;
+		};
+		return shallowequal;
+	}
+
+	var shallowequalExports = requireShallowequal();
+	var shallowEqual = /*@__PURE__*/getDefaultExportFromCjs(shallowequalExports);
+
+	/**
+	 * A modal can contain a row of actions.
+	 */
+
+	var ModalActions = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(ModalActions, _Component);
+
+	  function ModalActions() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleButtonOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e, buttonProps) {
+	          invoke(predefinedProps, 'onClick', e, buttonProps);
+
+	          invoke(_this.props, 'onActionClick', e, buttonProps);
+	        }
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = ModalActions.prototype;
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props = this.props,
+	        actions = _this$props.actions,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content;
+	    var classes = clsx('actions', className);
+	    var rest = getUnhandledProps(ModalActions, this.props);
+	    var ElementType = getElementType(ModalActions, this.props);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), children);
+	    }
+
+	    if (!isNil$1(content)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), content);
+	    }
+
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), map$2(actions, function (action) {
+	      return Button.create(action, {
+	        overrideProps: _this2.handleButtonOverrides
+	      });
+	    }));
+	  };
+
+	  return ModalActions;
+	}(reactExports.Component);
+
+	ModalActions.handledProps = ["actions", "as", "children", "className", "content", "onActionClick"];
+	ModalActions.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Array of shorthand buttons. */
+	  actions: collectionShorthand,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /**
+	   * Action onClick handler when using shorthand `actions`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props from the clicked action.
+	   */
+	  onActionClick: every$1([disallow(['children']), PropTypes.func])
+	} ;
+	ModalActions.create = createShorthandFactory(ModalActions, function (actions) {
+	  return {
+	    actions: actions
+	  };
+	});
+
+	/**
+	 * A modal can contain content.
+	 */
+
+	function ModalContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      image = props.image,
+	      scrolling = props.scrolling;
+	  var classes = clsx(className, useKeyOnly(image, 'image'), useKeyOnly(scrolling, 'scrolling'), 'content');
+	  var rest = getUnhandledProps(ModalContent, props);
+	  var ElementType = getElementType(ModalContent, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ModalContent.handledProps = ["as", "children", "className", "content", "image", "scrolling"];
+	ModalContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A modal can contain image content. */
+	  image: PropTypes.bool,
+
+	  /** A modal can use the entire size of the screen. */
+	  scrolling: PropTypes.bool
+	} ;
+	ModalContent.create = createShorthandFactory(ModalContent, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A modal can contain a description with one or more paragraphs.
+	 */
+
+	function ModalDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('description', className);
+	  var rest = getUnhandledProps(ModalDescription, props);
+	  var ElementType = getElementType(ModalDescription, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ModalDescription.handledProps = ["as", "children", "className", "content"];
+	ModalDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A modal has a dimmer.
+	 */
+
+	function ModalDimmer(props) {
+	  var blurring = props.blurring,
+	      children = props.children,
+	      className = props.className,
+	      centered = props.centered,
+	      content = props.content,
+	      inverted = props.inverted,
+	      mountNode = props.mountNode,
+	      scrolling = props.scrolling;
+	  var ref = React.useRef();
+	  var classes = clsx('ui', useKeyOnly(inverted, 'inverted'), useKeyOnly(!centered, 'top aligned'), 'page modals dimmer transition visible active', className);
+	  var bodyClasses = clsx('dimmable dimmed', useKeyOnly(blurring, 'blurring'), useKeyOnly(scrolling, 'scrolling'));
+	  var rest = getUnhandledProps(ModalDimmer, props);
+	  var ElementType = getElementType(ModalDimmer, props);
+	  useClassNamesOnNode(mountNode, bodyClasses);
+	  React.useEffect(function () {
+	    if (ref.current && ref.current.style) {
+	      ref.current.style.setProperty('display', 'flex', 'important');
+	    }
+	  }, []);
+	  return /*#__PURE__*/React.createElement(Ref, {
+	    innerRef: ref
+	  }, /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children));
+	}
+
+	ModalDimmer.handledProps = ["as", "blurring", "centered", "children", "className", "content", "inverted", "mountNode", "scrolling"];
+	ModalDimmer.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A dimmer can be blurred. */
+	  blurring: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** A dimmer can center its contents in the viewport. */
+	  centered: PropTypes.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A dimmer can be inverted. */
+	  inverted: PropTypes.bool,
+
+	  /** The node where the modal should mount. Defaults to document.body. */
+	  mountNode: PropTypes.any,
+
+	  /** A dimmer can make body scrollable. */
+	  scrolling: PropTypes.bool
+	} ;
+	ModalDimmer.create = createShorthandFactory(ModalDimmer, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A modal can have a header.
+	 */
+
+	function ModalHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('header', className);
+	  var rest = getUnhandledProps(ModalHeader, props);
+	  var ElementType = getElementType(ModalHeader, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ModalHeader.handledProps = ["as", "children", "className", "content"];
+	ModalHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ModalHeader.create = createShorthandFactory(ModalHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	// https://github.com/Semantic-Org/Semantic-UI/blob/2.4.1/src/definitions/modules/modal.js#L956
+	var OFFSET = 0; // https://github.com/Semantic-Org/Semantic-UI/blob/2.4.1/src/definitions/modules/modal.js#L990
+
+	var PADDING = 50;
+	/**
+	 * Ensures that modal can fit viewport without scroll.
+	 *
+	 * @param modalRect {DOMRect}
+	 *
+	 * @see https://github.com/Semantic-Org/Semantic-UI/blob/2.4.1/src/definitions/modules/modal.js#L608
+	 */
+
+	var canFit = function canFit(modalRect) {
+	  // original: scrollHeight = $module.prop('scrollHeight'),
+	  // is replaced by .height because scrollHeight provides integer which produces glitches
+	  // https://github.com/Semantic-Org/Semantic-UI-React/issues/2221
+	  var scrollHeight = modalRect.height + OFFSET; // $module.outerHeight() + settings.offset
+
+	  var height = modalRect.height + OFFSET; // original: $(window).height()
+
+	  var contextHeight = window.innerHeight;
+	  var verticalCenter = contextHeight / 2;
+	  var topOffset = -(height / 2); // padding with edge of page
+
+	  var paddingHeight = PADDING;
+	  var startPosition = verticalCenter + topOffset; // 0
+	  // original: scrollHeight > height
+	  //     ? startPosition + scrollHeight + paddingHeight < contextHeight
+	  //     : height + paddingHeight * 2 < contextHeight
+
+	  return startPosition + scrollHeight + paddingHeight < contextHeight;
+	};
+	/**
+	 * Creates legacy styles for IE11.
+	 *
+	 * @param isFitted {Boolean}
+	 * @param centered {Boolean}
+	 * @param modalRect {DOMRect}
+	 *
+	 * @see https://github.com/Semantic-Org/Semantic-UI/blob/2.4.1/src/definitions/modules/modal.js#L718
+	 */
+
+	var getLegacyStyles = function getLegacyStyles(isFitted, centered, modalRect) {
+	  var marginTop = centered && isFitted ? -(modalRect.height / 2) : 0;
+	  var marginLeft = -(modalRect.width / 2);
+	  return {
+	    marginLeft: marginLeft,
+	    marginTop: marginTop
+	  };
+	}; // https://github.com/Semantic-Org/Semantic-UI/blob/2.4.1/src/definitions/modules/modal.js#L631
+
+	/* istanbul ignore next */
+
+	var isLegacy = function isLegacy() {
+	  return !window.ActiveXObject && 'ActiveXObject' in window;
+	};
+
+	/**
+	 * A modal displays content that temporarily blocks interactions with the main view of a site.
+	 * @see Confirm
+	 * @see Portal
+	 */
+	var Modal = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Modal, _Component);
+
+	  function Modal() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.legacy = isBrowser() && isLegacy();
+	    _this.ref = /*#__PURE__*/reactExports.createRef();
+	    _this.dimmerRef = /*#__PURE__*/reactExports.createRef();
+	    _this.latestDocumentMouseDownEvent = null;
+
+	    _this.getMountNode = function () {
+	      return isBrowser() ? _this.props.mountNode || document.body : null;
+	    };
+
+	    _this.handleActionsOverrides = function (predefinedProps) {
+	      return {
+	        onActionClick: function onActionClick(e, actionProps) {
+	          invoke(predefinedProps, 'onActionClick', e, actionProps);
+
+	          invoke(_this.props, 'onActionClick', e, _this.props);
+
+	          _this.handleClose(e);
+	        }
+	      };
+	    };
+
+	    _this.handleClose = function (e) {
+	      _this.setState({
+	        open: false
+	      });
+
+	      invoke(_this.props, 'onClose', e, _extends({}, _this.props, {
+	        open: false
+	      }));
+	    };
+
+	    _this.handleDocumentMouseDown = function (e) {
+	      _this.latestDocumentMouseDownEvent = e;
+	    };
+
+	    _this.handleDocumentClick = function (e) {
+	      var closeOnDimmerClick = _this.props.closeOnDimmerClick;
+	      var currentDocumentMouseDownEvent = _this.latestDocumentMouseDownEvent;
+	      _this.latestDocumentMouseDownEvent = null;
+	      if (!closeOnDimmerClick || doesNodeContainClick(_this.ref.current, currentDocumentMouseDownEvent) || doesNodeContainClick(_this.ref.current, e)) return;
+
+	      _this.setState({
+	        open: false
+	      });
+
+	      invoke(_this.props, 'onClose', e, _extends({}, _this.props, {
+	        open: false
+	      }));
+	    };
+
+	    _this.handleIconOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e) {
+	          invoke(predefinedProps, 'onClick', e);
+
+	          _this.handleClose(e);
+	        }
+	      };
+	    };
+
+	    _this.handleOpen = function (e) {
+	      invoke(_this.props, 'onOpen', e, _extends({}, _this.props, {
+	        open: true
+	      }));
+
+	      _this.setState({
+	        open: true
+	      });
+	    };
+
+	    _this.handlePortalMount = function (e) {
+	      var eventPool = _this.props.eventPool;
+
+	      _this.setState({
+	        scrolling: false
+	      });
+
+	      _this.setPositionAndClassNames();
+
+	      eventStack.sub('mousedown', _this.handleDocumentMouseDown, {
+	        pool: eventPool,
+	        target: _this.dimmerRef.current
+	      });
+	      eventStack.sub('click', _this.handleDocumentClick, {
+	        pool: eventPool,
+	        target: _this.dimmerRef.current
+	      });
+
+	      invoke(_this.props, 'onMount', e, _this.props);
+	    };
+
+	    _this.handlePortalUnmount = function (e) {
+	      var eventPool = _this.props.eventPool;
+	      cancelAnimationFrame(_this.animationRequestId);
+	      eventStack.unsub('mousedown', _this.handleDocumentMouseDown, {
+	        pool: eventPool,
+	        target: _this.dimmerRef.current
+	      });
+	      eventStack.unsub('click', _this.handleDocumentClick, {
+	        pool: eventPool,
+	        target: _this.dimmerRef.current
+	      });
+
+	      invoke(_this.props, 'onUnmount', e, _this.props);
+	    };
+
+	    _this.setPositionAndClassNames = function () {
+	      var centered = _this.props.centered;
+	      var scrolling;
+	      var newState = {};
+
+	      if (_this.ref.current) {
+	        var rect = _this.ref.current.getBoundingClientRect();
+
+	        var isFitted = canFit(rect);
+	        scrolling = !isFitted; // Styles should be computed for IE11
+
+	        var legacyStyles = _this.legacy ? getLegacyStyles(isFitted, centered, rect) : {};
+
+	        if (!shallowEqual(_this.state.legacyStyles, legacyStyles)) {
+	          newState.legacyStyles = legacyStyles;
+	        }
+
+	        if (_this.state.scrolling !== scrolling) {
+	          newState.scrolling = scrolling;
+	        }
+	      }
+
+	      if (!isEmpty(newState)) _this.setState(newState);
+	      _this.animationRequestId = requestAnimationFrame(_this.setPositionAndClassNames);
+	    };
+
+	    _this.renderContent = function (rest) {
+	      var _this$props = _this.props,
+	          actions = _this$props.actions,
+	          basic = _this$props.basic,
+	          children = _this$props.children,
+	          className = _this$props.className,
+	          closeIcon = _this$props.closeIcon,
+	          content = _this$props.content,
+	          header = _this$props.header,
+	          size = _this$props.size,
+	          style = _this$props.style;
+	      var _this$state = _this.state,
+	          legacyStyles = _this$state.legacyStyles,
+	          scrolling = _this$state.scrolling;
+	      var classes = clsx('ui', size, useKeyOnly(basic, 'basic'), useKeyOnly(_this.legacy, 'legacy'), useKeyOnly(scrolling, 'scrolling'), 'modal transition visible active', className);
+	      var ElementType = getElementType(Modal, _this.props);
+	      var closeIconName = closeIcon === true ? 'close' : closeIcon;
+	      var closeIconJSX = Icon.create(closeIconName, {
+	        overrideProps: _this.handleIconOverrides
+	      });
+	      return /*#__PURE__*/React.createElement(Ref, {
+	        innerRef: _this.ref
+	      }, /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        style: _extends({}, legacyStyles, style)
+	      }), closeIconJSX, isNil$1(children) ? /*#__PURE__*/React.createElement(React.Fragment, null, ModalHeader.create(header, {
+	        autoGenerateKey: false
+	      }), ModalContent.create(content, {
+	        autoGenerateKey: false
+	      }), ModalActions.create(actions, {
+	        overrideProps: _this.handleActionsOverrides
+	      })) : children));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Modal.prototype;
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    this.handlePortalUnmount();
+	  } // Do not access document when server side rendering
+	  ;
+
+	  _proto.render = function render() {
+	    var _this$props2 = this.props,
+	        centered = _this$props2.centered,
+	        closeOnDocumentClick = _this$props2.closeOnDocumentClick,
+	        dimmer = _this$props2.dimmer,
+	        eventPool = _this$props2.eventPool,
+	        trigger = _this$props2.trigger;
+	    var _this$state2 = this.state,
+	        open = _this$state2.open,
+	        scrolling = _this$state2.scrolling;
+	    var mountNode = this.getMountNode(); // Short circuit when server side rendering
+
+	    if (!isBrowser()) {
+	      return /*#__PURE__*/reactExports.isValidElement(trigger) ? trigger : null;
+	    }
+
+	    var unhandled = getUnhandledProps(Modal, this.props);
+	    var portalPropNames = Portal.handledProps;
+
+	    var rest = reduce(unhandled, function (acc, val, key) {
+	      if (!includes(portalPropNames, key)) acc[key] = val;
+	      return acc;
+	    }, {});
+
+	    var portalProps = pick(unhandled, portalPropNames); // Heads up!
+	    //
+	    // The SUI CSS selector to prevent the modal itself from blurring requires an immediate .dimmer child:
+	    // .blurring.dimmed.dimmable>:not(.dimmer) { ... }
+	    //
+	    // The .blurring.dimmed.dimmable is the body, so that all body content inside is blurred.
+	    // We need the immediate child to be the dimmer to :not() blur the modal itself!
+	    // Otherwise, the portal div is also blurred, blurring the modal.
+	    //
+	    // We cannot them wrap the modalJSX in an actual <Dimmer /> instead, we apply the dimmer classes to the <Portal />.
+
+
+	    return /*#__PURE__*/React.createElement(Portal, _extends({
+	      closeOnDocumentClick: closeOnDocumentClick
+	    }, portalProps, {
+	      trigger: trigger,
+	      eventPool: eventPool,
+	      mountNode: mountNode,
+	      open: open,
+	      onClose: this.handleClose,
+	      onMount: this.handlePortalMount,
+	      onOpen: this.handleOpen,
+	      onUnmount: this.handlePortalUnmount
+	    }), /*#__PURE__*/React.createElement(Ref, {
+	      innerRef: this.dimmerRef
+	    }, ModalDimmer.create(isPlainObject(dimmer) ? dimmer : {}, {
+	      autoGenerateKey: false,
+	      defaultProps: {
+	        blurring: dimmer === 'blurring',
+	        inverted: dimmer === 'inverted'
+	      },
+	      overrideProps: {
+	        children: this.renderContent(rest),
+	        centered: centered,
+	        mountNode: mountNode,
+	        scrolling: scrolling
+	      }
+	    })));
+	  };
+
+	  return Modal;
+	}(ModernAutoControlledComponent);
+
+	Modal.handledProps = ["actions", "as", "basic", "centered", "children", "className", "closeIcon", "closeOnDimmerClick", "closeOnDocumentClick", "content", "defaultOpen", "dimmer", "eventPool", "header", "mountNode", "onActionClick", "onClose", "onMount", "onOpen", "onUnmount", "open", "size", "style", "trigger"];
+	Modal.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Shorthand for Modal.Actions. Typically an array of button shorthand. */
+	  actions: itemShorthand,
+
+	  /** A modal can reduce its complexity */
+	  basic: PropTypes.bool,
+
+	  /** A modal can be vertically centered in the viewport */
+	  centered: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for the close icon. Closes the modal on click. */
+	  closeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.bool]),
+
+	  /** Whether or not the Modal should close when the dimmer is clicked. */
+	  closeOnDimmerClick: PropTypes.bool,
+
+	  /** Whether or not the Modal should close when the document is clicked. */
+	  closeOnDocumentClick: PropTypes.bool,
+
+	  /** Simple text content for the Modal. */
+	  content: itemShorthand,
+
+	  /** Initial value of open. */
+	  defaultOpen: PropTypes.bool,
+
+	  /** A Modal can appear in a dimmer. */
+	  dimmer: PropTypes.oneOfType([PropTypes.bool, PropTypes.func, PropTypes.object, PropTypes.oneOf(['inverted', 'blurring'])]),
+
+	  /** Event pool namespace that is used to handle component events */
+	  eventPool: PropTypes.string,
+
+	  /** Modal displayed above the content in bold. */
+	  header: itemShorthand,
+
+	  /** The node where the modal should mount. Defaults to document.body. */
+	  mountNode: PropTypes.any,
+
+	  /**
+	   * Action onClick handler when using shorthand `actions`.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onActionClick: PropTypes.func,
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: PropTypes.func,
+
+	  /**
+	   * Called when the modal is mounted on the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onMount: PropTypes.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: PropTypes.func,
+
+	  /**
+	   * Called when the modal is unmounted from the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUnmount: PropTypes.func,
+
+	  /** Controls whether or not the Modal is displayed. */
+	  open: PropTypes.bool,
+
+	  /** A modal can vary in size */
+	  size: PropTypes.oneOf(['mini', 'tiny', 'small', 'large', 'fullscreen']),
+
+	  /** Custom styles. */
+	  style: PropTypes.object,
+
+	  /** Element to be rendered in-place where the modal is defined. */
+	  trigger: PropTypes.node
+	  /**
+	   * NOTE: Any unhandled props that are defined in Modal are passed-through
+	   * to the inner Portal.
+	   */
+
+	} ;
+	Modal.defaultProps = {
+	  centered: true,
+	  dimmer: true,
+	  closeOnDimmerClick: true,
+	  closeOnDocumentClick: false,
+	  eventPool: 'Modal'
+	};
+	Modal.autoControlledProps = ['open'];
+	Modal.Actions = ModalActions;
+	Modal.Content = ModalContent;
+	Modal.Description = ModalDescription;
+	Modal.Dimmer = ModalDimmer;
+	Modal.Header = ModalHeader;
+
+	/**
+	 * The base implementation of `_.propertyOf` without support for deep paths.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Function} Returns the new accessor function.
+	 */
+	function basePropertyOf(object) {
+	  return function(key) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/** Used to map Latin Unicode letters to basic Latin letters. */
+	var deburredLetters = {
+	  // Latin-1 Supplement block.
+	  '\xc0': 'A',  '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
+	  '\xe0': 'a',  '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
+	  '\xc7': 'C',  '\xe7': 'c',
+	  '\xd0': 'D',  '\xf0': 'd',
+	  '\xc8': 'E',  '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
+	  '\xe8': 'e',  '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
+	  '\xcc': 'I',  '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
+	  '\xec': 'i',  '\xed': 'i', '\xee': 'i', '\xef': 'i',
+	  '\xd1': 'N',  '\xf1': 'n',
+	  '\xd2': 'O',  '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
+	  '\xf2': 'o',  '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
+	  '\xd9': 'U',  '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
+	  '\xf9': 'u',  '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
+	  '\xdd': 'Y',  '\xfd': 'y', '\xff': 'y',
+	  '\xc6': 'Ae', '\xe6': 'ae',
+	  '\xde': 'Th', '\xfe': 'th',
+	  '\xdf': 'ss',
+	  // Latin Extended-A block.
+	  '\u0100': 'A',  '\u0102': 'A', '\u0104': 'A',
+	  '\u0101': 'a',  '\u0103': 'a', '\u0105': 'a',
+	  '\u0106': 'C',  '\u0108': 'C', '\u010a': 'C', '\u010c': 'C',
+	  '\u0107': 'c',  '\u0109': 'c', '\u010b': 'c', '\u010d': 'c',
+	  '\u010e': 'D',  '\u0110': 'D', '\u010f': 'd', '\u0111': 'd',
+	  '\u0112': 'E',  '\u0114': 'E', '\u0116': 'E', '\u0118': 'E', '\u011a': 'E',
+	  '\u0113': 'e',  '\u0115': 'e', '\u0117': 'e', '\u0119': 'e', '\u011b': 'e',
+	  '\u011c': 'G',  '\u011e': 'G', '\u0120': 'G', '\u0122': 'G',
+	  '\u011d': 'g',  '\u011f': 'g', '\u0121': 'g', '\u0123': 'g',
+	  '\u0124': 'H',  '\u0126': 'H', '\u0125': 'h', '\u0127': 'h',
+	  '\u0128': 'I',  '\u012a': 'I', '\u012c': 'I', '\u012e': 'I', '\u0130': 'I',
+	  '\u0129': 'i',  '\u012b': 'i', '\u012d': 'i', '\u012f': 'i', '\u0131': 'i',
+	  '\u0134': 'J',  '\u0135': 'j',
+	  '\u0136': 'K',  '\u0137': 'k', '\u0138': 'k',
+	  '\u0139': 'L',  '\u013b': 'L', '\u013d': 'L', '\u013f': 'L', '\u0141': 'L',
+	  '\u013a': 'l',  '\u013c': 'l', '\u013e': 'l', '\u0140': 'l', '\u0142': 'l',
+	  '\u0143': 'N',  '\u0145': 'N', '\u0147': 'N', '\u014a': 'N',
+	  '\u0144': 'n',  '\u0146': 'n', '\u0148': 'n', '\u014b': 'n',
+	  '\u014c': 'O',  '\u014e': 'O', '\u0150': 'O',
+	  '\u014d': 'o',  '\u014f': 'o', '\u0151': 'o',
+	  '\u0154': 'R',  '\u0156': 'R', '\u0158': 'R',
+	  '\u0155': 'r',  '\u0157': 'r', '\u0159': 'r',
+	  '\u015a': 'S',  '\u015c': 'S', '\u015e': 'S', '\u0160': 'S',
+	  '\u015b': 's',  '\u015d': 's', '\u015f': 's', '\u0161': 's',
+	  '\u0162': 'T',  '\u0164': 'T', '\u0166': 'T',
+	  '\u0163': 't',  '\u0165': 't', '\u0167': 't',
+	  '\u0168': 'U',  '\u016a': 'U', '\u016c': 'U', '\u016e': 'U', '\u0170': 'U', '\u0172': 'U',
+	  '\u0169': 'u',  '\u016b': 'u', '\u016d': 'u', '\u016f': 'u', '\u0171': 'u', '\u0173': 'u',
+	  '\u0174': 'W',  '\u0175': 'w',
+	  '\u0176': 'Y',  '\u0177': 'y', '\u0178': 'Y',
+	  '\u0179': 'Z',  '\u017b': 'Z', '\u017d': 'Z',
+	  '\u017a': 'z',  '\u017c': 'z', '\u017e': 'z',
+	  '\u0132': 'IJ', '\u0133': 'ij',
+	  '\u0152': 'Oe', '\u0153': 'oe',
+	  '\u0149': "'n", '\u017f': 's'
+	};
+
+	/**
+	 * Used by `_.deburr` to convert Latin-1 Supplement and Latin Extended-A
+	 * letters to basic Latin letters.
+	 *
+	 * @private
+	 * @param {string} letter The matched letter to deburr.
+	 * @returns {string} Returns the deburred letter.
+	 */
+	var deburrLetter = basePropertyOf(deburredLetters);
+
+	/** Used to match Latin Unicode letters (excluding mathematical operators). */
+	var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
+
+	/** Used to compose unicode character classes. */
+	var rsComboMarksRange$1 = '\\u0300-\\u036f',
+	    reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange$1 = '\\u20d0-\\u20ff',
+	    rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1;
+
+	/** Used to compose unicode capture groups. */
+	var rsCombo$1 = '[' + rsComboRange$1 + ']';
+
+	/**
+	 * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
+	 * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
+	 */
+	var reComboMark = RegExp(rsCombo$1, 'g');
+
+	/**
+	 * Deburrs `string` by converting
+	 * [Latin-1 Supplement](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+	 * and [Latin Extended-A](https://en.wikipedia.org/wiki/Latin_Extended-A)
+	 * letters to basic Latin letters and removing
+	 * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to deburr.
+	 * @returns {string} Returns the deburred string.
+	 * @example
+	 *
+	 * _.deburr('déjà vu');
+	 * // => 'deja vu'
+	 */
+	function deburr(string) {
+	  string = toString(string);
+	  return string && string.replace(reLatin, deburrLetter).replace(reComboMark, '');
+	}
+
+	/**
+	 * Sets the value at `path` of `object`. If a portion of `path` doesn't exist,
+	 * it's created. Arrays are created for missing index properties while objects
+	 * are created for all other missing properties. Use `_.setWith` to customize
+	 * `path` creation.
+	 *
+	 * **Note:** This method mutates `object`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.7.0
+	 * @category Object
+	 * @param {Object} object The object to modify.
+	 * @param {Array|string} path The path of the property to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+	 *
+	 * _.set(object, 'a[0].b.c', 4);
+	 * console.log(object.a[0].b.c);
+	 * // => 4
+	 *
+	 * _.set(object, ['x', '0', 'y', 'z'], 5);
+	 * console.log(object.x[0].y.z);
+	 * // => 5
+	 */
+	function set$2(object, path, value) {
+	  return object == null ? object : baseSet(object, path, value);
+	}
+
+	/**
+	 * A checkbox allows a user to select a value from a small set of options, often binary.
+	 * @see Form
+	 * @see Radio
+	 */
+	var Checkbox = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Checkbox, _Component);
+
+	  function Checkbox() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.inputRef = /*#__PURE__*/reactExports.createRef();
+	    _this.labelRef = /*#__PURE__*/reactExports.createRef();
+
+	    _this.canToggle = function () {
+	      var _this$props = _this.props,
+	          disabled = _this$props.disabled,
+	          radio = _this$props.radio,
+	          readOnly = _this$props.readOnly;
+	      var checked = _this.state.checked;
+	      return !disabled && !readOnly && !(radio && checked);
+	    };
+
+	    _this.computeTabIndex = function () {
+	      var _this$props2 = _this.props,
+	          disabled = _this$props2.disabled,
+	          tabIndex = _this$props2.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      return disabled ? -1 : 0;
+	    };
+
+	    _this.handleClick = function (e) {
+	      var id = _this.props.id;
+	      var _this$state = _this.state,
+	          checked = _this$state.checked,
+	          indeterminate = _this$state.indeterminate;
+
+	      var isInputClick = invoke(_this.inputRef.current, 'contains', e.target);
+
+	      var isLabelClick = invoke(_this.labelRef.current, 'contains', e.target);
+
+	      var isRootClick = !isLabelClick && !isInputClick;
+	      var hasId = !isNil(id);
+	      var isLabelClickAndForwardedToInput = isLabelClick && hasId; // https://github.com/Semantic-Org/Semantic-UI-React/pull/3351
+
+	      if (!isLabelClickAndForwardedToInput) {
+	        invoke(_this.props, 'onClick', e, _extends({}, _this.props, {
+	          checked: !checked,
+	          indeterminate: !!indeterminate
+	        }));
+	      }
+
+	      if (_this.isClickFromMouse) {
+	        _this.isClickFromMouse = false;
+
+	        if (isLabelClick && !hasId) {
+	          _this.handleChange(e);
+	        } // Changes should be triggered for the slider variation
+
+
+	        if (isRootClick) {
+	          _this.handleChange(e);
+	        }
+
+	        if (isLabelClick && hasId) {
+	          // To prevent two clicks from being fired from the component we have to stop the propagation
+	          // from the "input" click: https://github.com/Semantic-Org/Semantic-UI-React/issues/3433
+	          e.stopPropagation();
+	        }
+	      }
+	    };
+
+	    _this.handleChange = function (e) {
+	      var checked = _this.state.checked;
+	      if (!_this.canToggle()) return;
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        checked: !checked,
+	        indeterminate: false
+	      }));
+
+	      _this.setState({
+	        checked: !checked,
+	        indeterminate: false
+	      });
+	    };
+
+	    _this.handleMouseDown = function (e) {
+	      var _this$state2 = _this.state,
+	          checked = _this$state2.checked,
+	          indeterminate = _this$state2.indeterminate;
+
+	      invoke(_this.props, 'onMouseDown', e, _extends({}, _this.props, {
+	        checked: !!checked,
+	        indeterminate: !!indeterminate
+	      }));
+
+	      if (!e.defaultPrevented) {
+	        invoke(_this.inputRef.current, 'focus');
+	      } // Heads up!
+	      // We need to call "preventDefault" to keep element focused.
+
+
+	      e.preventDefault();
+	    };
+
+	    _this.handleMouseUp = function (e) {
+	      var _this$state3 = _this.state,
+	          checked = _this$state3.checked,
+	          indeterminate = _this$state3.indeterminate;
+	      _this.isClickFromMouse = true;
+
+	      invoke(_this.props, 'onMouseUp', e, _extends({}, _this.props, {
+	        checked: !!checked,
+	        indeterminate: !!indeterminate
+	      }));
+	    };
+
+	    _this.setIndeterminate = function () {
+	      var indeterminate = _this.state.indeterminate;
+
+	      set$2(_this.inputRef, 'current.indeterminate', !!indeterminate);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Checkbox.prototype;
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    this.setIndeterminate();
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate() {
+	    this.setIndeterminate();
+	  };
+
+	  _proto.render = function render() {
+	    var _this$props3 = this.props,
+	        className = _this$props3.className,
+	        disabled = _this$props3.disabled,
+	        label = _this$props3.label,
+	        id = _this$props3.id,
+	        name = _this$props3.name,
+	        radio = _this$props3.radio,
+	        readOnly = _this$props3.readOnly,
+	        slider = _this$props3.slider,
+	        toggle = _this$props3.toggle,
+	        type = _this$props3.type,
+	        value = _this$props3.value;
+	    var _this$state4 = this.state,
+	        checked = _this$state4.checked,
+	        indeterminate = _this$state4.indeterminate;
+	    var classes = clsx('ui', useKeyOnly(checked, 'checked'), useKeyOnly(disabled, 'disabled'), useKeyOnly(indeterminate, 'indeterminate'), // auto apply fitted class to compact white space when there is no label
+	    // https://semantic-ui.com/modules/checkbox.html#fitted
+	    useKeyOnly(isNil(label), 'fitted'), useKeyOnly(radio, 'radio'), useKeyOnly(readOnly, 'read-only'), useKeyOnly(slider, 'slider'), useKeyOnly(toggle, 'toggle'), 'checkbox', className);
+	    var unhandled = getUnhandledProps(Checkbox, this.props);
+	    var ElementType = getElementType(Checkbox, this.props);
+
+	    var _partitionHTMLProps = partitionHTMLProps(unhandled, {
+	      htmlProps: htmlInputAttrs
+	    }),
+	        htmlInputProps = _partitionHTMLProps[0],
+	        rest = _partitionHTMLProps[1]; // Heads Up!
+	    // Do not remove empty labels, they are required by SUI CSS
+
+
+	    var labelElement = createHTMLLabel(label, {
+	      defaultProps: {
+	        htmlFor: id
+	      },
+	      autoGenerateKey: false
+	    }) || /*#__PURE__*/React.createElement("label", {
+	      htmlFor: id
+	    });
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      onClick: this.handleClick,
+	      onChange: this.handleChange,
+	      onMouseDown: this.handleMouseDown,
+	      onMouseUp: this.handleMouseUp
+	    }), /*#__PURE__*/React.createElement(Ref, {
+	      innerRef: this.inputRef
+	    }, /*#__PURE__*/React.createElement("input", _extends({}, htmlInputProps, {
+	      checked: checked,
+	      className: "hidden",
+	      disabled: disabled,
+	      id: id,
+	      name: name,
+	      readOnly: true,
+	      tabIndex: this.computeTabIndex(),
+	      type: type,
+	      value: value
+	    }))), /*#__PURE__*/React.createElement(Ref, {
+	      innerRef: this.labelRef
+	    }, labelElement));
+	  };
+
+	  return Checkbox;
+	}(ModernAutoControlledComponent);
+
+	Checkbox.handledProps = ["as", "checked", "className", "defaultChecked", "defaultIndeterminate", "disabled", "fitted", "id", "indeterminate", "label", "name", "onChange", "onClick", "onMouseDown", "onMouseUp", "radio", "readOnly", "slider", "tabIndex", "toggle", "type", "value"];
+	Checkbox.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Whether or not checkbox is checked. */
+	  checked: PropTypes.bool,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** The initial value of checked. */
+	  defaultChecked: PropTypes.bool,
+
+	  /** Whether or not checkbox is indeterminate. */
+	  defaultIndeterminate: PropTypes.bool,
+
+	  /** A checkbox can appear disabled and be unable to change states */
+	  disabled: PropTypes.bool,
+
+	  /** Removes padding for a label. Auto applied when there is no label. */
+	  fitted: PropTypes.bool,
+
+	  /** A unique identifier. */
+	  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+	  /** Whether or not checkbox is indeterminate. */
+	  indeterminate: PropTypes.bool,
+
+	  /** The text of the associated label element. */
+	  label: itemShorthand,
+
+	  /** The HTML input name. */
+	  name: PropTypes.string,
+
+	  /**
+	   * Called when the user attempts to change the checked state.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed checked/indeterminate state.
+	   */
+	  onChange: PropTypes.func,
+
+	  /**
+	   * Called when the checkbox or label is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and current checked/indeterminate state.
+	   */
+	  onClick: PropTypes.func,
+
+	  /**
+	   * Called when the user presses down on the mouse.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and current checked/indeterminate state.
+	   */
+	  onMouseDown: PropTypes.func,
+
+	  /**
+	   * Called when the user releases the mouse.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and current checked/indeterminate state.
+	   */
+	  onMouseUp: PropTypes.func,
+
+	  /** Format as a radio element. This means it is an exclusive option. */
+	  radio: every$1([PropTypes.bool, disallow(['slider', 'toggle'])]),
+
+	  /** A checkbox can be read-only and unable to change states. */
+	  readOnly: PropTypes.bool,
+
+	  /** Format to emphasize the current selection state. */
+	  slider: every$1([PropTypes.bool, disallow(['radio', 'toggle'])]),
+
+	  /** A checkbox can receive focus. */
+	  tabIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+	  /** Format to show an on or off choice. */
+	  toggle: every$1([PropTypes.bool, disallow(['radio', 'slider'])]),
+
+	  /** HTML input type, either checkbox or radio. */
+	  type: PropTypes.oneOf(['checkbox', 'radio']),
+
+	  /** The HTML input value. */
+	  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+	} ;
+	Checkbox.defaultProps = {
+	  type: 'checkbox'
+	};
+	Checkbox.autoControlledProps = ['checked', 'indeterminate'];
+
+	/**
+	 * A Radio is sugar for <Checkbox radio />.
+	 * Useful for exclusive groups of sliders or toggles.
+	 * @see Checkbox
+	 * @see Form
+	 */
+
+	function Radio(props) {
+	  var slider = props.slider,
+	      toggle = props.toggle,
+	      type = props.type;
+	  var rest = getUnhandledProps(Radio, props); // const ElementType = getElementType(Radio, props)
+	  // radio, slider, toggle are exclusive
+	  // use an undefined radio if slider or toggle are present
+
+	  var radio = !(slider || toggle) || undefined;
+	  return /*#__PURE__*/React.createElement(Checkbox, _extends({}, rest, {
+	    type: type,
+	    radio: radio,
+	    slider: slider,
+	    toggle: toggle
+	  }));
+	}
+
+	Radio.handledProps = ["slider", "toggle", "type"];
+	Radio.propTypes = {
+	  /** Format to emphasize the current selection state. */
+	  slider: Checkbox.propTypes.slider,
+
+	  /** Format to show an on or off choice. */
+	  toggle: Checkbox.propTypes.toggle,
+
+	  /** HTML input type, either checkbox or radio. */
+	  type: Checkbox.propTypes.type
+	} ;
+	Radio.defaultProps = {
+	  type: 'radio'
+	};
+
+	/**
+	 * Creates an array with all falsey values removed. The values `false`, `null`,
+	 * `0`, `-0`, `0n`, `""`, `undefined`, and `NaN` are falsy.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to compact.
+	 * @returns {Array} Returns the new array of filtered values.
+	 * @example
+	 *
+	 * _.compact([0, 1, false, 2, '', 3]);
+	 * // => [1, 2, 3]
+	 */
+	function compact(array) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length,
+	      resIndex = 0,
+	      result = [];
+
+	  while (++index < length) {
+	    var value = array[index];
+	    if (value) {
+	      result[resIndex++] = value;
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * A specialized version of `_.every` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if all elements pass the predicate check,
+	 *  else `false`.
+	 */
+	function arrayEvery(array, predicate) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+
+	  while (++index < length) {
+	    if (!predicate(array[index], index, array)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	/**
+	 * The base implementation of `_.every` without support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if all elements pass the predicate check,
+	 *  else `false`
+	 */
+	function baseEvery(collection, predicate) {
+	  var result = true;
+	  baseEach(collection, function(value, index, collection) {
+	    result = !!predicate(value, index, collection);
+	    return result;
+	  });
+	  return result;
+	}
+
+	/**
+	 * Checks if `predicate` returns truthy for **all** elements of `collection`.
+	 * Iteration is stopped once `predicate` returns falsey. The predicate is
+	 * invoked with three arguments: (value, index|key, collection).
+	 *
+	 * **Note:** This method returns `true` for
+	 * [empty collections](https://en.wikipedia.org/wiki/Empty_set) because
+	 * [everything is true](https://en.wikipedia.org/wiki/Vacuous_truth) of
+	 * elements of empty collections.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object} collection The collection to iterate over.
+	 * @param {Function} [predicate=_.identity] The function invoked per iteration.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {boolean} Returns `true` if all elements pass the predicate check,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.every([true, 1, null, 'yes'], Boolean);
+	 * // => false
+	 *
+	 * var users = [
+	 *   { 'user': 'barney', 'age': 36, 'active': false },
+	 *   { 'user': 'fred',   'age': 40, 'active': false }
+	 * ];
+	 *
+	 * // The `_.matches` iteratee shorthand.
+	 * _.every(users, { 'user': 'barney', 'active': false });
+	 * // => false
+	 *
+	 * // The `_.matchesProperty` iteratee shorthand.
+	 * _.every(users, ['active', false]);
+	 * // => true
+	 *
+	 * // The `_.property` iteratee shorthand.
+	 * _.every(users, 'active');
+	 * // => false
+	 */
+	function every(collection, predicate, guard) {
+	  var func = isArray(collection) ? arrayEvery : baseEvery;
+	  return func(collection, baseIteratee(predicate));
+	}
+
+	/**
+	 * Creates a slice of `array` with `n` elements dropped from the end.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @param {number} [n=1] The number of elements to drop.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {Array} Returns the slice of `array`.
+	 * @example
+	 *
+	 * _.dropRight([1, 2, 3]);
+	 * // => [1, 2]
+	 *
+	 * _.dropRight([1, 2, 3], 2);
+	 * // => [1]
+	 *
+	 * _.dropRight([1, 2, 3], 5);
+	 * // => []
+	 *
+	 * _.dropRight([1, 2, 3], 0);
+	 * // => [1, 2, 3]
+	 */
+	function dropRight(array, n, guard) {
+	  var length = array == null ? 0 : array.length;
+	  if (!length) {
+	    return [];
+	  }
+	  n = (n === undefined) ? 1 : toInteger(n);
+	  n = length - n;
+	  return baseSlice(array, 0, n < 0 ? 0 : n);
+	}
+
+	/**
+	 * Gets the size of an ASCII `string`.
+	 *
+	 * @private
+	 * @param {string} string The string inspect.
+	 * @returns {number} Returns the string size.
+	 */
+	var asciiSize = baseProperty('length');
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange = '\\ud800-\\udfff',
+	    rsComboMarksRange = '\\u0300-\\u036f',
+	    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
+	    rsComboSymbolsRange = '\\u20d0-\\u20ff',
+	    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
+	    rsVarRange = '\\ufe0e\\ufe0f';
+
+	/** Used to compose unicode capture groups. */
+	var rsAstral = '[' + rsAstralRange + ']',
+	    rsCombo = '[' + rsComboRange + ']',
+	    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+	    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+	    rsNonAstral = '[^' + rsAstralRange + ']',
+	    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+	    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+	    rsZWJ = '\\u200d';
+
+	/** Used to compose unicode regexes. */
+	var reOptMod = rsModifier + '?',
+	    rsOptVar = '[' + rsVarRange + ']?',
+	    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+	    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+	    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+
+	/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+	var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+
+	/**
+	 * Gets the size of a Unicode `string`.
+	 *
+	 * @private
+	 * @param {string} string The string inspect.
+	 * @returns {number} Returns the string size.
+	 */
+	function unicodeSize(string) {
+	  var result = reUnicode.lastIndex = 0;
+	  while (reUnicode.test(string)) {
+	    ++result;
+	  }
+	  return result;
+	}
+
+	/**
+	 * Gets the number of symbols in `string`.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {number} Returns the string size.
+	 */
+	function stringSize(string) {
+	  return hasUnicode(string)
+	    ? unicodeSize(string)
+	    : asciiSize(string);
+	}
+
+	/** `Object#toString` result references. */
+	var mapTag = '[object Map]',
+	    setTag = '[object Set]';
+
+	/**
+	 * Gets the size of `collection` by returning its length for array-like
+	 * values or the number of own enumerable string keyed properties for objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to inspect.
+	 * @returns {number} Returns the collection size.
+	 * @example
+	 *
+	 * _.size([1, 2, 3]);
+	 * // => 3
+	 *
+	 * _.size({ 'a': 1, 'b': 2 });
+	 * // => 2
+	 *
+	 * _.size('pebbles');
+	 * // => 7
+	 */
+	function size(collection) {
+	  if (collection == null) {
+	    return 0;
+	  }
+	  if (isArrayLike(collection)) {
+	    return isString(collection) ? stringSize(collection) : collection.length;
+	  }
+	  var tag = getTag(collection);
+	  if (tag == mapTag || tag == setTag) {
+	    return collection.size;
+	  }
+	  return baseKeys(collection).length;
+	}
+
+	/**
+	 * Creates an array of unique values, in order, from all given arrays using
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {...Array} [arrays] The arrays to inspect.
+	 * @returns {Array} Returns the new array of combined values.
+	 * @example
+	 *
+	 * _.union([2], [1, 2]);
+	 * // => [2, 1]
+	 */
+	var union = baseRest(function(arrays) {
+	  return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true));
+	});
+
+	var names = ['ad', 'andorra', 'ae', 'united arab emirates', 'uae', 'af', 'afghanistan', 'ag', 'antigua', 'ai', 'anguilla', 'al', 'albania', 'am', 'armenia', 'an', 'netherlands antilles', 'ao', 'angola', 'ar', 'argentina', 'as', 'american samoa', 'at', 'austria', 'au', 'australia', 'aw', 'aruba', 'ax', 'aland islands', 'az', 'azerbaijan', 'ba', 'bosnia', 'bb', 'barbados', 'bd', 'bangladesh', 'be', 'belgium', 'bf', 'burkina faso', 'bg', 'bulgaria', 'bh', 'bahrain', 'bi', 'burundi', 'bj', 'benin', 'bm', 'bermuda', 'bn', 'brunei', 'bo', 'bolivia', 'br', 'brazil', 'bs', 'bahamas', 'bt', 'bhutan', 'bv', 'bouvet island', 'bw', 'botswana', 'by', 'belarus', 'bz', 'belize', 'ca', 'canada', 'cc', 'cocos islands', 'cd', 'congo', 'cf', 'central african republic', 'cg', 'congo brazzaville', 'ch', 'switzerland', 'ci', 'cote divoire', 'ck', 'cook islands', 'cl', 'chile', 'cm', 'cameroon', 'cn', 'china', 'co', 'colombia', 'cr', 'costa rica', 'cs', 'cu', 'cuba', 'cv', 'cape verde', 'cx', 'christmas island', 'cy', 'cyprus', 'cz', 'czech republic', 'de', 'germany', 'dj', 'djibouti', 'dk', 'denmark', 'dm', 'dominica', 'do', 'dominican republic', 'dz', 'algeria', 'ec', 'ecuador', 'england', 'gb eng', 'ee', 'estonia', 'eg', 'egypt', 'eh', 'western sahara', 'er', 'eritrea', 'es', 'spain', 'et', 'ethiopia', 'eu', 'european union', 'fi', 'finland', 'fj', 'fiji', 'fk', 'falkland islands', 'fm', 'micronesia', 'fo', 'faroe islands', 'fr', 'france', 'ga', 'gabon', 'gb', 'uk', 'united kingdom', 'gd', 'grenada', 'ge', 'georgia', 'gf', 'french guiana', 'gh', 'ghana', 'gi', 'gibraltar', 'gl', 'greenland', 'gm', 'gambia', 'gn', 'guinea', 'gp', 'guadeloupe', 'gq', 'equatorial guinea', 'gr', 'greece', 'gs', 'sandwich islands', 'gt', 'guatemala', 'gu', 'guam', 'gw', 'guinea-bissau', 'gy', 'guyana', 'hk', 'hong kong', 'hm', 'heard island', 'hn', 'honduras', 'hr', 'croatia', 'ht', 'haiti', 'hu', 'hungary', 'id', 'indonesia', 'ie', 'ireland', 'il', 'israel', 'in', 'india', 'io', 'indian ocean territory', 'iq', 'iraq', 'ir', 'iran', 'is', 'iceland', 'it', 'italy', 'jm', 'jamaica', 'jo', 'jordan', 'jp', 'japan', 'ke', 'kenya', 'kg', 'kyrgyzstan', 'kh', 'cambodia', 'ki', 'kiribati', 'km', 'comoros', 'kn', 'saint kitts and nevis', 'kp', 'north korea', 'kr', 'south korea', 'kw', 'kuwait', 'ky', 'cayman islands', 'kz', 'kazakhstan', 'la', 'laos', 'lb', 'lebanon', 'lc', 'saint lucia', 'li', 'liechtenstein', 'lk', 'sri lanka', 'lr', 'liberia', 'ls', 'lesotho', 'lt', 'lithuania', 'lu', 'luxembourg', 'lv', 'latvia', 'ly', 'libya', 'ma', 'morocco', 'mc', 'monaco', 'md', 'moldova', 'me', 'montenegro', 'mg', 'madagascar', 'mh', 'marshall islands', 'mk', 'macedonia', 'ml', 'mali', 'mm', 'myanmar', 'burma', 'mn', 'mongolia', 'mo', 'macau', 'mp', 'northern mariana islands', 'mq', 'martinique', 'mr', 'mauritania', 'ms', 'montserrat', 'mt', 'malta', 'mu', 'mauritius', 'mv', 'maldives', 'mw', 'malawi', 'mx', 'mexico', 'my', 'malaysia', 'mz', 'mozambique', 'na', 'namibia', 'nc', 'new caledonia', 'ne', 'niger', 'nf', 'norfolk island', 'ng', 'nigeria', 'ni', 'nicaragua', 'nl', 'netherlands', 'no', 'norway', 'np', 'nepal', 'nr', 'nauru', 'nu', 'niue', 'nz', 'new zealand', 'om', 'oman', 'pa', 'panama', 'pe', 'peru', 'pf', 'french polynesia', 'pg', 'new guinea', 'ph', 'philippines', 'pk', 'pakistan', 'pl', 'poland', 'pm', 'saint pierre', 'pn', 'pitcairn islands', 'pr', 'puerto rico', 'ps', 'palestine', 'pt', 'portugal', 'pw', 'palau', 'py', 'paraguay', 'qa', 'qatar', 're', 'reunion', 'ro', 'romania', 'rs', 'serbia', 'ru', 'russia', 'rw', 'rwanda', 'sa', 'saudi arabia', 'sb', 'solomon islands', 'sc', 'seychelles', 'gb sct', 'scotland', 'sd', 'sudan', 'se', 'sweden', 'sg', 'singapore', 'sh', 'saint helena', 'si', 'slovenia', 'sj', 'svalbard', 'jan mayen', 'sk', 'slovakia', 'sl', 'sierra leone', 'sm', 'san marino', 'sn', 'senegal', 'so', 'somalia', 'sr', 'suriname', 'st', 'sao tome', 'sv', 'el salvador', 'sy', 'syria', 'sz', 'swaziland', 'tc', 'caicos islands', 'td', 'chad', 'tf', 'french territories', 'tg', 'togo', 'th', 'thailand', 'tj', 'tajikistan', 'tk', 'tokelau', 'tl', 'timorleste', 'tm', 'turkmenistan', 'tn', 'tunisia', 'to', 'tonga', 'tr', 'turkey', 'tt', 'trinidad', 'tv', 'tuvalu', 'tw', 'taiwan', 'tz', 'tanzania', 'ua', 'ukraine', 'ug', 'uganda', 'um', 'us minor islands', 'us', 'america', 'united states', 'uy', 'uruguay', 'uz', 'uzbekistan', 'va', 'vatican city', 'vc', 'saint vincent', 've', 'venezuela', 'vg', 'british virgin islands', 'vi', 'us virgin islands', 'vn', 'vietnam', 'vu', 'vanuatu', 'gb wls', 'wales', 'wf', 'wallis and futuna', 'ws', 'samoa', 'ye', 'yemen', 'yt', 'mayotte', 'za', 'south africa', 'zm', 'zambia', 'zw', 'zimbabwe'];
+	/**
+	 * A flag is is used to represent a political state.
+	 */
+
+	var Flag = /*#__PURE__*/function (_PureComponent) {
+	  _inheritsLoose(Flag, _PureComponent);
+
+	  function Flag() {
+	    return _PureComponent.apply(this, arguments) || this;
+	  }
+
+	  var _proto = Flag.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        className = _this$props.className,
+	        name = _this$props.name;
+	    var classes = clsx(name, 'flag', className);
+	    var rest = getUnhandledProps(Flag, this.props);
+	    var ElementType = getElementType(Flag, this.props);
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }));
+	  };
+
+	  return Flag;
+	}(reactExports.PureComponent);
+
+	Flag.handledProps = ["as", "className", "name"];
+	Flag.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Flag name, can use the two digit country code, the full name, or a common alias. */
+	  name: suggest(names)
+	} ;
+	Flag.defaultProps = {
+	  as: 'i'
+	};
+	Flag.create = createShorthandFactory(Flag, function (value) {
+	  return {
+	    name: value
+	  };
+	});
+
+	/**
+	 * A dropdown menu can contain dividers to separate related content.
+	 */
+
+	function DropdownDivider(props) {
+	  var className = props.className;
+	  var classes = clsx('divider', className);
+	  var rest = getUnhandledProps(DropdownDivider, props);
+	  var ElementType = getElementType(DropdownDivider, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }));
+	}
+
+	DropdownDivider.handledProps = ["as", "className"];
+	DropdownDivider.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Additional classes. */
+	  className: PropTypes.string
+	} ;
+
+	/**
+	 * An item sub-component for Dropdown component.
+	 */
+
+	var DropdownItem = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(DropdownItem, _Component);
+
+	  function DropdownItem() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = DropdownItem.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        disabled = _this$props.disabled,
+	        description = _this$props.description,
+	        flag = _this$props.flag,
+	        icon = _this$props.icon,
+	        image = _this$props.image,
+	        label = _this$props.label,
+	        selected = _this$props.selected,
+	        text = _this$props.text;
+	    var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(selected, 'selected'), 'item', className); // add default dropdown icon if item contains another menu
+
+	    var iconName = isNil(icon) ? someByType(children, 'DropdownMenu') && 'dropdown' : icon;
+	    var rest = getUnhandledProps(DropdownItem, this.props);
+	    var ElementType = getElementType(DropdownItem, this.props);
+	    var ariaOptions = {
+	      role: 'option',
+	      'aria-disabled': disabled,
+	      'aria-checked': active,
+	      'aria-selected': selected
+	    };
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	        className: classes,
+	        onClick: this.handleClick
+	      }), children);
+	    }
+
+	    var flagElement = Flag.create(flag, {
+	      autoGenerateKey: false
+	    });
+	    var iconElement = Icon.create(iconName, {
+	      autoGenerateKey: false
+	    });
+	    var imageElement = Image.create(image, {
+	      autoGenerateKey: false
+	    });
+	    var labelElement = Label.create(label, {
+	      autoGenerateKey: false
+	    });
+	    var descriptionElement = createShorthand('span', function (val) {
+	      return {
+	        children: val
+	      };
+	    }, description, {
+	      defaultProps: {
+	        className: 'description'
+	      },
+	      autoGenerateKey: false
+	    });
+	    var textElement = createShorthand('span', function (val) {
+	      return {
+	        children: val
+	      };
+	    }, isNil$1(content) ? text : content, {
+	      defaultProps: {
+	        className: 'text'
+	      },
+	      autoGenerateKey: false
+	    });
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	      className: classes,
+	      onClick: this.handleClick
+	    }), imageElement, iconElement, flagElement, labelElement, descriptionElement, textElement);
+	  };
+
+	  return DropdownItem;
+	}(reactExports.Component);
+
+	DropdownItem.handledProps = ["active", "as", "children", "className", "content", "description", "disabled", "flag", "icon", "image", "label", "onClick", "selected", "text", "value"];
+	DropdownItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Style as the currently chosen item. */
+	  active: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Additional text with less emphasis. */
+	  description: itemShorthand,
+
+	  /** A dropdown item can be disabled. */
+	  disabled: PropTypes.bool,
+
+	  /** Shorthand for Flag. */
+	  flag: itemShorthand,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand,
+
+	  /** Shorthand for Image. */
+	  image: itemShorthand,
+
+	  /** Shorthand for Label. */
+	  label: itemShorthand,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: PropTypes.func,
+
+	  /**
+	   * The item currently selected by keyboard shortcut.
+	   * This is not the active item.
+	   */
+	  selected: PropTypes.bool,
+
+	  /** Display text. */
+	  text: contentShorthand,
+
+	  /** Stored value. */
+	  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string])
+	} ;
+	DropdownItem.create = createShorthandFactory(DropdownItem, function (opts) {
+	  return opts;
+	});
+
+	/**
+	 * A dropdown menu can contain a header.
+	 */
+
+	function DropdownHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      icon = props.icon;
+	  var classes = clsx('header', className);
+	  var rest = getUnhandledProps(DropdownHeader, props);
+	  var ElementType = getElementType(DropdownHeader, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), Icon.create(icon, {
+	    autoGenerateKey: false
+	  }), content);
+	}
+
+	DropdownHeader.handledProps = ["as", "children", "className", "content", "icon"];
+	DropdownHeader.propTypes = {
+	  /** An element type to render as (string or function) */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for Icon. */
+	  icon: itemShorthand
+	} ;
+	DropdownHeader.create = createShorthandFactory(DropdownHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A dropdown menu can contain a menu.
+	 */
+
+	function DropdownMenu(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      direction = props.direction,
+	      open = props.open,
+	      scrolling = props.scrolling;
+	  var classes = clsx(direction, useKeyOnly(open, 'visible'), useKeyOnly(scrolling, 'scrolling'), 'menu transition', className);
+	  var rest = getUnhandledProps(DropdownMenu, props);
+	  var ElementType = getElementType(DropdownMenu, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	DropdownMenu.handledProps = ["as", "children", "className", "content", "direction", "open", "scrolling"];
+	DropdownMenu.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A dropdown menu can open to the left or to the right. */
+	  direction: PropTypes.oneOf(['left', 'right']),
+
+	  /** Whether or not the dropdown menu is displayed. */
+	  open: PropTypes.bool,
+
+	  /** A dropdown menu can scroll. */
+	  scrolling: PropTypes.bool
+	} ;
+
+	/**
+	 * A search item sub-component for Dropdown component.
+	 */
+
+	var DropdownSearchInput = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(DropdownSearchInput, _Component);
+
+	  function DropdownSearchInput() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleChange = function (e) {
+	      var value = get$2(e, 'target.value');
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = DropdownSearchInput.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        autoComplete = _this$props.autoComplete,
+	        className = _this$props.className,
+	        tabIndex = _this$props.tabIndex,
+	        type = _this$props.type,
+	        value = _this$props.value;
+	    var classes = clsx('search', className);
+	    var rest = getUnhandledProps(DropdownSearchInput, this.props);
+	    return /*#__PURE__*/React.createElement("input", _extends({}, rest, {
+	      "aria-autocomplete": "list",
+	      autoComplete: autoComplete,
+	      className: classes,
+	      onChange: this.handleChange,
+	      tabIndex: tabIndex,
+	      type: type,
+	      value: value
+	    }));
+	  };
+
+	  return DropdownSearchInput;
+	}(reactExports.Component);
+
+	DropdownSearchInput.handledProps = ["as", "autoComplete", "className", "tabIndex", "type", "value"];
+	DropdownSearchInput.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** An input can have the auto complete. */
+	  autoComplete: PropTypes.string,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** An input can receive focus. */
+	  tabIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+	  /** The HTML input type. */
+	  type: PropTypes.string,
+
+	  /** Stored value. */
+	  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+	} ;
+	DropdownSearchInput.defaultProps = {
+	  autoComplete: 'off',
+	  type: 'text'
+	};
+	DropdownSearchInput.create = createShorthandFactory(DropdownSearchInput, function (type) {
+	  return {
+	    type: type
+	  };
+	});
+
+	/**
+	 * A dropdown contains a selected value.
+	 */
+
+	function DropdownText(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('divider', className);
+	  var rest = getUnhandledProps(DropdownText, props);
+	  var ElementType = getElementType(DropdownText, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({
+	    "aria-atomic": true,
+	    "aria-live": "polite",
+	    role: "alert"
+	  }, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	DropdownText.handledProps = ["as", "children", "className", "content"];
+	DropdownText.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	DropdownText.create = createShorthandFactory(DropdownText, function (val) {
+	  return {
+	    content: val
+	  };
+	});
+
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+	 */
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
+	    reHasRegExpChar = RegExp(reRegExpChar.source);
+
+	/**
+	 * Escapes the `RegExp` special characters "^", "$", "\", ".", "*", "+",
+	 * "?", "(", ")", "[", "]", "{", "}", and "|" in `string`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to escape.
+	 * @returns {string} Returns the escaped string.
+	 * @example
+	 *
+	 * _.escapeRegExp('[lodash](https://lodash.com/)');
+	 * // => '\[lodash\]\(https://lodash\.com/\)'
+	 */
+	function escapeRegExp(string) {
+	  string = toString(string);
+	  return (string && reHasRegExpChar.test(string))
+	    ? string.replace(reRegExpChar, '\\$&')
+	    : string;
+	}
+
+	// that hasn't yet been persisted to state.
+
+	function getMenuOptions(config) {
+	  var additionLabel = config.additionLabel,
+	      additionPosition = config.additionPosition,
+	      allowAdditions = config.allowAdditions,
+	      deburr$1 = config.deburr,
+	      multiple = config.multiple,
+	      options = config.options,
+	      search = config.search,
+	      searchQuery = config.searchQuery,
+	      value = config.value;
+	  var filteredOptions = options; // filter out active options
+
+	  if (multiple) {
+	    filteredOptions = filter$2(filteredOptions, function (opt) {
+	      return !includes(value, opt.value);
+	    });
+	  } // filter by search query
+
+
+	  if (search && searchQuery) {
+	    if (isFunction(search)) {
+	      filteredOptions = search(filteredOptions, searchQuery);
+	    } else {
+	      // remove diacritics on search input and options, if deburr prop is set
+	      var strippedQuery = deburr$1 ? deburr(searchQuery) : searchQuery;
+	      var re = new RegExp(escapeRegExp(strippedQuery), 'i');
+	      filteredOptions = filter$2(filteredOptions, function (opt) {
+	        return re.test(deburr$1 ? deburr(opt.text) : opt.text);
+	      });
+	    }
+	  } // insert the "add" item
+
+
+	  if (allowAdditions && search && searchQuery && !some(filteredOptions, {
+	    text: searchQuery
+	  })) {
+	    var additionLabelElement = /*#__PURE__*/React.isValidElement(additionLabel) ? /*#__PURE__*/React.cloneElement(additionLabel, {
+	      key: 'addition-label'
+	    }) : additionLabel || '';
+	    var addItem = {
+	      key: 'addition',
+	      // by using an array, we can pass multiple elements, but when doing so
+	      // we must specify a `key` for React to know which one is which
+	      text: [additionLabelElement, /*#__PURE__*/React.createElement("b", {
+	        key: "addition-query"
+	      }, searchQuery)],
+	      value: searchQuery,
+	      className: 'addition',
+	      'data-additional': true
+	    };
+	    if (additionPosition === 'top') filteredOptions.unshift(addItem);else filteredOptions.push(addItem);
+	  }
+
+	  return filteredOptions;
+	}
+	getMenuOptions.handledProps = [];
+
+	function getSelectedIndex(config) {
+	  var additionLabel = config.additionLabel,
+	      additionPosition = config.additionPosition,
+	      allowAdditions = config.allowAdditions,
+	      deburr = config.deburr,
+	      multiple = config.multiple,
+	      options = config.options,
+	      search = config.search,
+	      searchQuery = config.searchQuery,
+	      selectedIndex = config.selectedIndex,
+	      value = config.value;
+	  var menuOptions = getMenuOptions({
+	    value: value,
+	    options: options,
+	    searchQuery: searchQuery,
+	    additionLabel: additionLabel,
+	    additionPosition: additionPosition,
+	    allowAdditions: allowAdditions,
+	    deburr: deburr,
+	    multiple: multiple,
+	    search: search
+	  });
+
+	  var enabledIndexes = reduce(menuOptions, function (memo, item, index) {
+	    if (!item.disabled) memo.push(index);
+	    return memo;
+	  }, []);
+
+	  var newSelectedIndex; // update the selected index
+
+	  if (!selectedIndex || selectedIndex < 0) {
+	    var firstIndex = enabledIndexes[0]; // Select the currently active item, if none, use the first item.
+	    // Multiple selects remove active items from the list,
+	    // their initial selected index should be 0.
+
+	    newSelectedIndex = multiple ? firstIndex : findIndex(menuOptions, ['value', value]) || enabledIndexes[0];
+	  } else if (multiple) {
+	    newSelectedIndex = find$2(enabledIndexes, function (index) {
+	      return index >= selectedIndex;
+	    }); // multiple selects remove options from the menu as they are made active
+	    // keep the selected index within range of the remaining items
+
+	    if (selectedIndex >= menuOptions.length - 1) {
+	      newSelectedIndex = enabledIndexes[enabledIndexes.length - 1];
+	    }
+	  } else {
+	    var activeIndex = findIndex(menuOptions, ['value', value]); // regular selects can only have one active item
+	    // set the selected index to the currently active item
+
+
+	    newSelectedIndex = includes(enabledIndexes, activeIndex) ? activeIndex : undefined;
+	  }
+
+	  if (!newSelectedIndex || newSelectedIndex < 0) {
+	    newSelectedIndex = enabledIndexes[0];
+	  }
+
+	  return newSelectedIndex;
+	}
+
+	var getKeyOrValue = function getKeyOrValue(key, value) {
+	  return isNil(key) ? value : key;
+	};
+
+	var getKeyAndValues = function getKeyAndValues(options) {
+	  return options ? options.map(function (option) {
+	    return pick(option, ['key', 'value']);
+	  }) : options;
+	};
+
+	function renderItemContent(item) {
+	  var flag = item.flag,
+	      image = item.image,
+	      text = item.text; // TODO: remove this in v3
+	  // This maintains compatibility with Shorthand API in v1 as this might be called in "Label.create()"
+
+	  if (isFunction(text)) {
+	    return text;
+	  }
+
+	  return {
+	    content: /*#__PURE__*/React.createElement(React.Fragment, null, Flag.create(flag), Image.create(image), text)
+	  };
+	}
+	/**
+	 * A dropdown allows a user to select a value from a series of options.
+	 * @see Form
+	 * @see Select
+	 * @see Menu
+	 */
+
+
+	var Dropdown = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Dropdown, _Component);
+
+	  function Dropdown() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.searchRef = /*#__PURE__*/reactExports.createRef();
+	    _this.sizerRef = /*#__PURE__*/reactExports.createRef();
+	    _this.ref = /*#__PURE__*/reactExports.createRef();
+
+	    _this.handleChange = function (e, value) {
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    _this.closeOnChange = function (e) {
+	      var _this$props = _this.props,
+	          closeOnChange = _this$props.closeOnChange,
+	          multiple = _this$props.multiple;
+	      var shouldClose = isUndefined(closeOnChange) ? !multiple : closeOnChange;
+
+	      if (shouldClose) {
+	        _this.close(e, noop$2);
+	      }
+	    };
+
+	    _this.closeOnEscape = function (e) {
+	      if (!_this.props.closeOnEscape) return;
+	      if (keyboardKey.getCode(e) !== keyboardKey.Escape) return;
+	      e.preventDefault();
+
+	      _this.close(e);
+	    };
+
+	    _this.moveSelectionOnKeyDown = function (e) {
+	      var _moves;
+
+	      var _this$props2 = _this.props,
+	          multiple = _this$props2.multiple,
+	          selectOnNavigation = _this$props2.selectOnNavigation;
+	      var open = _this.state.open;
+
+	      if (!open) {
+	        return;
+	      }
+
+	      var moves = (_moves = {}, _moves[keyboardKey.ArrowDown] = 1, _moves[keyboardKey.ArrowUp] = -1, _moves);
+	      var move = moves[keyboardKey.getCode(e)];
+
+	      if (move === undefined) {
+	        return;
+	      }
+
+	      e.preventDefault();
+
+	      var nextIndex = _this.getSelectedIndexAfterMove(move);
+
+	      if (!multiple && selectOnNavigation) {
+	        _this.makeSelectedItemActive(e, nextIndex);
+	      }
+
+	      _this.setState({
+	        selectedIndex: nextIndex
+	      });
+	    };
+
+	    _this.openOnSpace = function (e) {
+	      var _e$target, _e$target2, _e$target3;
+
+	      var shouldHandleEvent = _this.state.focus && !_this.state.open && keyboardKey.getCode(e) === keyboardKey.Spacebar;
+	      var shouldPreventDefault = ((_e$target = e.target) == null ? void 0 : _e$target.tagName) !== 'INPUT' && ((_e$target2 = e.target) == null ? void 0 : _e$target2.tagName) !== 'TEXTAREA' && ((_e$target3 = e.target) == null ? void 0 : _e$target3.isContentEditable) !== true;
+
+	      if (shouldHandleEvent) {
+	        if (shouldPreventDefault) {
+	          e.preventDefault();
+	        }
+
+	        _this.open(e);
+	      }
+	    };
+
+	    _this.openOnArrow = function (e) {
+	      var _this$state = _this.state,
+	          focus = _this$state.focus,
+	          open = _this$state.open;
+
+	      if (focus && !open) {
+	        var code = keyboardKey.getCode(e);
+
+	        if (code === keyboardKey.ArrowDown || code === keyboardKey.ArrowUp) {
+	          e.preventDefault();
+
+	          _this.open(e);
+	        }
+	      }
+	    };
+
+	    _this.makeSelectedItemActive = function (e, selectedIndex) {
+	      var _this$state2 = _this.state,
+	          open = _this$state2.open,
+	          value = _this$state2.value;
+	      var multiple = _this.props.multiple;
+
+	      var item = _this.getSelectedItem(selectedIndex);
+
+	      var selectedValue = get$2(item, 'value');
+
+	      var disabled = get$2(item, 'disabled'); // prevent selecting null if there was no selected item value
+	      // prevent selecting duplicate items when the dropdown is closed
+	      // prevent selecting disabled items
+
+
+	      if (isNil(selectedValue) || !open || disabled) {
+	        return value;
+	      } // state value may be undefined
+
+
+	      var newValue = multiple ? union(value, [selectedValue]) : selectedValue;
+	      var valueHasChanged = multiple ? !!difference$2(newValue, value).length : newValue !== value;
+
+	      if (valueHasChanged) {
+	        // notify the onChange prop that the user is trying to change value
+	        _this.setState({
+	          value: newValue
+	        });
+
+	        _this.handleChange(e, newValue); // Heads up! This event handler should be called after `onChange`
+	        // Notify the onAddItem prop if this is a new value
+
+
+	        if (item['data-additional']) {
+	          invoke(_this.props, 'onAddItem', e, _extends({}, _this.props, {
+	            value: selectedValue
+	          }));
+	        }
+	      }
+
+	      return value;
+	    };
+
+	    _this.selectItemOnEnter = function (e) {
+	      var search = _this.props.search;
+	      var _this$state3 = _this.state,
+	          open = _this$state3.open,
+	          selectedIndex = _this$state3.selectedIndex;
+
+	      if (!open) {
+	        return;
+	      }
+
+	      var shouldSelect = keyboardKey.getCode(e) === keyboardKey.Enter || // https://github.com/Semantic-Org/Semantic-UI-React/pull/3766
+	      !search && keyboardKey.getCode(e) === keyboardKey.Spacebar;
+
+	      if (!shouldSelect) {
+	        return;
+	      }
+
+	      e.preventDefault();
+
+	      var optionSize = size(getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      }));
+
+	      if (search && optionSize === 0) {
+	        return;
+	      }
+
+	      var nextValue = _this.makeSelectedItemActive(e, selectedIndex); // This is required as selected value may be the same
+
+
+	      _this.setState({
+	        selectedIndex: getSelectedIndex({
+	          additionLabel: _this.props.additionLabel,
+	          additionPosition: _this.props.additionPosition,
+	          allowAdditions: _this.props.allowAdditions,
+	          deburr: _this.props.deburr,
+	          multiple: _this.props.multiple,
+	          search: _this.props.search,
+	          selectedIndex: selectedIndex,
+	          value: nextValue,
+	          options: _this.props.options,
+	          searchQuery: ''
+	        })
+	      });
+
+	      _this.closeOnChange(e);
+
+	      _this.clearSearchQuery();
+
+	      if (search) {
+	        invoke(_this.searchRef.current, 'focus');
+	      }
+	    };
+
+	    _this.removeItemOnBackspace = function (e) {
+	      var _this$props3 = _this.props,
+	          multiple = _this$props3.multiple,
+	          search = _this$props3.search;
+	      var _this$state4 = _this.state,
+	          searchQuery = _this$state4.searchQuery,
+	          value = _this$state4.value;
+	      if (keyboardKey.getCode(e) !== keyboardKey.Backspace) return;
+	      if (searchQuery || !search || !multiple || isEmpty(value)) return;
+	      e.preventDefault(); // remove most recent value
+
+	      var newValue = dropRight(value);
+
+	      _this.setState({
+	        value: newValue
+	      });
+
+	      _this.handleChange(e, newValue);
+	    };
+
+	    _this.closeOnDocumentClick = function (e) {
+	      if (!_this.props.closeOnBlur) return; // If event happened in the dropdown, ignore it
+
+	      if (_this.ref.current && doesNodeContainClick(_this.ref.current, e)) return;
+
+	      _this.close();
+	    };
+
+	    _this.handleMouseDown = function (e) {
+	      _this.isMouseDown = true;
+
+	      invoke(_this.props, 'onMouseDown', e, _this.props);
+
+	      document.addEventListener('mouseup', _this.handleDocumentMouseUp);
+	    };
+
+	    _this.handleDocumentMouseUp = function () {
+	      _this.isMouseDown = false;
+	      document.removeEventListener('mouseup', _this.handleDocumentMouseUp);
+	    };
+
+	    _this.handleClick = function (e) {
+	      var _this$props4 = _this.props,
+	          minCharacters = _this$props4.minCharacters,
+	          search = _this$props4.search;
+	      var _this$state5 = _this.state,
+	          open = _this$state5.open,
+	          searchQuery = _this$state5.searchQuery;
+
+	      invoke(_this.props, 'onClick', e, _this.props); // prevent closeOnDocumentClick()
+
+
+	      e.stopPropagation();
+	      if (!search) return _this.toggle(e);
+
+	      if (open) {
+	        invoke(_this.searchRef.current, 'focus');
+
+	        return;
+	      }
+
+	      if (searchQuery.length >= minCharacters || minCharacters === 1) {
+	        _this.open(e);
+
+	        return;
+	      }
+
+	      invoke(_this.searchRef.current, 'focus');
+	    };
+
+	    _this.handleIconClick = function (e) {
+	      var clearable = _this.props.clearable;
+
+	      var hasValue = _this.hasValue();
+
+	      invoke(_this.props, 'onClick', e, _this.props); // prevent handleClick()
+
+
+	      e.stopPropagation();
+
+	      if (clearable && hasValue) {
+	        _this.clearValue(e);
+	      } else {
+	        _this.toggle(e);
+	      }
+	    };
+
+	    _this.handleItemClick = function (e, item) {
+	      var _this$props5 = _this.props,
+	          multiple = _this$props5.multiple,
+	          search = _this$props5.search;
+	      var currentValue = _this.state.value;
+	      var value = item.value; // prevent toggle() in handleClick()
+
+	      e.stopPropagation(); // prevent closeOnDocumentClick() if multiple or item is disabled
+
+	      if (multiple || item.disabled) {
+	        e.nativeEvent.stopImmediatePropagation();
+	      }
+
+	      if (item.disabled) {
+	        return;
+	      }
+
+	      var isAdditionItem = item['data-additional'];
+	      var newValue = multiple ? union(_this.state.value, [value]) : value;
+	      var valueHasChanged = multiple ? !!difference$2(newValue, currentValue).length : newValue !== currentValue; // notify the onChange prop that the user is trying to change value
+
+	      if (valueHasChanged) {
+	        _this.setState({
+	          value: newValue
+	        });
+
+	        _this.handleChange(e, newValue);
+	      }
+
+	      _this.clearSearchQuery();
+
+	      if (search) {
+	        invoke(_this.searchRef.current, 'focus');
+	      } else {
+	        invoke(_this.ref.current, 'focus');
+	      }
+
+	      _this.closeOnChange(e); // Heads up! This event handler should be called after `onChange`
+	      // Notify the onAddItem prop if this is a new value
+
+
+	      if (isAdditionItem) {
+	        invoke(_this.props, 'onAddItem', e, _extends({}, _this.props, {
+	          value: value
+	        }));
+	      }
+	    };
+
+	    _this.handleFocus = function (e) {
+	      var focus = _this.state.focus;
+	      if (focus) return;
+
+	      invoke(_this.props, 'onFocus', e, _this.props);
+
+	      _this.setState({
+	        focus: true
+	      });
+	    };
+
+	    _this.handleBlur = function (e) {
+	      // Heads up! Don't remove this.
+	      // https://github.com/Semantic-Org/Semantic-UI-React/issues/1315
+	      var currentTarget = get$2(e, 'currentTarget');
+
+	      if (currentTarget && currentTarget.contains(document.activeElement)) return;
+	      var _this$props6 = _this.props,
+	          closeOnBlur = _this$props6.closeOnBlur,
+	          multiple = _this$props6.multiple,
+	          selectOnBlur = _this$props6.selectOnBlur; // do not "blur" when the mouse is down inside of the Dropdown
+
+	      if (_this.isMouseDown) return;
+
+	      invoke(_this.props, 'onBlur', e, _this.props);
+
+	      if (selectOnBlur && !multiple) {
+	        _this.makeSelectedItemActive(e, _this.state.selectedIndex);
+
+	        if (closeOnBlur) _this.close();
+	      }
+
+	      _this.setState({
+	        focus: false
+	      });
+
+	      _this.clearSearchQuery();
+	    };
+
+	    _this.handleSearchChange = function (e, _ref) {
+	      var value = _ref.value;
+	      // prevent propagating to this.props.onChange()
+	      e.stopPropagation();
+	      var minCharacters = _this.props.minCharacters;
+	      var open = _this.state.open;
+	      var newQuery = value;
+
+	      invoke(_this.props, 'onSearchChange', e, _extends({}, _this.props, {
+	        searchQuery: newQuery
+	      }));
+
+	      _this.setState({
+	        searchQuery: newQuery,
+	        selectedIndex: 0
+	      }); // open search dropdown on search query
+
+
+	      if (!open && newQuery.length >= minCharacters) {
+	        _this.open();
+
+	        return;
+	      } // close search dropdown if search query is too small
+
+
+	      if (open && minCharacters !== 1 && newQuery.length < minCharacters) _this.close();
+	    };
+
+	    _this.handleKeyDown = function (e) {
+	      _this.moveSelectionOnKeyDown(e);
+
+	      _this.openOnArrow(e);
+
+	      _this.openOnSpace(e);
+
+	      _this.selectItemOnEnter(e);
+
+	      invoke(_this.props, 'onKeyDown', e);
+	    };
+
+	    _this.getSelectedItem = function (selectedIndex) {
+	      var options = getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      });
+	      return get$2(options, "[" + selectedIndex + "]");
+	    };
+
+	    _this.getItemByValue = function (value) {
+	      var options = _this.props.options;
+	      return find$2(options, {
+	        value: value
+	      });
+	    };
+
+	    _this.getDropdownAriaOptions = function () {
+	      var _this$props7 = _this.props,
+	          loading = _this$props7.loading,
+	          disabled = _this$props7.disabled,
+	          search = _this$props7.search,
+	          multiple = _this$props7.multiple;
+	      var open = _this.state.open;
+	      var ariaOptions = {
+	        role: search ? 'combobox' : 'listbox',
+	        'aria-busy': loading,
+	        'aria-disabled': disabled,
+	        'aria-expanded': !!open
+	      };
+
+	      if (ariaOptions.role === 'listbox') {
+	        ariaOptions['aria-multiselectable'] = multiple;
+	      }
+
+	      return ariaOptions;
+	    };
+
+	    _this.clearSearchQuery = function () {
+	      var searchQuery = _this.state.searchQuery;
+	      if (searchQuery === undefined || searchQuery === '') return;
+
+	      _this.setState({
+	        searchQuery: ''
+	      });
+	    };
+
+	    _this.handleLabelClick = function (e, labelProps) {
+	      // prevent focusing search input on click
+	      e.stopPropagation();
+
+	      _this.setState({
+	        selectedLabel: labelProps.value
+	      });
+
+	      invoke(_this.props, 'onLabelClick', e, labelProps);
+	    };
+
+	    _this.handleLabelRemove = function (e, labelProps) {
+	      // prevent focusing search input on click
+	      e.stopPropagation();
+	      var value = _this.state.value;
+
+	      var newValue = without(value, labelProps.value);
+
+	      _this.setState({
+	        value: newValue
+	      });
+
+	      _this.handleChange(e, newValue);
+	    };
+
+	    _this.getSelectedIndexAfterMove = function (offset, startIndex) {
+	      if (startIndex === void 0) {
+	        startIndex = _this.state.selectedIndex;
+	      }
+
+	      var options = getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      }); // Prevent infinite loop
+	      // TODO: remove left part of condition after children API will be removed
+
+	      if (options === undefined || every(options, 'disabled')) return;
+	      var lastIndex = options.length - 1;
+	      var wrapSelection = _this.props.wrapSelection; // next is after last, wrap to beginning
+	      // next is before first, wrap to end
+
+	      var nextIndex = startIndex + offset; // if 'wrapSelection' is set to false and selection is after last or before first, it just does not change
+
+	      if (!wrapSelection && (nextIndex > lastIndex || nextIndex < 0)) {
+	        nextIndex = startIndex;
+	      } else if (nextIndex > lastIndex) {
+	        nextIndex = 0;
+	      } else if (nextIndex < 0) {
+	        nextIndex = lastIndex;
+	      }
+
+	      if (options[nextIndex].disabled) {
+	        return _this.getSelectedIndexAfterMove(offset, nextIndex);
+	      }
+
+	      return nextIndex;
+	    };
+
+	    _this.handleIconOverrides = function (predefinedProps) {
+	      var clearable = _this.props.clearable;
+	      var classes = clsx(clearable && _this.hasValue() && 'clear', predefinedProps.className);
+	      return {
+	        className: classes,
+	        onClick: function onClick(e) {
+	          invoke(predefinedProps, 'onClick', e, predefinedProps);
+
+	          _this.handleIconClick(e);
+	        }
+	      };
+	    };
+
+	    _this.clearValue = function (e) {
+	      var multiple = _this.props.multiple;
+	      var newValue = multiple ? [] : '';
+
+	      _this.setState({
+	        value: newValue
+	      });
+
+	      _this.handleChange(e, newValue);
+	    };
+
+	    _this.computeSearchInputTabIndex = function () {
+	      var _this$props8 = _this.props,
+	          disabled = _this$props8.disabled,
+	          tabIndex = _this$props8.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      return disabled ? -1 : 0;
+	    };
+
+	    _this.computeSearchInputWidth = function () {
+	      var searchQuery = _this.state.searchQuery;
+
+	      if (_this.sizerRef.current && searchQuery) {
+	        // resize the search input, temporarily show the sizer so we can measure it
+	        _this.sizerRef.current.style.display = 'inline';
+	        _this.sizerRef.current.textContent = searchQuery;
+	        var searchWidth = Math.ceil(_this.sizerRef.current.getBoundingClientRect().width);
+
+	        _this.sizerRef.current.style.removeProperty('display');
+
+	        return searchWidth;
+	      }
+	    };
+
+	    _this.computeTabIndex = function () {
+	      var _this$props9 = _this.props,
+	          disabled = _this$props9.disabled,
+	          search = _this$props9.search,
+	          tabIndex = _this$props9.tabIndex; // don't set a root node tabIndex as the search input has its own tabIndex
+
+	      if (search) return undefined;
+	      if (disabled) return -1;
+	      return isNil(tabIndex) ? 0 : tabIndex;
+	    };
+
+	    _this.handleSearchInputOverrides = function (predefinedProps) {
+	      return {
+	        onChange: function onChange(e, inputProps) {
+	          invoke(predefinedProps, 'onChange', e, inputProps);
+
+	          _this.handleSearchChange(e, inputProps);
+	        }
+	      };
+	    };
+
+	    _this.hasValue = function () {
+	      var multiple = _this.props.multiple;
+	      var value = _this.state.value;
+	      return multiple ? !isEmpty(value) : !isNil(value) && value !== '';
+	    };
+
+	    _this.scrollSelectedItemIntoView = function () {
+	      if (!_this.ref.current) return;
+
+	      var menu = _this.ref.current.querySelector('.menu.visible');
+
+	      if (!menu) return;
+	      var item = menu.querySelector('.item.selected');
+	      if (!item) return;
+	      var isOutOfUpperView = item.offsetTop < menu.scrollTop;
+	      var isOutOfLowerView = item.offsetTop + item.clientHeight > menu.scrollTop + menu.clientHeight;
+
+	      if (isOutOfUpperView) {
+	        menu.scrollTop = item.offsetTop;
+	      } else if (isOutOfLowerView) {
+	        // eslint-disable-next-line no-mixed-operators
+	        menu.scrollTop = item.offsetTop + item.clientHeight - menu.clientHeight;
+	      }
+	    };
+
+	    _this.setOpenDirection = function () {
+	      if (!_this.ref.current) return;
+
+	      var menu = _this.ref.current.querySelector('.menu.visible');
+
+	      if (!menu) return;
+
+	      var dropdownRect = _this.ref.current.getBoundingClientRect();
+
+	      var menuHeight = menu.clientHeight;
+	      var spaceAtTheBottom = document.documentElement.clientHeight - dropdownRect.top - dropdownRect.height - menuHeight;
+	      var spaceAtTheTop = dropdownRect.top - menuHeight;
+	      var upward = spaceAtTheBottom < 0 && spaceAtTheTop > spaceAtTheBottom; // set state only if there's a relevant difference
+
+	      if (!upward !== !_this.state.upward) {
+	        _this.setState({
+	          upward: upward
+	        });
+	      }
+	    };
+
+	    _this.open = function (e, triggerSetState) {
+	      if (e === void 0) {
+	        e = null;
+	      }
+
+	      if (triggerSetState === void 0) {
+	        triggerSetState = true;
+	      }
+
+	      var _this$props10 = _this.props,
+	          disabled = _this$props10.disabled,
+	          search = _this$props10.search;
+	      if (disabled) return;
+	      if (search) invoke(_this.searchRef.current, 'focus');
+
+	      invoke(_this.props, 'onOpen', e, _this.props);
+
+	      if (triggerSetState) {
+	        _this.setState({
+	          open: true
+	        });
+	      }
+
+	      _this.scrollSelectedItemIntoView();
+	    };
+
+	    _this.close = function (e, callback) {
+	      if (callback === void 0) {
+	        callback = _this.handleClose;
+	      }
+
+	      if (_this.state.open) {
+	        invoke(_this.props, 'onClose', e, _this.props);
+
+	        _this.setState({
+	          open: false
+	        }, callback);
+	      }
+	    };
+
+	    _this.handleClose = function () {
+	      var hasSearchFocus = document.activeElement === _this.searchRef.current; // https://github.com/Semantic-Org/Semantic-UI-React/issues/627
+	      // Blur the Dropdown on close so it is blurred after selecting an item.
+	      // This is to prevent it from re-opening when switching tabs after selecting an item.
+
+	      if (!hasSearchFocus && _this.ref.current) {
+	        _this.ref.current.blur();
+	      }
+
+	      var hasDropdownFocus = document.activeElement === _this.ref.current;
+	      var hasFocus = hasSearchFocus || hasDropdownFocus; // We need to keep the virtual model in sync with the browser focus change
+	      // https://github.com/Semantic-Org/Semantic-UI-React/issues/692
+
+	      _this.setState({
+	        focus: hasFocus
+	      });
+	    };
+
+	    _this.toggle = function (e) {
+	      return _this.state.open ? _this.close(e) : _this.open(e);
+	    };
+
+	    _this.renderText = function () {
+	      var _this$props11 = _this.props,
+	          multiple = _this$props11.multiple,
+	          placeholder = _this$props11.placeholder,
+	          search = _this$props11.search,
+	          text = _this$props11.text;
+	      var _this$state6 = _this.state,
+	          searchQuery = _this$state6.searchQuery,
+	          selectedIndex = _this$state6.selectedIndex,
+	          value = _this$state6.value,
+	          open = _this$state6.open;
+
+	      var hasValue = _this.hasValue();
+
+	      var classes = clsx(placeholder && !hasValue && 'default', 'text', search && searchQuery && 'filtered');
+	      var _text = placeholder;
+	      var selectedItem;
+
+	      if (text) {
+	        _text = text;
+	      } else if (open && !multiple) {
+	        selectedItem = _this.getSelectedItem(selectedIndex);
+	      } else if (hasValue) {
+	        selectedItem = _this.getItemByValue(value);
+	      }
+
+	      return DropdownText.create(selectedItem ? renderItemContent(selectedItem) : _text, {
+	        defaultProps: {
+	          className: classes
+	        }
+	      });
+	    };
+
+	    _this.renderSearchInput = function () {
+	      var _this$props12 = _this.props,
+	          search = _this$props12.search,
+	          searchInput = _this$props12.searchInput;
+	      var searchQuery = _this.state.searchQuery;
+	      return search && /*#__PURE__*/React.createElement(Ref, {
+	        innerRef: _this.searchRef
+	      }, DropdownSearchInput.create(searchInput, {
+	        defaultProps: {
+	          style: {
+	            width: _this.computeSearchInputWidth()
+	          },
+	          tabIndex: _this.computeSearchInputTabIndex(),
+	          value: searchQuery
+	        },
+	        overrideProps: _this.handleSearchInputOverrides
+	      }));
+	    };
+
+	    _this.renderSearchSizer = function () {
+	      var _this$props13 = _this.props,
+	          search = _this$props13.search,
+	          multiple = _this$props13.multiple;
+	      return search && multiple && /*#__PURE__*/React.createElement("span", {
+	        className: "sizer",
+	        ref: _this.sizerRef
+	      });
+	    };
+
+	    _this.renderLabels = function () {
+	      var _this$props14 = _this.props,
+	          multiple = _this$props14.multiple,
+	          renderLabel = _this$props14.renderLabel;
+	      var _this$state7 = _this.state,
+	          selectedLabel = _this$state7.selectedLabel,
+	          value = _this$state7.value;
+
+	      if (!multiple || isEmpty(value)) {
+	        return;
+	      }
+
+	      var selectedItems = map$2(value, _this.getItemByValue);
+
+	      // if no item could be found for a given state value the selected item will be undefined
+	      // compact the selectedItems so we only have actual objects left
+	      return map$2(compact(selectedItems), function (item, index) {
+	        var defaultProps = {
+	          active: item.value === selectedLabel,
+	          as: 'a',
+	          key: getKeyOrValue(item.key, item.value),
+	          onClick: _this.handleLabelClick,
+	          onRemove: _this.handleLabelRemove,
+	          value: item.value
+	        };
+	        return Label.create(renderLabel(item, index, defaultProps), {
+	          defaultProps: defaultProps
+	        });
+	      });
+	    };
+
+	    _this.renderOptions = function () {
+	      var _this$props15 = _this.props,
+	          lazyLoad = _this$props15.lazyLoad,
+	          multiple = _this$props15.multiple,
+	          search = _this$props15.search,
+	          noResultsMessage = _this$props15.noResultsMessage;
+	      var _this$state8 = _this.state,
+	          open = _this$state8.open,
+	          selectedIndex = _this$state8.selectedIndex,
+	          value = _this$state8.value; // lazy load, only render options when open
+
+	      if (lazyLoad && !open) return null;
+	      var options = getMenuOptions({
+	        value: _this.state.value,
+	        options: _this.props.options,
+	        searchQuery: _this.state.searchQuery,
+	        additionLabel: _this.props.additionLabel,
+	        additionPosition: _this.props.additionPosition,
+	        allowAdditions: _this.props.allowAdditions,
+	        deburr: _this.props.deburr,
+	        multiple: _this.props.multiple,
+	        search: _this.props.search
+	      });
+
+	      if (noResultsMessage !== null && search && isEmpty(options)) {
+	        return /*#__PURE__*/React.createElement("div", {
+	          className: "message"
+	        }, noResultsMessage);
+	      }
+
+	      var isActive = multiple ? function (optValue) {
+	        return includes(value, optValue);
+	      } : function (optValue) {
+	        return optValue === value;
+	      };
+	      return map$2(options, function (opt, i) {
+	        return DropdownItem.create(_extends({
+	          active: isActive(opt.value),
+	          selected: selectedIndex === i
+	        }, opt, {
+	          key: getKeyOrValue(opt.key, opt.value),
+	          // Needed for handling click events on disabled items
+	          style: _extends({}, opt.style, {
+	            pointerEvents: 'all'
+	          })
+	        }), {
+	          generateKey: false,
+	          overrideProps: function overrideProps(predefinedProps) {
+	            return {
+	              onClick: function onClick(e, item) {
+	                predefinedProps.onClick == null ? void 0 : predefinedProps.onClick(e, item);
+
+	                _this.handleItemClick(e, item);
+	              }
+	            };
+	          }
+	        });
+	      });
+	    };
+
+	    _this.renderMenu = function () {
+	      var _this$props16 = _this.props,
+	          children = _this$props16.children,
+	          direction = _this$props16.direction,
+	          header = _this$props16.header;
+	      var open = _this.state.open;
+
+	      var ariaOptions = _this.getDropdownMenuAriaOptions(); // single menu child
+
+
+	      if (!isNil$1(children)) {
+	        var menuChild = reactExports.Children.only(children);
+	        var className = clsx(direction, useKeyOnly(open, 'visible'), menuChild.props.className);
+	        return /*#__PURE__*/reactExports.cloneElement(menuChild, _extends({
+	          className: className
+	        }, ariaOptions));
+	      }
+
+	      return /*#__PURE__*/React.createElement(DropdownMenu, _extends({}, ariaOptions, {
+	        direction: direction,
+	        open: open
+	      }), DropdownHeader.create(header, {
+	        autoGenerateKey: false
+	      }), _this.renderOptions());
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Dropdown.prototype;
+
+	  _proto.getInitialAutoControlledState = function getInitialAutoControlledState() {
+	    return {
+	      focus: false,
+	      searchQuery: ''
+	    };
+	  };
+
+	  Dropdown.getAutoControlledStateFromProps = function getAutoControlledStateFromProps(nextProps, computedState, prevState) {
+	    // These values are stored only for a comparison on next getAutoControlledStateFromProps()
+	    var derivedState = {
+	      __options: nextProps.options,
+	      __value: computedState.value
+	    }; // The selected index is only dependent:
+
+	    var shouldComputeSelectedIndex = // On value change
+	    !shallowEqual(prevState.__value, computedState.value) || // On option keys/values, we only check those properties to avoid recursive performance impacts.
+	    // https://github.com/Semantic-Org/Semantic-UI-React/issues/3000
+	    !isEqual$1(getKeyAndValues(nextProps.options), getKeyAndValues(prevState.__options));
+
+	    if (shouldComputeSelectedIndex) {
+	      derivedState.selectedIndex = getSelectedIndex({
+	        additionLabel: nextProps.additionLabel,
+	        additionPosition: nextProps.additionPosition,
+	        allowAdditions: nextProps.allowAdditions,
+	        deburr: nextProps.deburr,
+	        multiple: nextProps.multiple,
+	        search: nextProps.search,
+	        selectedIndex: computedState.selectedIndex,
+	        value: computedState.value,
+	        options: nextProps.options,
+	        searchQuery: computedState.searchQuery
+	      });
+	    }
+
+	    return derivedState;
+	  };
+
+	  _proto.componentDidMount = function componentDidMount() {
+	    var open = this.state.open;
+
+	    if (open) {
+	      this.open(null, false);
+	    }
+	  };
+
+	  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+	    return !shallowEqual(nextProps, this.props) || !shallowEqual(nextState, this.state);
+	  };
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
+	    // eslint-disable-line complexity
+	    var _this$props17 = this.props,
+	        closeOnBlur = _this$props17.closeOnBlur,
+	        minCharacters = _this$props17.minCharacters,
+	        openOnFocus = _this$props17.openOnFocus,
+	        search = _this$props17.search;
+	    /* eslint-disable no-console */
+
+	    {
+	      // in development, validate value type matches dropdown type
+	      var isNextValueArray = Array.isArray(this.props.value);
+
+	      var hasValue = has$1(this.props, 'value');
+
+	      if (hasValue && this.props.multiple && !isNextValueArray) {
+	        console.error('Dropdown `value` must be an array when `multiple` is set.' + (" Received type: `" + Object.prototype.toString.call(this.props.value) + "`."));
+	      } else if (hasValue && !this.props.multiple && isNextValueArray) {
+	        console.error('Dropdown `value` must not be an array when `multiple` is not set.' + ' Either set `multiple={true}` or use a string or number value.');
+	      }
+	    }
+	    /* eslint-enable no-console */
+	    // focused / blurred
+
+
+	    if (!prevState.focus && this.state.focus) {
+	      if (!this.isMouseDown) {
+	        var openable = !search || search && minCharacters === 1 && !this.state.open;
+	        if (openOnFocus && openable) this.open();
+	      }
+	    } else if (prevState.focus && !this.state.focus) {
+	      if (!this.isMouseDown && closeOnBlur) {
+	        this.close();
+	      }
+	    } // opened / closed
+
+
+	    if (!prevState.open && this.state.open) {
+	      this.setOpenDirection();
+	      this.scrollSelectedItemIntoView();
+	    } else if (prevState.open && !this.state.open) ;
+
+	    if (prevState.selectedIndex !== this.state.selectedIndex) {
+	      this.scrollSelectedItemIntoView();
+	    }
+	  } // ----------------------------------------
+	  // Document Event Handlers
+	  // ----------------------------------------
+	  // onChange needs to receive a value
+	  // can't rely on props.value if we are controlled
+	  ;
+
+	  _proto.getDropdownMenuAriaOptions = function getDropdownMenuAriaOptions() {
+	    var _this$props18 = this.props,
+	        search = _this$props18.search,
+	        multiple = _this$props18.multiple;
+	    var ariaOptions = {};
+
+	    if (search) {
+	      ariaOptions['aria-multiselectable'] = multiple;
+	      ariaOptions.role = 'listbox';
+	    }
+
+	    return ariaOptions;
+	  } // ----------------------------------------
+	  // Setters
+	  // ----------------------------------------
+	  ;
+
+	  _proto.render = function render() {
+	    var _this$props19 = this.props,
+	        basic = _this$props19.basic,
+	        button = _this$props19.button,
+	        className = _this$props19.className,
+	        compact = _this$props19.compact,
+	        disabled = _this$props19.disabled,
+	        error = _this$props19.error,
+	        fluid = _this$props19.fluid,
+	        floating = _this$props19.floating,
+	        icon = _this$props19.icon,
+	        inline = _this$props19.inline,
+	        item = _this$props19.item,
+	        labeled = _this$props19.labeled,
+	        loading = _this$props19.loading,
+	        multiple = _this$props19.multiple,
+	        pointing = _this$props19.pointing,
+	        search = _this$props19.search,
+	        selection = _this$props19.selection,
+	        scrolling = _this$props19.scrolling,
+	        simple = _this$props19.simple,
+	        trigger = _this$props19.trigger;
+	    var _this$state9 = this.state,
+	        focus = _this$state9.focus,
+	        open = _this$state9.open,
+	        upward = _this$state9.upward; // Classes
+
+	    var classes = clsx('ui', useKeyOnly(open, 'active visible'), useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(loading, 'loading'), useKeyOnly(basic, 'basic'), useKeyOnly(button, 'button'), useKeyOnly(compact, 'compact'), useKeyOnly(fluid, 'fluid'), useKeyOnly(floating, 'floating'), useKeyOnly(inline, 'inline'), // TODO: consider augmentation to render Dropdowns as Button/Menu, solves icon/link item issues
+	    // https://github.com/Semantic-Org/Semantic-UI-React/issues/401#issuecomment-240487229
+	    // TODO: the icon class is only required when a dropdown is a button
+	    // useKeyOnly(icon, 'icon'),
+	    useKeyOnly(labeled, 'labeled'), useKeyOnly(item, 'item'), useKeyOnly(multiple, 'multiple'), useKeyOnly(search, 'search'), useKeyOnly(selection, 'selection'), useKeyOnly(simple, 'simple'), useKeyOnly(scrolling, 'scrolling'), useKeyOnly(upward, 'upward'), useKeyOrValueAndKey(pointing, 'pointing'), 'dropdown', className);
+	    var rest = getUnhandledProps(Dropdown, this.props);
+	    var ElementType = getElementType(Dropdown, this.props);
+	    var ariaOptions = this.getDropdownAriaOptions(ElementType, this.props);
+	    return /*#__PURE__*/React.createElement(Ref, {
+	      innerRef: this.ref
+	    }, /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, ariaOptions, {
+	      className: classes,
+	      onBlur: this.handleBlur,
+	      onClick: this.handleClick,
+	      onKeyDown: this.handleKeyDown,
+	      onMouseDown: this.handleMouseDown,
+	      onFocus: this.handleFocus,
+	      onChange: this.handleChange,
+	      tabIndex: this.computeTabIndex()
+	    }), this.renderLabels(), this.renderSearchInput(), this.renderSearchSizer(), trigger || this.renderText(), Icon.create(icon, {
+	      overrideProps: this.handleIconOverrides,
+	      autoGenerateKey: false
+	    }), this.renderMenu(), open && /*#__PURE__*/React.createElement(EventStack, {
+	      name: "keydown",
+	      on: this.closeOnEscape
+	    }), open && /*#__PURE__*/React.createElement(EventStack, {
+	      name: "click",
+	      on: this.closeOnDocumentClick
+	    }), focus && /*#__PURE__*/React.createElement(EventStack, {
+	      name: "keydown",
+	      on: this.removeItemOnBackspace
+	    })));
+	  };
+
+	  return Dropdown;
+	}(ModernAutoControlledComponent);
+
+	Dropdown.handledProps = ["additionLabel", "additionPosition", "allowAdditions", "as", "basic", "button", "children", "className", "clearable", "closeOnBlur", "closeOnChange", "closeOnEscape", "compact", "deburr", "defaultOpen", "defaultSearchQuery", "defaultSelectedLabel", "defaultUpward", "defaultValue", "direction", "disabled", "error", "floating", "fluid", "header", "icon", "inline", "item", "labeled", "lazyLoad", "loading", "minCharacters", "multiple", "noResultsMessage", "onAddItem", "onBlur", "onChange", "onClick", "onClose", "onFocus", "onLabelClick", "onMouseDown", "onOpen", "onSearchChange", "open", "openOnFocus", "options", "placeholder", "pointing", "renderLabel", "scrolling", "search", "searchInput", "searchQuery", "selectOnBlur", "selectOnNavigation", "selectedLabel", "selection", "simple", "tabIndex", "text", "trigger", "upward", "value", "wrapSelection"];
+	Dropdown.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Label prefixed to an option added by a user. */
+	  additionLabel: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+
+	  /** Position of the `Add: ...` option in the dropdown list ('top' or 'bottom'). */
+	  additionPosition: PropTypes.oneOf(['top', 'bottom']),
+
+	  /**
+	   * Allow user additions to the list of options (boolean).
+	   * Requires the use of `selection`, `options` and `search`.
+	   */
+	  allowAdditions: every$1([demand(['options', 'selection', 'search']), PropTypes.bool]),
+
+	  /** A Dropdown can reduce its complexity. */
+	  basic: PropTypes.bool,
+
+	  /** Format the Dropdown to appear as a button. */
+	  button: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: every$1([disallow(['options', 'selection']), givenProps({
+	    children: PropTypes.any.isRequired
+	  }, PropTypes.element.isRequired)]),
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Using the clearable setting will let users remove their selection from a dropdown. */
+	  clearable: PropTypes.bool,
+
+	  /** Whether or not the menu should close when the dropdown is blurred. */
+	  closeOnBlur: PropTypes.bool,
+
+	  /** Whether or not the dropdown should close when the escape key is pressed. */
+	  closeOnEscape: PropTypes.bool,
+
+	  /**
+	   * Whether or not the menu should close when a value is selected from the dropdown.
+	   * By default, multiple selection dropdowns will remain open on change, while single
+	   * selection dropdowns will close on change.
+	   */
+	  closeOnChange: PropTypes.bool,
+
+	  /** A compact dropdown has no minimum width. */
+	  compact: PropTypes.bool,
+
+	  /** Whether or not the dropdown should strip diacritics in options and input search */
+	  deburr: PropTypes.bool,
+
+	  /** Initial value of open. */
+	  defaultOpen: PropTypes.bool,
+
+	  /** Initial value of searchQuery. */
+	  defaultSearchQuery: PropTypes.string,
+
+	  /** Currently selected label in multi-select. */
+	  defaultSelectedLabel: every$1([demand(['multiple']), PropTypes.oneOfType([PropTypes.number, PropTypes.string])]),
+
+	  /** Initial value of upward. */
+	  defaultUpward: PropTypes.bool,
+
+	  /** Initial value or value array if multiple. */
+	  defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]))]),
+
+	  /** A dropdown menu can open to the left or to the right. */
+	  direction: PropTypes.oneOf(['left', 'right']),
+
+	  /** A disabled dropdown menu or item does not allow user interaction. */
+	  disabled: PropTypes.bool,
+
+	  /** An errored dropdown can alert a user to a problem. */
+	  error: PropTypes.bool,
+
+	  /** A dropdown menu can contain floated content. */
+	  floating: PropTypes.bool,
+
+	  /** A dropdown can take the full width of its parent */
+	  fluid: PropTypes.bool,
+
+	  /** A dropdown menu can contain a header. */
+	  header: PropTypes.node,
+
+	  /** Shorthand for Icon. */
+	  icon: PropTypes.oneOfType([PropTypes.node, PropTypes.object]),
+
+	  /** A dropdown can be formatted to appear inline in other content. */
+	  inline: PropTypes.bool,
+
+	  /** A dropdown can be formatted as a Menu item. */
+	  item: PropTypes.bool,
+
+	  /** A dropdown can be labeled. */
+	  labeled: PropTypes.bool,
+
+	  /** A dropdown can defer rendering its options until it is open. */
+	  lazyLoad: PropTypes.bool,
+
+	  /** A dropdown can show that it is currently loading data. */
+	  loading: PropTypes.bool,
+
+	  /** The minimum characters for a search to begin showing results. */
+	  minCharacters: PropTypes.number,
+
+	  /** A selection dropdown can allow multiple selections. */
+	  multiple: PropTypes.bool,
+
+	  /** Message to display when there are no results. */
+	  noResultsMessage: PropTypes.node,
+
+	  /**
+	   * Called when a user adds a new item. Use this to update the options list.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and the new item's value.
+	   */
+	  onAddItem: PropTypes.func,
+
+	  /**
+	   * Called on blur.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onBlur: PropTypes.func,
+
+	  /**
+	   * Called when the user attempts to change the value.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and proposed value.
+	   */
+	  onChange: PropTypes.func,
+
+	  /**
+	   * Called on click.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClick: PropTypes.func,
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: PropTypes.func,
+
+	  /**
+	   * Called on focus.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onFocus: PropTypes.func,
+
+	  /**
+	   * Called when a multi-select label is clicked.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All label props.
+	   */
+	  onLabelClick: PropTypes.func,
+
+	  /**
+	   * Called on mousedown.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onMouseDown: PropTypes.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: PropTypes.func,
+
+	  /**
+	   * Called on search input change.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props, includes current value of searchQuery.
+	   */
+	  onSearchChange: PropTypes.func,
+
+	  /** Controls whether or not the dropdown menu is displayed. */
+	  open: PropTypes.bool,
+
+	  /** Whether or not the menu should open when the dropdown is focused. */
+	  openOnFocus: PropTypes.bool,
+
+	  /** Array of Dropdown.Item props e.g. `{ text: '', value: '' }` */
+	  options: every$1([disallow(['children']), PropTypes.arrayOf(PropTypes.shape(DropdownItem.propTypes))]),
+
+	  /** Placeholder text. */
+	  placeholder: PropTypes.string,
+
+	  /** A dropdown can be formatted so that its menu is pointing. */
+	  pointing: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right', 'top', 'top left', 'top right', 'bottom', 'bottom left', 'bottom right'])]),
+
+	  /**
+	   * Mapped over the active items and returns shorthand for the active item Labels.
+	   * Only applies to `multiple` Dropdowns.
+	   *
+	   * @param {object} item - A currently active dropdown item.
+	   * @param {number} index - The current index.
+	   * @param {object} defaultLabelProps - The default props for an active item Label.
+	   * @returns {*} Shorthand for a Label.
+	   */
+	  renderLabel: PropTypes.func,
+
+	  /** A dropdown can have its menu scroll. */
+	  scrolling: PropTypes.bool,
+
+	  /**
+	   * A selection dropdown can allow a user to search through a large list of choices.
+	   * Pass a function here to replace the default search.
+	   */
+	  search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+
+	  /** A shorthand for a search input. */
+	  searchInput: PropTypes.oneOfType([PropTypes.array, PropTypes.node, PropTypes.object]),
+
+	  /** Current value of searchQuery. Creates a controlled component. */
+	  searchQuery: PropTypes.string,
+	  // TODO 'searchInMenu' or 'search='in menu' or ???  How to handle this markup and functionality?
+
+	  /** Define whether the highlighted item should be selected on blur. */
+	  selectOnBlur: PropTypes.bool,
+
+	  /**
+	   * Whether or not to change the value when navigating the menu using arrow keys.
+	   * Setting to false will require enter or left click to confirm a choice.
+	   */
+	  selectOnNavigation: PropTypes.bool,
+
+	  /** Currently selected label in multi-select. */
+	  selectedLabel: every$1([demand(['multiple']), PropTypes.oneOfType([PropTypes.string, PropTypes.number])]),
+
+	  /** A dropdown can be used to select between choices in a form. */
+	  selection: every$1([disallow(['children']), demand(['options']), PropTypes.bool]),
+
+	  /** A simple dropdown can open without Javascript. */
+	  simple: PropTypes.bool,
+
+	  /** A dropdown can receive focus. */
+	  tabIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+	  /** The text displayed in the dropdown, usually for the active item. */
+	  text: PropTypes.string,
+
+	  /** Custom element to trigger the menu to become visible. Takes place of 'text'. */
+	  trigger: every$1([disallow(['selection', 'text']), PropTypes.node]),
+
+	  /** Current value or value array if multiple. Creates a controlled component. */
+	  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]))]),
+
+	  /** Controls whether the dropdown will open upward. */
+	  upward: PropTypes.bool,
+
+	  /**
+	   * A dropdown will go to the last element when ArrowUp is pressed on the first,
+	   * or go to the first when ArrowDown is pressed on the last( aka infinite selection )
+	   */
+	  wrapSelection: PropTypes.bool
+	} ;
+	Dropdown.defaultProps = {
+	  additionLabel: 'Add ',
+	  additionPosition: 'top',
+	  closeOnBlur: true,
+	  closeOnEscape: true,
+	  deburr: false,
+	  icon: 'dropdown',
+	  minCharacters: 1,
+	  noResultsMessage: 'No results found.',
+	  openOnFocus: true,
+	  renderLabel: renderItemContent,
+	  searchInput: 'text',
+	  selectOnBlur: true,
+	  selectOnNavigation: true,
+	  wrapSelection: true
+	};
+	Dropdown.autoControlledProps = ['open', 'searchQuery', 'selectedLabel', 'value', 'upward'];
+	Dropdown.Divider = DropdownDivider;
+	Dropdown.Header = DropdownHeader;
+	Dropdown.Item = DropdownItem;
+	Dropdown.Menu = DropdownMenu;
+	Dropdown.SearchInput = DropdownSearchInput;
+	Dropdown.Text = DropdownText;
+
+	/**
+	 * A Select is sugar for <Dropdown selection />.
+	 * @see Dropdown
+	 * @see Form
+	 */
+
+	function Select(props) {
+	  return /*#__PURE__*/React.createElement(Dropdown, _extends({}, props, {
+	    selection: true
+	  }));
+	}
+
+	Select.handledProps = ["options"];
+	Select.propTypes = {
+	  /** Array of Dropdown.Item props e.g. `{ text: '', value: '' }` */
+	  options: PropTypes.arrayOf(PropTypes.shape(Dropdown.Item.propTypes)).isRequired
+	} ;
+	Select.Divider = Dropdown.Divider;
+	Select.Header = Dropdown.Header;
+	Select.Item = Dropdown.Item;
+	Select.Menu = Dropdown.Menu;
+
+	/**
+	 * A TextArea can be used to allow for extended user input.
+	 * @see Form
+	 */
+
+	var TextArea = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(TextArea, _Component);
+
+	  function TextArea() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.ref = /*#__PURE__*/reactExports.createRef();
+
+	    _this.focus = function () {
+	      return _this.ref.current.focus();
+	    };
+
+	    _this.handleChange = function (e) {
+	      var value = get$2(e, 'target.value');
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    _this.handleInput = function (e) {
+	      var value = get$2(e, 'target.value');
+
+	      invoke(_this.props, 'onInput', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = TextArea.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        rows = _this$props.rows,
+	        value = _this$props.value;
+	    var rest = getUnhandledProps(TextArea, this.props);
+	    var ElementType = getElementType(TextArea, this.props);
+	    return /*#__PURE__*/React.createElement(Ref, {
+	      innerRef: this.ref
+	    }, /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      onChange: this.handleChange,
+	      onInput: this.handleInput,
+	      rows: rows,
+	      value: value
+	    })));
+	  };
+
+	  return TextArea;
+	}(reactExports.Component);
+
+	TextArea.handledProps = ["as", "onChange", "onInput", "rows", "value"];
+	TextArea.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /**
+	   * Called on change.
+	   * @param {SyntheticEvent} event - The React SyntheticEvent object
+	   * @param {object} data - All props and the event value.
+	   */
+	  onChange: PropTypes.func,
+
+	  /**
+	   * Called on input.
+	   * @param {SyntheticEvent} event - The React SyntheticEvent object
+	   * @param {object} data - All props and the event value.
+	   */
+	  onInput: PropTypes.func,
+
+	  /** Indicates row count for a TextArea. */
+	  rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+	  /** The value of the textarea. */
+	  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+	} ;
+	TextArea.defaultProps = {
+	  as: 'textarea',
+	  rows: 3
+	};
+
+	/**
+	 * A field is a form element containing a label and an input.
+	 * @see Form
+	 * @see Button
+	 * @see Checkbox
+	 * @see Dropdown
+	 * @see Input
+	 * @see Radio
+	 * @see Select
+	 * @see Visibility
+	 */
+
+	function FormField(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      control = props.control,
+	      disabled = props.disabled,
+	      error = props.error,
+	      inline = props.inline,
+	      label = props.label,
+	      required = props.required,
+	      type = props.type,
+	      width = props.width,
+	      id = props.id;
+	  var classes = clsx(useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(inline, 'inline'), useKeyOnly(required, 'required'), useWidthProp(width, 'wide'), 'field', className);
+	  var rest = getUnhandledProps(FormField, props);
+	  var ElementType = getElementType(FormField, props);
+
+	  var errorPointing = get$2(error, 'pointing', 'above');
+
+	  var errorLabel = Label.create(error, {
+	    autoGenerateKey: false,
+	    defaultProps: {
+	      prompt: true,
+	      pointing: errorPointing,
+	      id: id ? id + "-error-message" : undefined,
+	      role: 'alert',
+	      'aria-atomic': true
+	    }
+	  });
+	  var errorLabelBefore = (errorPointing === 'below' || errorPointing === 'right') && errorLabel;
+	  var errorLabelAfter = (errorPointing === 'above' || errorPointing === 'left') && errorLabel; // ----------------------------------------
+	  // No Control
+	  // ----------------------------------------
+
+	  if (isNil(control)) {
+	    if (isNil(label)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	        className: classes,
+	        id: id
+	      }), isNil$1(children) ? content : children);
+	    }
+
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes,
+	      id: id
+	    }), errorLabelBefore, createHTMLLabel(label, {
+	      autoGenerateKey: false
+	    }), errorLabelAfter);
+	  } // ----------------------------------------
+	  // Checkbox/Radio Control
+	  // ----------------------------------------
+
+
+	  var ariaDescribedBy = id && error ? id + "-error-message" : null;
+	  var ariaAttrs = {
+	    'aria-describedby': ariaDescribedBy,
+	    'aria-invalid': error ? true : undefined
+	  };
+
+	  var controlProps = _extends({}, rest, {
+	    content: content,
+	    children: children,
+	    disabled: disabled,
+	    required: required,
+	    type: type,
+	    id: id
+	  }); // wrap HTML checkboxes/radios in the label
+
+
+	  if (control === 'input' && (type === 'checkbox' || type === 'radio')) {
+	    return /*#__PURE__*/React.createElement(ElementType, {
+	      className: classes
+	    }, /*#__PURE__*/React.createElement("label", null, errorLabelBefore, /*#__PURE__*/reactExports.createElement(control, _extends({}, ariaAttrs, controlProps)), " ", label, errorLabelAfter));
+	  } // pass label prop to controls that support it
+
+
+	  if (control === Checkbox || control === Radio) {
+	    return /*#__PURE__*/React.createElement(ElementType, {
+	      className: classes
+	    }, errorLabelBefore, /*#__PURE__*/reactExports.createElement(control, _extends({}, ariaAttrs, controlProps, {
+	      label: label
+	    })), errorLabelAfter);
+	  } // ----------------------------------------
+	  // Other Control
+	  // ----------------------------------------
+
+
+	  return /*#__PURE__*/React.createElement(ElementType, {
+	    className: classes
+	  }, createHTMLLabel(label, {
+	    defaultProps: {
+	      htmlFor: id
+	    },
+	    autoGenerateKey: false
+	  }), errorLabelBefore, /*#__PURE__*/reactExports.createElement(control, _extends({}, ariaAttrs, controlProps)), errorLabelAfter);
+	}
+
+	FormField.handledProps = ["as", "children", "className", "content", "control", "disabled", "error", "id", "inline", "label", "required", "type", "width"];
+	FormField.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /**
+	   * A form control component (i.e. Dropdown) or HTML tagName (i.e. 'input').
+	   * Extra FormField props are passed to the control component.
+	   * Mutually exclusive with children.
+	   */
+	  control: PropTypes.oneOfType([PropTypes.elementType, PropTypes.oneOf(['button', 'input', 'select', 'textarea'])]),
+
+	  /** Individual fields may be disabled. */
+	  disabled: PropTypes.bool,
+
+	  /** Individual fields may display an error state along with a message. */
+	  error: PropTypes.oneOfType([PropTypes.bool, itemShorthand]),
+
+	  /** The id of the control */
+	  id: PropTypes.string,
+
+	  /** A field can have its label next to instead of above it. */
+	  inline: PropTypes.bool,
+	  // Heads Up!
+	  // Do not disallow children with `label` shorthand
+	  // The `control` might accept a `label` prop and `children`
+
+	  /** Mutually exclusive with children. */
+	  label: PropTypes.oneOfType([PropTypes.node, PropTypes.object]),
+
+	  /** A field can show that input is mandatory. */
+	  required: PropTypes.bool,
+
+	  /** Passed to the control component (i.e. <input type='password' />) */
+	  type: every$1([demand(['control']) // don't strictly validate HTML types
+	  // a control might be passed that uses a `type` prop with unknown values
+	  // let the control validate if for us
+	  ]),
+
+	  /** A field can specify its width in grid columns */
+	  width: PropTypes.oneOf(WIDTHS)
+	} ;
+
+	/**
+	 * Sugar for <Form.Field control={Button} />.
+	 * @see Button
+	 * @see Form
+	 */
+
+	function FormButton(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormButton, props);
+	  var ElementType = getElementType(FormButton, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormButton.handledProps = ["as", "control"];
+	FormButton.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormButton.defaultProps = {
+	  as: FormField,
+	  control: Button
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Checkbox} />.
+	 * @see Checkbox
+	 * @see Form
+	 */
+
+	function FormCheckbox(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormCheckbox, props);
+	  var ElementType = getElementType(FormCheckbox, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormCheckbox.handledProps = ["as", "control"];
+	FormCheckbox.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormCheckbox.defaultProps = {
+	  as: FormField,
+	  control: Checkbox
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Dropdown} />.
+	 * @see Dropdown
+	 * @see Form
+	 */
+
+	function FormDropdown(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormDropdown, props);
+	  var ElementType = getElementType(FormDropdown, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormDropdown.handledProps = ["as", "control"];
+	FormDropdown.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormDropdown.defaultProps = {
+	  as: FormField,
+	  control: Dropdown
+	};
+
+	/**
+	 * A set of fields can appear grouped together.
+	 * @see Form
+	 */
+
+	function FormGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      grouped = props.grouped,
+	      inline = props.inline,
+	      unstackable = props.unstackable,
+	      widths = props.widths;
+	  var classes = clsx(useKeyOnly(grouped, 'grouped'), useKeyOnly(inline, 'inline'), useKeyOnly(unstackable, 'unstackable'), useWidthProp(widths, null, true), 'fields', className);
+	  var rest = getUnhandledProps(FormGroup, props);
+	  var ElementType = getElementType(FormGroup, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	FormGroup.handledProps = ["as", "children", "className", "grouped", "inline", "unstackable", "widths"];
+	FormGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Fields can show related choices. */
+	  grouped: every$1([disallow(['inline']), PropTypes.bool]),
+
+	  /** Multiple fields may be inline in a row. */
+	  inline: every$1([disallow(['grouped']), PropTypes.bool]),
+
+	  /** A form group can prevent itself from stacking on mobile. */
+	  unstackable: PropTypes.bool,
+
+	  /** Fields Groups can specify their width in grid columns or automatically divide fields to be equal width. */
+	  widths: PropTypes.oneOf([].concat(WIDTHS, ['equal']))
+	} ;
+
+	/**
+	 * An Input is a field used to elicit a response from a user.
+	 * @see Button
+	 * @see Form
+	 * @see Icon
+	 * @see Label
+	 */
+
+	var Input = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Input, _Component);
+
+	  function Input() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.inputRef = /*#__PURE__*/reactExports.createRef();
+
+	    _this.computeIcon = function () {
+	      var _this$props = _this.props,
+	          loading = _this$props.loading,
+	          icon = _this$props.icon;
+	      if (!isNil(icon)) return icon;
+	      if (loading) return 'spinner';
+	    };
+
+	    _this.computeTabIndex = function () {
+	      var _this$props2 = _this.props,
+	          disabled = _this$props2.disabled,
+	          tabIndex = _this$props2.tabIndex;
+	      if (!isNil(tabIndex)) return tabIndex;
+	      if (disabled) return -1;
+	    };
+
+	    _this.focus = function (options) {
+	      return _this.inputRef.current.focus(options);
+	    };
+
+	    _this.select = function () {
+	      return _this.inputRef.current.select();
+	    };
+
+	    _this.handleChange = function (e) {
+	      var value = get$2(e, 'target.value');
+
+	      invoke(_this.props, 'onChange', e, _extends({}, _this.props, {
+	        value: value
+	      }));
+	    };
+
+	    _this.handleChildOverrides = function (child, defaultProps) {
+	      return _extends({}, defaultProps, child.props, {
+	        ref: function ref(c) {
+	          handleRef(child.ref, c);
+	          _this.inputRef.current = c;
+	        }
+	      });
+	    };
+
+	    _this.partitionProps = function () {
+	      var _this$props3 = _this.props,
+	          disabled = _this$props3.disabled,
+	          type = _this$props3.type;
+
+	      var tabIndex = _this.computeTabIndex();
+
+	      var unhandled = getUnhandledProps(Input, _this.props);
+
+	      var _partitionHTMLProps = partitionHTMLProps(unhandled),
+	          htmlInputProps = _partitionHTMLProps[0],
+	          rest = _partitionHTMLProps[1];
+
+	      return [_extends({}, htmlInputProps, {
+	        disabled: disabled,
+	        type: type,
+	        tabIndex: tabIndex,
+	        onChange: _this.handleChange,
+	        ref: _this.inputRef
+	      }), rest];
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Input.prototype;
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props4 = this.props,
+	        action = _this$props4.action,
+	        actionPosition = _this$props4.actionPosition,
+	        children = _this$props4.children,
+	        className = _this$props4.className,
+	        disabled = _this$props4.disabled,
+	        error = _this$props4.error,
+	        fluid = _this$props4.fluid,
+	        focus = _this$props4.focus,
+	        icon = _this$props4.icon,
+	        iconPosition = _this$props4.iconPosition,
+	        input = _this$props4.input,
+	        inverted = _this$props4.inverted,
+	        label = _this$props4.label,
+	        labelPosition = _this$props4.labelPosition,
+	        loading = _this$props4.loading,
+	        size = _this$props4.size,
+	        transparent = _this$props4.transparent,
+	        type = _this$props4.type;
+	    var classes = clsx('ui', size, useKeyOnly(disabled, 'disabled'), useKeyOnly(error, 'error'), useKeyOnly(fluid, 'fluid'), useKeyOnly(focus, 'focus'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(transparent, 'transparent'), useValueAndKey(actionPosition, 'action') || useKeyOnly(action, 'action'), useValueAndKey(iconPosition, 'icon') || useKeyOnly(icon || loading, 'icon'), useValueAndKey(labelPosition, 'labeled') || useKeyOnly(label, 'labeled'), 'input', className);
+	    var ElementType = getElementType(Input, this.props);
+
+	    var _this$partitionProps = this.partitionProps(),
+	        htmlInputProps = _this$partitionProps[0],
+	        rest = _this$partitionProps[1]; // Render with children
+	    // ----------------------------------------
+
+
+	    if (!isNil$1(children)) {
+	      // add htmlInputProps to the `<input />` child
+	      var childElements = map$2(reactExports.Children.toArray(children), function (child) {
+	        if (child.type !== 'input') return child;
+	        return /*#__PURE__*/reactExports.cloneElement(child, _this2.handleChildOverrides(child, htmlInputProps));
+	      });
+
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), childElements);
+	    } // Render Shorthand
+	    // ----------------------------------------
+
+
+	    var actionElement = Button.create(action, {
+	      autoGenerateKey: false
+	    });
+	    var labelElement = Label.create(label, {
+	      defaultProps: {
+	        className: clsx('label', // add 'left|right corner'
+	        includes(labelPosition, 'corner') && labelPosition)
+	      },
+	      autoGenerateKey: false
+	    });
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), actionPosition === 'left' && actionElement, labelPosition !== 'right' && labelElement, createHTMLInput(input || type, {
+	      defaultProps: htmlInputProps,
+	      autoGenerateKey: false
+	    }), Icon.create(this.computeIcon(), {
+	      autoGenerateKey: false
+	    }), actionPosition !== 'left' && actionElement, labelPosition === 'right' && labelElement);
+	  };
+
+	  return Input;
+	}(reactExports.Component);
+
+	Input.handledProps = ["action", "actionPosition", "as", "children", "className", "disabled", "error", "fluid", "focus", "icon", "iconPosition", "input", "inverted", "label", "labelPosition", "loading", "onChange", "size", "tabIndex", "transparent", "type"];
+	Input.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** An Input can be formatted to alert the user to an action they may perform. */
+	  action: PropTypes.oneOfType([PropTypes.bool, itemShorthand]),
+
+	  /** An action can appear along side an Input on the left or right. */
+	  actionPosition: PropTypes.oneOf(['left']),
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** An Input field can show that it is disabled. */
+	  disabled: PropTypes.bool,
+
+	  /** An Input field can show the data contains errors. */
+	  error: PropTypes.bool,
+
+	  /** Take on the size of its container. */
+	  fluid: PropTypes.bool,
+
+	  /** An Input field can show a user is currently interacting with it. */
+	  focus: PropTypes.bool,
+
+	  /** Optional Icon to display inside the Input. */
+	  icon: PropTypes.oneOfType([PropTypes.bool, itemShorthand]),
+
+	  /** An Icon can appear inside an Input on the left or right. */
+	  iconPosition: PropTypes.oneOf(['left']),
+
+	  /** Shorthand for creating the HTML Input. */
+	  input: itemShorthand,
+
+	  /** Format to appear on dark backgrounds. */
+	  inverted: PropTypes.bool,
+
+	  /** Optional Label to display along side the Input. */
+	  label: itemShorthand,
+
+	  /** A Label can appear outside an Input on the left or right. */
+	  labelPosition: PropTypes.oneOf(['left', 'right', 'left corner', 'right corner']),
+
+	  /** An Icon Input field can show that it is currently loading data. */
+	  loading: PropTypes.bool,
+
+	  /**
+	   * Called on change.
+	   *
+	   * @param {ChangeEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props and a proposed value.
+	   */
+	  onChange: PropTypes.func,
+
+	  /** An Input can vary in size. */
+	  size: PropTypes.oneOf(['mini', 'small', 'large', 'big', 'huge', 'massive']),
+
+	  /** An Input can receive focus. */
+	  tabIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+	  /** Transparent Input has no background. */
+	  transparent: PropTypes.bool,
+
+	  /** The HTML input type. */
+	  type: PropTypes.string
+	} ;
+	Input.defaultProps = {
+	  type: 'text'
+	};
+	Input.create = createShorthandFactory(Input, function (type) {
+	  return {
+	    type: type
+	  };
+	});
+
+	/**
+	 * Sugar for <Form.Field control={Input} />.
+	 * @see Form
+	 * @see Input
+	 */
+
+	function FormInput(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormInput, props);
+	  var ElementType = getElementType(FormInput, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormInput.handledProps = ["as", "control"];
+	FormInput.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormInput.defaultProps = {
+	  as: FormField,
+	  control: Input
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Radio} />.
+	 * @see Form
+	 * @see Radio
+	 */
+
+	function FormRadio(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormRadio, props);
+	  var ElementType = getElementType(FormRadio, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormRadio.handledProps = ["as", "control"];
+	FormRadio.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormRadio.defaultProps = {
+	  as: FormField,
+	  control: Radio
+	};
+
+	/**
+	 * Sugar for <Form.Field control={Select} />.
+	 * @see Form
+	 * @see Select
+	 */
+
+	function FormSelect(props) {
+	  var control = props.control,
+	      options = props.options;
+	  var rest = getUnhandledProps(FormSelect, props);
+	  var ElementType = getElementType(FormSelect, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control,
+	    options: options
+	  }));
+	}
+
+	FormSelect.handledProps = ["as", "control", "options"];
+	FormSelect.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control,
+
+	  /** Array of Dropdown.Item props e.g. `{ text: '', value: '' }` */
+	  options: PropTypes.arrayOf(PropTypes.shape(Dropdown.Item.propTypes)).isRequired
+	} ;
+	FormSelect.defaultProps = {
+	  as: FormField,
+	  control: Select
+	};
+
+	/**
+	 * Sugar for <Form.Field control={TextArea} />.
+	 * @see Form
+	 * @see TextArea
+	 */
+
+	function FormTextArea(props) {
+	  var control = props.control;
+	  var rest = getUnhandledProps(FormTextArea, props);
+	  var ElementType = getElementType(FormTextArea, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    control: control
+	  }));
+	}
+
+	FormTextArea.handledProps = ["as", "control"];
+	FormTextArea.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A FormField control prop. */
+	  control: FormField.propTypes.control
+	} ;
+	FormTextArea.defaultProps = {
+	  as: FormField,
+	  control: TextArea
+	};
+
+	/**
+	 * A Form displays a set of related user input fields in a structured way.
+	 * @see Button
+	 * @see Checkbox
+	 * @see Dropdown
+	 * @see Input
+	 * @see Message
+	 * @see Radio
+	 * @see Select
+	 * @see Visibility
+	 */
+
+	var Form = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Form, _Component);
+
+	  function Form() {
+	    var _this;
+
+	    for (var _len = arguments.length, _args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      _args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(_args)) || this;
+
+	    _this.handleSubmit = function (e) {
+	      var action = _this.props.action; // Heads up! Third party libs can pass own data as first argument, we need to check that it has preventDefault()
+	      // method.
+
+	      if (typeof action !== 'string') invoke(e, 'preventDefault');
+
+	      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	        args[_key2 - 1] = arguments[_key2];
+	      }
+
+	      invoke.apply(void 0, [_this.props, 'onSubmit', e, _this.props].concat(args));
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Form.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        action = _this$props.action,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        error = _this$props.error,
+	        inverted = _this$props.inverted,
+	        loading = _this$props.loading,
+	        reply = _this$props.reply,
+	        size = _this$props.size,
+	        success = _this$props.success,
+	        unstackable = _this$props.unstackable,
+	        warning = _this$props.warning,
+	        widths = _this$props.widths;
+	    var classes = clsx('ui', size, useKeyOnly(error, 'error'), useKeyOnly(inverted, 'inverted'), useKeyOnly(loading, 'loading'), useKeyOnly(reply, 'reply'), useKeyOnly(success, 'success'), useKeyOnly(unstackable, 'unstackable'), useKeyOnly(warning, 'warning'), useWidthProp(widths, null, true), 'form', className);
+	    var rest = getUnhandledProps(Form, this.props);
+	    var ElementType = getElementType(Form, this.props);
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      action: action,
+	      className: classes,
+	      onSubmit: this.handleSubmit
+	    }), children);
+	  };
+
+	  return Form;
+	}(reactExports.Component);
+
+	Form.handledProps = ["action", "as", "children", "className", "error", "inverted", "loading", "onSubmit", "reply", "size", "success", "unstackable", "warning", "widths"];
+	Form.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** The HTML form action */
+	  action: PropTypes.string,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Automatically show any error Message children. */
+	  error: PropTypes.bool,
+
+	  /** A form can have its color inverted for contrast. */
+	  inverted: PropTypes.bool,
+
+	  /** Automatically show a loading indicator. */
+	  loading: PropTypes.bool,
+
+	  /** The HTML form submit handler. */
+	  onSubmit: PropTypes.func,
+
+	  /** A comment can contain a form to reply to a comment. This may have arbitrary content. */
+	  reply: PropTypes.bool,
+
+	  /** A form can vary in size. */
+	  size: PropTypes.oneOf(without(SIZES, 'medium')),
+
+	  /** Automatically show any success Message children. */
+	  success: PropTypes.bool,
+
+	  /** A form can prevent itself from stacking on mobile. */
+	  unstackable: PropTypes.bool,
+
+	  /** Automatically show any warning Message children. */
+	  warning: PropTypes.bool,
+
+	  /** Forms can automatically divide fields to be equal width. */
+	  widths: PropTypes.oneOf(['equal'])
+	} ;
+	Form.defaultProps = {
+	  as: 'form'
+	};
+	Form.Field = FormField;
+	Form.Button = FormButton;
+	Form.Checkbox = FormCheckbox;
+	Form.Dropdown = FormDropdown;
+	Form.Group = FormGroup;
+	Form.Input = FormInput;
+	Form.Radio = FormRadio;
+	Form.Select = FormSelect;
+	Form.TextArea = FormTextArea;
+
+	/**
+	 * A column sub-component for Grid.
+	 */
+
+	function GridColumn(props) {
+	  var children = props.children,
+	      className = props.className,
+	      computer = props.computer,
+	      color = props.color,
+	      floated = props.floated,
+	      largeScreen = props.largeScreen,
+	      mobile = props.mobile,
+	      only = props.only,
+	      stretched = props.stretched,
+	      tablet = props.tablet,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign,
+	      widescreen = props.widescreen,
+	      width = props.width;
+	  var classes = clsx(color, useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useTextAlignProp(textAlign), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), useWidthProp(computer, 'wide computer'), useWidthProp(largeScreen, 'wide large screen'), useWidthProp(mobile, 'wide mobile'), useWidthProp(tablet, 'wide tablet'), useWidthProp(widescreen, 'wide widescreen'), useWidthProp(width, 'wide'), 'column', className);
+	  var rest = getUnhandledProps(GridColumn, props);
+	  var ElementType = getElementType(GridColumn, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	GridColumn.handledProps = ["as", "children", "className", "color", "computer", "floated", "largeScreen", "mobile", "only", "stretched", "tablet", "textAlign", "verticalAlign", "widescreen", "width"];
+	GridColumn.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** A grid column can be colored. */
+	  color: PropTypes.oneOf(COLORS),
+
+	  /** A column can specify a width for a computer. */
+	  computer: every$1([disallow(['width']), PropTypes.oneOf(WIDTHS)]),
+
+	  /** A column can sit flush against the left or right edge of a row. */
+	  floated: PropTypes.oneOf(FLOATS),
+
+	  /** A column can specify a width for a large screen device. */
+	  largeScreen: every$1([disallow(['width']), PropTypes.oneOf(WIDTHS)]),
+
+	  /** A column can specify a width for a mobile device. */
+	  mobile: every$1([disallow(['width']), PropTypes.oneOf(WIDTHS)]),
+
+	  /** A column can appear only for a specific device, or screen sizes. */
+	  only: multipleProp(VISIBILITY),
+
+	  /** A column can stretch its contents to take up the entire grid or row height. */
+	  stretched: PropTypes.bool,
+
+	  /** A column can specify a width for a tablet device. */
+	  tablet: every$1([disallow(['width']), PropTypes.oneOf(WIDTHS)]),
+
+	  /** A column can specify its text alignment. */
+	  textAlign: PropTypes.oneOf(TEXT_ALIGNMENTS),
+
+	  /** A column can specify its vertical alignment to have all its columns vertically centered. */
+	  verticalAlign: PropTypes.oneOf(VERTICAL_ALIGNMENTS),
+
+	  /** A column can specify a width for a wide screen device. */
+	  widescreen: every$1([disallow(['width']), PropTypes.oneOf(WIDTHS)]),
+
+	  /** Represents width of column. */
+	  width: every$1([disallow(['computer', 'largeScreen', 'mobile', 'tablet', 'widescreen']), PropTypes.oneOf(WIDTHS)])
+	} ;
+	GridColumn.create = createShorthandFactory(GridColumn, function (children) {
+	  return {
+	    children: children
+	  };
+	});
+
+	/**
+	 * A row sub-component for Grid.
+	 */
+
+	function GridRow(props) {
+	  var centered = props.centered,
+	      children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      columns = props.columns,
+	      divided = props.divided,
+	      only = props.only,
+	      reversed = props.reversed,
+	      stretched = props.stretched,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign;
+	  var classes = clsx(color, useKeyOnly(centered, 'centered'), useKeyOnly(divided, 'divided'), useKeyOnly(stretched, 'stretched'), useMultipleProp(only, 'only'), useMultipleProp(reversed, 'reversed'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column', true), 'row', className);
+	  var rest = getUnhandledProps(GridRow, props);
+	  var ElementType = getElementType(GridRow, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	GridRow.handledProps = ["as", "centered", "children", "className", "color", "columns", "divided", "only", "reversed", "stretched", "textAlign", "verticalAlign"];
+	GridRow.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A row can have its columns centered. */
+	  centered: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** A grid row can be colored. */
+	  color: PropTypes.oneOf(COLORS),
+
+	  /** Represents column count per line in Row. */
+	  columns: PropTypes.oneOf([].concat(WIDTHS, ['equal'])),
+
+	  /** A row can have dividers between its columns. */
+	  divided: PropTypes.bool,
+
+	  /** A row can appear only for a specific device, or screen sizes. */
+	  only: multipleProp(VISIBILITY),
+
+	  /** A row can specify that its columns should reverse order at different device sizes. */
+	  reversed: multipleProp(['computer', 'computer vertically', 'mobile', 'mobile vertically', 'tablet', 'tablet vertically']),
+
+	  /** A row can stretch its contents to take up the entire column height. */
+	  stretched: PropTypes.bool,
+
+	  /** A row can specify its text alignment. */
+	  textAlign: PropTypes.oneOf(TEXT_ALIGNMENTS),
+
+	  /** A row can specify its vertical alignment to have all its columns vertically centered. */
+	  verticalAlign: PropTypes.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+
+	/**
+	 * A grid is used to harmonize negative space in a layout.
+	 */
+
+	function Grid(props) {
+	  var celled = props.celled,
+	      centered = props.centered,
+	      children = props.children,
+	      className = props.className,
+	      columns = props.columns,
+	      container = props.container,
+	      divided = props.divided,
+	      doubling = props.doubling,
+	      inverted = props.inverted,
+	      padded = props.padded,
+	      relaxed = props.relaxed,
+	      reversed = props.reversed,
+	      stackable = props.stackable,
+	      stretched = props.stretched,
+	      textAlign = props.textAlign,
+	      verticalAlign = props.verticalAlign;
+	  var classes = clsx('ui', useKeyOnly(centered, 'centered'), useKeyOnly(container, 'container'), useKeyOnly(doubling, 'doubling'), useKeyOnly(inverted, 'inverted'), useKeyOnly(stackable, 'stackable'), useKeyOnly(stretched, 'stretched'), useKeyOrValueAndKey(celled, 'celled'), useKeyOrValueAndKey(divided, 'divided'), useKeyOrValueAndKey(padded, 'padded'), useKeyOrValueAndKey(relaxed, 'relaxed'), useMultipleProp(reversed, 'reversed'), useTextAlignProp(textAlign), useVerticalAlignProp(verticalAlign), useWidthProp(columns, 'column', true), 'grid', className);
+	  var rest = getUnhandledProps(Grid, props);
+	  var ElementType = getElementType(Grid, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), children);
+	}
+
+	Grid.handledProps = ["as", "celled", "centered", "children", "className", "columns", "container", "divided", "doubling", "inverted", "padded", "relaxed", "reversed", "stackable", "stretched", "textAlign", "verticalAlign"];
+	Grid.Column = GridColumn;
+	Grid.Row = GridRow;
+	Grid.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A grid can have rows divided into cells. */
+	  celled: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['internally'])]),
+
+	  /** A grid can have its columns centered. */
+	  centered: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Represents column count per row in Grid. */
+	  columns: PropTypes.oneOf([].concat(WIDTHS, ['equal'])),
+
+	  /** A grid can be combined with a container to use the available layout and alignment. */
+	  container: PropTypes.bool,
+
+	  /** A grid can have dividers between its columns. */
+	  divided: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['vertically'])]),
+
+	  /** A grid can double its column width on tablet and mobile sizes. */
+	  doubling: PropTypes.bool,
+
+	  /** A grid's colors can be inverted. */
+	  inverted: PropTypes.bool,
+
+	  /** A grid can preserve its vertical and horizontal gutters on first and last columns. */
+	  padded: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['horizontally', 'vertically'])]),
+
+	  /** A grid can increase its gutters to allow for more negative space. */
+	  relaxed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['very'])]),
+
+	  /** A grid can specify that its columns should reverse order at different device sizes. */
+	  reversed: multipleProp(['computer', 'computer vertically', 'mobile', 'mobile vertically', 'tablet', 'tablet vertically']),
+
+	  /** A grid can have its columns stack on-top of each other after reaching mobile breakpoints. */
+	  stackable: PropTypes.bool,
+
+	  /** A grid can stretch its contents to take up the entire grid height. */
+	  stretched: PropTypes.bool,
+
+	  /** A grid can specify its text alignment. */
+	  textAlign: PropTypes.oneOf(TEXT_ALIGNMENTS),
+
+	  /** A grid can specify its vertical alignment to have all its columns vertically centered. */
+	  verticalAlign: PropTypes.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+
+	/**
+	 * A message can contain a content.
+	 */
+
+	function MessageContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('content', className);
+	  var rest = getUnhandledProps(MessageContent, props);
+	  var ElementType = getElementType(MessageContent, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MessageContent.handledProps = ["as", "children", "className", "content"];
+	MessageContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A message can contain a header.
+	 */
+
+	function MessageHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('header', className);
+	  var rest = getUnhandledProps(MessageHeader, props);
+	  var ElementType = getElementType(MessageHeader, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MessageHeader.handledProps = ["as", "children", "className", "content"];
+	MessageHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	MessageHeader.create = createShorthandFactory(MessageHeader, function (val) {
+	  return {
+	    content: val
+	  };
+	});
+
+	/**
+	 * A message list can contain an item.
+	 */
+
+	function MessageItem(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('content', className);
+	  var rest = getUnhandledProps(MessageItem, props);
+	  var ElementType = getElementType(MessageItem, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	MessageItem.handledProps = ["as", "children", "className", "content"];
+	MessageItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	MessageItem.defaultProps = {
+	  as: 'li'
+	};
+	MessageItem.create = createShorthandFactory(MessageItem, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A message can contain a list of items.
+	 */
+
+	function MessageList(props) {
+	  var children = props.children,
+	      className = props.className,
+	      items = props.items;
+	  var classes = clsx('list', className);
+	  var rest = getUnhandledProps(MessageList, props);
+	  var ElementType = getElementType(MessageList, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? map$2(items, MessageItem.create) : children);
+	}
+
+	MessageList.handledProps = ["as", "children", "className", "items"];
+	MessageList.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand Message.Items. */
+	  items: collectionShorthand
+	} ;
+	MessageList.defaultProps = {
+	  as: 'ul'
+	};
+	MessageList.create = createShorthandFactory(MessageList, function (val) {
+	  return {
+	    items: val
+	  };
+	});
+
+	/**
+	 * A message displays information that explains nearby content.
+	 * @see Form
+	 */
+
+	var Message = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Message, _Component);
+
+	  function Message() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleDismiss = function (e) {
+	      var onDismiss = _this.props.onDismiss;
+	      if (onDismiss) onDismiss(e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = Message.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        attached = _this$props.attached,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        color = _this$props.color,
+	        compact = _this$props.compact,
+	        content = _this$props.content,
+	        error = _this$props.error,
+	        floating = _this$props.floating,
+	        header = _this$props.header,
+	        hidden = _this$props.hidden,
+	        icon = _this$props.icon,
+	        info = _this$props.info,
+	        list = _this$props.list,
+	        negative = _this$props.negative,
+	        onDismiss = _this$props.onDismiss,
+	        positive = _this$props.positive,
+	        size = _this$props.size,
+	        success = _this$props.success,
+	        visible = _this$props.visible,
+	        warning = _this$props.warning;
+	    var classes = clsx('ui', color, size, useKeyOnly(compact, 'compact'), useKeyOnly(error, 'error'), useKeyOnly(floating, 'floating'), useKeyOnly(hidden, 'hidden'), useKeyOnly(icon, 'icon'), useKeyOnly(info, 'info'), useKeyOnly(negative, 'negative'), useKeyOnly(positive, 'positive'), useKeyOnly(success, 'success'), useKeyOnly(visible, 'visible'), useKeyOnly(warning, 'warning'), useKeyOrValueAndKey(attached, 'attached'), 'message', className);
+	    var dismissIcon = onDismiss && /*#__PURE__*/React.createElement(Icon, {
+	      name: "close",
+	      onClick: this.handleDismiss
+	    });
+	    var rest = getUnhandledProps(Message, this.props);
+	    var ElementType = getElementType(Message, this.props);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	        className: classes
+	      }), dismissIcon, children);
+	    }
+
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), dismissIcon, Icon.create(icon, {
+	      autoGenerateKey: false
+	    }), (!isNil(header) || !isNil(content) || !isNil(list)) && /*#__PURE__*/React.createElement(MessageContent, null, MessageHeader.create(header, {
+	      autoGenerateKey: false
+	    }), MessageList.create(list, {
+	      autoGenerateKey: false
+	    }), createHTMLParagraph(content, {
+	      autoGenerateKey: false
+	    })));
+	  };
+
+	  return Message;
+	}(reactExports.Component);
+
+	Message.handledProps = ["as", "attached", "children", "className", "color", "compact", "content", "error", "floating", "header", "hidden", "icon", "info", "list", "negative", "onDismiss", "positive", "size", "success", "visible", "warning"];
+	Message.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A message can be formatted to attach itself to other content. */
+	  attached: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['bottom', 'top'])]),
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** A message can be formatted to be different colors. */
+	  color: PropTypes.oneOf(COLORS),
+
+	  /** A message can only take up the width of its content. */
+	  compact: PropTypes.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A message may be formatted to display a negative message. Same as `negative`. */
+	  error: PropTypes.bool,
+
+	  /** A message can float above content that it is related to. */
+	  floating: PropTypes.bool,
+
+	  /** Shorthand for MessageHeader. */
+	  header: itemShorthand,
+
+	  /** A message can be hidden. */
+	  hidden: PropTypes.bool,
+
+	  /** A message can contain an icon. */
+	  icon: PropTypes.oneOfType([itemShorthand, PropTypes.bool]),
+
+	  /** A message may be formatted to display information. */
+	  info: PropTypes.bool,
+
+	  /** Array shorthand items for the MessageList. Mutually exclusive with children. */
+	  list: collectionShorthand,
+
+	  /** A message may be formatted to display a negative message. Same as `error`. */
+	  negative: PropTypes.bool,
+
+	  /**
+	   * A message that the user can choose to hide.
+	   * Called when the user clicks the "x" icon. This also adds the "x" icon.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onDismiss: PropTypes.func,
+
+	  /** A message may be formatted to display a positive message.  Same as `success`. */
+	  positive: PropTypes.bool,
+
+	  /** A message can have different sizes. */
+	  size: PropTypes.oneOf(without(SIZES, 'medium')),
+
+	  /** A message may be formatted to display a positive message.  Same as `positive`. */
+	  success: PropTypes.bool,
+
+	  /** A message can be set to visible to force itself to be shown. */
+	  visible: PropTypes.bool,
+
+	  /** A message may be formatted to display warning messages. */
+	  warning: PropTypes.bool
+	} ;
+	Message.Content = MessageContent;
+	Message.Header = MessageHeader;
+	Message.List = MessageList;
+	Message.Item = MessageItem;
 
 	function TableBody(props) {
 	  var children = props.children,
@@ -44192,10 +49808,10 @@
 	  footerRow: itemShorthand,
 
 	  /** Shorthand for a TableRow to be placed within Table.Header. */
-	  headerRow: every([disallow(['headerRows']), itemShorthand]),
+	  headerRow: every$1([disallow(['headerRows']), itemShorthand]),
 
 	  /** Shorthand for multiple TableRows to be placed within Table.Header. */
-	  headerRows: every([disallow(['headerRow']), collectionShorthand]),
+	  headerRows: every$1([disallow(['headerRow']), collectionShorthand]),
 
 	  /** A table's colors can be inverted. */
 	  inverted: PropTypes.bool,
@@ -44210,7 +49826,7 @@
 	   * @param {number} index - The index of the current element in `tableData`.
 	   * @returns {*} Shorthand for a Table.Row.
 	   */
-	  renderBodyRow: every([disallow(['children']), demand(['tableData']), PropTypes.func]),
+	  renderBodyRow: every$1([disallow(['children']), demand(['tableData']), PropTypes.func]),
 
 	  /** A table can have its rows appear selectable. */
 	  selectable: PropTypes.bool,
@@ -44234,7 +49850,7 @@
 	  structured: PropTypes.bool,
 
 	  /** Data to be passed to the renderBodyRow function. */
-	  tableData: every([disallow(['children']), demand(['renderBodyRow']), PropTypes.array]),
+	  tableData: every$1([disallow(['children']), demand(['renderBodyRow']), PropTypes.array]),
 
 	  /** A table can adjust its text alignment. */
 	  textAlign: PropTypes.oneOf(without(TEXT_ALIGNMENTS, 'justified')),
@@ -44251,6 +49867,108 @@
 	Table.Header = TableHeader;
 	Table.HeaderCell = TableHeaderCell;
 	Table.Row = TableRow;
+
+	/**
+	 * A container limits content to a maximum width.
+	 */
+
+	function Container(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      fluid = props.fluid,
+	      text = props.text,
+	      textAlign = props.textAlign;
+	  var classes = clsx('ui', useKeyOnly(text, 'text'), useKeyOnly(fluid, 'fluid'), useTextAlignProp(textAlign), 'container', className);
+	  var rest = getUnhandledProps(Container, props);
+	  var ElementType = getElementType(Container, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	Container.handledProps = ["as", "children", "className", "content", "fluid", "text", "textAlign"];
+	Container.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Container has no maximum width. */
+	  fluid: PropTypes.bool,
+
+	  /** Reduce maximum width to more naturally accommodate text. */
+	  text: PropTypes.bool,
+
+	  /** Align container text. */
+	  textAlign: PropTypes.oneOf(TEXT_ALIGNMENTS)
+	} ;
+
+	/**
+	 * A divider visually segments content into groups.
+	 */
+
+	function Divider(props) {
+	  var children = props.children,
+	      className = props.className,
+	      clearing = props.clearing,
+	      content = props.content,
+	      fitted = props.fitted,
+	      hidden = props.hidden,
+	      horizontal = props.horizontal,
+	      inverted = props.inverted,
+	      section = props.section,
+	      vertical = props.vertical;
+	  var classes = clsx('ui', useKeyOnly(clearing, 'clearing'), useKeyOnly(fitted, 'fitted'), useKeyOnly(hidden, 'hidden'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), useKeyOnly(section, 'section'), useKeyOnly(vertical, 'vertical'), 'divider', className);
+	  var rest = getUnhandledProps(Divider, props);
+	  var ElementType = getElementType(Divider, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	Divider.handledProps = ["as", "children", "className", "clearing", "content", "fitted", "hidden", "horizontal", "inverted", "section", "vertical"];
+	Divider.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Divider can clear the content above it. */
+	  clearing: PropTypes.bool,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Divider can be fitted without any space above or below it. */
+	  fitted: PropTypes.bool,
+
+	  /** Divider can divide content without creating a dividing line. */
+	  hidden: PropTypes.bool,
+
+	  /** Divider can segment content horizontally. */
+	  horizontal: PropTypes.bool,
+
+	  /** Divider can have its colours inverted. */
+	  inverted: PropTypes.bool,
+
+	  /** Divider can provide greater margins to divide sections of content. */
+	  section: PropTypes.bool,
+
+	  /** Divider can segment content vertically. */
+	  vertical: PropTypes.bool
+	} ;
 
 	/**
 	 * Headers may contain subheaders.
@@ -44404,10 +50122,10 @@
 	  floated: PropTypes.oneOf(FLOATS),
 
 	  /** Add an icon by icon name or pass an Icon. */
-	  icon: every([disallow(['image']), PropTypes.oneOfType([PropTypes.bool, itemShorthand])]),
+	  icon: every$1([disallow(['image']), PropTypes.oneOfType([PropTypes.bool, itemShorthand])]),
 
 	  /** Add an image by img src or pass an Image. */
-	  image: every([disallow(['icon']), PropTypes.oneOfType([PropTypes.bool, itemShorthand])]),
+	  image: every$1([disallow(['icon']), PropTypes.oneOfType([PropTypes.bool, itemShorthand])]),
 
 	  /** Inverts the color of the header for dark backgrounds. */
 	  inverted: PropTypes.bool,
@@ -44426,6 +50144,565 @@
 	} ;
 	Header.Content = HeaderContent;
 	Header.Subheader = HeaderSubheader;
+
+	/**
+	 * A list item can contain a description.
+	 */
+
+	function ListDescription(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx(className, 'description');
+	  var rest = getUnhandledProps(ListDescription, props);
+	  var ElementType = getElementType(ListDescription, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ListDescription.handledProps = ["as", "children", "className", "content"];
+	ListDescription.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ListDescription.create = createShorthandFactory(ListDescription, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list item can contain a header.
+	 */
+
+	function ListHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('header', className);
+	  var rest = getUnhandledProps(ListHeader, props);
+	  var ElementType = getElementType(ListHeader, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ListHeader.handledProps = ["as", "children", "className", "content"];
+	ListHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	ListHeader.create = createShorthandFactory(ListHeader, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list item can contain a content.
+	 */
+
+	function ListContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      description = props.description,
+	      floated = props.floated,
+	      header = props.header,
+	      verticalAlign = props.verticalAlign;
+	  var classes = clsx(useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'content', className);
+	  var rest = getUnhandledProps(ListContent, props);
+	  var ElementType = getElementType(ListContent, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), ListHeader.create(header), ListDescription.create(description), content);
+	}
+
+	ListContent.handledProps = ["as", "children", "className", "content", "description", "floated", "header", "verticalAlign"];
+	ListContent.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Shorthand for ListDescription. */
+	  description: itemShorthand,
+
+	  /** An list content can be floated left or right. */
+	  floated: PropTypes.oneOf(FLOATS),
+
+	  /** Shorthand for ListHeader. */
+	  header: itemShorthand,
+
+	  /** An element inside a list can be vertically aligned. */
+	  verticalAlign: PropTypes.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+	ListContent.create = createShorthandFactory(ListContent, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list item can contain an icon.
+	 */
+
+	function ListIcon(props) {
+	  var className = props.className,
+	      verticalAlign = props.verticalAlign;
+	  var classes = clsx(useVerticalAlignProp(verticalAlign), className);
+	  var rest = getUnhandledProps(ListIcon, props);
+	  return /*#__PURE__*/React.createElement(Icon, _extends({}, rest, {
+	    className: classes
+	  }));
+	}
+
+	ListIcon.handledProps = ["className", "verticalAlign"];
+	ListIcon.propTypes = {
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** An element inside a list can be vertically aligned. */
+	  verticalAlign: PropTypes.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+	ListIcon.create = createShorthandFactory(ListIcon, function (name) {
+	  return {
+	    name: name
+	  };
+	});
+
+	/**
+	 * A list item can contain a set of items.
+	 */
+
+	var ListItem = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(ListItem, _Component);
+
+	  function ListItem() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleClick = function (e) {
+	      var disabled = _this.props.disabled;
+	      if (!disabled) invoke(_this.props, 'onClick', e, _this.props);
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = ListItem.prototype;
+
+	  _proto.render = function render() {
+	    var _this$props = this.props,
+	        active = _this$props.active,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        description = _this$props.description,
+	        disabled = _this$props.disabled,
+	        header = _this$props.header,
+	        icon = _this$props.icon,
+	        image = _this$props.image,
+	        value = _this$props.value;
+	    var ElementType = getElementType(ListItem, this.props);
+	    var classes = clsx(useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(ElementType !== 'li', 'item'), className);
+	    var rest = getUnhandledProps(ListItem, this.props);
+	    var valueProp = ElementType === 'li' ? {
+	      value: value
+	    } : {
+	      'data-value': value
+	    };
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, valueProp, {
+	        role: "listitem",
+	        className: classes,
+	        onClick: this.handleClick
+	      }, rest), children);
+	    }
+
+	    var iconElement = ListIcon.create(icon, {
+	      autoGenerateKey: false
+	    });
+	    var imageElement = Image.create(image, {
+	      autoGenerateKey: false
+	    }); // See description of `content` prop for explanation about why this is necessary.
+
+	    if (! /*#__PURE__*/reactExports.isValidElement(content) && isPlainObject(content)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, valueProp, {
+	        role: "listitem",
+	        className: classes,
+	        onClick: this.handleClick
+	      }, rest), iconElement || imageElement, ListContent.create(content, {
+	        autoGenerateKey: false,
+	        defaultProps: {
+	          header: header,
+	          description: description
+	        }
+	      }));
+	    }
+
+	    var headerElement = ListHeader.create(header, {
+	      autoGenerateKey: false
+	    });
+	    var descriptionElement = ListDescription.create(description, {
+	      autoGenerateKey: false
+	    });
+
+	    if (iconElement || imageElement) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, valueProp, {
+	        role: "listitem",
+	        className: classes,
+	        onClick: this.handleClick
+	      }, rest), iconElement || imageElement, (content || headerElement || descriptionElement) && /*#__PURE__*/React.createElement(ListContent, null, headerElement, descriptionElement, content));
+	    }
+
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, valueProp, {
+	      role: "listitem",
+	      className: classes,
+	      onClick: this.handleClick
+	    }, rest), headerElement, descriptionElement, content);
+	  };
+
+	  return ListItem;
+	}(reactExports.Component);
+
+	ListItem.handledProps = ["active", "as", "children", "className", "content", "description", "disabled", "header", "icon", "image", "onClick", "value"];
+	ListItem.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A list item can active. */
+	  active: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /**
+	   * Shorthand for primary content.
+	   *
+	   * Heads up!
+	   *
+	   * This is handled slightly differently than the typical `content` prop since
+	   * the wrapping ListContent is not used when there's no icon or image.
+	   *
+	   * If you pass content as:
+	   * - an element/literal, it's treated as the sibling node to
+	   * header/description (whether wrapped in Item.Content or not).
+	   * - a props object, it forces the presence of Item.Content and passes those
+	   * props to it. If you pass a content prop within that props object, it
+	   * will be treated as the sibling node to header/description.
+	   */
+	  content: itemShorthand,
+
+	  /** Shorthand for ListDescription. */
+	  description: itemShorthand,
+
+	  /** A list item can disabled. */
+	  disabled: PropTypes.bool,
+
+	  /** Shorthand for ListHeader. */
+	  header: itemShorthand,
+
+	  /** Shorthand for ListIcon. */
+	  icon: every$1([disallow(['image']), itemShorthand]),
+
+	  /** Shorthand for Image. */
+	  image: every$1([disallow(['icon']), itemShorthand]),
+
+	  /** A ListItem can be clicked */
+	  onClick: PropTypes.func,
+
+	  /** A value for an ordered list. */
+	  value: PropTypes.string
+	} ;
+	ListItem.create = createShorthandFactory(ListItem, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A list can contain a sub list.
+	 */
+
+	function ListList(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var rest = getUnhandledProps(ListList, props);
+	  var ElementType = getElementType(ListList, props);
+	  var classes = clsx(useKeyOnly(ElementType !== 'ul' && ElementType !== 'ol', 'list'), className);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	ListList.handledProps = ["as", "children", "className", "content"];
+	ListList.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+
+	/**
+	 * A list groups related content.
+	 */
+
+	var List = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(List, _Component);
+
+	  function List() {
+	    var _this;
+
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+	    _this.handleItemOverrides = function (predefinedProps) {
+	      return {
+	        onClick: function onClick(e, itemProps) {
+	          invoke(predefinedProps, 'onClick', e, itemProps);
+
+	          invoke(_this.props, 'onItemClick', e, itemProps);
+	        }
+	      };
+	    };
+
+	    return _this;
+	  }
+
+	  var _proto = List.prototype;
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props = this.props,
+	        animated = _this$props.animated,
+	        bulleted = _this$props.bulleted,
+	        celled = _this$props.celled,
+	        children = _this$props.children,
+	        className = _this$props.className,
+	        content = _this$props.content,
+	        divided = _this$props.divided,
+	        floated = _this$props.floated,
+	        horizontal = _this$props.horizontal,
+	        inverted = _this$props.inverted,
+	        items = _this$props.items,
+	        link = _this$props.link,
+	        ordered = _this$props.ordered,
+	        relaxed = _this$props.relaxed,
+	        selection = _this$props.selection,
+	        size = _this$props.size,
+	        verticalAlign = _this$props.verticalAlign;
+	    var classes = clsx('ui', size, useKeyOnly(animated, 'animated'), useKeyOnly(bulleted, 'bulleted'), useKeyOnly(celled, 'celled'), useKeyOnly(divided, 'divided'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), useKeyOnly(link, 'link'), useKeyOnly(ordered, 'ordered'), useKeyOnly(selection, 'selection'), useKeyOrValueAndKey(relaxed, 'relaxed'), useValueAndKey(floated, 'floated'), useVerticalAlignProp(verticalAlign), 'list', className);
+	    var rest = getUnhandledProps(List, this.props);
+	    var ElementType = getElementType(List, this.props);
+
+	    if (!isNil$1(children)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({
+	        role: "list",
+	        className: classes
+	      }, rest), children);
+	    }
+
+	    if (!isNil$1(content)) {
+	      return /*#__PURE__*/React.createElement(ElementType, _extends({
+	        role: "list",
+	        className: classes
+	      }, rest), content);
+	    }
+
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({
+	      role: "list",
+	      className: classes
+	    }, rest), map$2(items, function (item) {
+	      return ListItem.create(item, {
+	        overrideProps: _this2.handleItemOverrides
+	      });
+	    }));
+	  };
+
+	  return List;
+	}(reactExports.Component);
+
+	List.handledProps = ["animated", "as", "bulleted", "celled", "children", "className", "content", "divided", "floated", "horizontal", "inverted", "items", "link", "onItemClick", "ordered", "relaxed", "selection", "size", "verticalAlign"];
+	List.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A list can animate to set the current item apart from the list. */
+	  animated: PropTypes.bool,
+
+	  /** A list can mark items with a bullet. */
+	  bulleted: PropTypes.bool,
+
+	  /** A list can divide its items into cells. */
+	  celled: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A list can show divisions between content. */
+	  divided: PropTypes.bool,
+
+	  /** An list can be floated left or right. */
+	  floated: PropTypes.oneOf(FLOATS),
+
+	  /** A list can be formatted to have items appear horizontally. */
+	  horizontal: PropTypes.bool,
+
+	  /** A list can be inverted to appear on a dark background. */
+	  inverted: PropTypes.bool,
+
+	  /** Shorthand array of props for ListItem. */
+	  items: collectionShorthand,
+
+	  /** A list can be specially formatted for navigation links. */
+	  link: PropTypes.bool,
+
+	  /**
+	   * onClick handler for ListItem. Mutually exclusive with children.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All item props.
+	   */
+	  onItemClick: every$1([disallow(['children']), PropTypes.func]),
+
+	  /** A list can be ordered numerically. */
+	  ordered: PropTypes.bool,
+
+	  /** A list can relax its padding to provide more negative space. */
+	  relaxed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['very'])]),
+
+	  /** A selection list formats list items as possible choices. */
+	  selection: PropTypes.bool,
+
+	  /** A list can vary in size. */
+	  size: PropTypes.oneOf(SIZES),
+
+	  /** An element inside a list can be vertically aligned. */
+	  verticalAlign: PropTypes.oneOf(VERTICAL_ALIGNMENTS)
+	} ;
+	List.Content = ListContent;
+	List.Description = ListDescription;
+	List.Header = ListHeader;
+	List.Icon = ListIcon;
+	List.Item = ListItem;
+	List.List = ListList;
+
+	/**
+	 * A loader alerts a user to wait for an activity to complete.
+	 * @see Dimmer
+	 */
+
+	function Loader(props) {
+	  var active = props.active,
+	      children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      disabled = props.disabled,
+	      indeterminate = props.indeterminate,
+	      inline = props.inline,
+	      inverted = props.inverted,
+	      size = props.size;
+	  var classes = clsx('ui', size, useKeyOnly(active, 'active'), useKeyOnly(disabled, 'disabled'), useKeyOnly(indeterminate, 'indeterminate'), useKeyOnly(inverted, 'inverted'), useKeyOnly(children || content, 'text'), useKeyOrValueAndKey(inline, 'inline'), 'loader', className);
+	  var rest = getUnhandledProps(Loader, props);
+	  var ElementType = getElementType(Loader, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	Loader.handledProps = ["active", "as", "children", "className", "content", "disabled", "indeterminate", "inline", "inverted", "size"];
+	Loader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** A loader can be active or visible. */
+	  active: PropTypes.bool,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A loader can be disabled or hidden. */
+	  disabled: PropTypes.bool,
+
+	  /** A loader can show it's unsure of how long a task will take. */
+	  indeterminate: PropTypes.bool,
+
+	  /** Loaders can appear inline with content. */
+	  inline: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['centered'])]),
+
+	  /** Loaders can have their colors inverted. */
+	  inverted: PropTypes.bool,
+
+	  /** Loaders can have different sizes. */
+	  size: PropTypes.oneOf(SIZES)
+	} ;
 
 	/**
 	 * A group of segments can be formatted to appear together.
@@ -44627,243 +50904,2415 @@
 	} ;
 
 	/**
-	 * A card can contain a description with one or more paragraphs.
+	 * Checks if `value` is likely a DOM element.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a DOM element, else `false`.
+	 * @example
+	 *
+	 * _.isElement(document.body);
+	 * // => true
+	 *
+	 * _.isElement('<body>');
+	 * // => false
 	 */
-
-	function CardDescription(props) {
-	  var children = props.children,
-	      className = props.className,
-	      content = props.content,
-	      textAlign = props.textAlign;
-	  var classes = clsx(useTextAlignProp(textAlign), 'description', className);
-	  var rest = getUnhandledProps(CardDescription, props);
-	  var ElementType = getElementType(CardDescription, props);
-	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	    className: classes
-	  }), isNil$1(children) ? content : children);
+	function isElement$1(value) {
+	  return isObjectLike(value) && value.nodeType === 1 && !isPlainObject(value);
 	}
 
-	CardDescription.handledProps = ["as", "children", "className", "content", "textAlign"];
-	CardDescription.propTypes = {
-	  /** An element type to render as (string or function). */
-	  as: PropTypes.elementType,
-
-	  /** Primary content. */
-	  children: PropTypes.node,
-
-	  /** Additional classes. */
-	  className: PropTypes.string,
-
-	  /** Shorthand for primary content. */
-	  content: contentShorthand,
-
-	  /** A card content can adjust its text alignment. */
-	  textAlign: PropTypes.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
-	} ;
+	var ManagerReferenceNodeContext = reactExports.createContext();
+	reactExports.createContext();
 
 	/**
-	 * A card can contain a header.
+	 * Takes an argument and if it's an array, returns the first item in the array,
+	 * otherwise returns the argument. Used for Preact compatibility.
+	 */
+	var unwrapArray = function unwrapArray(arg) {
+	  return Array.isArray(arg) ? arg[0] : arg;
+	};
+	/**
+	 * Takes a maybe-undefined function and arbitrary args and invokes the function
+	 * only if it is defined.
 	 */
 
-	function CardHeader(props) {
-	  var children = props.children,
-	      className = props.className,
-	      content = props.content,
-	      textAlign = props.textAlign;
-	  var classes = clsx(useTextAlignProp(textAlign), 'header', className);
-	  var rest = getUnhandledProps(CardHeader, props);
-	  var ElementType = getElementType(CardHeader, props);
-	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	    className: classes
-	  }), isNil$1(children) ? content : children);
+	var safeInvoke = function safeInvoke(fn) {
+	  if (typeof fn === 'function') {
+	    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    return fn.apply(void 0, args);
+	  }
+	};
+	/**
+	 * Sets a ref using either a ref callback or a ref object
+	 */
+
+	var setRef = function setRef(ref, node) {
+	  // if its a function call it
+	  if (typeof ref === 'function') {
+	    return safeInvoke(ref, node);
+	  } // otherwise we should treat it as a ref object
+	  else if (ref != null) {
+	      ref.current = node;
+	    }
+	};
+	/**
+	 * Simple ponyfill for Object.fromEntries
+	 */
+
+	var fromEntries = function fromEntries(entries) {
+	  return entries.reduce(function (acc, _ref) {
+	    var key = _ref[0],
+	        value = _ref[1];
+	    acc[key] = value;
+	    return acc;
+	  }, {});
+	};
+	/**
+	 * Small wrapper around `useLayoutEffect` to get rid of the warning on SSR envs
+	 */
+
+	var useIsomorphicLayoutEffect = typeof window !== 'undefined' && window.document && window.document.createElement ? reactExports.useLayoutEffect : reactExports.useEffect;
+
+	var top$1 = 'top';
+	var bottom$1 = 'bottom';
+	var right$1 = 'right';
+	var left$1 = 'left';
+	var auto = 'auto';
+	var basePlacements = [top$1, bottom$1, right$1, left$1];
+	var start$1 = 'start';
+	var end = 'end';
+	var clippingParents = 'clippingParents';
+	var viewport = 'viewport';
+	var popper = 'popper';
+	var reference = 'reference';
+	var variationPlacements = /*#__PURE__*/basePlacements.reduce(function (acc, placement) {
+	  return acc.concat([placement + "-" + start$1, placement + "-" + end]);
+	}, []);
+	var placements = /*#__PURE__*/[].concat(basePlacements, [auto]).reduce(function (acc, placement) {
+	  return acc.concat([placement, placement + "-" + start$1, placement + "-" + end]);
+	}, []); // modifiers that need to read the DOM
+
+	var beforeRead = 'beforeRead';
+	var read = 'read';
+	var afterRead = 'afterRead'; // pure-logic modifiers
+
+	var beforeMain = 'beforeMain';
+	var main$1 = 'main';
+	var afterMain = 'afterMain'; // modifier with the purpose to write to the DOM (or write into a framework state)
+
+	var beforeWrite = 'beforeWrite';
+	var write = 'write';
+	var afterWrite = 'afterWrite';
+	var modifierPhases = [beforeRead, read, afterRead, beforeMain, main$1, afterMain, beforeWrite, write, afterWrite];
+
+	function getNodeName(element) {
+	  return element ? (element.nodeName || '').toLowerCase() : null;
 	}
 
-	CardHeader.handledProps = ["as", "children", "className", "content", "textAlign"];
-	CardHeader.propTypes = {
-	  /** An element type to render as (string or function). */
-	  as: PropTypes.elementType,
+	function getWindow(node) {
+	  if (node == null) {
+	    return window;
+	  }
 
-	  /** Primary content. */
-	  children: PropTypes.node,
+	  if (node.toString() !== '[object Window]') {
+	    var ownerDocument = node.ownerDocument;
+	    return ownerDocument ? ownerDocument.defaultView || window : window;
+	  }
 
-	  /** Additional classes. */
-	  className: PropTypes.string,
-
-	  /** Shorthand for primary content. */
-	  content: contentShorthand,
-
-	  /** A card header can adjust its text alignment. */
-	  textAlign: PropTypes.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
-	} ;
-
-	/**
-	 * A card can contain content metadata.
-	 */
-
-	function CardMeta(props) {
-	  var children = props.children,
-	      className = props.className,
-	      content = props.content,
-	      textAlign = props.textAlign;
-	  var classes = clsx(useTextAlignProp(textAlign), 'meta', className);
-	  var rest = getUnhandledProps(CardMeta, props);
-	  var ElementType = getElementType(CardMeta, props);
-	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	    className: classes
-	  }), isNil$1(children) ? content : children);
+	  return node;
 	}
 
-	CardMeta.handledProps = ["as", "children", "className", "content", "textAlign"];
-	CardMeta.propTypes = {
-	  /** An element type to render as (string or function). */
-	  as: PropTypes.elementType,
-
-	  /** Primary content. */
-	  children: PropTypes.node,
-
-	  /** Additional classes. */
-	  className: PropTypes.string,
-
-	  /** Shorthand for primary content. */
-	  content: contentShorthand,
-
-	  /** A card meta can adjust its text alignment. */
-	  textAlign: PropTypes.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
-	} ;
-
-	/**
-	 * A card can contain blocks of content or extra content meant to be formatted separately from the main content.
-	 */
-
-	function CardContent(props) {
-	  var children = props.children,
-	      className = props.className,
-	      content = props.content,
-	      description = props.description,
-	      extra = props.extra,
-	      header = props.header,
-	      meta = props.meta,
-	      textAlign = props.textAlign;
-	  var classes = clsx(useKeyOnly(extra, 'extra'), useTextAlignProp(textAlign), 'content', className);
-	  var rest = getUnhandledProps(CardContent, props);
-	  var ElementType = getElementType(CardContent, props);
-
-	  if (!isNil$1(children)) {
-	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	      className: classes
-	    }), children);
-	  }
-
-	  if (!isNil$1(content)) {
-	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	      className: classes
-	    }), content);
-	  }
-
-	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	    className: classes
-	  }), createShorthand(CardHeader, function (val) {
-	    return {
-	      content: val
-	    };
-	  }, header, {
-	    autoGenerateKey: false
-	  }), createShorthand(CardMeta, function (val) {
-	    return {
-	      content: val
-	    };
-	  }, meta, {
-	    autoGenerateKey: false
-	  }), createShorthand(CardDescription, function (val) {
-	    return {
-	      content: val
-	    };
-	  }, description, {
-	    autoGenerateKey: false
-	  }));
+	function isElement(node) {
+	  var OwnElement = getWindow(node).Element;
+	  return node instanceof OwnElement || node instanceof Element;
 	}
 
-	CardContent.handledProps = ["as", "children", "className", "content", "description", "extra", "header", "meta", "textAlign"];
-	CardContent.propTypes = {
-	  /** An element type to render as (string or function). */
-	  as: PropTypes.elementType,
+	function isHTMLElement(node) {
+	  var OwnElement = getWindow(node).HTMLElement;
+	  return node instanceof OwnElement || node instanceof HTMLElement;
+	}
 
-	  /** Primary content. */
-	  children: PropTypes.node,
-
-	  /** Additional classes. */
-	  className: PropTypes.string,
-
-	  /** Shorthand for primary content. */
-	  content: contentShorthand,
-
-	  /** Shorthand for CardDescription. */
-	  description: itemShorthand,
-
-	  /** A card can contain extra content meant to be formatted separately from the main content. */
-	  extra: PropTypes.bool,
-
-	  /** Shorthand for CardHeader. */
-	  header: itemShorthand,
-
-	  /** Shorthand for CardMeta. */
-	  meta: itemShorthand,
-
-	  /** A card content can adjust its text alignment. */
-	  textAlign: PropTypes.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
-	} ;
-
-	/**
-	 * A group of cards.
-	 */
-
-	function CardGroup(props) {
-	  var centered = props.centered,
-	      children = props.children,
-	      className = props.className,
-	      content = props.content,
-	      doubling = props.doubling,
-	      items = props.items,
-	      itemsPerRow = props.itemsPerRow,
-	      stackable = props.stackable,
-	      textAlign = props.textAlign;
-	  var classes = clsx('ui', useKeyOnly(centered, 'centered'), useKeyOnly(doubling, 'doubling'), useKeyOnly(stackable, 'stackable'), useTextAlignProp(textAlign), useWidthProp(itemsPerRow), 'cards', className);
-	  var rest = getUnhandledProps(CardGroup, props);
-	  var ElementType = getElementType(CardGroup, props);
-
-	  if (!isNil$1(children)) {
-	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	      className: classes
-	    }), children);
+	function isShadowRoot(node) {
+	  // IE 11 has no ShadowRoot
+	  if (typeof ShadowRoot === 'undefined') {
+	    return false;
 	  }
 
-	  if (!isNil$1(content)) {
-	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	      className: classes
-	    }), content);
+	  var OwnElement = getWindow(node).ShadowRoot;
+	  return node instanceof OwnElement || node instanceof ShadowRoot;
+	}
+
+	// and applies them to the HTMLElements such as popper and arrow
+
+	function applyStyles(_ref) {
+	  var state = _ref.state;
+	  Object.keys(state.elements).forEach(function (name) {
+	    var style = state.styles[name] || {};
+	    var attributes = state.attributes[name] || {};
+	    var element = state.elements[name]; // arrow is optional + virtual elements
+
+	    if (!isHTMLElement(element) || !getNodeName(element)) {
+	      return;
+	    } // Flow doesn't support to extend this property, but it's the most
+	    // effective way to apply styles to an HTMLElement
+	    // $FlowFixMe[cannot-write]
+
+
+	    Object.assign(element.style, style);
+	    Object.keys(attributes).forEach(function (name) {
+	      var value = attributes[name];
+
+	      if (value === false) {
+	        element.removeAttribute(name);
+	      } else {
+	        element.setAttribute(name, value === true ? '' : value);
+	      }
+	    });
+	  });
+	}
+
+	function effect$2(_ref2) {
+	  var state = _ref2.state;
+	  var initialStyles = {
+	    popper: {
+	      position: state.options.strategy,
+	      left: '0',
+	      top: '0',
+	      margin: '0'
+	    },
+	    arrow: {
+	      position: 'absolute'
+	    },
+	    reference: {}
+	  };
+	  Object.assign(state.elements.popper.style, initialStyles.popper);
+	  state.styles = initialStyles;
+
+	  if (state.elements.arrow) {
+	    Object.assign(state.elements.arrow.style, initialStyles.arrow);
 	  }
 
-	  var itemsJSX = map$2(items, function (item) {
-	    var _item$key;
+	  return function () {
+	    Object.keys(state.elements).forEach(function (name) {
+	      var element = state.elements[name];
+	      var attributes = state.attributes[name] || {};
+	      var styleProperties = Object.keys(state.styles.hasOwnProperty(name) ? state.styles[name] : initialStyles[name]); // Set all values to an empty string to unset them
 
-	    var key = (_item$key = item.key) != null ? _item$key : [item.header, item.description].join('-');
-	    return /*#__PURE__*/React.createElement(Card, _extends({
-	      key: key
-	    }, item));
+	      var style = styleProperties.reduce(function (style, property) {
+	        style[property] = '';
+	        return style;
+	      }, {}); // arrow is optional + virtual elements
+
+	      if (!isHTMLElement(element) || !getNodeName(element)) {
+	        return;
+	      }
+
+	      Object.assign(element.style, style);
+	      Object.keys(attributes).forEach(function (attribute) {
+	        element.removeAttribute(attribute);
+	      });
+	    });
+	  };
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var applyStyles$1 = {
+	  name: 'applyStyles',
+	  enabled: true,
+	  phase: 'write',
+	  fn: applyStyles,
+	  effect: effect$2,
+	  requires: ['computeStyles']
+	};
+
+	function getBasePlacement(placement) {
+	  return placement.split('-')[0];
+	}
+
+	var max$1 = Math.max;
+	var min$2 = Math.min;
+	var round = Math.round;
+
+	function getUAString() {
+	  var uaData = navigator.userAgentData;
+
+	  if (uaData != null && uaData.brands && Array.isArray(uaData.brands)) {
+	    return uaData.brands.map(function (item) {
+	      return item.brand + "/" + item.version;
+	    }).join(' ');
+	  }
+
+	  return navigator.userAgent;
+	}
+
+	function isLayoutViewport() {
+	  return !/^((?!chrome|android).)*safari/i.test(getUAString());
+	}
+
+	function getBoundingClientRect(element, includeScale, isFixedStrategy) {
+	  if (includeScale === void 0) {
+	    includeScale = false;
+	  }
+
+	  if (isFixedStrategy === void 0) {
+	    isFixedStrategy = false;
+	  }
+
+	  var clientRect = element.getBoundingClientRect();
+	  var scaleX = 1;
+	  var scaleY = 1;
+
+	  if (includeScale && isHTMLElement(element)) {
+	    scaleX = element.offsetWidth > 0 ? round(clientRect.width) / element.offsetWidth || 1 : 1;
+	    scaleY = element.offsetHeight > 0 ? round(clientRect.height) / element.offsetHeight || 1 : 1;
+	  }
+
+	  var _ref = isElement(element) ? getWindow(element) : window,
+	      visualViewport = _ref.visualViewport;
+
+	  var addVisualOffsets = !isLayoutViewport() && isFixedStrategy;
+	  var x = (clientRect.left + (addVisualOffsets && visualViewport ? visualViewport.offsetLeft : 0)) / scaleX;
+	  var y = (clientRect.top + (addVisualOffsets && visualViewport ? visualViewport.offsetTop : 0)) / scaleY;
+	  var width = clientRect.width / scaleX;
+	  var height = clientRect.height / scaleY;
+	  return {
+	    width: width,
+	    height: height,
+	    top: y,
+	    right: x + width,
+	    bottom: y + height,
+	    left: x,
+	    x: x,
+	    y: y
+	  };
+	}
+
+	// means it doesn't take into account transforms.
+
+	function getLayoutRect(element) {
+	  var clientRect = getBoundingClientRect(element); // Use the clientRect sizes if it's not been transformed.
+	  // Fixes https://github.com/popperjs/popper-core/issues/1223
+
+	  var width = element.offsetWidth;
+	  var height = element.offsetHeight;
+
+	  if (Math.abs(clientRect.width - width) <= 1) {
+	    width = clientRect.width;
+	  }
+
+	  if (Math.abs(clientRect.height - height) <= 1) {
+	    height = clientRect.height;
+	  }
+
+	  return {
+	    x: element.offsetLeft,
+	    y: element.offsetTop,
+	    width: width,
+	    height: height
+	  };
+	}
+
+	function contains(parent, child) {
+	  var rootNode = child.getRootNode && child.getRootNode(); // First, attempt with faster native method
+
+	  if (parent.contains(child)) {
+	    return true;
+	  } // then fallback to custom implementation with Shadow DOM support
+	  else if (rootNode && isShadowRoot(rootNode)) {
+	      var next = child;
+
+	      do {
+	        if (next && parent.isSameNode(next)) {
+	          return true;
+	        } // $FlowFixMe[prop-missing]: need a better way to handle this...
+
+
+	        next = next.parentNode || next.host;
+	      } while (next);
+	    } // Give up, the result is false
+
+
+	  return false;
+	}
+
+	function getComputedStyle(element) {
+	  return getWindow(element).getComputedStyle(element);
+	}
+
+	function isTableElement(element) {
+	  return ['table', 'td', 'th'].indexOf(getNodeName(element)) >= 0;
+	}
+
+	function getDocumentElement(element) {
+	  // $FlowFixMe[incompatible-return]: assume body is always available
+	  return ((isElement(element) ? element.ownerDocument : // $FlowFixMe[prop-missing]
+	  element.document) || window.document).documentElement;
+	}
+
+	function getParentNode(element) {
+	  if (getNodeName(element) === 'html') {
+	    return element;
+	  }
+
+	  return (// this is a quicker (but less type safe) way to save quite some bytes from the bundle
+	    // $FlowFixMe[incompatible-return]
+	    // $FlowFixMe[prop-missing]
+	    element.assignedSlot || // step into the shadow DOM of the parent of a slotted node
+	    element.parentNode || ( // DOM Element detected
+	    isShadowRoot(element) ? element.host : null) || // ShadowRoot detected
+	    // $FlowFixMe[incompatible-call]: HTMLElement is a Node
+	    getDocumentElement(element) // fallback
+
+	  );
+	}
+
+	function getTrueOffsetParent(element) {
+	  if (!isHTMLElement(element) || // https://github.com/popperjs/popper-core/issues/837
+	  getComputedStyle(element).position === 'fixed') {
+	    return null;
+	  }
+
+	  return element.offsetParent;
+	} // `.offsetParent` reports `null` for fixed elements, while absolute elements
+	// return the containing block
+
+
+	function getContainingBlock(element) {
+	  var isFirefox = /firefox/i.test(getUAString());
+	  var isIE = /Trident/i.test(getUAString());
+
+	  if (isIE && isHTMLElement(element)) {
+	    // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
+	    var elementCss = getComputedStyle(element);
+
+	    if (elementCss.position === 'fixed') {
+	      return null;
+	    }
+	  }
+
+	  var currentNode = getParentNode(element);
+
+	  if (isShadowRoot(currentNode)) {
+	    currentNode = currentNode.host;
+	  }
+
+	  while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
+	    var css = getComputedStyle(currentNode); // This is non-exhaustive but covers the most common CSS properties that
+	    // create a containing block.
+	    // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+
+	    if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
+	      return currentNode;
+	    } else {
+	      currentNode = currentNode.parentNode;
+	    }
+	  }
+
+	  return null;
+	} // Gets the closest ancestor positioned element. Handles some edge cases,
+	// such as table ancestors and cross browser bugs.
+
+
+	function getOffsetParent(element) {
+	  var window = getWindow(element);
+	  var offsetParent = getTrueOffsetParent(element);
+
+	  while (offsetParent && isTableElement(offsetParent) && getComputedStyle(offsetParent).position === 'static') {
+	    offsetParent = getTrueOffsetParent(offsetParent);
+	  }
+
+	  if (offsetParent && (getNodeName(offsetParent) === 'html' || getNodeName(offsetParent) === 'body' && getComputedStyle(offsetParent).position === 'static')) {
+	    return window;
+	  }
+
+	  return offsetParent || getContainingBlock(element) || window;
+	}
+
+	function getMainAxisFromPlacement(placement) {
+	  return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
+	}
+
+	function within(min, value, max) {
+	  return max$1(min, min$2(value, max));
+	}
+	function withinMaxClamp(min, value, max) {
+	  var v = within(min, value, max);
+	  return v > max ? max : v;
+	}
+
+	function getFreshSideObject() {
+	  return {
+	    top: 0,
+	    right: 0,
+	    bottom: 0,
+	    left: 0
+	  };
+	}
+
+	function mergePaddingObject(paddingObject) {
+	  return Object.assign({}, getFreshSideObject(), paddingObject);
+	}
+
+	function expandToHashMap(value, keys) {
+	  return keys.reduce(function (hashMap, key) {
+	    hashMap[key] = value;
+	    return hashMap;
+	  }, {});
+	}
+
+	var toPaddingObject = function toPaddingObject(padding, state) {
+	  padding = typeof padding === 'function' ? padding(Object.assign({}, state.rects, {
+	    placement: state.placement
+	  })) : padding;
+	  return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+	};
+
+	function arrow(_ref) {
+	  var _state$modifiersData$;
+
+	  var state = _ref.state,
+	      name = _ref.name,
+	      options = _ref.options;
+	  var arrowElement = state.elements.arrow;
+	  var popperOffsets = state.modifiersData.popperOffsets;
+	  var basePlacement = getBasePlacement(state.placement);
+	  var axis = getMainAxisFromPlacement(basePlacement);
+	  var isVertical = [left$1, right$1].indexOf(basePlacement) >= 0;
+	  var len = isVertical ? 'height' : 'width';
+
+	  if (!arrowElement || !popperOffsets) {
+	    return;
+	  }
+
+	  var paddingObject = toPaddingObject(options.padding, state);
+	  var arrowRect = getLayoutRect(arrowElement);
+	  var minProp = axis === 'y' ? top$1 : left$1;
+	  var maxProp = axis === 'y' ? bottom$1 : right$1;
+	  var endDiff = state.rects.reference[len] + state.rects.reference[axis] - popperOffsets[axis] - state.rects.popper[len];
+	  var startDiff = popperOffsets[axis] - state.rects.reference[axis];
+	  var arrowOffsetParent = getOffsetParent(arrowElement);
+	  var clientSize = arrowOffsetParent ? axis === 'y' ? arrowOffsetParent.clientHeight || 0 : arrowOffsetParent.clientWidth || 0 : 0;
+	  var centerToReference = endDiff / 2 - startDiff / 2; // Make sure the arrow doesn't overflow the popper if the center point is
+	  // outside of the popper bounds
+
+	  var min = paddingObject[minProp];
+	  var max = clientSize - arrowRect[len] - paddingObject[maxProp];
+	  var center = clientSize / 2 - arrowRect[len] / 2 + centerToReference;
+	  var offset = within(min, center, max); // Prevents breaking syntax highlighting...
+
+	  var axisProp = axis;
+	  state.modifiersData[name] = (_state$modifiersData$ = {}, _state$modifiersData$[axisProp] = offset, _state$modifiersData$.centerOffset = offset - center, _state$modifiersData$);
+	}
+
+	function effect$1(_ref2) {
+	  var state = _ref2.state,
+	      options = _ref2.options;
+	  var _options$element = options.element,
+	      arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
+
+	  if (arrowElement == null) {
+	    return;
+	  } // CSS selector
+
+
+	  if (typeof arrowElement === 'string') {
+	    arrowElement = state.elements.popper.querySelector(arrowElement);
+
+	    if (!arrowElement) {
+	      return;
+	    }
+	  }
+
+	  if (!contains(state.elements.popper, arrowElement)) {
+	    return;
+	  }
+
+	  state.elements.arrow = arrowElement;
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var arrow$1 = {
+	  name: 'arrow',
+	  enabled: true,
+	  phase: 'main',
+	  fn: arrow,
+	  effect: effect$1,
+	  requires: ['popperOffsets'],
+	  requiresIfExists: ['preventOverflow']
+	};
+
+	function getVariation(placement) {
+	  return placement.split('-')[1];
+	}
+
+	var unsetSides = {
+	  top: 'auto',
+	  right: 'auto',
+	  bottom: 'auto',
+	  left: 'auto'
+	}; // Round the offsets to the nearest suitable subpixel based on the DPR.
+	// Zooming can change the DPR, but it seems to report a value that will
+	// cleanly divide the values into the appropriate subpixels.
+
+	function roundOffsetsByDPR(_ref, win) {
+	  var x = _ref.x,
+	      y = _ref.y;
+	  var dpr = win.devicePixelRatio || 1;
+	  return {
+	    x: round(x * dpr) / dpr || 0,
+	    y: round(y * dpr) / dpr || 0
+	  };
+	}
+
+	function mapToStyles(_ref2) {
+	  var _Object$assign2;
+
+	  var popper = _ref2.popper,
+	      popperRect = _ref2.popperRect,
+	      placement = _ref2.placement,
+	      variation = _ref2.variation,
+	      offsets = _ref2.offsets,
+	      position = _ref2.position,
+	      gpuAcceleration = _ref2.gpuAcceleration,
+	      adaptive = _ref2.adaptive,
+	      roundOffsets = _ref2.roundOffsets,
+	      isFixed = _ref2.isFixed;
+	  var _offsets$x = offsets.x,
+	      x = _offsets$x === void 0 ? 0 : _offsets$x,
+	      _offsets$y = offsets.y,
+	      y = _offsets$y === void 0 ? 0 : _offsets$y;
+
+	  var _ref3 = typeof roundOffsets === 'function' ? roundOffsets({
+	    x: x,
+	    y: y
+	  }) : {
+	    x: x,
+	    y: y
+	  };
+
+	  x = _ref3.x;
+	  y = _ref3.y;
+	  var hasX = offsets.hasOwnProperty('x');
+	  var hasY = offsets.hasOwnProperty('y');
+	  var sideX = left$1;
+	  var sideY = top$1;
+	  var win = window;
+
+	  if (adaptive) {
+	    var offsetParent = getOffsetParent(popper);
+	    var heightProp = 'clientHeight';
+	    var widthProp = 'clientWidth';
+
+	    if (offsetParent === getWindow(popper)) {
+	      offsetParent = getDocumentElement(popper);
+
+	      if (getComputedStyle(offsetParent).position !== 'static' && position === 'absolute') {
+	        heightProp = 'scrollHeight';
+	        widthProp = 'scrollWidth';
+	      }
+	    } // $FlowFixMe[incompatible-cast]: force type refinement, we compare offsetParent with window above, but Flow doesn't detect it
+
+
+	    offsetParent = offsetParent;
+
+	    if (placement === top$1 || (placement === left$1 || placement === right$1) && variation === end) {
+	      sideY = bottom$1;
+	      var offsetY = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
+	      offsetParent[heightProp];
+	      y -= offsetY - popperRect.height;
+	      y *= gpuAcceleration ? 1 : -1;
+	    }
+
+	    if (placement === left$1 || (placement === top$1 || placement === bottom$1) && variation === end) {
+	      sideX = right$1;
+	      var offsetX = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
+	      offsetParent[widthProp];
+	      x -= offsetX - popperRect.width;
+	      x *= gpuAcceleration ? 1 : -1;
+	    }
+	  }
+
+	  var commonStyles = Object.assign({
+	    position: position
+	  }, adaptive && unsetSides);
+
+	  var _ref4 = roundOffsets === true ? roundOffsetsByDPR({
+	    x: x,
+	    y: y
+	  }, getWindow(popper)) : {
+	    x: x,
+	    y: y
+	  };
+
+	  x = _ref4.x;
+	  y = _ref4.y;
+
+	  if (gpuAcceleration) {
+	    var _Object$assign;
+
+	    return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) <= 1 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
+	  }
+
+	  return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
+	}
+
+	function computeStyles(_ref5) {
+	  var state = _ref5.state,
+	      options = _ref5.options;
+	  var _options$gpuAccelerat = options.gpuAcceleration,
+	      gpuAcceleration = _options$gpuAccelerat === void 0 ? true : _options$gpuAccelerat,
+	      _options$adaptive = options.adaptive,
+	      adaptive = _options$adaptive === void 0 ? true : _options$adaptive,
+	      _options$roundOffsets = options.roundOffsets,
+	      roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
+	  var commonStyles = {
+	    placement: getBasePlacement(state.placement),
+	    variation: getVariation(state.placement),
+	    popper: state.elements.popper,
+	    popperRect: state.rects.popper,
+	    gpuAcceleration: gpuAcceleration,
+	    isFixed: state.options.strategy === 'fixed'
+	  };
+
+	  if (state.modifiersData.popperOffsets != null) {
+	    state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
+	      offsets: state.modifiersData.popperOffsets,
+	      position: state.options.strategy,
+	      adaptive: adaptive,
+	      roundOffsets: roundOffsets
+	    })));
+	  }
+
+	  if (state.modifiersData.arrow != null) {
+	    state.styles.arrow = Object.assign({}, state.styles.arrow, mapToStyles(Object.assign({}, commonStyles, {
+	      offsets: state.modifiersData.arrow,
+	      position: 'absolute',
+	      adaptive: false,
+	      roundOffsets: roundOffsets
+	    })));
+	  }
+
+	  state.attributes.popper = Object.assign({}, state.attributes.popper, {
+	    'data-popper-placement': state.placement
+	  });
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var computeStyles$1 = {
+	  name: 'computeStyles',
+	  enabled: true,
+	  phase: 'beforeWrite',
+	  fn: computeStyles,
+	  data: {}
+	};
+
+	var passive = {
+	  passive: true
+	};
+
+	function effect(_ref) {
+	  var state = _ref.state,
+	      instance = _ref.instance,
+	      options = _ref.options;
+	  var _options$scroll = options.scroll,
+	      scroll = _options$scroll === void 0 ? true : _options$scroll,
+	      _options$resize = options.resize,
+	      resize = _options$resize === void 0 ? true : _options$resize;
+	  var window = getWindow(state.elements.popper);
+	  var scrollParents = [].concat(state.scrollParents.reference, state.scrollParents.popper);
+
+	  if (scroll) {
+	    scrollParents.forEach(function (scrollParent) {
+	      scrollParent.addEventListener('scroll', instance.update, passive);
+	    });
+	  }
+
+	  if (resize) {
+	    window.addEventListener('resize', instance.update, passive);
+	  }
+
+	  return function () {
+	    if (scroll) {
+	      scrollParents.forEach(function (scrollParent) {
+	        scrollParent.removeEventListener('scroll', instance.update, passive);
+	      });
+	    }
+
+	    if (resize) {
+	      window.removeEventListener('resize', instance.update, passive);
+	    }
+	  };
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var eventListeners = {
+	  name: 'eventListeners',
+	  enabled: true,
+	  phase: 'write',
+	  fn: function fn() {},
+	  effect: effect,
+	  data: {}
+	};
+
+	var hash$1 = {
+	  left: 'right',
+	  right: 'left',
+	  bottom: 'top',
+	  top: 'bottom'
+	};
+	function getOppositePlacement(placement) {
+	  return placement.replace(/left|right|bottom|top/g, function (matched) {
+	    return hash$1[matched];
+	  });
+	}
+
+	var hash = {
+	  start: 'end',
+	  end: 'start'
+	};
+	function getOppositeVariationPlacement(placement) {
+	  return placement.replace(/start|end/g, function (matched) {
+	    return hash[matched];
+	  });
+	}
+
+	function getWindowScroll(node) {
+	  var win = getWindow(node);
+	  var scrollLeft = win.pageXOffset;
+	  var scrollTop = win.pageYOffset;
+	  return {
+	    scrollLeft: scrollLeft,
+	    scrollTop: scrollTop
+	  };
+	}
+
+	function getWindowScrollBarX(element) {
+	  // If <html> has a CSS width greater than the viewport, then this will be
+	  // incorrect for RTL.
+	  // Popper 1 is broken in this case and never had a bug report so let's assume
+	  // it's not an issue. I don't think anyone ever specifies width on <html>
+	  // anyway.
+	  // Browsers where the left scrollbar doesn't cause an issue report `0` for
+	  // this (e.g. Edge 2019, IE11, Safari)
+	  return getBoundingClientRect(getDocumentElement(element)).left + getWindowScroll(element).scrollLeft;
+	}
+
+	function getViewportRect(element, strategy) {
+	  var win = getWindow(element);
+	  var html = getDocumentElement(element);
+	  var visualViewport = win.visualViewport;
+	  var width = html.clientWidth;
+	  var height = html.clientHeight;
+	  var x = 0;
+	  var y = 0;
+
+	  if (visualViewport) {
+	    width = visualViewport.width;
+	    height = visualViewport.height;
+	    var layoutViewport = isLayoutViewport();
+
+	    if (layoutViewport || !layoutViewport && strategy === 'fixed') {
+	      x = visualViewport.offsetLeft;
+	      y = visualViewport.offsetTop;
+	    }
+	  }
+
+	  return {
+	    width: width,
+	    height: height,
+	    x: x + getWindowScrollBarX(element),
+	    y: y
+	  };
+	}
+
+	// of the `<html>` and `<body>` rect bounds if horizontally scrollable
+
+	function getDocumentRect(element) {
+	  var _element$ownerDocumen;
+
+	  var html = getDocumentElement(element);
+	  var winScroll = getWindowScroll(element);
+	  var body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+	  var width = max$1(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
+	  var height = max$1(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
+	  var x = -winScroll.scrollLeft + getWindowScrollBarX(element);
+	  var y = -winScroll.scrollTop;
+
+	  if (getComputedStyle(body || html).direction === 'rtl') {
+	    x += max$1(html.clientWidth, body ? body.clientWidth : 0) - width;
+	  }
+
+	  return {
+	    width: width,
+	    height: height,
+	    x: x,
+	    y: y
+	  };
+	}
+
+	function isScrollParent(element) {
+	  // Firefox wants us to check `-x` and `-y` variations as well
+	  var _getComputedStyle = getComputedStyle(element),
+	      overflow = _getComputedStyle.overflow,
+	      overflowX = _getComputedStyle.overflowX,
+	      overflowY = _getComputedStyle.overflowY;
+
+	  return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
+	}
+
+	function getScrollParent(node) {
+	  if (['html', 'body', '#document'].indexOf(getNodeName(node)) >= 0) {
+	    // $FlowFixMe[incompatible-return]: assume body is always available
+	    return node.ownerDocument.body;
+	  }
+
+	  if (isHTMLElement(node) && isScrollParent(node)) {
+	    return node;
+	  }
+
+	  return getScrollParent(getParentNode(node));
+	}
+
+	/*
+	given a DOM element, return the list of all scroll parents, up the list of ancesors
+	until we get to the top window object. This list is what we attach scroll listeners
+	to, because if any of these parent elements scroll, we'll need to re-calculate the
+	reference element's position.
+	*/
+
+	function listScrollParents(element, list) {
+	  var _element$ownerDocumen;
+
+	  if (list === void 0) {
+	    list = [];
+	  }
+
+	  var scrollParent = getScrollParent(element);
+	  var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body);
+	  var win = getWindow(scrollParent);
+	  var target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
+	  var updatedList = list.concat(target);
+	  return isBody ? updatedList : // $FlowFixMe[incompatible-call]: isBody tells us target will be an HTMLElement here
+	  updatedList.concat(listScrollParents(getParentNode(target)));
+	}
+
+	function rectToClientRect(rect) {
+	  return Object.assign({}, rect, {
+	    left: rect.x,
+	    top: rect.y,
+	    right: rect.x + rect.width,
+	    bottom: rect.y + rect.height
+	  });
+	}
+
+	function getInnerBoundingClientRect(element, strategy) {
+	  var rect = getBoundingClientRect(element, false, strategy === 'fixed');
+	  rect.top = rect.top + element.clientTop;
+	  rect.left = rect.left + element.clientLeft;
+	  rect.bottom = rect.top + element.clientHeight;
+	  rect.right = rect.left + element.clientWidth;
+	  rect.width = element.clientWidth;
+	  rect.height = element.clientHeight;
+	  rect.x = rect.left;
+	  rect.y = rect.top;
+	  return rect;
+	}
+
+	function getClientRectFromMixedType(element, clippingParent, strategy) {
+	  return clippingParent === viewport ? rectToClientRect(getViewportRect(element, strategy)) : isElement(clippingParent) ? getInnerBoundingClientRect(clippingParent, strategy) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
+	} // A "clipping parent" is an overflowable container with the characteristic of
+	// clipping (or hiding) overflowing elements with a position different from
+	// `initial`
+
+
+	function getClippingParents(element) {
+	  var clippingParents = listScrollParents(getParentNode(element));
+	  var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle(element).position) >= 0;
+	  var clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
+
+	  if (!isElement(clipperElement)) {
+	    return [];
+	  } // $FlowFixMe[incompatible-return]: https://github.com/facebook/flow/issues/1414
+
+
+	  return clippingParents.filter(function (clippingParent) {
+	    return isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
+	  });
+	} // Gets the maximum area that the element is visible in due to any number of
+	// clipping parents
+
+
+	function getClippingRect(element, boundary, rootBoundary, strategy) {
+	  var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
+	  var clippingParents = [].concat(mainClippingParents, [rootBoundary]);
+	  var firstClippingParent = clippingParents[0];
+	  var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
+	    var rect = getClientRectFromMixedType(element, clippingParent, strategy);
+	    accRect.top = max$1(rect.top, accRect.top);
+	    accRect.right = min$2(rect.right, accRect.right);
+	    accRect.bottom = min$2(rect.bottom, accRect.bottom);
+	    accRect.left = max$1(rect.left, accRect.left);
+	    return accRect;
+	  }, getClientRectFromMixedType(element, firstClippingParent, strategy));
+	  clippingRect.width = clippingRect.right - clippingRect.left;
+	  clippingRect.height = clippingRect.bottom - clippingRect.top;
+	  clippingRect.x = clippingRect.left;
+	  clippingRect.y = clippingRect.top;
+	  return clippingRect;
+	}
+
+	function computeOffsets(_ref) {
+	  var reference = _ref.reference,
+	      element = _ref.element,
+	      placement = _ref.placement;
+	  var basePlacement = placement ? getBasePlacement(placement) : null;
+	  var variation = placement ? getVariation(placement) : null;
+	  var commonX = reference.x + reference.width / 2 - element.width / 2;
+	  var commonY = reference.y + reference.height / 2 - element.height / 2;
+	  var offsets;
+
+	  switch (basePlacement) {
+	    case top$1:
+	      offsets = {
+	        x: commonX,
+	        y: reference.y - element.height
+	      };
+	      break;
+
+	    case bottom$1:
+	      offsets = {
+	        x: commonX,
+	        y: reference.y + reference.height
+	      };
+	      break;
+
+	    case right$1:
+	      offsets = {
+	        x: reference.x + reference.width,
+	        y: commonY
+	      };
+	      break;
+
+	    case left$1:
+	      offsets = {
+	        x: reference.x - element.width,
+	        y: commonY
+	      };
+	      break;
+
+	    default:
+	      offsets = {
+	        x: reference.x,
+	        y: reference.y
+	      };
+	  }
+
+	  var mainAxis = basePlacement ? getMainAxisFromPlacement(basePlacement) : null;
+
+	  if (mainAxis != null) {
+	    var len = mainAxis === 'y' ? 'height' : 'width';
+
+	    switch (variation) {
+	      case start$1:
+	        offsets[mainAxis] = offsets[mainAxis] - (reference[len] / 2 - element[len] / 2);
+	        break;
+
+	      case end:
+	        offsets[mainAxis] = offsets[mainAxis] + (reference[len] / 2 - element[len] / 2);
+	        break;
+	    }
+	  }
+
+	  return offsets;
+	}
+
+	function detectOverflow(state, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  var _options = options,
+	      _options$placement = _options.placement,
+	      placement = _options$placement === void 0 ? state.placement : _options$placement,
+	      _options$strategy = _options.strategy,
+	      strategy = _options$strategy === void 0 ? state.strategy : _options$strategy,
+	      _options$boundary = _options.boundary,
+	      boundary = _options$boundary === void 0 ? clippingParents : _options$boundary,
+	      _options$rootBoundary = _options.rootBoundary,
+	      rootBoundary = _options$rootBoundary === void 0 ? viewport : _options$rootBoundary,
+	      _options$elementConte = _options.elementContext,
+	      elementContext = _options$elementConte === void 0 ? popper : _options$elementConte,
+	      _options$altBoundary = _options.altBoundary,
+	      altBoundary = _options$altBoundary === void 0 ? false : _options$altBoundary,
+	      _options$padding = _options.padding,
+	      padding = _options$padding === void 0 ? 0 : _options$padding;
+	  var paddingObject = mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+	  var altContext = elementContext === popper ? reference : popper;
+	  var popperRect = state.rects.popper;
+	  var element = state.elements[altBoundary ? altContext : elementContext];
+	  var clippingClientRect = getClippingRect(isElement(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary, strategy);
+	  var referenceClientRect = getBoundingClientRect(state.elements.reference);
+	  var popperOffsets = computeOffsets({
+	    reference: referenceClientRect,
+	    element: popperRect,
+	    placement: placement
+	  });
+	  var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
+	  var elementClientRect = elementContext === popper ? popperClientRect : referenceClientRect; // positive = overflowing the clipping rect
+	  // 0 or negative = within the clipping rect
+
+	  var overflowOffsets = {
+	    top: clippingClientRect.top - elementClientRect.top + paddingObject.top,
+	    bottom: elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom,
+	    left: clippingClientRect.left - elementClientRect.left + paddingObject.left,
+	    right: elementClientRect.right - clippingClientRect.right + paddingObject.right
+	  };
+	  var offsetData = state.modifiersData.offset; // Offsets can be applied only to the popper element
+
+	  if (elementContext === popper && offsetData) {
+	    var offset = offsetData[placement];
+	    Object.keys(overflowOffsets).forEach(function (key) {
+	      var multiply = [right$1, bottom$1].indexOf(key) >= 0 ? 1 : -1;
+	      var axis = [top$1, bottom$1].indexOf(key) >= 0 ? 'y' : 'x';
+	      overflowOffsets[key] += offset[axis] * multiply;
+	    });
+	  }
+
+	  return overflowOffsets;
+	}
+
+	function computeAutoPlacement(state, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  var _options = options,
+	      placement = _options.placement,
+	      boundary = _options.boundary,
+	      rootBoundary = _options.rootBoundary,
+	      padding = _options.padding,
+	      flipVariations = _options.flipVariations,
+	      _options$allowedAutoP = _options.allowedAutoPlacements,
+	      allowedAutoPlacements = _options$allowedAutoP === void 0 ? placements : _options$allowedAutoP;
+	  var variation = getVariation(placement);
+	  var placements$1 = variation ? flipVariations ? variationPlacements : variationPlacements.filter(function (placement) {
+	    return getVariation(placement) === variation;
+	  }) : basePlacements;
+	  var allowedPlacements = placements$1.filter(function (placement) {
+	    return allowedAutoPlacements.indexOf(placement) >= 0;
 	  });
 
-	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	    className: classes
-	  }), itemsJSX);
+	  if (allowedPlacements.length === 0) {
+	    allowedPlacements = placements$1;
+	  } // $FlowFixMe[incompatible-type]: Flow seems to have problems with two array unions...
+
+
+	  var overflows = allowedPlacements.reduce(function (acc, placement) {
+	    acc[placement] = detectOverflow(state, {
+	      placement: placement,
+	      boundary: boundary,
+	      rootBoundary: rootBoundary,
+	      padding: padding
+	    })[getBasePlacement(placement)];
+	    return acc;
+	  }, {});
+	  return Object.keys(overflows).sort(function (a, b) {
+	    return overflows[a] - overflows[b];
+	  });
 	}
 
-	CardGroup.handledProps = ["as", "centered", "children", "className", "content", "doubling", "items", "itemsPerRow", "stackable", "textAlign"];
-	CardGroup.propTypes = {
+	function getExpandedFallbackPlacements(placement) {
+	  if (getBasePlacement(placement) === auto) {
+	    return [];
+	  }
+
+	  var oppositePlacement = getOppositePlacement(placement);
+	  return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
+	}
+
+	function flip$1(_ref) {
+	  var state = _ref.state,
+	      options = _ref.options,
+	      name = _ref.name;
+
+	  if (state.modifiersData[name]._skip) {
+	    return;
+	  }
+
+	  var _options$mainAxis = options.mainAxis,
+	      checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+	      _options$altAxis = options.altAxis,
+	      checkAltAxis = _options$altAxis === void 0 ? true : _options$altAxis,
+	      specifiedFallbackPlacements = options.fallbackPlacements,
+	      padding = options.padding,
+	      boundary = options.boundary,
+	      rootBoundary = options.rootBoundary,
+	      altBoundary = options.altBoundary,
+	      _options$flipVariatio = options.flipVariations,
+	      flipVariations = _options$flipVariatio === void 0 ? true : _options$flipVariatio,
+	      allowedAutoPlacements = options.allowedAutoPlacements;
+	  var preferredPlacement = state.options.placement;
+	  var basePlacement = getBasePlacement(preferredPlacement);
+	  var isBasePlacement = basePlacement === preferredPlacement;
+	  var fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipVariations ? [getOppositePlacement(preferredPlacement)] : getExpandedFallbackPlacements(preferredPlacement));
+	  var placements = [preferredPlacement].concat(fallbackPlacements).reduce(function (acc, placement) {
+	    return acc.concat(getBasePlacement(placement) === auto ? computeAutoPlacement(state, {
+	      placement: placement,
+	      boundary: boundary,
+	      rootBoundary: rootBoundary,
+	      padding: padding,
+	      flipVariations: flipVariations,
+	      allowedAutoPlacements: allowedAutoPlacements
+	    }) : placement);
+	  }, []);
+	  var referenceRect = state.rects.reference;
+	  var popperRect = state.rects.popper;
+	  var checksMap = new Map();
+	  var makeFallbackChecks = true;
+	  var firstFittingPlacement = placements[0];
+
+	  for (var i = 0; i < placements.length; i++) {
+	    var placement = placements[i];
+
+	    var _basePlacement = getBasePlacement(placement);
+
+	    var isStartVariation = getVariation(placement) === start$1;
+	    var isVertical = [top$1, bottom$1].indexOf(_basePlacement) >= 0;
+	    var len = isVertical ? 'width' : 'height';
+	    var overflow = detectOverflow(state, {
+	      placement: placement,
+	      boundary: boundary,
+	      rootBoundary: rootBoundary,
+	      altBoundary: altBoundary,
+	      padding: padding
+	    });
+	    var mainVariationSide = isVertical ? isStartVariation ? right$1 : left$1 : isStartVariation ? bottom$1 : top$1;
+
+	    if (referenceRect[len] > popperRect[len]) {
+	      mainVariationSide = getOppositePlacement(mainVariationSide);
+	    }
+
+	    var altVariationSide = getOppositePlacement(mainVariationSide);
+	    var checks = [];
+
+	    if (checkMainAxis) {
+	      checks.push(overflow[_basePlacement] <= 0);
+	    }
+
+	    if (checkAltAxis) {
+	      checks.push(overflow[mainVariationSide] <= 0, overflow[altVariationSide] <= 0);
+	    }
+
+	    if (checks.every(function (check) {
+	      return check;
+	    })) {
+	      firstFittingPlacement = placement;
+	      makeFallbackChecks = false;
+	      break;
+	    }
+
+	    checksMap.set(placement, checks);
+	  }
+
+	  if (makeFallbackChecks) {
+	    // `2` may be desired in some cases – research later
+	    var numberOfChecks = flipVariations ? 3 : 1;
+
+	    var _loop = function _loop(_i) {
+	      var fittingPlacement = placements.find(function (placement) {
+	        var checks = checksMap.get(placement);
+
+	        if (checks) {
+	          return checks.slice(0, _i).every(function (check) {
+	            return check;
+	          });
+	        }
+	      });
+
+	      if (fittingPlacement) {
+	        firstFittingPlacement = fittingPlacement;
+	        return "break";
+	      }
+	    };
+
+	    for (var _i = numberOfChecks; _i > 0; _i--) {
+	      var _ret = _loop(_i);
+
+	      if (_ret === "break") break;
+	    }
+	  }
+
+	  if (state.placement !== firstFittingPlacement) {
+	    state.modifiersData[name]._skip = true;
+	    state.placement = firstFittingPlacement;
+	    state.reset = true;
+	  }
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var flip$2 = {
+	  name: 'flip',
+	  enabled: true,
+	  phase: 'main',
+	  fn: flip$1,
+	  requiresIfExists: ['offset'],
+	  data: {
+	    _skip: false
+	  }
+	};
+
+	function getSideOffsets(overflow, rect, preventedOffsets) {
+	  if (preventedOffsets === void 0) {
+	    preventedOffsets = {
+	      x: 0,
+	      y: 0
+	    };
+	  }
+
+	  return {
+	    top: overflow.top - rect.height - preventedOffsets.y,
+	    right: overflow.right - rect.width + preventedOffsets.x,
+	    bottom: overflow.bottom - rect.height + preventedOffsets.y,
+	    left: overflow.left - rect.width - preventedOffsets.x
+	  };
+	}
+
+	function isAnySideFullyClipped(overflow) {
+	  return [top$1, right$1, bottom$1, left$1].some(function (side) {
+	    return overflow[side] >= 0;
+	  });
+	}
+
+	function hide(_ref) {
+	  var state = _ref.state,
+	      name = _ref.name;
+	  var referenceRect = state.rects.reference;
+	  var popperRect = state.rects.popper;
+	  var preventedOffsets = state.modifiersData.preventOverflow;
+	  var referenceOverflow = detectOverflow(state, {
+	    elementContext: 'reference'
+	  });
+	  var popperAltOverflow = detectOverflow(state, {
+	    altBoundary: true
+	  });
+	  var referenceClippingOffsets = getSideOffsets(referenceOverflow, referenceRect);
+	  var popperEscapeOffsets = getSideOffsets(popperAltOverflow, popperRect, preventedOffsets);
+	  var isReferenceHidden = isAnySideFullyClipped(referenceClippingOffsets);
+	  var hasPopperEscaped = isAnySideFullyClipped(popperEscapeOffsets);
+	  state.modifiersData[name] = {
+	    referenceClippingOffsets: referenceClippingOffsets,
+	    popperEscapeOffsets: popperEscapeOffsets,
+	    isReferenceHidden: isReferenceHidden,
+	    hasPopperEscaped: hasPopperEscaped
+	  };
+	  state.attributes.popper = Object.assign({}, state.attributes.popper, {
+	    'data-popper-reference-hidden': isReferenceHidden,
+	    'data-popper-escaped': hasPopperEscaped
+	  });
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var hide$1 = {
+	  name: 'hide',
+	  enabled: true,
+	  phase: 'main',
+	  requiresIfExists: ['preventOverflow'],
+	  fn: hide
+	};
+
+	function distanceAndSkiddingToXY(placement, rects, offset) {
+	  var basePlacement = getBasePlacement(placement);
+	  var invertDistance = [left$1, top$1].indexOf(basePlacement) >= 0 ? -1 : 1;
+
+	  var _ref = typeof offset === 'function' ? offset(Object.assign({}, rects, {
+	    placement: placement
+	  })) : offset,
+	      skidding = _ref[0],
+	      distance = _ref[1];
+
+	  skidding = skidding || 0;
+	  distance = (distance || 0) * invertDistance;
+	  return [left$1, right$1].indexOf(basePlacement) >= 0 ? {
+	    x: distance,
+	    y: skidding
+	  } : {
+	    x: skidding,
+	    y: distance
+	  };
+	}
+
+	function offset$1(_ref2) {
+	  var state = _ref2.state,
+	      options = _ref2.options,
+	      name = _ref2.name;
+	  var _options$offset = options.offset,
+	      offset = _options$offset === void 0 ? [0, 0] : _options$offset;
+	  var data = placements.reduce(function (acc, placement) {
+	    acc[placement] = distanceAndSkiddingToXY(placement, state.rects, offset);
+	    return acc;
+	  }, {});
+	  var _data$state$placement = data[state.placement],
+	      x = _data$state$placement.x,
+	      y = _data$state$placement.y;
+
+	  if (state.modifiersData.popperOffsets != null) {
+	    state.modifiersData.popperOffsets.x += x;
+	    state.modifiersData.popperOffsets.y += y;
+	  }
+
+	  state.modifiersData[name] = data;
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var offset$2 = {
+	  name: 'offset',
+	  enabled: true,
+	  phase: 'main',
+	  requires: ['popperOffsets'],
+	  fn: offset$1
+	};
+
+	function popperOffsets(_ref) {
+	  var state = _ref.state,
+	      name = _ref.name;
+	  // Offsets are the actual position the popper needs to have to be
+	  // properly positioned near its reference element
+	  // This is the most basic placement, and will be adjusted by
+	  // the modifiers in the next step
+	  state.modifiersData[name] = computeOffsets({
+	    reference: state.rects.reference,
+	    element: state.rects.popper,
+	    placement: state.placement
+	  });
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var popperOffsets$1 = {
+	  name: 'popperOffsets',
+	  enabled: true,
+	  phase: 'read',
+	  fn: popperOffsets,
+	  data: {}
+	};
+
+	function getAltAxis(axis) {
+	  return axis === 'x' ? 'y' : 'x';
+	}
+
+	function preventOverflow(_ref) {
+	  var state = _ref.state,
+	      options = _ref.options,
+	      name = _ref.name;
+	  var _options$mainAxis = options.mainAxis,
+	      checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+	      _options$altAxis = options.altAxis,
+	      checkAltAxis = _options$altAxis === void 0 ? false : _options$altAxis,
+	      boundary = options.boundary,
+	      rootBoundary = options.rootBoundary,
+	      altBoundary = options.altBoundary,
+	      padding = options.padding,
+	      _options$tether = options.tether,
+	      tether = _options$tether === void 0 ? true : _options$tether,
+	      _options$tetherOffset = options.tetherOffset,
+	      tetherOffset = _options$tetherOffset === void 0 ? 0 : _options$tetherOffset;
+	  var overflow = detectOverflow(state, {
+	    boundary: boundary,
+	    rootBoundary: rootBoundary,
+	    padding: padding,
+	    altBoundary: altBoundary
+	  });
+	  var basePlacement = getBasePlacement(state.placement);
+	  var variation = getVariation(state.placement);
+	  var isBasePlacement = !variation;
+	  var mainAxis = getMainAxisFromPlacement(basePlacement);
+	  var altAxis = getAltAxis(mainAxis);
+	  var popperOffsets = state.modifiersData.popperOffsets;
+	  var referenceRect = state.rects.reference;
+	  var popperRect = state.rects.popper;
+	  var tetherOffsetValue = typeof tetherOffset === 'function' ? tetherOffset(Object.assign({}, state.rects, {
+	    placement: state.placement
+	  })) : tetherOffset;
+	  var normalizedTetherOffsetValue = typeof tetherOffsetValue === 'number' ? {
+	    mainAxis: tetherOffsetValue,
+	    altAxis: tetherOffsetValue
+	  } : Object.assign({
+	    mainAxis: 0,
+	    altAxis: 0
+	  }, tetherOffsetValue);
+	  var offsetModifierState = state.modifiersData.offset ? state.modifiersData.offset[state.placement] : null;
+	  var data = {
+	    x: 0,
+	    y: 0
+	  };
+
+	  if (!popperOffsets) {
+	    return;
+	  }
+
+	  if (checkMainAxis) {
+	    var _offsetModifierState$;
+
+	    var mainSide = mainAxis === 'y' ? top$1 : left$1;
+	    var altSide = mainAxis === 'y' ? bottom$1 : right$1;
+	    var len = mainAxis === 'y' ? 'height' : 'width';
+	    var offset = popperOffsets[mainAxis];
+	    var min = offset + overflow[mainSide];
+	    var max = offset - overflow[altSide];
+	    var additive = tether ? -popperRect[len] / 2 : 0;
+	    var minLen = variation === start$1 ? referenceRect[len] : popperRect[len];
+	    var maxLen = variation === start$1 ? -popperRect[len] : -referenceRect[len]; // We need to include the arrow in the calculation so the arrow doesn't go
+	    // outside the reference bounds
+
+	    var arrowElement = state.elements.arrow;
+	    var arrowRect = tether && arrowElement ? getLayoutRect(arrowElement) : {
+	      width: 0,
+	      height: 0
+	    };
+	    var arrowPaddingObject = state.modifiersData['arrow#persistent'] ? state.modifiersData['arrow#persistent'].padding : getFreshSideObject();
+	    var arrowPaddingMin = arrowPaddingObject[mainSide];
+	    var arrowPaddingMax = arrowPaddingObject[altSide]; // If the reference length is smaller than the arrow length, we don't want
+	    // to include its full size in the calculation. If the reference is small
+	    // and near the edge of a boundary, the popper can overflow even if the
+	    // reference is not overflowing as well (e.g. virtual elements with no
+	    // width or height)
+
+	    var arrowLen = within(0, referenceRect[len], arrowRect[len]);
+	    var minOffset = isBasePlacement ? referenceRect[len] / 2 - additive - arrowLen - arrowPaddingMin - normalizedTetherOffsetValue.mainAxis : minLen - arrowLen - arrowPaddingMin - normalizedTetherOffsetValue.mainAxis;
+	    var maxOffset = isBasePlacement ? -referenceRect[len] / 2 + additive + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis : maxLen + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis;
+	    var arrowOffsetParent = state.elements.arrow && getOffsetParent(state.elements.arrow);
+	    var clientOffset = arrowOffsetParent ? mainAxis === 'y' ? arrowOffsetParent.clientTop || 0 : arrowOffsetParent.clientLeft || 0 : 0;
+	    var offsetModifierValue = (_offsetModifierState$ = offsetModifierState == null ? void 0 : offsetModifierState[mainAxis]) != null ? _offsetModifierState$ : 0;
+	    var tetherMin = offset + minOffset - offsetModifierValue - clientOffset;
+	    var tetherMax = offset + maxOffset - offsetModifierValue;
+	    var preventedOffset = within(tether ? min$2(min, tetherMin) : min, offset, tether ? max$1(max, tetherMax) : max);
+	    popperOffsets[mainAxis] = preventedOffset;
+	    data[mainAxis] = preventedOffset - offset;
+	  }
+
+	  if (checkAltAxis) {
+	    var _offsetModifierState$2;
+
+	    var _mainSide = mainAxis === 'x' ? top$1 : left$1;
+
+	    var _altSide = mainAxis === 'x' ? bottom$1 : right$1;
+
+	    var _offset = popperOffsets[altAxis];
+
+	    var _len = altAxis === 'y' ? 'height' : 'width';
+
+	    var _min = _offset + overflow[_mainSide];
+
+	    var _max = _offset - overflow[_altSide];
+
+	    var isOriginSide = [top$1, left$1].indexOf(basePlacement) !== -1;
+
+	    var _offsetModifierValue = (_offsetModifierState$2 = offsetModifierState == null ? void 0 : offsetModifierState[altAxis]) != null ? _offsetModifierState$2 : 0;
+
+	    var _tetherMin = isOriginSide ? _min : _offset - referenceRect[_len] - popperRect[_len] - _offsetModifierValue + normalizedTetherOffsetValue.altAxis;
+
+	    var _tetherMax = isOriginSide ? _offset + referenceRect[_len] + popperRect[_len] - _offsetModifierValue - normalizedTetherOffsetValue.altAxis : _max;
+
+	    var _preventedOffset = tether && isOriginSide ? withinMaxClamp(_tetherMin, _offset, _tetherMax) : within(tether ? _tetherMin : _min, _offset, tether ? _tetherMax : _max);
+
+	    popperOffsets[altAxis] = _preventedOffset;
+	    data[altAxis] = _preventedOffset - _offset;
+	  }
+
+	  state.modifiersData[name] = data;
+	} // eslint-disable-next-line import/no-unused-modules
+
+
+	var preventOverflow$1 = {
+	  name: 'preventOverflow',
+	  enabled: true,
+	  phase: 'main',
+	  fn: preventOverflow,
+	  requiresIfExists: ['offset']
+	};
+
+	function getHTMLElementScroll(element) {
+	  return {
+	    scrollLeft: element.scrollLeft,
+	    scrollTop: element.scrollTop
+	  };
+	}
+
+	function getNodeScroll(node) {
+	  if (node === getWindow(node) || !isHTMLElement(node)) {
+	    return getWindowScroll(node);
+	  } else {
+	    return getHTMLElementScroll(node);
+	  }
+	}
+
+	function isElementScaled(element) {
+	  var rect = element.getBoundingClientRect();
+	  var scaleX = round(rect.width) / element.offsetWidth || 1;
+	  var scaleY = round(rect.height) / element.offsetHeight || 1;
+	  return scaleX !== 1 || scaleY !== 1;
+	} // Returns the composite rect of an element relative to its offsetParent.
+	// Composite means it takes into account transforms as well as layout.
+
+
+	function getCompositeRect(elementOrVirtualElement, offsetParent, isFixed) {
+	  if (isFixed === void 0) {
+	    isFixed = false;
+	  }
+
+	  var isOffsetParentAnElement = isHTMLElement(offsetParent);
+	  var offsetParentIsScaled = isHTMLElement(offsetParent) && isElementScaled(offsetParent);
+	  var documentElement = getDocumentElement(offsetParent);
+	  var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled, isFixed);
+	  var scroll = {
+	    scrollLeft: 0,
+	    scrollTop: 0
+	  };
+	  var offsets = {
+	    x: 0,
+	    y: 0
+	  };
+
+	  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+	    if (getNodeName(offsetParent) !== 'body' || // https://github.com/popperjs/popper-core/issues/1078
+	    isScrollParent(documentElement)) {
+	      scroll = getNodeScroll(offsetParent);
+	    }
+
+	    if (isHTMLElement(offsetParent)) {
+	      offsets = getBoundingClientRect(offsetParent, true);
+	      offsets.x += offsetParent.clientLeft;
+	      offsets.y += offsetParent.clientTop;
+	    } else if (documentElement) {
+	      offsets.x = getWindowScrollBarX(documentElement);
+	    }
+	  }
+
+	  return {
+	    x: rect.left + scroll.scrollLeft - offsets.x,
+	    y: rect.top + scroll.scrollTop - offsets.y,
+	    width: rect.width,
+	    height: rect.height
+	  };
+	}
+
+	function order$1(modifiers) {
+	  var map = new Map();
+	  var visited = new Set();
+	  var result = [];
+	  modifiers.forEach(function (modifier) {
+	    map.set(modifier.name, modifier);
+	  }); // On visiting object, check for its dependencies and visit them recursively
+
+	  function sort(modifier) {
+	    visited.add(modifier.name);
+	    var requires = [].concat(modifier.requires || [], modifier.requiresIfExists || []);
+	    requires.forEach(function (dep) {
+	      if (!visited.has(dep)) {
+	        var depModifier = map.get(dep);
+
+	        if (depModifier) {
+	          sort(depModifier);
+	        }
+	      }
+	    });
+	    result.push(modifier);
+	  }
+
+	  modifiers.forEach(function (modifier) {
+	    if (!visited.has(modifier.name)) {
+	      // check for visited object
+	      sort(modifier);
+	    }
+	  });
+	  return result;
+	}
+
+	function orderModifiers(modifiers) {
+	  // order based on dependencies
+	  var orderedModifiers = order$1(modifiers); // order based on phase
+
+	  return modifierPhases.reduce(function (acc, phase) {
+	    return acc.concat(orderedModifiers.filter(function (modifier) {
+	      return modifier.phase === phase;
+	    }));
+	  }, []);
+	}
+
+	function debounce(fn) {
+	  var pending;
+	  return function () {
+	    if (!pending) {
+	      pending = new Promise(function (resolve) {
+	        Promise.resolve().then(function () {
+	          pending = undefined;
+	          resolve(fn());
+	        });
+	      });
+	    }
+
+	    return pending;
+	  };
+	}
+
+	function mergeByName(modifiers) {
+	  var merged = modifiers.reduce(function (merged, current) {
+	    var existing = merged[current.name];
+	    merged[current.name] = existing ? Object.assign({}, existing, current, {
+	      options: Object.assign({}, existing.options, current.options),
+	      data: Object.assign({}, existing.data, current.data)
+	    }) : current;
+	    return merged;
+	  }, {}); // IE11 does not support Object.values
+
+	  return Object.keys(merged).map(function (key) {
+	    return merged[key];
+	  });
+	}
+
+	var DEFAULT_OPTIONS = {
+	  placement: 'bottom',
+	  modifiers: [],
+	  strategy: 'absolute'
+	};
+
+	function areValidElements() {
+	  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	    args[_key] = arguments[_key];
+	  }
+
+	  return !args.some(function (element) {
+	    return !(element && typeof element.getBoundingClientRect === 'function');
+	  });
+	}
+
+	function popperGenerator(generatorOptions) {
+	  if (generatorOptions === void 0) {
+	    generatorOptions = {};
+	  }
+
+	  var _generatorOptions = generatorOptions,
+	      _generatorOptions$def = _generatorOptions.defaultModifiers,
+	      defaultModifiers = _generatorOptions$def === void 0 ? [] : _generatorOptions$def,
+	      _generatorOptions$def2 = _generatorOptions.defaultOptions,
+	      defaultOptions = _generatorOptions$def2 === void 0 ? DEFAULT_OPTIONS : _generatorOptions$def2;
+	  return function createPopper(reference, popper, options) {
+	    if (options === void 0) {
+	      options = defaultOptions;
+	    }
+
+	    var state = {
+	      placement: 'bottom',
+	      orderedModifiers: [],
+	      options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
+	      modifiersData: {},
+	      elements: {
+	        reference: reference,
+	        popper: popper
+	      },
+	      attributes: {},
+	      styles: {}
+	    };
+	    var effectCleanupFns = [];
+	    var isDestroyed = false;
+	    var instance = {
+	      state: state,
+	      setOptions: function setOptions(setOptionsAction) {
+	        var options = typeof setOptionsAction === 'function' ? setOptionsAction(state.options) : setOptionsAction;
+	        cleanupModifierEffects();
+	        state.options = Object.assign({}, defaultOptions, state.options, options);
+	        state.scrollParents = {
+	          reference: isElement(reference) ? listScrollParents(reference) : reference.contextElement ? listScrollParents(reference.contextElement) : [],
+	          popper: listScrollParents(popper)
+	        }; // Orders the modifiers based on their dependencies and `phase`
+	        // properties
+
+	        var orderedModifiers = orderModifiers(mergeByName([].concat(defaultModifiers, state.options.modifiers))); // Strip out disabled modifiers
+
+	        state.orderedModifiers = orderedModifiers.filter(function (m) {
+	          return m.enabled;
+	        });
+	        runModifierEffects();
+	        return instance.update();
+	      },
+	      // Sync update – it will always be executed, even if not necessary. This
+	      // is useful for low frequency updates where sync behavior simplifies the
+	      // logic.
+	      // For high frequency updates (e.g. `resize` and `scroll` events), always
+	      // prefer the async Popper#update method
+	      forceUpdate: function forceUpdate() {
+	        if (isDestroyed) {
+	          return;
+	        }
+
+	        var _state$elements = state.elements,
+	            reference = _state$elements.reference,
+	            popper = _state$elements.popper; // Don't proceed if `reference` or `popper` are not valid elements
+	        // anymore
+
+	        if (!areValidElements(reference, popper)) {
+	          return;
+	        } // Store the reference and popper rects to be read by modifiers
+
+
+	        state.rects = {
+	          reference: getCompositeRect(reference, getOffsetParent(popper), state.options.strategy === 'fixed'),
+	          popper: getLayoutRect(popper)
+	        }; // Modifiers have the ability to reset the current update cycle. The
+	        // most common use case for this is the `flip` modifier changing the
+	        // placement, which then needs to re-run all the modifiers, because the
+	        // logic was previously ran for the previous placement and is therefore
+	        // stale/incorrect
+
+	        state.reset = false;
+	        state.placement = state.options.placement; // On each update cycle, the `modifiersData` property for each modifier
+	        // is filled with the initial data specified by the modifier. This means
+	        // it doesn't persist and is fresh on each update.
+	        // To ensure persistent data, use `${name}#persistent`
+
+	        state.orderedModifiers.forEach(function (modifier) {
+	          return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
+	        });
+
+	        for (var index = 0; index < state.orderedModifiers.length; index++) {
+	          if (state.reset === true) {
+	            state.reset = false;
+	            index = -1;
+	            continue;
+	          }
+
+	          var _state$orderedModifie = state.orderedModifiers[index],
+	              fn = _state$orderedModifie.fn,
+	              _state$orderedModifie2 = _state$orderedModifie.options,
+	              _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
+	              name = _state$orderedModifie.name;
+
+	          if (typeof fn === 'function') {
+	            state = fn({
+	              state: state,
+	              options: _options,
+	              name: name,
+	              instance: instance
+	            }) || state;
+	          }
+	        }
+	      },
+	      // Async and optimistically optimized update – it will not be executed if
+	      // not necessary (debounced to run at most once-per-tick)
+	      update: debounce(function () {
+	        return new Promise(function (resolve) {
+	          instance.forceUpdate();
+	          resolve(state);
+	        });
+	      }),
+	      destroy: function destroy() {
+	        cleanupModifierEffects();
+	        isDestroyed = true;
+	      }
+	    };
+
+	    if (!areValidElements(reference, popper)) {
+	      return instance;
+	    }
+
+	    instance.setOptions(options).then(function (state) {
+	      if (!isDestroyed && options.onFirstUpdate) {
+	        options.onFirstUpdate(state);
+	      }
+	    }); // Modifiers have the ability to execute arbitrary code before the first
+	    // update cycle runs. They will be executed in the same order as the update
+	    // cycle. This is useful when a modifier adds some persistent data that
+	    // other modifiers need to use, but the modifier is run after the dependent
+	    // one.
+
+	    function runModifierEffects() {
+	      state.orderedModifiers.forEach(function (_ref) {
+	        var name = _ref.name,
+	            _ref$options = _ref.options,
+	            options = _ref$options === void 0 ? {} : _ref$options,
+	            effect = _ref.effect;
+
+	        if (typeof effect === 'function') {
+	          var cleanupFn = effect({
+	            state: state,
+	            name: name,
+	            instance: instance,
+	            options: options
+	          });
+
+	          var noopFn = function noopFn() {};
+
+	          effectCleanupFns.push(cleanupFn || noopFn);
+	        }
+	      });
+	    }
+
+	    function cleanupModifierEffects() {
+	      effectCleanupFns.forEach(function (fn) {
+	        return fn();
+	      });
+	      effectCleanupFns = [];
+	    }
+
+	    return instance;
+	  };
+	}
+
+	var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$2, flip$2, preventOverflow$1, arrow$1, hide$1];
+	var createPopper = /*#__PURE__*/popperGenerator({
+	  defaultModifiers: defaultModifiers
+	}); // eslint-disable-next-line import/no-unused-modules
+
+	/* global Map:readonly, Set:readonly, ArrayBuffer:readonly */
+
+	var reactFastCompare;
+	var hasRequiredReactFastCompare;
+
+	function requireReactFastCompare () {
+		if (hasRequiredReactFastCompare) return reactFastCompare;
+		hasRequiredReactFastCompare = 1;
+		var hasElementType = typeof Element !== 'undefined';
+		var hasMap = typeof Map === 'function';
+		var hasSet = typeof Set === 'function';
+		var hasArrayBuffer = typeof ArrayBuffer === 'function' && !!ArrayBuffer.isView;
+
+		// Note: We **don't** need `envHasBigInt64Array` in fde es6/index.js
+
+		function equal(a, b) {
+		  // START: fast-deep-equal es6/index.js 3.1.3
+		  if (a === b) return true;
+
+		  if (a && b && typeof a == 'object' && typeof b == 'object') {
+		    if (a.constructor !== b.constructor) return false;
+
+		    var length, i, keys;
+		    if (Array.isArray(a)) {
+		      length = a.length;
+		      if (length != b.length) return false;
+		      for (i = length; i-- !== 0;)
+		        if (!equal(a[i], b[i])) return false;
+		      return true;
+		    }
+
+		    // START: Modifications:
+		    // 1. Extra `has<Type> &&` helpers in initial condition allow es6 code
+		    //    to co-exist with es5.
+		    // 2. Replace `for of` with es5 compliant iteration using `for`.
+		    //    Basically, take:
+		    //
+		    //    ```js
+		    //    for (i of a.entries())
+		    //      if (!b.has(i[0])) return false;
+		    //    ```
+		    //
+		    //    ... and convert to:
+		    //
+		    //    ```js
+		    //    it = a.entries();
+		    //    while (!(i = it.next()).done)
+		    //      if (!b.has(i.value[0])) return false;
+		    //    ```
+		    //
+		    //    **Note**: `i` access switches to `i.value`.
+		    var it;
+		    if (hasMap && (a instanceof Map) && (b instanceof Map)) {
+		      if (a.size !== b.size) return false;
+		      it = a.entries();
+		      while (!(i = it.next()).done)
+		        if (!b.has(i.value[0])) return false;
+		      it = a.entries();
+		      while (!(i = it.next()).done)
+		        if (!equal(i.value[1], b.get(i.value[0]))) return false;
+		      return true;
+		    }
+
+		    if (hasSet && (a instanceof Set) && (b instanceof Set)) {
+		      if (a.size !== b.size) return false;
+		      it = a.entries();
+		      while (!(i = it.next()).done)
+		        if (!b.has(i.value[0])) return false;
+		      return true;
+		    }
+		    // END: Modifications
+
+		    if (hasArrayBuffer && ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
+		      length = a.length;
+		      if (length != b.length) return false;
+		      for (i = length; i-- !== 0;)
+		        if (a[i] !== b[i]) return false;
+		      return true;
+		    }
+
+		    if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
+		    // START: Modifications:
+		    // Apply guards for `Object.create(null)` handling. See:
+		    // - https://github.com/FormidableLabs/react-fast-compare/issues/64
+		    // - https://github.com/epoberezkin/fast-deep-equal/issues/49
+		    if (a.valueOf !== Object.prototype.valueOf && typeof a.valueOf === 'function' && typeof b.valueOf === 'function') return a.valueOf() === b.valueOf();
+		    if (a.toString !== Object.prototype.toString && typeof a.toString === 'function' && typeof b.toString === 'function') return a.toString() === b.toString();
+		    // END: Modifications
+
+		    keys = Object.keys(a);
+		    length = keys.length;
+		    if (length !== Object.keys(b).length) return false;
+
+		    for (i = length; i-- !== 0;)
+		      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+		    // END: fast-deep-equal
+
+		    // START: react-fast-compare
+		    // custom handling for DOM elements
+		    if (hasElementType && a instanceof Element) return false;
+
+		    // custom handling for React/Preact
+		    for (i = length; i-- !== 0;) {
+		      if ((keys[i] === '_owner' || keys[i] === '__v' || keys[i] === '__o') && a.$$typeof) {
+		        // React-specific: avoid traversing React elements' _owner
+		        // Preact-specific: avoid traversing Preact elements' __v and __o
+		        //    __v = $_original / $_vnode
+		        //    __o = $_owner
+		        // These properties contain circular references and are not needed when
+		        // comparing the actual elements (and not their owners)
+		        // .$$typeof and ._store on just reasonable markers of elements
+
+		        continue;
+		      }
+
+		      // all other properties should be traversed as usual
+		      if (!equal(a[keys[i]], b[keys[i]])) return false;
+		    }
+		    // END: react-fast-compare
+
+		    // START: fast-deep-equal
+		    return true;
+		  }
+
+		  return a !== a && b !== b;
+		}
+		// end fast-deep-equal
+
+		reactFastCompare = function isEqual(a, b) {
+		  try {
+		    return equal(a, b);
+		  } catch (error) {
+		    if (((error.message || '').match(/stack|recursion/i))) {
+		      // warn on circular references, don't crash
+		      // browsers give this different errors name and messages:
+		      // chrome/safari: "RangeError", "Maximum call stack size exceeded"
+		      // firefox: "InternalError", too much recursion"
+		      // edge: "Error", "Out of stack space"
+		      console.warn('react-fast-compare cannot handle circular refs');
+		      return false;
+		    }
+		    // some other error. we should definitely know about these
+		    throw error;
+		  }
+		};
+		return reactFastCompare;
+	}
+
+	var reactFastCompareExports = requireReactFastCompare();
+	var isEqual = /*@__PURE__*/getDefaultExportFromCjs(reactFastCompareExports);
+
+	var EMPTY_MODIFIERS$1 = [];
+	var usePopper = function usePopper(referenceElement, popperElement, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  var prevOptions = reactExports.useRef(null);
+	  var optionsWithDefaults = {
+	    onFirstUpdate: options.onFirstUpdate,
+	    placement: options.placement || 'bottom',
+	    strategy: options.strategy || 'absolute',
+	    modifiers: options.modifiers || EMPTY_MODIFIERS$1
+	  };
+
+	  var _React$useState = reactExports.useState({
+	    styles: {
+	      popper: {
+	        position: optionsWithDefaults.strategy,
+	        left: '0',
+	        top: '0'
+	      },
+	      arrow: {
+	        position: 'absolute'
+	      }
+	    },
+	    attributes: {}
+	  }),
+	      state = _React$useState[0],
+	      setState = _React$useState[1];
+
+	  var updateStateModifier = reactExports.useMemo(function () {
+	    return {
+	      name: 'updateState',
+	      enabled: true,
+	      phase: 'write',
+	      fn: function fn(_ref) {
+	        var state = _ref.state;
+	        var elements = Object.keys(state.elements);
+	        reactDomExports.flushSync(function () {
+	          setState({
+	            styles: fromEntries(elements.map(function (element) {
+	              return [element, state.styles[element] || {}];
+	            })),
+	            attributes: fromEntries(elements.map(function (element) {
+	              return [element, state.attributes[element]];
+	            }))
+	          });
+	        });
+	      },
+	      requires: ['computeStyles']
+	    };
+	  }, []);
+	  var popperOptions = reactExports.useMemo(function () {
+	    var newOptions = {
+	      onFirstUpdate: optionsWithDefaults.onFirstUpdate,
+	      placement: optionsWithDefaults.placement,
+	      strategy: optionsWithDefaults.strategy,
+	      modifiers: [].concat(optionsWithDefaults.modifiers, [updateStateModifier, {
+	        name: 'applyStyles',
+	        enabled: false
+	      }])
+	    };
+
+	    if (isEqual(prevOptions.current, newOptions)) {
+	      return prevOptions.current || newOptions;
+	    } else {
+	      prevOptions.current = newOptions;
+	      return newOptions;
+	    }
+	  }, [optionsWithDefaults.onFirstUpdate, optionsWithDefaults.placement, optionsWithDefaults.strategy, optionsWithDefaults.modifiers, updateStateModifier]);
+	  var popperInstanceRef = reactExports.useRef();
+	  useIsomorphicLayoutEffect(function () {
+	    if (popperInstanceRef.current) {
+	      popperInstanceRef.current.setOptions(popperOptions);
+	    }
+	  }, [popperOptions]);
+	  useIsomorphicLayoutEffect(function () {
+	    if (referenceElement == null || popperElement == null) {
+	      return;
+	    }
+
+	    var createPopper$1 = options.createPopper || createPopper;
+	    var popperInstance = createPopper$1(referenceElement, popperElement, popperOptions);
+	    popperInstanceRef.current = popperInstance;
+	    return function () {
+	      popperInstance.destroy();
+	      popperInstanceRef.current = null;
+	    };
+	  }, [referenceElement, popperElement, options.createPopper]);
+	  return {
+	    state: popperInstanceRef.current ? popperInstanceRef.current.state : null,
+	    styles: state.styles,
+	    attributes: state.attributes,
+	    update: popperInstanceRef.current ? popperInstanceRef.current.update : null,
+	    forceUpdate: popperInstanceRef.current ? popperInstanceRef.current.forceUpdate : null
+	  };
+	};
+
+	var NOOP = function NOOP() {
+	  return void 0;
+	};
+
+	var NOOP_PROMISE = function NOOP_PROMISE() {
+	  return Promise.resolve(null);
+	};
+
+	var EMPTY_MODIFIERS = [];
+	function Popper(_ref) {
+	  var _ref$placement = _ref.placement,
+	      placement = _ref$placement === void 0 ? 'bottom' : _ref$placement,
+	      _ref$strategy = _ref.strategy,
+	      strategy = _ref$strategy === void 0 ? 'absolute' : _ref$strategy,
+	      _ref$modifiers = _ref.modifiers,
+	      modifiers = _ref$modifiers === void 0 ? EMPTY_MODIFIERS : _ref$modifiers,
+	      referenceElement = _ref.referenceElement,
+	      onFirstUpdate = _ref.onFirstUpdate,
+	      innerRef = _ref.innerRef,
+	      children = _ref.children;
+	  var referenceNode = reactExports.useContext(ManagerReferenceNodeContext);
+
+	  var _React$useState = reactExports.useState(null),
+	      popperElement = _React$useState[0],
+	      setPopperElement = _React$useState[1];
+
+	  var _React$useState2 = reactExports.useState(null),
+	      arrowElement = _React$useState2[0],
+	      setArrowElement = _React$useState2[1];
+
+	  reactExports.useEffect(function () {
+	    setRef(innerRef, popperElement);
+	  }, [innerRef, popperElement]);
+	  var options = reactExports.useMemo(function () {
+	    return {
+	      placement: placement,
+	      strategy: strategy,
+	      onFirstUpdate: onFirstUpdate,
+	      modifiers: [].concat(modifiers, [{
+	        name: 'arrow',
+	        enabled: arrowElement != null,
+	        options: {
+	          element: arrowElement
+	        }
+	      }])
+	    };
+	  }, [placement, strategy, onFirstUpdate, modifiers, arrowElement]);
+
+	  var _usePopper = usePopper(referenceElement || referenceNode, popperElement, options),
+	      state = _usePopper.state,
+	      styles = _usePopper.styles,
+	      forceUpdate = _usePopper.forceUpdate,
+	      update = _usePopper.update;
+
+	  var childrenProps = reactExports.useMemo(function () {
+	    return {
+	      ref: setPopperElement,
+	      style: styles.popper,
+	      placement: state ? state.placement : placement,
+	      hasPopperEscaped: state && state.modifiersData.hide ? state.modifiersData.hide.hasPopperEscaped : null,
+	      isReferenceHidden: state && state.modifiersData.hide ? state.modifiersData.hide.isReferenceHidden : null,
+	      arrowProps: {
+	        style: styles.arrow,
+	        ref: setArrowElement
+	      },
+	      forceUpdate: forceUpdate || NOOP,
+	      update: update || NOOP_PROMISE
+	    };
+	  }, [setPopperElement, setArrowElement, placement, state, styles, update, forceUpdate]);
+	  return unwrapArray(children)(childrenProps);
+	}
+
+	/**
+	 * The base implementation of `_.invert` and `_.invertBy` which inverts
+	 * `object` with values transformed by `iteratee` and set by `setter`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} setter The function to set `accumulator` values.
+	 * @param {Function} iteratee The iteratee to transform values.
+	 * @param {Object} accumulator The initial inverted object.
+	 * @returns {Function} Returns `accumulator`.
+	 */
+	function baseInverter(object, setter, iteratee, accumulator) {
+	  baseForOwn(object, function(value, key, object) {
+	    setter(accumulator, iteratee(value), key, object);
+	  });
+	  return accumulator;
+	}
+
+	/**
+	 * Creates a function like `_.invertBy`.
+	 *
+	 * @private
+	 * @param {Function} setter The function to set accumulator values.
+	 * @param {Function} toIteratee The function to resolve iteratees.
+	 * @returns {Function} Returns the new inverter function.
+	 */
+	function createInverter(setter, toIteratee) {
+	  return function(object, iteratee) {
+	    return baseInverter(object, setter, toIteratee(iteratee), {});
+	  };
+	}
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var nativeObjectToString = objectProto.toString;
+
+	/**
+	 * Creates an object composed of the inverted keys and values of `object`.
+	 * If `object` contains duplicate values, subsequent values overwrite
+	 * property assignments of previous values.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.7.0
+	 * @category Object
+	 * @param {Object} object The object to invert.
+	 * @returns {Object} Returns the new inverted object.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': 2, 'c': 1 };
+	 *
+	 * _.invert(object);
+	 * // => { '1': 'c', '2': 'b' }
+	 */
+	var invert = createInverter(function(result, value, key) {
+	  if (value != null &&
+	      typeof value.toString != 'function') {
+	    value = nativeObjectToString.call(value);
+	  }
+
+	  result[value] = key;
+	}, constant$5(identity$7));
+
+	var positionsMapping = {
+	  'top center': 'top',
+	  'top left': 'top-start',
+	  'top right': 'top-end',
+	  'bottom center': 'bottom',
+	  'bottom left': 'bottom-start',
+	  'bottom right': 'bottom-end',
+	  'right center': 'right',
+	  'left center': 'left'
+	};
+	var positions = keys(positionsMapping);
+	var placementMapping = invert(positionsMapping);
+
+	function _typeof(o) {
+	  "@babel/helpers - typeof";
+
+	  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+	    return typeof o;
+	  } : function (o) {
+	    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+	  }, _typeof(o);
+	}
+
+	function toPrimitive(t, r) {
+	  if ("object" != _typeof(t) || !t) return t;
+	  var e = t[Symbol.toPrimitive];
+	  if (void 0 !== e) {
+	    var i = e.call(t, r);
+	    if ("object" != _typeof(i)) return i;
+	    throw new TypeError("@@toPrimitive must return a primitive value.");
+	  }
+	  return (String )(t);
+	}
+
+	function toPropertyKey(t) {
+	  var i = toPrimitive(t, "string");
+	  return "symbol" == _typeof(i) ? i : i + "";
+	}
+
+	function _defineProperties(e, r) {
+	  for (var t = 0; t < r.length; t++) {
+	    var o = r[t];
+	    o.enumerable = o.enumerable || false, o.configurable = true, "value" in o && (o.writable = true), Object.defineProperty(e, toPropertyKey(o.key), o);
+	  }
+	}
+	function _createClass(e, r, t) {
+	  return r && _defineProperties(e.prototype, r), Object.defineProperty(e, "prototype", {
+	    writable: false
+	  }), e;
+	}
+
+	var ReferenceProxy = /*#__PURE__*/function () {
+	  function ReferenceProxy(refObject) {
+	    this.ref = refObject;
+	  }
+
+	  var _proto = ReferenceProxy.prototype;
+
+	  _proto.getBoundingClientRect = function getBoundingClientRect() {
+	    return invoke(this.ref.current, 'getBoundingClientRect') || {};
+	  };
+
+	  _createClass(ReferenceProxy, [{
+	    key: "clientWidth",
+	    get: function get() {
+	      return this.getBoundingClientRect().width;
+	    }
+	  }, {
+	    key: "clientHeight",
+	    get: function get() {
+	      return this.getBoundingClientRect().height;
+	    }
+	  }, {
+	    key: "parentNode",
+	    get: function get() {
+	      return this.ref.current ? this.ref.current.parentNode : undefined;
+	    }
+	  }, {
+	    key: "contextElement",
+	    get: function get() {
+	      return this.ref.current;
+	    }
+	  }]);
+
+	  return ReferenceProxy;
+	}();
+	/**
+	 * Popper.js does not support ref objects from `createRef()` as referenceElement. If we will pass
+	 * directly `ref`, `ref.current` will be `null` at the render process. We use memoize to keep the
+	 * same reference between renders.
+	 *
+	 * @see https://popper.js.org/popper-documentation.html#referenceObject
+	 */
+
+
+	var createReferenceProxy = memoize(function (reference) {
+	  return new ReferenceProxy(isRefObject(reference) ? reference : {
+	    current: reference
+	  });
+	});
+
+	/**
+	 * A PopupContent displays the content body of a Popover.
+	 */
+
+	function PopupContent(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('content', className);
+	  var rest = getUnhandledProps(PopupContent, props);
+	  var ElementType = getElementType(PopupContent, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+	PopupContent.handledProps = ["as", "children", "className", "content"];
+	PopupContent.propTypes = {
 	  /** An element type to render as (string or function). */
 	  as: PropTypes.elementType,
 
-	  /** A group of cards can center itself inside its container. */
-	  centered: PropTypes.bool,
+	  /** The content of the Popup */
+	  children: PropTypes.node,
+
+	  /** Classes to add to the Popup content className. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	PopupContent.create = createShorthandFactory(PopupContent, function (children) {
+	  return {
+	    children: children
+	  };
+	});
+
+	/**
+	 * A PopupHeader displays a header in a Popover.
+	 */
+
+	function PopupHeader(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('header', className);
+	  var rest = getUnhandledProps(PopupHeader, props);
+	  var ElementType = getElementType(PopupHeader, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+	PopupHeader.handledProps = ["as", "children", "className", "content"];
+	PopupHeader.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
 
 	  /** Primary content. */
 	  children: PropTypes.node,
@@ -44872,32 +53321,21 @@
 	  className: PropTypes.string,
 
 	  /** Shorthand for primary content. */
-	  content: contentShorthand,
-
-	  /** A group of cards can double its column width for mobile. */
-	  doubling: PropTypes.bool,
-
-	  /** Shorthand array of props for Card. */
-	  items: collectionShorthand,
-
-	  /** A group of cards can set how many cards should exist in a row. */
-	  itemsPerRow: PropTypes.oneOf(WIDTHS),
-
-	  /** A group of cards can automatically stack rows to a single columns on mobile devices. */
-	  stackable: PropTypes.bool,
-
-	  /** A card group can adjust its text alignment. */
-	  textAlign: PropTypes.oneOf(without(TEXT_ALIGNMENTS, 'justified'))
+	  content: contentShorthand
 	} ;
+	PopupHeader.create = createShorthandFactory(PopupHeader, function (children) {
+	  return {
+	    children: children
+	  };
+	});
 
 	/**
-	 * A card displays site content in a manner similar to a playing card.
+	 * A Popup displays additional information on top of a page.
 	 */
+	var Popup = /*#__PURE__*/function (_Component) {
+	  _inheritsLoose(Popup, _Component);
 
-	var Card = /*#__PURE__*/function (_Component) {
-	  _inheritsLoose(Card, _Component);
-
-	  function Card() {
+	  function Popup() {
 	    var _this;
 
 	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -44905,85 +53343,296 @@
 	    }
 
 	    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+	    _this.state = {};
+	    _this.open = false;
+	    _this.zIndexWasSynced = false;
+	    _this.triggerRef = /*#__PURE__*/React.createRef();
+	    _this.elementRef = /*#__PURE__*/React.createRef();
 
-	    _this.handleClick = function (e) {
-	      var onClick = _this.props.onClick;
-	      if (onClick) onClick(e, _this.props);
+	    _this.getPortalProps = function () {
+	      var portalProps = {};
+	      var _this$props = _this.props,
+	          on = _this$props.on,
+	          hoverable = _this$props.hoverable;
+	      var normalizedOn = isArray(on) ? on : [on];
+
+	      if (hoverable) {
+	        portalProps.closeOnPortalMouseLeave = true;
+	        portalProps.mouseLeaveDelay = 300;
+	      }
+
+	      if (includes(normalizedOn, 'hover')) {
+	        portalProps.openOnTriggerClick = false;
+	        portalProps.closeOnTriggerClick = false;
+	        portalProps.openOnTriggerMouseEnter = true;
+	        portalProps.closeOnTriggerMouseLeave = true; // Taken from SUI: https://git.io/vPmCm
+
+	        portalProps.mouseLeaveDelay = 70;
+	        portalProps.mouseEnterDelay = 50;
+	      }
+
+	      if (includes(normalizedOn, 'click')) {
+	        portalProps.openOnTriggerClick = true;
+	        portalProps.closeOnTriggerClick = true;
+	        portalProps.closeOnDocumentClick = true;
+	      }
+
+	      if (includes(normalizedOn, 'focus')) {
+	        portalProps.openOnTriggerFocus = true;
+	        portalProps.closeOnTriggerBlur = true;
+	      }
+
+	      return portalProps;
+	    };
+
+	    _this.hideOnScroll = function (e) {
+	      // Do not hide the popup when scroll comes from inside the popup
+	      // https://github.com/Semantic-Org/Semantic-UI-React/issues/4305
+	      if (isElement$1(e.target) && _this.elementRef.current.contains(e.target)) {
+	        return;
+	      }
+
+	      _this.setState({
+	        closed: true
+	      });
+
+	      eventStack.unsub('scroll', _this.hideOnScroll, {
+	        target: window
+	      });
+	      _this.timeoutId = setTimeout(function () {
+	        _this.setState({
+	          closed: false
+	        });
+	      }, 50);
+
+	      _this.handleClose(e);
+	    };
+
+	    _this.handleClose = function (e) {
+	      invoke(_this.props, 'onClose', e, _extends({}, _this.props, {
+	        open: false
+	      }));
+	    };
+
+	    _this.handleOpen = function (e) {
+	      invoke(_this.props, 'onOpen', e, _extends({}, _this.props, {
+	        open: true
+	      }));
+	    };
+
+	    _this.handlePortalMount = function (e) {
+	      invoke(_this.props, 'onMount', e, _this.props);
+	    };
+
+	    _this.handlePortalUnmount = function (e) {
+	      _this.positionUpdate = null;
+
+	      invoke(_this.props, 'onUnmount', e, _this.props);
+	    };
+
+	    _this.renderContent = function (_ref) {
+	      var popperPlacement = _ref.placement,
+	          popperRef = _ref.ref,
+	          update = _ref.update,
+	          popperStyle = _ref.style;
+	      var _this$props2 = _this.props,
+	          basic = _this$props2.basic,
+	          children = _this$props2.children,
+	          className = _this$props2.className,
+	          content = _this$props2.content,
+	          hideOnScroll = _this$props2.hideOnScroll,
+	          flowing = _this$props2.flowing,
+	          header = _this$props2.header,
+	          inverted = _this$props2.inverted,
+	          popper = _this$props2.popper,
+	          size = _this$props2.size,
+	          style = _this$props2.style,
+	          wide = _this$props2.wide;
+	      var contentRestProps = _this.state.contentRestProps;
+	      _this.positionUpdate = update;
+	      var classes = clsx('ui', placementMapping[popperPlacement], size, useKeyOrValueAndKey(wide, 'wide'), useKeyOnly(basic, 'basic'), useKeyOnly(flowing, 'flowing'), useKeyOnly(inverted, 'inverted'), 'popup transition visible', className);
+	      var ElementType = getElementType(Popup, _this.props);
+
+	      var styles = _extends({
+	        // Heads up! We need default styles to get working correctly `flowing`
+	        left: 'auto',
+	        right: 'auto',
+	        // This is required to be properly positioned inside wrapping `div`
+	        position: 'initial'
+	      }, style);
+
+	      var innerElement = /*#__PURE__*/React.createElement(ElementType, _extends({}, contentRestProps, {
+	        className: classes,
+	        style: styles,
+	        ref: _this.elementRef
+	      }), isNil$1(children) ? /*#__PURE__*/React.createElement(React.Fragment, null, PopupHeader.create(header, {
+	        autoGenerateKey: false
+	      }), PopupContent.create(content, {
+	        autoGenerateKey: false
+	      })) : children, hideOnScroll && /*#__PURE__*/React.createElement(EventStack, {
+	        on: _this.hideOnScroll,
+	        name: "scroll",
+	        target: "window"
+	      })); // https://github.com/popperjs/popper-core/blob/f1f9d1ab75b6b0e962f90a5b2a50f6cfd307d794/src/createPopper.js#L136-L137
+	      // Heads up!
+	      // A wrapping `div` there is a pure magic, it's required as Popper warns on margins that are
+	      // defined by SUI CSS. It also means that this `div` will be positioned instead of `content`.
+
+	      return createHTMLDivision(popper || {}, {
+	        overrideProps: {
+	          children: innerElement,
+	          ref: popperRef,
+	          style: _extends({
+	            // Fixes layout for floated elements
+	            // https://github.com/Semantic-Org/Semantic-UI-React/issues/4092
+	            display: 'flex'
+	          }, popperStyle)
+	        }
+	      });
 	    };
 
 	    return _this;
 	  }
 
-	  var _proto = Card.prototype;
+	  Popup.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
+	    if (state.closed || state.disabled) return {};
+	    var unhandledProps = getUnhandledProps(Popup, props);
 
-	  _proto.render = function render() {
-	    var _this$props = this.props,
-	        centered = _this$props.centered,
-	        children = _this$props.children,
-	        className = _this$props.className,
-	        color = _this$props.color,
-	        content = _this$props.content,
-	        description = _this$props.description,
-	        extra = _this$props.extra,
-	        fluid = _this$props.fluid,
-	        header = _this$props.header,
-	        href = _this$props.href,
-	        image = _this$props.image,
-	        link = _this$props.link,
-	        meta = _this$props.meta,
-	        onClick = _this$props.onClick,
-	        raised = _this$props.raised;
-	    var classes = clsx('ui', color, useKeyOnly(centered, 'centered'), useKeyOnly(fluid, 'fluid'), useKeyOnly(link, 'link'), useKeyOnly(raised, 'raised'), 'card', className);
-	    var rest = getUnhandledProps(Card, this.props);
-	    var ElementType = getElementType(Card, this.props, function () {
-	      if (onClick) return 'a';
-	    });
+	    var contentRestProps = reduce(unhandledProps, function (acc, val, key) {
+	      if (!includes(Portal.handledProps, key)) acc[key] = val;
+	      return acc;
+	    }, {});
 
-	    if (!isNil$1(children)) {
-	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	        className: classes,
-	        href: href,
-	        onClick: this.handleClick
-	      }), children);
-	    }
+	    var portalRestProps = pick(unhandledProps, Portal.handledProps);
 
-	    if (!isNil$1(content)) {
-	      return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	        className: classes,
-	        href: href,
-	        onClick: this.handleClick
-	      }), content);
-	    }
-
-	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
-	      className: classes,
-	      href: href,
-	      onClick: this.handleClick
-	    }), Image.create(image, {
-	      autoGenerateKey: false,
-	      defaultProps: {
-	        ui: false,
-	        wrapped: true
-	      }
-	    }), (description || header || meta) && /*#__PURE__*/React.createElement(CardContent, {
-	      description: description,
-	      header: header,
-	      meta: meta
-	    }), extra && /*#__PURE__*/React.createElement(CardContent, {
-	      extra: true
-	    }, extra));
+	    return {
+	      contentRestProps: contentRestProps,
+	      portalRestProps: portalRestProps
+	    };
 	  };
 
-	  return Card;
+	  var _proto = Popup.prototype;
+
+	  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+	    var depsEqual = shallowEqual(this.props.popperDependencies, prevProps.popperDependencies);
+
+	    if (!depsEqual) {
+	      this.handleUpdate();
+	    }
+	  };
+
+	  _proto.componentWillUnmount = function componentWillUnmount() {
+	    clearTimeout(this.timeoutId);
+	  };
+
+	  _proto.handleUpdate = function handleUpdate() {
+	    if (this.positionUpdate) this.positionUpdate();
+	  };
+
+	  _proto.render = function render() {
+	    var _this2 = this;
+
+	    var _this$props3 = this.props,
+	        context = _this$props3.context,
+	        disabled = _this$props3.disabled,
+	        eventsEnabled = _this$props3.eventsEnabled,
+	        offset = _this$props3.offset,
+	        pinned = _this$props3.pinned,
+	        popper = _this$props3.popper,
+	        popperModifiers = _this$props3.popperModifiers,
+	        position = _this$props3.position,
+	        positionFixed = _this$props3.positionFixed,
+	        trigger = _this$props3.trigger;
+	    var _this$state = this.state,
+	        closed = _this$state.closed,
+	        portalRestProps = _this$state.portalRestProps;
+
+	    if (closed || disabled) {
+	      return trigger;
+	    }
+
+	    var modifiers = [{
+	      name: 'arrow',
+	      enabled: false
+	    }, {
+	      name: 'eventListeners',
+	      options: {
+	        scroll: !!eventsEnabled,
+	        resize: !!eventsEnabled
+	      }
+	    }, {
+	      name: 'flip',
+	      enabled: !pinned
+	    }, {
+	      name: 'preventOverflow',
+	      enabled: !!offset
+	    }, {
+	      name: 'offset',
+	      enabled: !!offset,
+	      options: {
+	        offset: offset
+	      }
+	    }].concat(popperModifiers, [// We are syncing zIndex from `.ui.popup.content` to avoid layering issues as in SUIR we are using an additional
+	    // `div` for Popper.js
+	    // https://github.com/Semantic-Org/Semantic-UI-React/issues/4083
+	    {
+	      name: 'syncZIndex',
+	      enabled: true,
+	      phase: 'beforeRead',
+	      fn: function fn(_ref2) {
+	        var _popper$style;
+
+	        var state = _ref2.state;
+
+	        if (_this2.zIndexWasSynced) {
+	          return;
+	        } // if zIndex defined in <Popup popper={{ style: {} }} /> there is no sense to override it
+
+
+	        var definedZIndex = popper == null ? void 0 : (_popper$style = popper.style) == null ? void 0 : _popper$style.zIndex;
+
+	        if (isUndefined(definedZIndex)) {
+	          // eslint-disable-next-line no-param-reassign
+	          state.elements.popper.style.zIndex = window.getComputedStyle(state.elements.popper.firstChild).zIndex;
+	        }
+
+	        _this2.zIndexWasSynced = true;
+	      },
+	      effect: function effect() {
+	        return function () {
+	          _this2.zIndexWasSynced = false;
+	        };
+	      }
+	    }]);
+	    var referenceElement = createReferenceProxy(isNil(context) ? this.triggerRef : context);
+
+	    var mergedPortalProps = _extends({}, this.getPortalProps(), portalRestProps);
+
+	    return /*#__PURE__*/React.createElement(Portal, _extends({}, mergedPortalProps, {
+	      onClose: this.handleClose,
+	      onMount: this.handlePortalMount,
+	      onOpen: this.handleOpen,
+	      onUnmount: this.handlePortalUnmount,
+	      trigger: trigger,
+	      triggerRef: this.triggerRef
+	    }), /*#__PURE__*/React.createElement(Popper, {
+	      modifiers: modifiers,
+	      placement: positionsMapping[position],
+	      strategy: positionFixed ? 'fixed' : null,
+	      referenceElement: referenceElement
+	    }, this.renderContent));
+	  };
+
+	  return Popup;
 	}(reactExports.Component);
 
-	Card.handledProps = ["as", "centered", "children", "className", "color", "content", "description", "extra", "fluid", "header", "href", "image", "link", "meta", "onClick", "raised"];
-	Card.propTypes = {
+	Popup.handledProps = ["as", "basic", "children", "className", "content", "context", "disabled", "eventsEnabled", "flowing", "header", "hideOnScroll", "hoverable", "inverted", "offset", "on", "onClose", "onMount", "onOpen", "onUnmount", "pinned", "popper", "popperDependencies", "popperModifiers", "position", "positionFixed", "size", "style", "trigger", "wide"];
+	Popup.propTypes = {
 	  /** An element type to render as (string or function). */
 	  as: PropTypes.elementType,
 
-	  /** A Card can center itself inside its container. */
-	  centered: PropTypes.bool,
+	  /** Display the popup without the pointing arrow. */
+	  basic: PropTypes.bool,
 
 	  /** Primary content. */
 	  children: PropTypes.node,
@@ -44991,53 +53640,359 @@
 	  /** Additional classes. */
 	  className: PropTypes.string,
 
-	  /** A Card can be formatted to display different colors. */
+	  /** Simple text content for the popover. */
+	  content: itemShorthand,
+
+	  /** Existing element the pop-up should be bound to. */
+	  context: PropTypes.oneOfType([PropTypes.object, refObject]),
+
+	  /** A disabled popup only renders its trigger. */
+	  disabled: PropTypes.bool,
+
+	  /** Enables the Popper.js event listeners. */
+	  eventsEnabled: PropTypes.bool,
+
+	  /** A flowing Popup has no maximum width and continues to flow to fit its content. */
+	  flowing: PropTypes.bool,
+
+	  /** Takes up the entire width of its offset container. */
+	  // TODO: implement the Popup fluid layout
+	  // fluid: PropTypes.bool,
+
+	  /** Header displayed above the content in bold. */
+	  header: itemShorthand,
+
+	  /** Hide the Popup when scrolling the window. */
+	  hideOnScroll: PropTypes.bool,
+
+	  /** Whether the popup should not close on hover. */
+	  hoverable: PropTypes.bool,
+
+	  /** Invert the colors of the Popup. */
+	  inverted: PropTypes.bool,
+
+	  /**
+	   * Offset values in px unit to apply to rendered popup. The basic offset accepts an
+	   * array with two numbers in the form [skidding, distance]:
+	   * - `skidding` displaces the Popup along the reference element
+	   * - `distance` displaces the Popup away from, or toward, the reference element in the direction of its placement. A positive number displaces it further away, while a negative number lets it overlap the reference.
+	   *
+	   * @see https://popper.js.org/docs/v2/modifiers/offset/
+	   */
+	  offset: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.number)]),
+
+	  /** Events triggering the popup. */
+	  on: PropTypes.oneOfType([PropTypes.oneOf(['hover', 'click', 'focus']), PropTypes.arrayOf(PropTypes.oneOf(['hover', 'click', 'focus']))]),
+
+	  /**
+	   * Called when a close event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onClose: PropTypes.func,
+
+	  /**
+	   * Called when the portal is mounted on the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onMount: PropTypes.func,
+
+	  /**
+	   * Called when an open event happens.
+	   *
+	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
+	   * @param {object} data - All props.
+	   */
+	  onOpen: PropTypes.func,
+
+	  /**
+	   * Called when the portal is unmounted from the DOM.
+	   *
+	   * @param {null}
+	   * @param {object} data - All props.
+	   */
+	  onUnmount: PropTypes.func,
+
+	  /** Disables automatic repositioning of the component, it will always be placed according to the position value. */
+	  pinned: PropTypes.bool,
+
+	  /** Position for the popover. */
+	  position: PropTypes.oneOf(positions),
+
+	  /** Tells `Popper.js` to use the `position: fixed` strategy to position the popover. */
+	  positionFixed: PropTypes.bool,
+
+	  /** A wrapping element for an actual content that will be used for positioning. */
+	  popper: itemShorthand,
+
+	  /** An array containing custom settings for the Popper.js modifiers. */
+	  popperModifiers: PropTypes.array,
+
+	  /** A popup can have dependencies which update will schedule a position update. */
+	  popperDependencies: PropTypes.array,
+
+	  /** Popup size. */
+	  size: PropTypes.oneOf(without(SIZES, 'medium', 'big', 'massive')),
+
+	  /** Custom Popup style. */
+	  style: PropTypes.object,
+
+	  /** Element to be rendered in-place where the popup is defined. */
+	  trigger: PropTypes.node,
+
+	  /** Popup width. */
+	  wide: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['very'])])
+	} ;
+	Popup.defaultProps = {
+	  disabled: false,
+	  eventsEnabled: true,
+	  on: ['click', 'hover'],
+	  pinned: false,
+	  popperModifiers: [],
+	  position: 'top left'
+	};
+	Popup.Content = PopupContent;
+	Popup.Header = PopupHeader;
+
+	/**
+	 * A group of statistics.
+	 */
+
+	function StatisticGroup(props) {
+	  var children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      content = props.content,
+	      horizontal = props.horizontal,
+	      inverted = props.inverted,
+	      items = props.items,
+	      size = props.size,
+	      widths = props.widths;
+	  var classes = clsx('ui', color, size, useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), useWidthProp(widths), 'statistics', className);
+	  var rest = getUnhandledProps(StatisticGroup, props);
+	  var ElementType = getElementType(StatisticGroup, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), map$2(items, function (item) {
+	    return Statistic.create(item);
+	  }));
+	}
+
+	StatisticGroup.handledProps = ["as", "children", "className", "color", "content", "horizontal", "inverted", "items", "size", "widths"];
+	StatisticGroup.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** A statistic group can be formatted to be different colors. */
 	  color: PropTypes.oneOf(COLORS),
 
 	  /** Shorthand for primary content. */
 	  content: contentShorthand,
 
-	  /** Shorthand for CardDescription. */
-	  description: itemShorthand,
+	  /** A statistic group can present its measurement horizontally. */
+	  horizontal: PropTypes.bool,
 
-	  /** Shorthand for primary content of CardContent. */
-	  extra: contentShorthand,
+	  /** A statistic group can be formatted to fit on a dark background. */
+	  inverted: PropTypes.bool,
 
-	  /** A Card can be formatted to take up the width of its container. */
-	  fluid: PropTypes.bool,
+	  /** Array of props for Statistic. */
+	  items: collectionShorthand,
 
-	  /** Shorthand for CardHeader. */
-	  header: itemShorthand,
+	  /** A statistic group can vary in size. */
+	  size: PropTypes.oneOf(without(SIZES, 'big', 'massive', 'medium')),
 
-	  /** Render as an `a` tag instead of a `div` and adds the href attribute. */
-	  href: PropTypes.string,
-
-	  /** A card can contain an Image component. */
-	  image: itemShorthand,
-
-	  /** A card can be formatted to link to other content. */
-	  link: PropTypes.bool,
-
-	  /** Shorthand for CardMeta. */
-	  meta: itemShorthand,
-
-	  /**
-	   * Called on click. When passed, the component renders as an `a`
-	   * tag by default instead of a `div`.
-	   *
-	   * @param {SyntheticEvent} event - React's original SyntheticEvent.
-	   * @param {object} data - All props.
-	   */
-	  onClick: PropTypes.func,
-
-	  /** A Card can be formatted to raise above the page. */
-	  raised: PropTypes.bool
+	  /** A statistic group can have its items divided evenly. */
+	  widths: PropTypes.oneOf(WIDTHS)
 	} ;
-	Card.Content = CardContent;
-	Card.Description = CardDescription;
-	Card.Group = CardGroup;
-	Card.Header = CardHeader;
-	Card.Meta = CardMeta;
+
+	/**
+	 * A statistic can contain a label to help provide context for the presented value.
+	 */
+
+	function StatisticLabel(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content;
+	  var classes = clsx('label', className);
+	  var rest = getUnhandledProps(StatisticLabel, props);
+	  var ElementType = getElementType(StatisticLabel, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	StatisticLabel.handledProps = ["as", "children", "className", "content"];
+	StatisticLabel.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand
+	} ;
+	StatisticLabel.create = createShorthandFactory(StatisticLabel, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A statistic can contain a numeric, icon, image, or text value.
+	 */
+
+	function StatisticValue(props) {
+	  var children = props.children,
+	      className = props.className,
+	      content = props.content,
+	      text = props.text;
+	  var classes = clsx(useKeyOnly(text, 'text'), 'value', className);
+	  var rest = getUnhandledProps(StatisticValue, props);
+	  var ElementType = getElementType(StatisticValue, props);
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), isNil$1(children) ? content : children);
+	}
+
+	StatisticValue.handledProps = ["as", "children", "className", "content", "text"];
+	StatisticValue.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** Format the value with smaller font size to fit nicely beside number values. */
+	  text: PropTypes.bool
+	} ;
+	StatisticValue.create = createShorthandFactory(StatisticValue, function (content) {
+	  return {
+	    content: content
+	  };
+	});
+
+	/**
+	 * A statistic emphasizes the current value of an attribute.
+	 */
+
+	function Statistic(props) {
+	  var children = props.children,
+	      className = props.className,
+	      color = props.color,
+	      content = props.content,
+	      floated = props.floated,
+	      horizontal = props.horizontal,
+	      inverted = props.inverted,
+	      label = props.label,
+	      size = props.size,
+	      text = props.text,
+	      value = props.value;
+	  var classes = clsx('ui', color, size, useValueAndKey(floated, 'floated'), useKeyOnly(horizontal, 'horizontal'), useKeyOnly(inverted, 'inverted'), 'statistic', className);
+	  var rest = getUnhandledProps(Statistic, props);
+	  var ElementType = getElementType(Statistic, props);
+
+	  if (!isNil$1(children)) {
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), children);
+	  }
+
+	  if (!isNil$1(content)) {
+	    return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	      className: classes
+	    }), content);
+	  }
+
+	  return /*#__PURE__*/React.createElement(ElementType, _extends({}, rest, {
+	    className: classes
+	  }), StatisticValue.create(value, {
+	    defaultProps: {
+	      text: text
+	    },
+	    autoGenerateKey: false
+	  }), StatisticLabel.create(label, {
+	    autoGenerateKey: false
+	  }));
+	}
+
+	Statistic.handledProps = ["as", "children", "className", "color", "content", "floated", "horizontal", "inverted", "label", "size", "text", "value"];
+	Statistic.propTypes = {
+	  /** An element type to render as (string or function). */
+	  as: PropTypes.elementType,
+
+	  /** Primary content. */
+	  children: PropTypes.node,
+
+	  /** Additional classes. */
+	  className: PropTypes.string,
+
+	  /** A statistic can be formatted to be different colors. */
+	  color: PropTypes.oneOf(COLORS),
+
+	  /** Shorthand for primary content. */
+	  content: contentShorthand,
+
+	  /** A statistic can sit to the left or right of other content. */
+	  floated: PropTypes.oneOf(FLOATS),
+
+	  /** A statistic can present its measurement horizontally. */
+	  horizontal: PropTypes.bool,
+
+	  /** A statistic can be formatted to fit on a dark background. */
+	  inverted: PropTypes.bool,
+
+	  /** Label content of the Statistic. */
+	  label: contentShorthand,
+
+	  /** A statistic can vary in size. */
+	  size: PropTypes.oneOf(without(SIZES, 'big', 'massive', 'medium')),
+
+	  /** Format the StatisticValue with smaller font size to fit nicely beside number values. */
+	  text: PropTypes.bool,
+
+	  /** Value content of the Statistic. */
+	  value: contentShorthand
+	} ;
+	Statistic.Group = StatisticGroup;
+	Statistic.Label = StatisticLabel;
+	Statistic.Value = StatisticValue;
+	Statistic.create = createShorthandFactory(Statistic, function (content) {
+	  return {
+	    content: content
+	  };
+	});
 
 	function ascending$2(a, b) {
 	  return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -45275,20 +54230,20 @@
 	  return value !== null && typeof value === "object" ? value.valueOf() : value;
 	}
 
-	function identity$5(x) {
+	function identity$6(x) {
 	  return x;
 	}
 
 	function group(values, ...keys) {
-	  return nest(values, identity$5, identity$5, keys);
+	  return nest(values, identity$6, identity$6, keys);
 	}
 
 	function groups(values, ...keys) {
-	  return nest(values, Array.from, identity$5, keys);
+	  return nest(values, Array.from, identity$6, keys);
 	}
 
 	function rollup(values, reduce, ...keys) {
-	  return nest(values, identity$5, reduce, keys);
+	  return nest(values, identity$6, reduce, keys);
 	}
 
 	function nest(values, map, reduce, keys) {
@@ -45314,7 +54269,7 @@
 	  return Array.from(keys, key => source[key]);
 	}
 
-	function sort(values, ...F) {
+	function sort$1(values, ...F) {
 	  if (typeof values[Symbol.iterator] !== "function") throw new TypeError("values is not iterable");
 	  values = Array.from(values);
 	  let [f] = F;
@@ -45687,7 +54642,7 @@
 	  return values;
 	}
 
-	function identity$4(x) {
+	function identity$5(x) {
 	  return x;
 	}
 
@@ -45733,7 +54688,7 @@
 
 	  function axis(context) {
 	    var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
-	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$4) : tickFormat,
+	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$5) : tickFormat,
 	        spacing = Math.max(tickSizeInner, 0) + tickPadding,
 	        range = scale.range(),
 	        range0 = +range[0] + offset,
@@ -46776,7 +55731,7 @@
 
 	var degrees = 180 / Math.PI;
 
-	var identity$3 = {
+	var identity$4 = {
 	  translateX: 0,
 	  translateY: 0,
 	  rotate: 0,
@@ -46806,14 +55761,14 @@
 	/* eslint-disable no-undef */
 	function parseCss(value) {
 	  const m = new (typeof DOMMatrix === "function" ? DOMMatrix : WebKitCSSMatrix)(value + "");
-	  return m.isIdentity ? identity$3 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
+	  return m.isIdentity ? identity$4 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
 	}
 
 	function parseSvg(value) {
-	  if (value == null) return identity$3;
+	  if (value == null) return identity$4;
 	  if (!svgNode) svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
 	  svgNode.setAttribute("transform", value);
-	  if (!(value = svgNode.transform.baseVal.consolidate())) return identity$3;
+	  if (!(value = svgNode.transform.baseVal.consolidate())) return identity$4;
 	  value = value.matrix;
 	  return decompose(value.a, value.b, value.c, value.d, value.e, value.f);
 	}
@@ -49161,7 +58116,7 @@
 	  "x": (x) => Math.round(x).toString(16)
 	};
 
-	function identity$2(x) {
+	function identity$3(x) {
 	  return x;
 	}
 
@@ -49169,11 +58124,11 @@
 	    prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
 	function formatLocale$1(locale) {
-	  var group = locale.grouping === undefined || locale.thousands === undefined ? identity$2 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
+	  var group = locale.grouping === undefined || locale.thousands === undefined ? identity$3 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
 	      currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
 	      currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
 	      decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-	      numerals = locale.numerals === undefined ? identity$2 : formatNumerals(map$1.call(locale.numerals, String)),
+	      numerals = locale.numerals === undefined ? identity$3 : formatNumerals(map$1.call(locale.numerals, String)),
 	      percent = locale.percent === undefined ? "%" : locale.percent + "",
 	      minus = locale.minus === undefined ? "−" : locale.minus + "",
 	      nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -49304,7 +58259,7 @@
 	  };
 	}
 
-	var locale$1;
+	var locale$2;
 	var format$1;
 	var formatPrefix;
 
@@ -49315,10 +58270,10 @@
 	});
 
 	function defaultLocale$1(definition) {
-	  locale$1 = formatLocale$1(definition);
-	  format$1 = locale$1.format;
-	  formatPrefix = locale$1.formatPrefix;
-	  return locale$1;
+	  locale$2 = formatLocale$1(definition);
+	  format$1 = locale$2.format;
+	  formatPrefix = locale$2.formatPrefix;
+	  return locale$2;
 	}
 
 	function precisionFixed(step) {
@@ -49515,7 +58470,7 @@
 
 	var unit$1 = [0, 1];
 
-	function identity$1(x) {
+	function identity$2(x) {
 	  return x;
 	}
 
@@ -49579,14 +58534,14 @@
 	      transform,
 	      untransform,
 	      unknown,
-	      clamp = identity$1,
+	      clamp = identity$2,
 	      piecewise,
 	      output,
 	      input;
 
 	  function rescale() {
 	    var n = Math.min(domain.length, range.length);
-	    if (clamp !== identity$1) clamp = clamper(domain[0], domain[n - 1]);
+	    if (clamp !== identity$2) clamp = clamper(domain[0], domain[n - 1]);
 	    piecewise = n > 2 ? polymap : bimap;
 	    output = input = null;
 	    return scale;
@@ -49613,7 +58568,7 @@
 	  };
 
 	  scale.clamp = function(_) {
-	    return arguments.length ? (clamp = _ ? true : identity$1, rescale()) : clamp !== identity$1;
+	    return arguments.length ? (clamp = _ ? true : identity$2, rescale()) : clamp !== identity$2;
 	  };
 
 	  scale.interpolate = function(_) {
@@ -49631,7 +58586,7 @@
 	}
 
 	function continuous() {
-	  return transformer$1()(identity$1, identity$1);
+	  return transformer$1()(identity$2, identity$2);
 	}
 
 	function tickFormat(start, stop, count, specifier) {
@@ -49727,7 +58682,7 @@
 	  return linearish(scale);
 	}
 
-	function identity(domain) {
+	function identity$1(domain) {
 	  var unknown;
 
 	  function scale(x) {
@@ -49745,7 +58700,7 @@
 	  };
 
 	  scale.copy = function() {
-	    return identity(domain).unknown(unknown);
+	    return identity$1(domain).unknown(unknown);
 	  };
 
 	  domain = arguments.length ? Array.from(domain, number$2) : [0, 1];
@@ -49954,11 +58909,11 @@
 	}
 
 	function powish(transform) {
-	  var scale = transform(identity$1, identity$1),
+	  var scale = transform(identity$2, identity$2),
 	      exponent = 1;
 
 	  function rescale() {
-	    return exponent === 1 ? transform(identity$1, identity$1)
+	    return exponent === 1 ? transform(identity$2, identity$2)
 	        : exponent === 0.5 ? transform(transformSqrt$1, transformSquare)
 	        : transform(transformPow$1(exponent), transformPow$1(1 / exponent));
 	  }
@@ -51128,7 +60083,7 @@
 	  return Math.floor(+d / 1000);
 	}
 
-	var locale;
+	var locale$1;
 	var timeFormat;
 	var utcFormat;
 
@@ -51144,12 +60099,12 @@
 	});
 
 	function defaultLocale(definition) {
-	  locale = formatLocale(definition);
-	  timeFormat = locale.format;
-	  locale.parse;
-	  utcFormat = locale.utcFormat;
-	  locale.utcParse;
-	  return locale;
+	  locale$1 = formatLocale(definition);
+	  timeFormat = locale$1.format;
+	  locale$1.parse;
+	  utcFormat = locale$1.utcFormat;
+	  locale$1.utcParse;
+	  return locale$1;
 	}
 
 	function date(t) {
@@ -51240,7 +60195,7 @@
 	      t2,
 	      k10,
 	      k21,
-	      interpolator = identity$1,
+	      interpolator = identity$2,
 	      transform,
 	      clamp = false,
 	      unknown;
@@ -51283,7 +60238,7 @@
 	}
 
 	function diverging() {
-	  var scale = linearish(transformer()(identity$1));
+	  var scale = linearish(transformer()(identity$2));
 
 	  scale.copy = function() {
 	    return copy(scale, diverging());
@@ -53982,10 +62937,11 @@
 	    return type === "string" ? map(data, field(value), arrayType)
 	        : type === "function" ? map(data, value, arrayType)
 	            : type === "number" || value instanceof Date || type === "boolean" ? map(data, constant(value), arrayType)
-	                : value && typeof value.transform === "function" ? arrayify(value.transform(data), arrayType)
-	                    : arrayify(value, arrayType); // preserve undefined type
+	                : value && typeof value.transform === "function" ? arrayify(value.transform(data))
+	                    : arrayify(value); // preserve undefined type
 	}
 	const field = name => d => d[name];
+	const identity = { transform: d => d };
 	const yes = () => true;
 	const string = x => x == null ? x : `${x}`;
 	const number = x => x == null ? x : +x;
@@ -54037,9 +62993,8 @@
 	// the specified type; otherwise, any array or typed array may be returned. If
 	// the specified data is null or undefined, returns the value as-is.
 	function arrayify(data, type) {
-	    return data == null ? data : (type === undefined
-	        ? (data instanceof Array || data instanceof TypedArray) ? data : Array.from(data)
-	        : (data instanceof type ? data : type.from(data)));
+	    return data == null ? data : ((data instanceof Array || data instanceof TypedArray) ? data : Array.from(data)
+	        );
 	}
 	// An optimization of type.from(values, f): if the given values are already an
 	// instanceof the desired array type, the faster values.map method is used.
@@ -54199,6 +63154,9 @@
 	}
 	function isRound(value) {
 	    return /^\s*round\s*$/i.test(value);
+	}
+	function maybeFrameAnchor(value = "middle") {
+	    return keyword(value, "frameAnchor", ["middle", "top-left", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left"]);
 	}
 	// Like a sort comparator, returns a positive value if the given array of values
 	// is in ascending order, a negative value if the values are in descending
@@ -54383,14 +63341,42 @@
 	        { name: "opacity", value: vopacity, scale: "opacity", optional: true }
 	    ];
 	}
+	// Applies the specified titles via selection.call.
+	function applyTitle(selection, L) {
+	    if (L)
+	        selection.filter(i => nonempty(L[i])).append("title").call(applyText, L);
+	}
 	// Like applyTitle, but for grouped data (lines, areas).
 	function applyTitleGroup(selection, L) {
 	    if (L)
 	        selection.filter(([i]) => nonempty(L[i])).append("title").call(applyTextGroup, L);
 	}
+	function applyText(selection, T) {
+	    if (T)
+	        selection.text(i => formatDefault(T[i]));
+	}
 	function applyTextGroup(selection, T) {
 	    if (T)
 	        selection.text(([i]) => formatDefault(T[i]));
+	}
+	function applyChannelStyles(selection, { target }, { ariaLabel: AL, title: T, fill: F, fillOpacity: FO, stroke: S, strokeOpacity: SO, strokeWidth: SW, opacity: O, href: H }) {
+	    if (AL)
+	        applyAttr(selection, "aria-label", i => AL[i]);
+	    if (F)
+	        applyAttr(selection, "fill", i => F[i]);
+	    if (FO)
+	        applyAttr(selection, "fill-opacity", i => FO[i]);
+	    if (S)
+	        applyAttr(selection, "stroke", i => S[i]);
+	    if (SO)
+	        applyAttr(selection, "stroke-opacity", i => SO[i]);
+	    if (SW)
+	        applyAttr(selection, "stroke-width", i => SW[i]);
+	    if (O)
+	        applyAttr(selection, "opacity", i => O[i]);
+	    if (H)
+	        applyHref(selection, i => H[i], target);
+	    applyTitle(selection, T);
 	}
 	function applyGroupedChannelStyles(selection, { target }, { ariaLabel: AL, title: T, fill: F, fillOpacity: FO, stroke: S, strokeOpacity: SO, strokeWidth: SW, opacity: O, href: H }) {
 	    if (AL)
@@ -54567,6 +63553,12 @@
 	            Object.assign(element.style, style);
 	        }
 	    }
+	}
+	function applyFrameAnchor({ frameAnchor }, { width, height, marginTop, marginRight, marginBottom, marginLeft }) {
+	    return [
+	        /left$/.test(frameAnchor) ? marginLeft : /right$/.test(frameAnchor) ? width - marginRight : (marginLeft + width - marginRight) / 2,
+	        /^top/.test(frameAnchor) ? marginTop : /^bottom/.test(frameAnchor) ? height - marginBottom : (marginTop + height - marginBottom) / 2
+	    ];
 	}
 
 	class AxisX {
@@ -54973,6 +63965,16 @@
 	    return scheme != null && divergingSchemes.has(`${scheme}`.toLowerCase());
 	}
 
+	function maybeInsetY({ inset, insetTop, insetBottom, ...options } = {}) {
+	    ([insetTop, insetBottom] = maybeInset(inset, insetTop, insetBottom));
+	    return { inset, insetTop, insetBottom, ...options };
+	}
+	function maybeInset(inset, inset1, inset2) {
+	    return inset === undefined && inset1 === undefined && inset2 === undefined
+	        ? (offset ? [1, 0] : [0.5, 0.5])
+	        : [inset1, inset2];
+	}
+
 	// TODO Allow the interval to be specified as a string, e.g. “day” or “hour”?
 	// This will require the interval knowing the type of the associated scale to
 	// chose between UTC and local time (or better, an explicit timeZone option).
@@ -54991,6 +63993,45 @@
 	    if (typeof interval.floor !== "function" || typeof interval.offset !== "function")
 	        throw new Error("invalid interval; missing floor or offset function");
 	    return interval;
+	}
+	// The interval may be specified either as x: {value, interval} or as {x,
+	// interval}. The former is used, for example, for Plot.rect.
+	function maybeIntervalValue(value, { interval }) {
+	    value = { ...maybeValue(value) };
+	    value.interval = maybeInterval(value.interval === undefined ? interval : value.interval);
+	    return value;
+	}
+	function maybeIntervalK(k, maybeInsetK, options, trivial) {
+	    const { [k]: v, [`${k}1`]: v1, [`${k}2`]: v2 } = options;
+	    const { value, interval } = maybeIntervalValue(v, options);
+	    if (value == null || (interval == null && true))
+	        return options;
+	    const label = labelof(v);
+	    if (interval == null) {
+	        let V;
+	        const kv = { transform: data => V || (V = valueof(data, value)), label };
+	        return {
+	            ...options,
+	            [k]: undefined,
+	            [`${k}1`]: v1 === undefined ? kv : v1,
+	            [`${k}2`]: v2 === undefined ? kv : v2
+	        };
+	    }
+	    let D1, V1;
+	    function transform(data) {
+	        if (V1 !== undefined && data === D1)
+	            return V1; // memoize
+	        return V1 = map(valueof(D1 = data, value), v => interval.floor(v));
+	    }
+	    return maybeInsetK({
+	        ...options,
+	        [k]: undefined,
+	        [`${k}1`]: v1 === undefined ? { transform, label } : v1,
+	        [`${k}2`]: v2 === undefined ? { transform: data => transform(data).map(v => interval.offset(v)), label } : v2
+	    });
+	}
+	function maybeIntervalY(options = {}) {
+	    return maybeIntervalK("y", maybeInsetY, options);
 	}
 
 	const flip = i => t => i(1 - t);
@@ -55129,7 +64170,7 @@
 	    return s === 0 || s === sign;
 	}
 	function ScaleIdentity() {
-	    return { type: "identity", scale: identity() };
+	    return { type: "identity", scale: identity$1() };
 	}
 	function inferDomain$1(channels, f = finite) {
 	    return channels.length ? [
@@ -55346,6 +64387,16 @@
 	        return value;
 	    throw new Error(`invalid symbol: ${symbol}`);
 	}
+	function maybeSymbolChannel(symbol) {
+	    if (symbol == null || isSymbolObject(symbol))
+	        return [undefined, symbol];
+	    if (typeof symbol === "string") {
+	        const value = symbols.get(`${symbol}`.toLowerCase());
+	        if (value)
+	            return [undefined, value];
+	    }
+	    return [symbol, undefined];
+	}
 
 	// This denotes an implicitly ordinal color scale: the scale type was not set,
 	// but the associated values are strings or booleans. If the associated defined
@@ -55437,7 +64488,7 @@
 	    }
 	    if (values.size > 10e3 && registry.get(key) === position)
 	        throw new Error("implicit ordinal position domain has more than 10,000 values");
-	    return sort(values, ascendingDefined);
+	    return sort$1(values, ascendingDefined);
 	}
 	// If all channels provide a consistent hint, propagate it to the scale.
 	function inferHint(channels, key) {
@@ -55760,6 +64811,22 @@
 	function scaleOrder({ range, domain = range }) {
 	    return Math.sign(order(domain)) * Math.sign(order(range));
 	}
+	// Certain marks have special behavior if a scale is collapsed, i.e. if the
+	// domain is degenerate and represents only a single value such as [3, 3]; for
+	// example, a rect will span the full extent of the chart along a collapsed
+	// dimension (whereas a dot will simply be drawn in the center).
+	function isCollapsed(scale) {
+	    if (scale === undefined)
+	        return true; // treat missing scale as collapsed
+	    const domain = scale.domain();
+	    const value = scale(domain[0]);
+	    for (let i = 1, n = domain.length; i < n; ++i) {
+	        if (scale(domain[i]) - value) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
 	// Mutates channel.value!
 	function coerceType(channels, { domain, ...options }, coerceValues) {
 	    for (const c of channels) {
@@ -56020,6 +65087,8 @@
 	        if (r1)
 	            t1 = composeTransform(t1, reverseTransform);
 	    }
+	    if (t2 != null && i1 != null)
+	        throw new Error("transforms cannot be applied after initializers");
 	    return {
 	        ...options,
 	        ...(s1 === null || isDomainSort(s1)) && { sort: s1 },
@@ -56064,6 +65133,9 @@
 	        return { data: d2, facets: f2, channels: { ...c1, ...c2 } };
 	    };
 	}
+	function apply(options, t) {
+	    return (options.initializer != null ? initializer : basic)(options, t);
+	}
 	function filterTransform(value) {
 	    return (data, facets) => {
 	        const V = valueof(data, value);
@@ -56072,6 +65144,9 @@
 	}
 	function reverseTransform(data, facets) {
 	    return { data, facets: facets.map(I => I.slice().reverse()) };
+	}
+	function sort(value, options) {
+	    return { ...(isOptions(value) && value.channel !== undefined ? initializer : apply)(options, sortTransform(value)), sort: null };
 	}
 	function sortTransform(value) {
 	    return (typeof value === "function" && value.length !== 1 ? sortData : sortValue)(value);
@@ -56291,7 +65366,7 @@
 	            const reducer = maybeReduce(reduce === true ? "max" : reduce, YV);
 	            X.domain = () => {
 	                let domain = rollup(range(XV), I => reducer.reduce(I, YV), i => XV[i]);
-	                domain = sort(domain, reverse ? descendingGroup : ascendingGroup);
+	                domain = sort$1(domain, reverse ? descendingGroup : ascendingGroup);
 	                if (lo !== 0 || hi !== Infinity)
 	                    domain = domain.slice(lo, hi);
 	                return domain.map(first);
@@ -57227,6 +66302,150 @@
 	        path.attr("marker-end", applyMarker(markerEnd));
 	}
 
+	const defaults$2 = {
+	    ariaLabel: "dot",
+	    fill: "none",
+	    stroke: "currentColor",
+	    strokeWidth: 1.5
+	};
+	class Dot extends Mark {
+	    constructor(data, options = {}) {
+	        const { x, y, r, rotate, symbol = symbolCircle, frameAnchor } = options;
+	        const [vrotate, crotate] = maybeNumberChannel(rotate, 0);
+	        const [vsymbol, csymbol] = maybeSymbolChannel(symbol);
+	        const [vr, cr] = maybeNumberChannel(r, vsymbol == null ? 3 : 4.5);
+	        super(data, [
+	            { name: "x", value: x, scale: "x", optional: true },
+	            { name: "y", value: y, scale: "y", optional: true },
+	            { name: "r", value: vr, scale: "r", filter: positive, optional: true },
+	            { name: "rotate", value: vrotate, optional: true },
+	            { name: "symbol", value: vsymbol, scale: "symbol", optional: true }
+	        ], options.sort === undefined && options.reverse === undefined ? sort({ channel: "r", order: "descending" }, options) : options, defaults$2);
+	        this.r = cr;
+	        this.rotate = crotate;
+	        this.symbol = csymbol;
+	        this.frameAnchor = maybeFrameAnchor(frameAnchor);
+	        // Give a hint to the symbol scale; this allows the symbol scale to chose
+	        // appropriate default symbols based on whether the dots are filled or
+	        // stroked, and for the symbol legend to match the appearance of the dots.
+	        const { channels } = this;
+	        const symbolChannel = channels.find(({ scale }) => scale === "symbol");
+	        if (symbolChannel) {
+	            const fillChannel = channels.find(({ name }) => name === "fill");
+	            const strokeChannel = channels.find(({ name }) => name === "stroke");
+	            symbolChannel.hint = {
+	                fill: fillChannel ? (fillChannel.value === symbolChannel.value ? "color" : "currentColor") : this.fill,
+	                stroke: strokeChannel ? (strokeChannel.value === symbolChannel.value ? "color" : "currentColor") : this.stroke
+	            };
+	        }
+	    }
+	    render(index, scales, channels, dimensions, context) {
+	        const { x: X, y: Y, r: R, rotate: A, symbol: S } = channels;
+	        const [cx, cy] = applyFrameAnchor(this, dimensions);
+	        const circle = this.symbol === symbolCircle;
+	        return create("svg:g", context)
+	            .call(applyIndirectStyles, this, scales, dimensions)
+	            .call(applyTransform, this, scales)
+	            .call(g => g.selectAll()
+	            .data(index)
+	            .enter()
+	            .append(circle ? "circle" : "path")
+	            .call(applyDirectStyles, this)
+	            .call(circle
+	            ? selection => {
+	                selection
+	                    .attr("cx", X ? i => X[i] : cx)
+	                    .attr("cy", Y ? i => Y[i] : cy)
+	                    .attr("r", R ? i => R[i] : this.r);
+	            }
+	            : selection => {
+	                const translate = X && Y ? i => `translate(${X[i]},${Y[i]})`
+	                    : X ? i => `translate(${X[i]},${cy})`
+	                        : Y ? i => `translate(${cx},${Y[i]})`
+	                            : () => `translate(${cx},${cy})`;
+	                selection
+	                    .attr("transform", A ? i => `${translate(i)} rotate(${A[i]})`
+	                    : this.rotate ? i => `${translate(i)} rotate(${this.rotate})`
+	                        : translate)
+	                    .attr("d", i => {
+	                    const p = path(), r = R ? R[i] : this.r;
+	                    (S ? S[i] : this.symbol).draw(p, r * r * Math.PI);
+	                    return p;
+	                });
+	            })
+	            .call(applyChannelStyles, this, channels))
+	            .node();
+	    }
+	}
+	function dot(data, { x, y, ...options } = {}) {
+	    if (options.frameAnchor === undefined)
+	        ([x, y] = maybeTuple(x, y));
+	    return new Dot(data, { ...options, x, y });
+	}
+
+	const defaults$1 = {
+	    ariaLabel: "rule",
+	    fill: null,
+	    stroke: "currentColor"
+	};
+	class RuleX extends Mark {
+	    constructor(data, options = {}) {
+	        const { x, y1, y2, inset = 0, insetTop = inset, insetBottom = inset } = options;
+	        super(data, [
+	            { name: "x", value: x, scale: "x", optional: true },
+	            { name: "y1", value: y1, scale: "y", optional: true },
+	            { name: "y2", value: y2, scale: "y", optional: true }
+	        ], options, defaults$1);
+	        this.insetTop = number(insetTop);
+	        this.insetBottom = number(insetBottom);
+	    }
+	    render(index, scales, channels, dimensions, context) {
+	        const { x, y } = scales;
+	        const { x: X, y1: Y1, y2: Y2 } = channels;
+	        const { width, height, marginTop, marginRight, marginLeft, marginBottom } = dimensions;
+	        const { insetTop, insetBottom } = this;
+	        return create("svg:g", context)
+	            .call(applyIndirectStyles, this, scales, dimensions)
+	            .call(applyTransform, this, { x: X && x }, offset, 0)
+	            .call(g => g.selectAll()
+	            .data(index)
+	            .enter()
+	            .append("line")
+	            .call(applyDirectStyles, this)
+	            .attr("x1", X ? i => X[i] : (marginLeft + width - marginRight) / 2)
+	            .attr("x2", X ? i => X[i] : (marginLeft + width - marginRight) / 2)
+	            .attr("y1", Y1 && !isCollapsed(y) ? i => Y1[i] + insetTop : marginTop + insetTop)
+	            .attr("y2", Y2 && !isCollapsed(y) ? (y.bandwidth ? i => Y2[i] + y.bandwidth() - insetBottom : i => Y2[i] - insetBottom) : height - marginBottom - insetBottom)
+	            .call(applyChannelStyles, this, channels))
+	            .node();
+	    }
+	}
+	function ruleX(data, options) {
+	    let { x = identity, y, y1, y2, ...rest } = maybeIntervalY(options);
+	    ([y1, y2] = maybeOptionalZero(y, y1, y2));
+	    return new RuleX(data, { ...rest, x, y1, y2 });
+	}
+	// For marks specified either as [0, x] or [x1, x2], or nothing.
+	function maybeOptionalZero(x, x1, x2) {
+	    if (x === undefined) {
+	        if (x1 === undefined) {
+	            if (x2 !== undefined)
+	                return [0, x2];
+	        }
+	        else {
+	            if (x2 === undefined)
+	                return [0, x1];
+	        }
+	    }
+	    else if (x1 === undefined) {
+	        return x2 === undefined ? [0, x] : [x, x2];
+	    }
+	    else if (x2 === undefined) {
+	        return [x, x1];
+	    }
+	    return [x1, x2];
+	}
+
 	const defaults = {
 	    ariaLabel: "line",
 	    fill: "none",
@@ -57277,331 +66496,4420 @@
 	}
 
 	/**
-	 * Live price feed component.
+	 * USD currency display (US English / USD), used for all fiat amounts when quote currency is USD.
+	 * @param {unknown} value
+	 * @returns {string}
+	 */
+	function formatUSD(value) {
+	  const n = typeof value === 'number' ? value : Number(value);
+	  if (!Number.isFinite(n)) return '—';
+	  return n.toLocaleString('en-US', {
+	    style: 'currency',
+	    currency: 'USD'
+	  });
+	}
+
+	function locale() {
+	  return Intl.NumberFormat().resolvedOptions().locale;
+	}
+
+	/**
+	 * @param {unknown} value
+	 * @param {{ empty?: string }} [opts]
+	 */
+	function formatLocaleNumber(value, opts = {}) {
+	  const empty = opts.empty ?? '';
+	  let n = value;
+	  if (typeof n !== 'number') n = parseFloat(String(value));
+	  return typeof n === 'number' && !Number.isNaN(n) ? n.toLocaleString(locale()) : empty;
+	}
+
+	/**
+	 * Format a spot / quote price in a fiat currency. USD uses {@link formatUSD}; other codes use locale currency.
+	 * @param {unknown} value
+	 * @param {string} [currencyCode]
+	 * @returns {string}
+	 */
+	function formatFiatPrice(value, currencyCode = 'USD') {
+	  const n = typeof value === 'number' ? value : Number(value);
+	  if (!Number.isFinite(n)) return '—';
+	  const code = (String(currencyCode || 'USD').trim() || 'USD').toUpperCase();
+	  if (code === 'USD') return formatUSD(n);
+	  try {
+	    return n.toLocaleString(locale(), {
+	      style: 'currency',
+	      currency: code
+	    });
+	  } catch {
+	    return `${formatLocaleNumber(n)} ${code}`.trim();
+	  }
+	}
+
+	var jsxRuntime = {exports: {}};
+
+	var reactJsxRuntime_development = {};
+
+	/**
+	 * @license React
+	 * react-jsx-runtime.development.js
+	 *
+	 * Copyright (c) Facebook, Inc. and its affiliates.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
 	 */
 
-	class Feed extends React.Component {
-	  state = {
-	    currency: 'BTC',
-	    prices: {
-	      'BTC': 1
-	    },
-	    quote: {
-	      created: new Date().toISOString(),
-	      currency: 'BTC',
-	      rate: 1
+	var hasRequiredReactJsxRuntime_development;
+
+	function requireReactJsxRuntime_development () {
+		if (hasRequiredReactJsxRuntime_development) return reactJsxRuntime_development;
+		hasRequiredReactJsxRuntime_development = 1;
+
+		{
+		  (function() {
+
+		var React = requireReact();
+
+		// ATTENTION
+		// When adding new symbols to this file,
+		// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+		// The Symbol used to tag the ReactElement-like types.
+		var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+		var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+		var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+		var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+		var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+		var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+		var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+		var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+		var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+		var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+		var REACT_MEMO_TYPE = Symbol.for('react.memo');
+		var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+		var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
+		var FAUX_ITERATOR_SYMBOL = '@@iterator';
+		function getIteratorFn(maybeIterable) {
+		  if (maybeIterable === null || typeof maybeIterable !== 'object') {
+		    return null;
+		  }
+
+		  var maybeIterator = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL];
+
+		  if (typeof maybeIterator === 'function') {
+		    return maybeIterator;
+		  }
+
+		  return null;
+		}
+
+		var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+
+		function error(format) {
+		  {
+		    {
+		      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+		        args[_key2 - 1] = arguments[_key2];
+		      }
+
+		      printWarning('error', format, args);
+		    }
+		  }
+		}
+
+		function printWarning(level, format, args) {
+		  // When changing this logic, you might want to also
+		  // update consoleWithStackDev.www.js as well.
+		  {
+		    var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
+		    var stack = ReactDebugCurrentFrame.getStackAddendum();
+
+		    if (stack !== '') {
+		      format += '%s';
+		      args = args.concat([stack]);
+		    } // eslint-disable-next-line react-internal/safe-string-coercion
+
+
+		    var argsWithFormat = args.map(function (item) {
+		      return String(item);
+		    }); // Careful: RN currently depends on this prefix
+
+		    argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
+		    // breaks IE9: https://github.com/facebook/react/issues/13610
+		    // eslint-disable-next-line react-internal/no-production-logging
+
+		    Function.prototype.apply.call(console[level], console, argsWithFormat);
+		  }
+		}
+
+		// -----------------------------------------------------------------------------
+
+		var enableScopeAPI = false; // Experimental Create Event Handle API.
+		var enableCacheElement = false;
+		var enableTransitionTracing = false; // No known bugs, but needs performance testing
+
+		var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
+		// stuff. Intended to enable React core members to more easily debug scheduling
+		// issues in DEV builds.
+
+		var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
+
+		var REACT_MODULE_REFERENCE;
+
+		{
+		  REACT_MODULE_REFERENCE = Symbol.for('react.module.reference');
+		}
+
+		function isValidElementType(type) {
+		  if (typeof type === 'string' || typeof type === 'function') {
+		    return true;
+		  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+
+
+		  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || enableDebugTracing  || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || enableLegacyHidden  || type === REACT_OFFSCREEN_TYPE || enableScopeAPI  || enableCacheElement  || enableTransitionTracing ) {
+		    return true;
+		  }
+
+		  if (typeof type === 'object' && type !== null) {
+		    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || // This needs to include all possible module reference object
+		    // types supported by any Flight configuration anywhere since
+		    // we don't know which Flight build this will end up being used
+		    // with.
+		    type.$$typeof === REACT_MODULE_REFERENCE || type.getModuleId !== undefined) {
+		      return true;
+		    }
+		  }
+
+		  return false;
+		}
+
+		function getWrappedName(outerType, innerType, wrapperName) {
+		  var displayName = outerType.displayName;
+
+		  if (displayName) {
+		    return displayName;
+		  }
+
+		  var functionName = innerType.displayName || innerType.name || '';
+		  return functionName !== '' ? wrapperName + "(" + functionName + ")" : wrapperName;
+		} // Keep in sync with react-reconciler/getComponentNameFromFiber
+
+
+		function getContextName(type) {
+		  return type.displayName || 'Context';
+		} // Note that the reconciler package should generally prefer to use getComponentNameFromFiber() instead.
+
+
+		function getComponentNameFromType(type) {
+		  if (type == null) {
+		    // Host root, text node or just invalid type.
+		    return null;
+		  }
+
+		  {
+		    if (typeof type.tag === 'number') {
+		      error('Received an unexpected object in getComponentNameFromType(). ' + 'This is likely a bug in React. Please file an issue.');
+		    }
+		  }
+
+		  if (typeof type === 'function') {
+		    return type.displayName || type.name || null;
+		  }
+
+		  if (typeof type === 'string') {
+		    return type;
+		  }
+
+		  switch (type) {
+		    case REACT_FRAGMENT_TYPE:
+		      return 'Fragment';
+
+		    case REACT_PORTAL_TYPE:
+		      return 'Portal';
+
+		    case REACT_PROFILER_TYPE:
+		      return 'Profiler';
+
+		    case REACT_STRICT_MODE_TYPE:
+		      return 'StrictMode';
+
+		    case REACT_SUSPENSE_TYPE:
+		      return 'Suspense';
+
+		    case REACT_SUSPENSE_LIST_TYPE:
+		      return 'SuspenseList';
+
+		  }
+
+		  if (typeof type === 'object') {
+		    switch (type.$$typeof) {
+		      case REACT_CONTEXT_TYPE:
+		        var context = type;
+		        return getContextName(context) + '.Consumer';
+
+		      case REACT_PROVIDER_TYPE:
+		        var provider = type;
+		        return getContextName(provider._context) + '.Provider';
+
+		      case REACT_FORWARD_REF_TYPE:
+		        return getWrappedName(type, type.render, 'ForwardRef');
+
+		      case REACT_MEMO_TYPE:
+		        var outerName = type.displayName || null;
+
+		        if (outerName !== null) {
+		          return outerName;
+		        }
+
+		        return getComponentNameFromType(type.type) || 'Memo';
+
+		      case REACT_LAZY_TYPE:
+		        {
+		          var lazyComponent = type;
+		          var payload = lazyComponent._payload;
+		          var init = lazyComponent._init;
+
+		          try {
+		            return getComponentNameFromType(init(payload));
+		          } catch (x) {
+		            return null;
+		          }
+		        }
+
+		      // eslint-disable-next-line no-fallthrough
+		    }
+		  }
+
+		  return null;
+		}
+
+		var assign = Object.assign;
+
+		// Helpers to patch console.logs to avoid logging during side-effect free
+		// replaying on render function. This currently only patches the object
+		// lazily which won't cover if the log function was extracted eagerly.
+		// We could also eagerly patch the method.
+		var disabledDepth = 0;
+		var prevLog;
+		var prevInfo;
+		var prevWarn;
+		var prevError;
+		var prevGroup;
+		var prevGroupCollapsed;
+		var prevGroupEnd;
+
+		function disabledLog() {}
+
+		disabledLog.__reactDisabledLog = true;
+		function disableLogs() {
+		  {
+		    if (disabledDepth === 0) {
+		      /* eslint-disable react-internal/no-production-logging */
+		      prevLog = console.log;
+		      prevInfo = console.info;
+		      prevWarn = console.warn;
+		      prevError = console.error;
+		      prevGroup = console.group;
+		      prevGroupCollapsed = console.groupCollapsed;
+		      prevGroupEnd = console.groupEnd; // https://github.com/facebook/react/issues/19099
+
+		      var props = {
+		        configurable: true,
+		        enumerable: true,
+		        value: disabledLog,
+		        writable: true
+		      }; // $FlowFixMe Flow thinks console is immutable.
+
+		      Object.defineProperties(console, {
+		        info: props,
+		        log: props,
+		        warn: props,
+		        error: props,
+		        group: props,
+		        groupCollapsed: props,
+		        groupEnd: props
+		      });
+		      /* eslint-enable react-internal/no-production-logging */
+		    }
+
+		    disabledDepth++;
+		  }
+		}
+		function reenableLogs() {
+		  {
+		    disabledDepth--;
+
+		    if (disabledDepth === 0) {
+		      /* eslint-disable react-internal/no-production-logging */
+		      var props = {
+		        configurable: true,
+		        enumerable: true,
+		        writable: true
+		      }; // $FlowFixMe Flow thinks console is immutable.
+
+		      Object.defineProperties(console, {
+		        log: assign({}, props, {
+		          value: prevLog
+		        }),
+		        info: assign({}, props, {
+		          value: prevInfo
+		        }),
+		        warn: assign({}, props, {
+		          value: prevWarn
+		        }),
+		        error: assign({}, props, {
+		          value: prevError
+		        }),
+		        group: assign({}, props, {
+		          value: prevGroup
+		        }),
+		        groupCollapsed: assign({}, props, {
+		          value: prevGroupCollapsed
+		        }),
+		        groupEnd: assign({}, props, {
+		          value: prevGroupEnd
+		        })
+		      });
+		      /* eslint-enable react-internal/no-production-logging */
+		    }
+
+		    if (disabledDepth < 0) {
+		      error('disabledDepth fell below zero. ' + 'This is a bug in React. Please file an issue.');
+		    }
+		  }
+		}
+
+		var ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher;
+		var prefix;
+		function describeBuiltInComponentFrame(name, source, ownerFn) {
+		  {
+		    if (prefix === undefined) {
+		      // Extract the VM specific prefix used by each line.
+		      try {
+		        throw Error();
+		      } catch (x) {
+		        var match = x.stack.trim().match(/\n( *(at )?)/);
+		        prefix = match && match[1] || '';
+		      }
+		    } // We use the prefix to ensure our stacks line up with native stack frames.
+
+
+		    return '\n' + prefix + name;
+		  }
+		}
+		var reentry = false;
+		var componentFrameCache;
+
+		{
+		  var PossiblyWeakMap = typeof WeakMap === 'function' ? WeakMap : Map;
+		  componentFrameCache = new PossiblyWeakMap();
+		}
+
+		function describeNativeComponentFrame(fn, construct) {
+		  // If something asked for a stack inside a fake render, it should get ignored.
+		  if ( !fn || reentry) {
+		    return '';
+		  }
+
+		  {
+		    var frame = componentFrameCache.get(fn);
+
+		    if (frame !== undefined) {
+		      return frame;
+		    }
+		  }
+
+		  var control;
+		  reentry = true;
+		  var previousPrepareStackTrace = Error.prepareStackTrace; // $FlowFixMe It does accept undefined.
+
+		  Error.prepareStackTrace = undefined;
+		  var previousDispatcher;
+
+		  {
+		    previousDispatcher = ReactCurrentDispatcher.current; // Set the dispatcher in DEV because this might be call in the render function
+		    // for warnings.
+
+		    ReactCurrentDispatcher.current = null;
+		    disableLogs();
+		  }
+
+		  try {
+		    // This should throw.
+		    if (construct) {
+		      // Something should be setting the props in the constructor.
+		      var Fake = function () {
+		        throw Error();
+		      }; // $FlowFixMe
+
+
+		      Object.defineProperty(Fake.prototype, 'props', {
+		        set: function () {
+		          // We use a throwing setter instead of frozen or non-writable props
+		          // because that won't throw in a non-strict mode function.
+		          throw Error();
+		        }
+		      });
+
+		      if (typeof Reflect === 'object' && Reflect.construct) {
+		        // We construct a different control for this case to include any extra
+		        // frames added by the construct call.
+		        try {
+		          Reflect.construct(Fake, []);
+		        } catch (x) {
+		          control = x;
+		        }
+
+		        Reflect.construct(fn, [], Fake);
+		      } else {
+		        try {
+		          Fake.call();
+		        } catch (x) {
+		          control = x;
+		        }
+
+		        fn.call(Fake.prototype);
+		      }
+		    } else {
+		      try {
+		        throw Error();
+		      } catch (x) {
+		        control = x;
+		      }
+
+		      fn();
+		    }
+		  } catch (sample) {
+		    // This is inlined manually because closure doesn't do it for us.
+		    if (sample && control && typeof sample.stack === 'string') {
+		      // This extracts the first frame from the sample that isn't also in the control.
+		      // Skipping one frame that we assume is the frame that calls the two.
+		      var sampleLines = sample.stack.split('\n');
+		      var controlLines = control.stack.split('\n');
+		      var s = sampleLines.length - 1;
+		      var c = controlLines.length - 1;
+
+		      while (s >= 1 && c >= 0 && sampleLines[s] !== controlLines[c]) {
+		        // We expect at least one stack frame to be shared.
+		        // Typically this will be the root most one. However, stack frames may be
+		        // cut off due to maximum stack limits. In this case, one maybe cut off
+		        // earlier than the other. We assume that the sample is longer or the same
+		        // and there for cut off earlier. So we should find the root most frame in
+		        // the sample somewhere in the control.
+		        c--;
+		      }
+
+		      for (; s >= 1 && c >= 0; s--, c--) {
+		        // Next we find the first one that isn't the same which should be the
+		        // frame that called our sample function and the control.
+		        if (sampleLines[s] !== controlLines[c]) {
+		          // In V8, the first line is describing the message but other VMs don't.
+		          // If we're about to return the first line, and the control is also on the same
+		          // line, that's a pretty good indicator that our sample threw at same line as
+		          // the control. I.e. before we entered the sample frame. So we ignore this result.
+		          // This can happen if you passed a class to function component, or non-function.
+		          if (s !== 1 || c !== 1) {
+		            do {
+		              s--;
+		              c--; // We may still have similar intermediate frames from the construct call.
+		              // The next one that isn't the same should be our match though.
+
+		              if (c < 0 || sampleLines[s] !== controlLines[c]) {
+		                // V8 adds a "new" prefix for native classes. Let's remove it to make it prettier.
+		                var _frame = '\n' + sampleLines[s].replace(' at new ', ' at '); // If our component frame is labeled "<anonymous>"
+		                // but we have a user-provided "displayName"
+		                // splice it in to make the stack more readable.
+
+
+		                if (fn.displayName && _frame.includes('<anonymous>')) {
+		                  _frame = _frame.replace('<anonymous>', fn.displayName);
+		                }
+
+		                {
+		                  if (typeof fn === 'function') {
+		                    componentFrameCache.set(fn, _frame);
+		                  }
+		                } // Return the line we found.
+
+
+		                return _frame;
+		              }
+		            } while (s >= 1 && c >= 0);
+		          }
+
+		          break;
+		        }
+		      }
+		    }
+		  } finally {
+		    reentry = false;
+
+		    {
+		      ReactCurrentDispatcher.current = previousDispatcher;
+		      reenableLogs();
+		    }
+
+		    Error.prepareStackTrace = previousPrepareStackTrace;
+		  } // Fallback to just using the name if we couldn't make it throw.
+
+
+		  var name = fn ? fn.displayName || fn.name : '';
+		  var syntheticFrame = name ? describeBuiltInComponentFrame(name) : '';
+
+		  {
+		    if (typeof fn === 'function') {
+		      componentFrameCache.set(fn, syntheticFrame);
+		    }
+		  }
+
+		  return syntheticFrame;
+		}
+		function describeFunctionComponentFrame(fn, source, ownerFn) {
+		  {
+		    return describeNativeComponentFrame(fn, false);
+		  }
+		}
+
+		function shouldConstruct(Component) {
+		  var prototype = Component.prototype;
+		  return !!(prototype && prototype.isReactComponent);
+		}
+
+		function describeUnknownElementTypeFrameInDEV(type, source, ownerFn) {
+
+		  if (type == null) {
+		    return '';
+		  }
+
+		  if (typeof type === 'function') {
+		    {
+		      return describeNativeComponentFrame(type, shouldConstruct(type));
+		    }
+		  }
+
+		  if (typeof type === 'string') {
+		    return describeBuiltInComponentFrame(type);
+		  }
+
+		  switch (type) {
+		    case REACT_SUSPENSE_TYPE:
+		      return describeBuiltInComponentFrame('Suspense');
+
+		    case REACT_SUSPENSE_LIST_TYPE:
+		      return describeBuiltInComponentFrame('SuspenseList');
+		  }
+
+		  if (typeof type === 'object') {
+		    switch (type.$$typeof) {
+		      case REACT_FORWARD_REF_TYPE:
+		        return describeFunctionComponentFrame(type.render);
+
+		      case REACT_MEMO_TYPE:
+		        // Memo may contain any component type so we recursively resolve it.
+		        return describeUnknownElementTypeFrameInDEV(type.type, source, ownerFn);
+
+		      case REACT_LAZY_TYPE:
+		        {
+		          var lazyComponent = type;
+		          var payload = lazyComponent._payload;
+		          var init = lazyComponent._init;
+
+		          try {
+		            // Lazy may contain any component type so we recursively resolve it.
+		            return describeUnknownElementTypeFrameInDEV(init(payload), source, ownerFn);
+		          } catch (x) {}
+		        }
+		    }
+		  }
+
+		  return '';
+		}
+
+		var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+		var loggedTypeFailures = {};
+		var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
+
+		function setCurrentlyValidatingElement(element) {
+		  {
+		    if (element) {
+		      var owner = element._owner;
+		      var stack = describeUnknownElementTypeFrameInDEV(element.type, element._source, owner ? owner.type : null);
+		      ReactDebugCurrentFrame.setExtraStackFrame(stack);
+		    } else {
+		      ReactDebugCurrentFrame.setExtraStackFrame(null);
+		    }
+		  }
+		}
+
+		function checkPropTypes(typeSpecs, values, location, componentName, element) {
+		  {
+		    // $FlowFixMe This is okay but Flow doesn't know it.
+		    var has = Function.call.bind(hasOwnProperty);
+
+		    for (var typeSpecName in typeSpecs) {
+		      if (has(typeSpecs, typeSpecName)) {
+		        var error$1 = void 0; // Prop type validation may throw. In case they do, we don't want to
+		        // fail the render phase where it didn't fail before. So we log it.
+		        // After these have been cleaned up, we'll let them throw.
+
+		        try {
+		          // This is intentionally an invariant that gets caught. It's the same
+		          // behavior as without this statement except with a better message.
+		          if (typeof typeSpecs[typeSpecName] !== 'function') {
+		            // eslint-disable-next-line react-internal/prod-error-codes
+		            var err = Error((componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' + 'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' + 'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.');
+		            err.name = 'Invariant Violation';
+		            throw err;
+		          }
+
+		          error$1 = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED');
+		        } catch (ex) {
+		          error$1 = ex;
+		        }
+
+		        if (error$1 && !(error$1 instanceof Error)) {
+		          setCurrentlyValidatingElement(element);
+
+		          error('%s: type specification of %s' + ' `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error$1);
+
+		          setCurrentlyValidatingElement(null);
+		        }
+
+		        if (error$1 instanceof Error && !(error$1.message in loggedTypeFailures)) {
+		          // Only monitor this failure once because there tends to be a lot of the
+		          // same error.
+		          loggedTypeFailures[error$1.message] = true;
+		          setCurrentlyValidatingElement(element);
+
+		          error('Failed %s type: %s', location, error$1.message);
+
+		          setCurrentlyValidatingElement(null);
+		        }
+		      }
+		    }
+		  }
+		}
+
+		var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
+
+		function isArray(a) {
+		  return isArrayImpl(a);
+		}
+
+		/*
+		 * The `'' + value` pattern (used in in perf-sensitive code) throws for Symbol
+		 * and Temporal.* types. See https://github.com/facebook/react/pull/22064.
+		 *
+		 * The functions in this module will throw an easier-to-understand,
+		 * easier-to-debug exception with a clear errors message message explaining the
+		 * problem. (Instead of a confusing exception thrown inside the implementation
+		 * of the `value` object).
+		 */
+		// $FlowFixMe only called in DEV, so void return is not possible.
+		function typeName(value) {
+		  {
+		    // toStringTag is needed for namespaced types like Temporal.Instant
+		    var hasToStringTag = typeof Symbol === 'function' && Symbol.toStringTag;
+		    var type = hasToStringTag && value[Symbol.toStringTag] || value.constructor.name || 'Object';
+		    return type;
+		  }
+		} // $FlowFixMe only called in DEV, so void return is not possible.
+
+
+		function willCoercionThrow(value) {
+		  {
+		    try {
+		      testStringCoercion(value);
+		      return false;
+		    } catch (e) {
+		      return true;
+		    }
+		  }
+		}
+
+		function testStringCoercion(value) {
+		  // If you ended up here by following an exception call stack, here's what's
+		  // happened: you supplied an object or symbol value to React (as a prop, key,
+		  // DOM attribute, CSS property, string ref, etc.) and when React tried to
+		  // coerce it to a string using `'' + value`, an exception was thrown.
+		  //
+		  // The most common types that will cause this exception are `Symbol` instances
+		  // and Temporal objects like `Temporal.Instant`. But any object that has a
+		  // `valueOf` or `[Symbol.toPrimitive]` method that throws will also cause this
+		  // exception. (Library authors do this to prevent users from using built-in
+		  // numeric operators like `+` or comparison operators like `>=` because custom
+		  // methods are needed to perform accurate arithmetic or comparison.)
+		  //
+		  // To fix the problem, coerce this object or symbol value to a string before
+		  // passing it to React. The most reliable way is usually `String(value)`.
+		  //
+		  // To find which value is throwing, check the browser or debugger console.
+		  // Before this exception was thrown, there should be `console.error` output
+		  // that shows the type (Symbol, Temporal.PlainDate, etc.) that caused the
+		  // problem and how that type was used: key, atrribute, input value prop, etc.
+		  // In most cases, this console output also shows the component and its
+		  // ancestor components where the exception happened.
+		  //
+		  // eslint-disable-next-line react-internal/safe-string-coercion
+		  return '' + value;
+		}
+		function checkKeyStringCoercion(value) {
+		  {
+		    if (willCoercionThrow(value)) {
+		      error('The provided key is an unsupported type %s.' + ' This value must be coerced to a string before before using it here.', typeName(value));
+
+		      return testStringCoercion(value); // throw (to help callers find troubleshooting comments)
+		    }
+		  }
+		}
+
+		var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
+		var RESERVED_PROPS = {
+		  key: true,
+		  ref: true,
+		  __self: true,
+		  __source: true
+		};
+		var specialPropKeyWarningShown;
+		var specialPropRefWarningShown;
+
+		function hasValidRef(config) {
+		  {
+		    if (hasOwnProperty.call(config, 'ref')) {
+		      var getter = Object.getOwnPropertyDescriptor(config, 'ref').get;
+
+		      if (getter && getter.isReactWarning) {
+		        return false;
+		      }
+		    }
+		  }
+
+		  return config.ref !== undefined;
+		}
+
+		function hasValidKey(config) {
+		  {
+		    if (hasOwnProperty.call(config, 'key')) {
+		      var getter = Object.getOwnPropertyDescriptor(config, 'key').get;
+
+		      if (getter && getter.isReactWarning) {
+		        return false;
+		      }
+		    }
+		  }
+
+		  return config.key !== undefined;
+		}
+
+		function warnIfStringRefCannotBeAutoConverted(config, self) {
+		  {
+		    if (typeof config.ref === 'string' && ReactCurrentOwner.current && self) ;
+		  }
+		}
+
+		function defineKeyPropWarningGetter(props, displayName) {
+		  {
+		    var warnAboutAccessingKey = function () {
+		      if (!specialPropKeyWarningShown) {
+		        specialPropKeyWarningShown = true;
+
+		        error('%s: `key` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://reactjs.org/link/special-props)', displayName);
+		      }
+		    };
+
+		    warnAboutAccessingKey.isReactWarning = true;
+		    Object.defineProperty(props, 'key', {
+		      get: warnAboutAccessingKey,
+		      configurable: true
+		    });
+		  }
+		}
+
+		function defineRefPropWarningGetter(props, displayName) {
+		  {
+		    var warnAboutAccessingRef = function () {
+		      if (!specialPropRefWarningShown) {
+		        specialPropRefWarningShown = true;
+
+		        error('%s: `ref` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://reactjs.org/link/special-props)', displayName);
+		      }
+		    };
+
+		    warnAboutAccessingRef.isReactWarning = true;
+		    Object.defineProperty(props, 'ref', {
+		      get: warnAboutAccessingRef,
+		      configurable: true
+		    });
+		  }
+		}
+		/**
+		 * Factory method to create a new React element. This no longer adheres to
+		 * the class pattern, so do not use new to call it. Also, instanceof check
+		 * will not work. Instead test $$typeof field against Symbol.for('react.element') to check
+		 * if something is a React Element.
+		 *
+		 * @param {*} type
+		 * @param {*} props
+		 * @param {*} key
+		 * @param {string|object} ref
+		 * @param {*} owner
+		 * @param {*} self A *temporary* helper to detect places where `this` is
+		 * different from the `owner` when React.createElement is called, so that we
+		 * can warn. We want to get rid of owner and replace string `ref`s with arrow
+		 * functions, and as long as `this` and owner are the same, there will be no
+		 * change in behavior.
+		 * @param {*} source An annotation object (added by a transpiler or otherwise)
+		 * indicating filename, line number, and/or other information.
+		 * @internal
+		 */
+
+
+		var ReactElement = function (type, key, ref, self, source, owner, props) {
+		  var element = {
+		    // This tag allows us to uniquely identify this as a React Element
+		    $$typeof: REACT_ELEMENT_TYPE,
+		    // Built-in properties that belong on the element
+		    type: type,
+		    key: key,
+		    ref: ref,
+		    props: props,
+		    // Record the component responsible for creating this element.
+		    _owner: owner
+		  };
+
+		  {
+		    // The validation flag is currently mutative. We put it on
+		    // an external backing store so that we can freeze the whole object.
+		    // This can be replaced with a WeakMap once they are implemented in
+		    // commonly used development environments.
+		    element._store = {}; // To make comparing ReactElements easier for testing purposes, we make
+		    // the validation flag non-enumerable (where possible, which should
+		    // include every environment we run tests in), so the test framework
+		    // ignores it.
+
+		    Object.defineProperty(element._store, 'validated', {
+		      configurable: false,
+		      enumerable: false,
+		      writable: true,
+		      value: false
+		    }); // self and source are DEV only properties.
+
+		    Object.defineProperty(element, '_self', {
+		      configurable: false,
+		      enumerable: false,
+		      writable: false,
+		      value: self
+		    }); // Two elements created in two different places should be considered
+		    // equal for testing purposes and therefore we hide it from enumeration.
+
+		    Object.defineProperty(element, '_source', {
+		      configurable: false,
+		      enumerable: false,
+		      writable: false,
+		      value: source
+		    });
+
+		    if (Object.freeze) {
+		      Object.freeze(element.props);
+		      Object.freeze(element);
+		    }
+		  }
+
+		  return element;
+		};
+		/**
+		 * https://github.com/reactjs/rfcs/pull/107
+		 * @param {*} type
+		 * @param {object} props
+		 * @param {string} key
+		 */
+
+		function jsxDEV(type, config, maybeKey, source, self) {
+		  {
+		    var propName; // Reserved names are extracted
+
+		    var props = {};
+		    var key = null;
+		    var ref = null; // Currently, key can be spread in as a prop. This causes a potential
+		    // issue if key is also explicitly declared (ie. <div {...props} key="Hi" />
+		    // or <div key="Hi" {...props} /> ). We want to deprecate key spread,
+		    // but as an intermediary step, we will use jsxDEV for everything except
+		    // <div {...props} key="Hi" />, because we aren't currently able to tell if
+		    // key is explicitly declared to be undefined or not.
+
+		    if (maybeKey !== undefined) {
+		      {
+		        checkKeyStringCoercion(maybeKey);
+		      }
+
+		      key = '' + maybeKey;
+		    }
+
+		    if (hasValidKey(config)) {
+		      {
+		        checkKeyStringCoercion(config.key);
+		      }
+
+		      key = '' + config.key;
+		    }
+
+		    if (hasValidRef(config)) {
+		      ref = config.ref;
+		      warnIfStringRefCannotBeAutoConverted(config, self);
+		    } // Remaining properties are added to a new props object
+
+
+		    for (propName in config) {
+		      if (hasOwnProperty.call(config, propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
+		        props[propName] = config[propName];
+		      }
+		    } // Resolve default props
+
+
+		    if (type && type.defaultProps) {
+		      var defaultProps = type.defaultProps;
+
+		      for (propName in defaultProps) {
+		        if (props[propName] === undefined) {
+		          props[propName] = defaultProps[propName];
+		        }
+		      }
+		    }
+
+		    if (key || ref) {
+		      var displayName = typeof type === 'function' ? type.displayName || type.name || 'Unknown' : type;
+
+		      if (key) {
+		        defineKeyPropWarningGetter(props, displayName);
+		      }
+
+		      if (ref) {
+		        defineRefPropWarningGetter(props, displayName);
+		      }
+		    }
+
+		    return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+		  }
+		}
+
+		var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
+		var ReactDebugCurrentFrame$1 = ReactSharedInternals.ReactDebugCurrentFrame;
+
+		function setCurrentlyValidatingElement$1(element) {
+		  {
+		    if (element) {
+		      var owner = element._owner;
+		      var stack = describeUnknownElementTypeFrameInDEV(element.type, element._source, owner ? owner.type : null);
+		      ReactDebugCurrentFrame$1.setExtraStackFrame(stack);
+		    } else {
+		      ReactDebugCurrentFrame$1.setExtraStackFrame(null);
+		    }
+		  }
+		}
+
+		var propTypesMisspellWarningShown;
+
+		{
+		  propTypesMisspellWarningShown = false;
+		}
+		/**
+		 * Verifies the object is a ReactElement.
+		 * See https://reactjs.org/docs/react-api.html#isvalidelement
+		 * @param {?object} object
+		 * @return {boolean} True if `object` is a ReactElement.
+		 * @final
+		 */
+
+
+		function isValidElement(object) {
+		  {
+		    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+		  }
+		}
+
+		function getDeclarationErrorAddendum() {
+		  {
+		    if (ReactCurrentOwner$1.current) {
+		      var name = getComponentNameFromType(ReactCurrentOwner$1.current.type);
+
+		      if (name) {
+		        return '\n\nCheck the render method of `' + name + '`.';
+		      }
+		    }
+
+		    return '';
+		  }
+		}
+
+		function getSourceInfoErrorAddendum(source) {
+		  {
+
+		    return '';
+		  }
+		}
+		/**
+		 * Warn if there's no key explicitly set on dynamic arrays of children or
+		 * object keys are not valid. This allows us to keep track of children between
+		 * updates.
+		 */
+
+
+		var ownerHasKeyUseWarning = {};
+
+		function getCurrentComponentErrorInfo(parentType) {
+		  {
+		    var info = getDeclarationErrorAddendum();
+
+		    if (!info) {
+		      var parentName = typeof parentType === 'string' ? parentType : parentType.displayName || parentType.name;
+
+		      if (parentName) {
+		        info = "\n\nCheck the top-level render call using <" + parentName + ">.";
+		      }
+		    }
+
+		    return info;
+		  }
+		}
+		/**
+		 * Warn if the element doesn't have an explicit key assigned to it.
+		 * This element is in an array. The array could grow and shrink or be
+		 * reordered. All children that haven't already been validated are required to
+		 * have a "key" property assigned to it. Error statuses are cached so a warning
+		 * will only be shown once.
+		 *
+		 * @internal
+		 * @param {ReactElement} element Element that requires a key.
+		 * @param {*} parentType element's parent's type.
+		 */
+
+
+		function validateExplicitKey(element, parentType) {
+		  {
+		    if (!element._store || element._store.validated || element.key != null) {
+		      return;
+		    }
+
+		    element._store.validated = true;
+		    var currentComponentErrorInfo = getCurrentComponentErrorInfo(parentType);
+
+		    if (ownerHasKeyUseWarning[currentComponentErrorInfo]) {
+		      return;
+		    }
+
+		    ownerHasKeyUseWarning[currentComponentErrorInfo] = true; // Usually the current owner is the offender, but if it accepts children as a
+		    // property, it may be the creator of the child that's responsible for
+		    // assigning it a key.
+
+		    var childOwner = '';
+
+		    if (element && element._owner && element._owner !== ReactCurrentOwner$1.current) {
+		      // Give the component that originally created this child.
+		      childOwner = " It was passed a child from " + getComponentNameFromType(element._owner.type) + ".";
+		    }
+
+		    setCurrentlyValidatingElement$1(element);
+
+		    error('Each child in a list should have a unique "key" prop.' + '%s%s See https://reactjs.org/link/warning-keys for more information.', currentComponentErrorInfo, childOwner);
+
+		    setCurrentlyValidatingElement$1(null);
+		  }
+		}
+		/**
+		 * Ensure that every element either is passed in a static location, in an
+		 * array with an explicit keys property defined, or in an object literal
+		 * with valid key property.
+		 *
+		 * @internal
+		 * @param {ReactNode} node Statically passed child of any type.
+		 * @param {*} parentType node's parent's type.
+		 */
+
+
+		function validateChildKeys(node, parentType) {
+		  {
+		    if (typeof node !== 'object') {
+		      return;
+		    }
+
+		    if (isArray(node)) {
+		      for (var i = 0; i < node.length; i++) {
+		        var child = node[i];
+
+		        if (isValidElement(child)) {
+		          validateExplicitKey(child, parentType);
+		        }
+		      }
+		    } else if (isValidElement(node)) {
+		      // This element was passed in a valid location.
+		      if (node._store) {
+		        node._store.validated = true;
+		      }
+		    } else if (node) {
+		      var iteratorFn = getIteratorFn(node);
+
+		      if (typeof iteratorFn === 'function') {
+		        // Entry iterators used to provide implicit keys,
+		        // but now we print a separate warning for them later.
+		        if (iteratorFn !== node.entries) {
+		          var iterator = iteratorFn.call(node);
+		          var step;
+
+		          while (!(step = iterator.next()).done) {
+		            if (isValidElement(step.value)) {
+		              validateExplicitKey(step.value, parentType);
+		            }
+		          }
+		        }
+		      }
+		    }
+		  }
+		}
+		/**
+		 * Given an element, validate that its props follow the propTypes definition,
+		 * provided by the type.
+		 *
+		 * @param {ReactElement} element
+		 */
+
+
+		function validatePropTypes(element) {
+		  {
+		    var type = element.type;
+
+		    if (type === null || type === undefined || typeof type === 'string') {
+		      return;
+		    }
+
+		    var propTypes;
+
+		    if (typeof type === 'function') {
+		      propTypes = type.propTypes;
+		    } else if (typeof type === 'object' && (type.$$typeof === REACT_FORWARD_REF_TYPE || // Note: Memo only checks outer props here.
+		    // Inner props are checked in the reconciler.
+		    type.$$typeof === REACT_MEMO_TYPE)) {
+		      propTypes = type.propTypes;
+		    } else {
+		      return;
+		    }
+
+		    if (propTypes) {
+		      // Intentionally inside to avoid triggering lazy initializers:
+		      var name = getComponentNameFromType(type);
+		      checkPropTypes(propTypes, element.props, 'prop', name, element);
+		    } else if (type.PropTypes !== undefined && !propTypesMisspellWarningShown) {
+		      propTypesMisspellWarningShown = true; // Intentionally inside to avoid triggering lazy initializers:
+
+		      var _name = getComponentNameFromType(type);
+
+		      error('Component %s declared `PropTypes` instead of `propTypes`. Did you misspell the property assignment?', _name || 'Unknown');
+		    }
+
+		    if (typeof type.getDefaultProps === 'function' && !type.getDefaultProps.isReactClassApproved) {
+		      error('getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.');
+		    }
+		  }
+		}
+		/**
+		 * Given a fragment, validate that it can only be provided with fragment props
+		 * @param {ReactElement} fragment
+		 */
+
+
+		function validateFragmentProps(fragment) {
+		  {
+		    var keys = Object.keys(fragment.props);
+
+		    for (var i = 0; i < keys.length; i++) {
+		      var key = keys[i];
+
+		      if (key !== 'children' && key !== 'key') {
+		        setCurrentlyValidatingElement$1(fragment);
+
+		        error('Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.', key);
+
+		        setCurrentlyValidatingElement$1(null);
+		        break;
+		      }
+		    }
+
+		    if (fragment.ref !== null) {
+		      setCurrentlyValidatingElement$1(fragment);
+
+		      error('Invalid attribute `ref` supplied to `React.Fragment`.');
+
+		      setCurrentlyValidatingElement$1(null);
+		    }
+		  }
+		}
+
+		var didWarnAboutKeySpread = {};
+		function jsxWithValidation(type, props, key, isStaticChildren, source, self) {
+		  {
+		    var validType = isValidElementType(type); // We warn in this case but don't throw. We expect the element creation to
+		    // succeed and there will likely be errors in render.
+
+		    if (!validType) {
+		      var info = '';
+
+		      if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+		        info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and named imports.";
+		      }
+
+		      var sourceInfo = getSourceInfoErrorAddendum();
+
+		      if (sourceInfo) {
+		        info += sourceInfo;
+		      } else {
+		        info += getDeclarationErrorAddendum();
+		      }
+
+		      var typeString;
+
+		      if (type === null) {
+		        typeString = 'null';
+		      } else if (isArray(type)) {
+		        typeString = 'array';
+		      } else if (type !== undefined && type.$$typeof === REACT_ELEMENT_TYPE) {
+		        typeString = "<" + (getComponentNameFromType(type.type) || 'Unknown') + " />";
+		        info = ' Did you accidentally export a JSX literal instead of a component?';
+		      } else {
+		        typeString = typeof type;
+		      }
+
+		      error('React.jsx: type is invalid -- expected a string (for ' + 'built-in components) or a class/function (for composite ' + 'components) but got: %s.%s', typeString, info);
+		    }
+
+		    var element = jsxDEV(type, props, key, source, self); // The result can be nullish if a mock or a custom function is used.
+		    // TODO: Drop this when these are no longer allowed as the type argument.
+
+		    if (element == null) {
+		      return element;
+		    } // Skip key warning if the type isn't valid since our key validation logic
+		    // doesn't expect a non-string/function type and can throw confusing errors.
+		    // We don't want exception behavior to differ between dev and prod.
+		    // (Rendering will throw with a helpful message and as soon as the type is
+		    // fixed, the key warnings will appear.)
+
+
+		    if (validType) {
+		      var children = props.children;
+
+		      if (children !== undefined) {
+		        if (isStaticChildren) {
+		          if (isArray(children)) {
+		            for (var i = 0; i < children.length; i++) {
+		              validateChildKeys(children[i], type);
+		            }
+
+		            if (Object.freeze) {
+		              Object.freeze(children);
+		            }
+		          } else {
+		            error('React.jsx: Static children should always be an array. ' + 'You are likely explicitly calling React.jsxs or React.jsxDEV. ' + 'Use the Babel transform instead.');
+		          }
+		        } else {
+		          validateChildKeys(children, type);
+		        }
+		      }
+		    }
+
+		    {
+		      if (hasOwnProperty.call(props, 'key')) {
+		        var componentName = getComponentNameFromType(type);
+		        var keys = Object.keys(props).filter(function (k) {
+		          return k !== 'key';
+		        });
+		        var beforeExample = keys.length > 0 ? '{key: someKey, ' + keys.join(': ..., ') + ': ...}' : '{key: someKey}';
+
+		        if (!didWarnAboutKeySpread[componentName + beforeExample]) {
+		          var afterExample = keys.length > 0 ? '{' + keys.join(': ..., ') + ': ...}' : '{}';
+
+		          error('A props object containing a "key" prop is being spread into JSX:\n' + '  let props = %s;\n' + '  <%s {...props} />\n' + 'React keys must be passed directly to JSX without using spread:\n' + '  let props = %s;\n' + '  <%s key={someKey} {...props} />', beforeExample, componentName, afterExample, componentName);
+
+		          didWarnAboutKeySpread[componentName + beforeExample] = true;
+		        }
+		      }
+		    }
+
+		    if (type === REACT_FRAGMENT_TYPE) {
+		      validateFragmentProps(element);
+		    } else {
+		      validatePropTypes(element);
+		    }
+
+		    return element;
+		  }
+		} // These two functions exist to still get child warnings in dev
+		// even with the prod transform. This means that jsxDEV is purely
+		// opt-in behavior for better messages but that we won't stop
+		// giving you warnings if you use production apis.
+
+		function jsxWithValidationStatic(type, props, key) {
+		  {
+		    return jsxWithValidation(type, props, key, true);
+		  }
+		}
+		function jsxWithValidationDynamic(type, props, key) {
+		  {
+		    return jsxWithValidation(type, props, key, false);
+		  }
+		}
+
+		var jsx =  jsxWithValidationDynamic ; // we may want to special case jsxs internally to take advantage of static children.
+		// for now we can ship identical prod functions
+
+		var jsxs =  jsxWithValidationStatic ;
+
+		reactJsxRuntime_development.Fragment = REACT_FRAGMENT_TYPE;
+		reactJsxRuntime_development.jsx = jsx;
+		reactJsxRuntime_development.jsxs = jsxs;
+		  })();
+		}
+		return reactJsxRuntime_development;
+	}
+
+	var hasRequiredJsxRuntime;
+
+	function requireJsxRuntime () {
+		if (hasRequiredJsxRuntime) return jsxRuntime.exports;
+		hasRequiredJsxRuntime = 1;
+
+		{
+		  jsxRuntime.exports = requireReactJsxRuntime_development();
+		}
+		return jsxRuntime.exports;
+	}
+
+	var jsxRuntimeExports = requireJsxRuntime();
+
+	const QUOTE_SYMBOL$1 = 'BTC';
+
+	/** Windows for chart + overview delta (sorted shortest → longest). */
+	const DELTA_RANGE_OPTIONS = [{
+	  key: '1m',
+	  label: '1m',
+	  ms: 60_000
+	}, {
+	  key: '5m',
+	  label: '5m',
+	  ms: 5 * 60_000
+	}, {
+	  key: '15m',
+	  label: '15m',
+	  ms: 15 * 60_000
+	}, {
+	  key: '1h',
+	  label: '1h',
+	  ms: 60 * 60_000
+	}, {
+	  key: '3h',
+	  label: '3h',
+	  ms: 3 * 60 * 60_000
+	}, {
+	  key: '4h',
+	  label: '4h',
+	  ms: 4 * 60 * 60_000
+	}, {
+	  key: '12h',
+	  label: '12h',
+	  ms: 12 * 60 * 60_000
+	}, {
+	  key: '24h',
+	  label: '24h',
+	  ms: 24 * 60 * 60_000
+	}, {
+	  key: '2d',
+	  label: '2d',
+	  ms: 2 * 24 * 60 * 60_000
+	}, {
+	  key: '7d',
+	  label: '7d',
+	  ms: 7 * 24 * 60 * 60_000
+	}, {
+	  key: '14d',
+	  label: '14d',
+	  ms: 14 * 24 * 60 * 60_000
+	}, {
+	  key: '30d',
+	  label: '30d',
+	  ms: 30 * 24 * 60 * 60_000
+	}, {
+	  key: '90d',
+	  label: '90d',
+	  ms: 90 * 24 * 60 * 60_000
+	}, {
+	  key: '365d',
+	  label: '1y',
+	  ms: 365 * 24 * 60 * 60_000
+	}, {
+	  key: 'all',
+	  label: 'All time',
+	  ms: null
+	}];
+
+	/** Shown as toggle buttons; additional ranges live in the “More ranges” menu. */
+	const DELTA_RANGE_QUICK_KEYS = new Set(['1m', '15m', '1h', '4h', '24h', '7d', '30d']);
+	const DELTA_RANGE_DEFAULT_KEY = '1h';
+
+	/**
+	 * @param {string|undefined} deltaRangeKey
+	 */
+	function resolveDeltaRangeOption(deltaRangeKey) {
+	  const k = typeof deltaRangeKey === 'string' && deltaRangeKey ? deltaRangeKey : DELTA_RANGE_DEFAULT_KEY;
+	  const found = DELTA_RANGE_OPTIONS.find(r => r.key === k);
+	  if (found) return found;
+	  return DELTA_RANGE_OPTIONS.find(r => r.key === DELTA_RANGE_DEFAULT_KEY) || DELTA_RANGE_OPTIONS[0];
+	}
+
+	/**
+	 * Baseline quote for Δ: for a fixed window, latest sample at or before `nowMs - rangeMs`;
+	 * for **all-time** (`rangeMs == null`), the **oldest** session sample.
+	 *
+	 * @param {Array<{ created?: string, rate?: number }>} quotes
+	 * @param {number|null} rangeMs
+	 * @param {number} [nowMs]
+	 * @returns {{ created: string, rate: number } | null}
+	 */
+	function baselineQuoteForWindow(quotes, rangeMs, nowMs = Date.now()) {
+	  if (!Array.isArray(quotes) || quotes.length < 1) return null;
+	  const sorted = [].concat(quotes).sort((a, b) => Date.parse(a.created) - Date.parse(b.created));
+	  if (rangeMs == null) {
+	    let oldest = null;
+	    for (let i = 0; i < sorted.length; i++) {
+	      const row = sorted[i];
+	      if (!row || row.rate == null || !row.created) continue;
+	      const t = Date.parse(row.created);
+	      if (!Number.isFinite(t)) continue;
+	      if (!oldest || t < Date.parse(oldest.created)) {
+	        oldest = row;
+	      }
 	    }
+	    return oldest;
+	  }
+	  const cutoff = nowMs - rangeMs;
+	  let best = null;
+	  let bestTs = -Infinity;
+	  for (let i = 0; i < sorted.length; i++) {
+	    const row = sorted[i];
+	    if (!row || row.rate == null || !row.created) continue;
+	    const t = Date.parse(row.created);
+	    if (!Number.isFinite(t)) continue;
+	    if (t <= cutoff && t >= bestTs) {
+	      bestTs = t;
+	      best = row;
+	    }
+	  }
+	  return best;
+	}
+
+	/**
+	 * @param {number} spot
+	 * @param {Array<{ created?: string, rate?: number }>} quotes
+	 * @param {{ key: string, label: string, ms: number|null }} rangeOpt
+	 */
+	function deltaForRange(spot, quotes, rangeOpt) {
+	  if (!Number.isFinite(spot)) {
+	    return {
+	      state: 'nospot'
+	    };
+	  }
+	  const baseRow = baselineQuoteForWindow(quotes, rangeOpt.ms);
+	  if (!baseRow) {
+	    return {
+	      state: 'nodata'
+	    };
+	  }
+	  const base = Number(baseRow.rate);
+	  if (!Number.isFinite(base) || base === 0) {
+	    return {
+	      state: 'nodata'
+	    };
+	  }
+	  const abs = spot - base;
+	  const pct = abs / base * 100;
+	  let direction = 'flat';
+	  if (Math.abs(pct) >= 1e-6) {
+	    direction = pct > 0 ? 'up' : 'down';
+	  }
+	  return {
+	    state: 'ok',
+	    direction,
+	    pct,
+	    abs,
+	    baseline: base,
+	    baselineLabel: rangeOpt.label
+	  };
+	}
+
+	/**
+	 * @param {Array<{ created?: string, rate?: unknown }>} rows
+	 */
+	function dedupeByTimestampKeepLatest(rows) {
+	  if (!Array.isArray(rows) || rows.length < 2) return rows;
+	  const sorted = [].concat(rows).sort((a, b) => Date.parse(a.created) - Date.parse(b.created));
+	  const out = [];
+	  for (let i = 0; i < sorted.length; i++) {
+	    const r = sorted[i];
+	    if (!r?.created) continue;
+	    const t = Date.parse(r.created);
+	    if (!Number.isFinite(t)) continue;
+	    const prev = out[out.length - 1];
+	    if (prev && Date.parse(prev.created) === t) {
+	      out[out.length - 1] = r;
+	    } else {
+	      out.push(r);
+	    }
+	  }
+	  return out;
+	}
+
+	/**
+	 * @param {Array<{ created?: string, rate?: unknown }>} rows
+	 */
+	function dropBadRates(rows) {
+	  const out = [];
+	  for (let i = 0; i < rows.length; i++) {
+	    const r = rows[i];
+	    if (!r?.created) continue;
+	    const p = Number(r.rate);
+	    if (!Number.isFinite(p) || p <= 0) continue;
+	    const t = Date.parse(r.created);
+	    if (!Number.isFinite(t)) continue;
+	    out.push(r);
+	  }
+	  return out;
+	}
+
+	/**
+	 * Y domain from rates only (padding), or undefined if no usable points.
+	 * @param {Array<{ rate?: unknown }>} rows
+	 * @param {number} padRatio
+	 * @returns {[number, number]|undefined}
+	 */
+	function yDomainFromRates(rows, padRatio = 0.018) {
+	  let lo = Infinity;
+	  let hi = -Infinity;
+	  for (let i = 0; i < rows.length; i++) {
+	    const p = Number(rows[i]?.rate);
+	    if (!Number.isFinite(p)) continue;
+	    lo = Math.min(lo, p);
+	    hi = Math.max(hi, p);
+	  }
+	  if (!Number.isFinite(lo) || !Number.isFinite(hi)) return undefined;
+	  if (lo === hi) {
+	    const d = Math.max(lo * 0.002, 1);
+	    return [lo - d, hi + d];
+	  }
+	  const pad = (hi - lo) * padRatio;
+	  return [lo - pad, hi + pad];
+	}
+	class Chart extends reactExports.Component {
+	  static defaultProps = {
+	    currency: 'USD',
+	    historicalOhlcUrl: 'data/btc-usd-daily-ohlc.json',
+	    pollError: null,
+	    utxoEstimateSeries: null,
+	    utxoEstimateSeriesLoading: false
+	  };
+	  state = {
+	    historicalSeries: [],
+	    historicalLoadState: 'idle'
 	  };
 	  constructor(props = {}) {
 	    super(props);
-	    this.settings = Object.assign({}, props);
-	    this._state = {
-	      content: this.state
+	    this.chartOuterRef = /*#__PURE__*/reactExports.createRef();
+	    /** @type {ResizeObserver|null} */
+	    this._chartResizeObs = null;
+	    /** @type {ReturnType<typeof setTimeout>|null} */
+	    this._chartResizeTimer = null;
+	    this._unmounted = false;
+	    this._chartRowsFromOhlcBundle = this._chartRowsFromOhlcBundle.bind(this);
+	  }
+
+	  /**
+	   * Merge Coinbase + Bitstamp closes per `periodStartSec` (simple mean when both exist).
+	   * @param {unknown} bundle
+	   * @returns {Array<{ created: string, rate: number, symbol: string, source: string }>}
+	   */
+	  _chartRowsFromOhlcBundle(bundle) {
+	    if (!bundle || typeof bundle !== 'object') return [];
+	    const prov = /** @type {{ coinbase?: unknown[], bitstamp?: unknown[] }} */
+	    bundle.providers && typeof bundle.providers === 'object' ? bundle.providers : {};
+	    const cb = Array.isArray(prov.coinbase) ? prov.coinbase : [];
+	    const bs = Array.isArray(prov.bitstamp) ? prov.bitstamp : [];
+	    if (!cb.length && !bs.length) return [];
+
+	    /** @type {Map<number, { sum: number, n: number }>} */
+	    const bySec = new Map();
+	    const add = arr => {
+	      for (let i = 0; i < arr.length; i++) {
+	        const c = arr[i];
+	        if (!c || typeof c !== 'object') continue;
+	        const sec = Number(/** @type {{ periodStartSec?: unknown }} */c.periodStartSec);
+	        const cl = Number(/** @type {{ close?: unknown }} */c.close);
+	        if (!Number.isFinite(sec) || !Number.isFinite(cl)) continue;
+	        const ex = bySec.get(sec);
+	        if (ex) {
+	          ex.sum += cl;
+	          ex.n += 1;
+	        } else {
+	          bySec.set(sec, {
+	            sum: cl,
+	            n: 1
+	          });
+	        }
+	      }
 	    };
+	    add(cb);
+	    add(bs);
+	    const sorted = [...bySec.entries()].sort((a, b) => a[0] - b[0]);
+	    return sorted.map(([sec, {
+	      sum,
+	      n
+	    }]) => ({
+	      created: new Date(sec * 1000).toISOString(),
+	      rate: sum / n,
+	      symbol: QUOTE_SYMBOL$1,
+	      source: 'Daily close (avg.)'
+	    }));
 	  }
-	  trust(source) {
-	    source.on('log', this._handleSourceLog.bind(this));
+	  _resolveAssetUrl(rel) {
+	    const s = String(rel || '').trim();
+	    if (!s || typeof window === 'undefined' || !window.location?.href) return null;
+	    try {
+	      return new URL(s, window.location.href).href;
+	    } catch {
+	      return null;
+	    }
 	  }
-	  _handleBridgeReady(info) {
-	    console.log('[FEED] Bridge Reported Ready:', info);
+	  _loadHistoricalOhlc() {
+	    const rel = this.props.historicalOhlcUrl;
+	    const url = this._resolveAssetUrl(rel);
+	    if (!url) {
+	      this.setState({
+	        historicalLoadState: 'off'
+	      });
+	      return;
+	    }
+	    this.setState({
+	      historicalLoadState: 'loading'
+	    });
+	    fetch(url, {
+	      credentials: 'same-origin',
+	      headers: {
+	        Accept: 'application/json'
+	      },
+	      referrerPolicy: 'no-referrer-when-downgrade'
+	    }).then(res => res.ok ? res.json() : null).then(bundle => {
+	      if (this._unmounted) return;
+	      if (!bundle) {
+	        this.setState({
+	          historicalSeries: [],
+	          historicalLoadState: 'missing'
+	        });
+	        return;
+	      }
+	      const rows = this._chartRowsFromOhlcBundle(bundle);
+	      this.setState({
+	        historicalSeries: rows,
+	        historicalLoadState: rows.length ? 'ok' : 'empty'
+	      });
+	    }).catch(() => {
+	      if (!this._unmounted) {
+	        this.setState({
+	          historicalSeries: [],
+	          historicalLoadState: 'error'
+	        });
+	      }
+	    });
 	  }
-	  _handleSourceLog(log) {
-	    this.emit('log', `Source log: ${log}`);
+	  componentDidMount() {
+	    this._unmounted = false;
+	    this._loadHistoricalOhlc();
+	    const mount = this.chartOuterRef?.current;
+	    if (mount && typeof ResizeObserver !== 'undefined') {
+	      this._chartResizeObs = new ResizeObserver(() => {
+	        if (this._chartResizeTimer) clearTimeout(this._chartResizeTimer);
+	        this._chartResizeTimer = setTimeout(() => {
+	          this._chartResizeTimer = null;
+	          if (!this._unmounted) this._syncChartIntoDom();
+	        }, 70);
+	      });
+	      this._chartResizeObs.observe(mount);
+	    }
+	  }
+	  componentWillUnmount() {
+	    if (this._chartResizeObs) {
+	      try {
+	        this._chartResizeObs.disconnect();
+	      } catch {
+	        /* noop */
+	      }
+	      this._chartResizeObs = null;
+	    }
+	    if (this._chartResizeTimer) {
+	      clearTimeout(this._chartResizeTimer);
+	      this._chartResizeTimer = null;
+	    }
+	    this._unmounted = true;
+	  }
+	  componentDidUpdate(prevProps, prevState) {
+	    if (prevProps.quotes !== this.props.quotes || prevProps.deltaRangeKey !== this.props.deltaRangeKey || prevProps.reportQuoteCurrency !== this.props.reportQuoteCurrency || prevProps.pollError !== this.props.pollError || prevProps.currency !== this.props.currency || prevProps.utxoEstimateSeries !== this.props.utxoEstimateSeries || prevState.historicalSeries !== this.state.historicalSeries) {
+	      this._syncChartIntoDom();
+	    }
+	  }
+	  _syncChartIntoDom() {
+	    const run = () => {
+	      const mount = this.chartOuterRef?.current;
+	      if (!mount) return;
+	      while (mount.firstChild) {
+	        mount.removeChild(mount.firstChild);
+	      }
+	      const svg = this._buildChartSvgEl();
+	      if (svg) {
+	        mount.appendChild(svg);
+	      }
+	    };
+	    run();
+	    requestAnimationFrame(run);
+	  }
+	  _chartWidth() {
+	    const el = this.chartOuterRef?.current;
+	    if (!el) return 560;
+	    const w = el.getBoundingClientRect?.().width;
+	    if (Number.isFinite(w) && w > 24) return Math.floor(w);
+	    const parent = el.parentElement;
+	    const pw = parent?.getBoundingClientRect?.().width;
+	    if (Number.isFinite(pw) && pw > 24) return Math.floor(pw);
+	    return 560;
+	  }
+
+	  /**
+	   * @param {Array<{ created?: string }>} rows
+	   * @param {number} startMs
+	   * @param {number} endMs
+	   */
+	  _filterPointsInRange(rows, startMs, endMs) {
+	    const out = [];
+	    for (let i = 0; i < rows.length; i++) {
+	      const r = rows[i];
+	      if (!r?.created) continue;
+	      const t = Date.parse(r.created);
+	      if (!Number.isFinite(t)) continue;
+	      if (t >= startMs && t <= endMs) out.push(r);
+	    }
+	    return out;
+	  }
+	  _buildChartSvgEl() {
+	    const nowMs = Date.now();
+	    const rangeOpt = resolveDeltaRangeOption(this.props.deltaRangeKey);
+	    const allTime = rangeOpt.ms == null;
+	    let quotes = dropBadRates(dedupeByTimestampKeepLatest(this.props.quotes || []));
+	    quotes = quotes.sort((a, b) => Date.parse(a.created) - Date.parse(b.created));
+	    const historicalRaw = dropBadRates([].concat(this.state.historicalSeries || []).sort((a, b) => Date.parse(a.created) - Date.parse(b.created)));
+	    const liveStartMs = quotes.length && quotes[0].created ? Date.parse(quotes[0].created) : Infinity;
+	    const historicalContext = historicalRaw.filter(h => {
+	      if (!h?.created) return false;
+	      const t = Date.parse(h.created);
+	      return Number.isFinite(t) && t < liveStartMs;
+	    });
+
+	    /** @type {Array<{ height?: number, price?: number, asOfMs?: number }>} */
+	    const utxoSeriesRaw = Array.isArray(this.props.utxoEstimateSeries) ? this.props.utxoEstimateSeries : [];
+	    if (!quotes.length && !historicalContext.length && !utxoSeriesRaw.length) {
+	      return undefined;
+	    }
+	    let startMs;
+	    const endMs = nowMs;
+	    /** @type {typeof quotes} */
+	    let historicalInWin;
+	    /** @type {typeof quotes} */
+	    let liveInWin;
+	    if (allTime) {
+	      historicalInWin = historicalContext;
+	      liveInWin = quotes;
+	      const times = [];
+	      for (let i = 0; i < historicalInWin.length; i++) {
+	        const t = Date.parse(historicalInWin[i].created);
+	        if (Number.isFinite(t)) times.push(t);
+	      }
+	      for (let i = 0; i < liveInWin.length; i++) {
+	        const t = Date.parse(liveInWin[i].created);
+	        if (Number.isFinite(t)) times.push(t);
+	      }
+	      for (let i = 0; i < utxoSeriesRaw.length; i++) {
+	        const ms = Number(utxoSeriesRaw[i]?.asOfMs);
+	        if (Number.isFinite(ms)) times.push(ms);
+	      }
+	      startMs = times.length ? Math.min(...times) : nowMs - 60_000;
+	    } else {
+	      const windowMs = /** @type {number} */rangeOpt.ms;
+	      startMs = nowMs - windowMs;
+	      historicalInWin = this._filterPointsInRange(historicalContext, startMs, nowMs);
+	      liveInWin = this._filterPointsInRange(quotes, startMs, nowMs);
+	    }
+
+	    /** @type {Array<{ t: Date, price: number, height: number }>} */
+	    const utxoInWin = [];
+	    for (let i = 0; i < utxoSeriesRaw.length; i++) {
+	      const p = utxoSeriesRaw[i];
+	      const price = Number(p?.price);
+	      const ms = Number(p?.asOfMs);
+	      const hRaw = p?.height;
+	      const h = Number(hRaw);
+	      if (!Number.isFinite(price) || !Number.isFinite(ms)) continue;
+	      utxoInWin.push({
+	        t: new Date(ms),
+	        price,
+	        height: Number.isFinite(h) ? Math.floor(h) : i
+	      });
+	    }
+	    let plotStartMs = startMs;
+	    let plotEndMs = endMs;
+	    for (let ui = 0; ui < utxoInWin.length; ui++) {
+	      const tx = utxoInWin[ui].t.getTime();
+	      if (!Number.isFinite(tx)) continue;
+	      if (tx < plotStartMs) plotStartMs = tx;
+	      if (tx > plotEndMs) plotEndMs = tx;
+	    }
+	    if (!historicalInWin.length && !liveInWin.length && !utxoInWin.length) {
+	      return undefined;
+	    }
+	    const yDomain = yDomainFromRates([...historicalInWin, ...liveInWin, ...utxoInWin.map(u => ({
+	      rate: u.price
+	    }))]);
+	    const histMapped = historicalInWin.map(x => ({
+	      ...x,
+	      created: new Date(x.created)
+	    }));
+	    const liveMapped = liveInWin.map(x => ({
+	      ...x,
+	      created: new Date(x.created)
+	    }));
+	    const width = Math.min(920, Math.max(280, this._chartWidth()));
+	    const height = Math.max(220, Math.round(width * 0.42));
+	    const fiat = this.props.reportQuoteCurrency != null && String(this.props.reportQuoteCurrency).trim() !== '' ? String(this.props.reportQuoteCurrency).trim().toUpperCase() : this.props.currency;
+
+	    /** @type {unknown[]} */
+	    const dataMarks = [];
+	    if (historicalInWin.length === 1) {
+	      dataMarks.push(dot(histMapped, {
+	        x: 'created',
+	        y: 'rate',
+	        fill: 'rgba(120,140,160,0.55)',
+	        r: 2.5
+	      }));
+	    } else if (historicalInWin.length > 1) {
+	      dataMarks.push(line(histMapped, {
+	        x: 'created',
+	        y: 'rate',
+	        stroke: 'rgba(120,140,160,0.55)',
+	        strokeWidth: 1.25
+	      }));
+	    }
+	    if (liveInWin.length === 1) {
+	      dataMarks.push(dot(liveMapped, {
+	        x: 'created',
+	        y: 'rate',
+	        fill: 'currentColor',
+	        r: 3
+	      }));
+	    } else if (liveInWin.length > 1) {
+	      dataMarks.push(line(liveMapped, {
+	        x: 'created',
+	        y: 'rate',
+	        stroke: 'currentColor',
+	        strokeWidth: 1.85
+	      }));
+	    }
+	    if (!dataMarks.length && !utxoInWin.length) return undefined;
+
+	    /** @type {unknown[]} */
+	    const marks = [];
+	    const baselineRow = baselineQuoteForWindow(quotes, rangeOpt.ms, nowMs);
+	    if (baselineRow && baselineRow.created && Number.isFinite(Number(baselineRow.rate))) {
+	      const bt = Date.parse(baselineRow.created);
+	      if (Number.isFinite(bt) && bt >= startMs && bt <= nowMs) {
+	        marks.push(ruleX([new Date(bt)], {
+	          stroke: 'rgba(34,36,38,0.22)',
+	          strokeWidth: 1.5,
+	          strokeDasharray: '4 3'
+	        }));
+	      }
+	    }
+	    marks.push(...dataMarks);
+	    const utxoDotR = utxoInWin.length > 200 ? 2 : utxoInWin.length > 80 ? 2.5 : 3;
+	    if (utxoInWin.length) {
+	      marks.push(dot(utxoInWin, {
+	        x: 't',
+	        y: 'price',
+	        fill: 'rgba(168, 85, 200, 0.9)',
+	        stroke: 'rgba(255,255,255,0.35)',
+	        strokeWidth: 0.4,
+	        r: utxoDotR,
+	        title: d => `UTXOracle h ${d.height} · ${formatFiatPrice(d.price, fiat)}`
+	      }));
+	    }
+	    return plot({
+	      width,
+	      height,
+	      marginBottom: 50,
+	      marginLeft: 72,
+	      x: {
+	        type: 'utc',
+	        label: 'Time',
+	        tickRotate: 35,
+	        domain: [new Date(plotStartMs), new Date(plotEndMs)]
+	      },
+	      y: {
+	        label: `BTC / ${fiat}`,
+	        grid: true,
+	        tickFormat: (/** @type {number} */d) => formatFiatPrice(Number(d), fiat),
+	        ...(yDomain ? {
+	          domain: yDomain
+	        } : {})
+	      },
+	      marks
+	    });
 	  }
 	  render() {
-	    return /*#__PURE__*/React.createElement("fabric-content-block", null, /*#__PURE__*/React.createElement(Card, {
-	      fluid: true
-	    }, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Label, null, "Price: ", /*#__PURE__*/React.createElement(Label.Detail, null, this.state.quote.rate))), /*#__PURE__*/React.createElement(Card.Content, {
-	      extra: true
-	    }, /*#__PURE__*/React.createElement("a", {
-	      href: "#",
-	      onClick: e => {
-	        e.preventDefault();
+	    const sectionLabel = this.props.sectionLabel ?? 'History';
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	        dividing: true,
+	        children: sectionLabel
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs(Segment, {
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	          ref: this.chartOuterRef,
+	          className: "feed-monitor-chart-mount",
+	          style: {
+	            minHeight: '240px',
+	            width: '100%'
+	          }
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx("p", {
+	          className: "feed-monitor-chart-caption",
+	          style: {
+	            margin: '0.65rem 0 0',
+	            fontSize: '0.82rem',
+	            opacity: 0.62,
+	            textAlign: 'center'
+	          },
+	          children: /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	            children: [this.state.historicalLoadState === 'ok' ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	              children: [/*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                children: "Live"
+	              }), " feed samples (foreground) and", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                children: "daily"
+	              }), " OHLC average (Coinbase + Bitstamp, background)."]
+	            }) : this.state.historicalLoadState === 'loading' ? /*#__PURE__*/jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {
+	              children: "Loading reference history\u2026"
+	            }) : this.state.historicalLoadState === 'missing' || this.state.historicalLoadState === 'error' ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	              children: ["Live feed only \u2014 add ", /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	                children: "data/btc-usd-daily-ohlc.json"
+	              }), " beside the UI to show long-range context."]
+	            }) : /*#__PURE__*/jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {
+	              children: "Live feed samples."
+	            }), Array.isArray(this.props.utxoEstimateSeries) && this.props.utxoEstimateSeries.length > 0 ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	              children: [' ', /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                style: {
+	                  color: 'rgba(132, 57, 168, 0.95)'
+	                },
+	                children: "Violet dots"
+	              }), " are on-chain ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                children: "UTXOracle"
+	              }), " estimates (hover for block height and price)."]
+	            }) : null, this.props.utxoEstimateSeriesLoading ? /*#__PURE__*/jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {
+	              children: " Loading UTXOracle block estimates\u2026"
+	            }) : null]
+	          })
+	        })]
+	      })]
+	    });
+	  }
+	}
+
+	function formatBtcAmount(n, maxFrac = 3) {
+	  const x = typeof n === 'number' ? n : Number(n);
+	  if (!Number.isFinite(x)) return '—';
+	  return `${x.toLocaleString(locale(), {
+    maximumFractionDigits: maxFrac
+  })} BTC`;
+	}
+
+	/**
+	 * Compact chain tip + stats when UTXOracle / bitcoind backs the feed.
+	 *
+	 * @param {{
+	 *   chain: Record<string, unknown>|null,
+	 *   utxoSpot?: { price: number, fiat: string, excludedFromSpot?: boolean } | null,
+	 *   headlineSpotUsd?: number | null,
+	 *   fiat?: string
+	 * }} props
+	 */
+	function BitcoinTipCard({
+	  chain,
+	  utxoSpot,
+	  headlineSpotUsd,
+	  fiat
+	}) {
+	  if (!chain || !Number.isFinite(Number(chain.tip))) {
+	    return null;
+	  }
+	  const tip = Math.floor(Number(chain.tip));
+	  const tipMs = Number(chain.tipAsOfMs);
+	  const hdrs = Number(chain.headers);
+	  const vp = chain.verificationProgress;
+	  const pruned = chain.pruned === true;
+	  const ibd = chain.initialBlockDownload === true;
+
+	  /** Mirrors server gating: UTXOracle omitted from weighted spot until caught up + verified. */
+	  const utxoExcludedFromHeadline = ibd || vp != null && Number.isFinite(vp) && vp < 0.999999 || Number.isFinite(hdrs) && hdrs > tip;
+	  Number.isFinite(tipMs) && tipMs > 0 ? new Date(tipMs).toLocaleString(undefined, {
+	    dateStyle: 'medium',
+	    timeStyle: 'short'
+	  }) : '—';
+	  const spot = utxoSpot;
+	  const showSpot = spot && typeof spot.price === 'number' && Number.isFinite(spot.price) && typeof spot.fiat === 'string' && spot.fiat.trim() !== '';
+	  const fiatCode = typeof fiat === 'string' && fiat.trim() !== '' ? fiat.trim().toUpperCase() : showSpot ? spot.fiat.trim().toUpperCase() : 'USD';
+	  const spotPx = showSpot && Number.isFinite(spot.price) ? spot.price : headlineSpotUsd != null && Number.isFinite(headlineSpotUsd) ? headlineSpotUsd : null;
+	  const supplyBtc = Number(chain.circulatingSupplyBtc);
+	  const hasSupply = Number.isFinite(supplyBtc) && supplyBtc > 0;
+	  const tipOutBtc = Number(chain.tipBlockOutputBtc);
+	  const hasTipOut = Number.isFinite(tipOutBtc) && tipOutBtc >= 0;
+	  const tipOutFiat = hasTipOut && spotPx != null && Number.isFinite(spotPx * tipOutBtc) ? spotPx * tipOutBtc : null;
+	  const syncLabel = vp != null && Number.isFinite(vp) && vp < 0.999 ? `${(vp * 100).toFixed(2)} % verified` : null;
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs(Segment, {
+	    secondary: true,
+	    size: "small",
+	    style: {
+	      marginTop: '1rem'
+	    },
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        flexWrap: 'wrap',
+	        gap: '1rem 1.5rem',
+	        justifyContent: 'space-between',
+	        alignItems: 'flex-start'
 	      },
-	      "aria-label": "Link placeholder"
-	    }, /*#__PURE__*/React.createElement(Icon, {
-	      name: "linkify"
-	    })))));
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Statistic, {
+	        size: "mini",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Value, {
+	          children: tip.toLocaleString()
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Label, {
+	          children: "Height"
+	        })]
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs(Statistic, {
+	        size: "mini",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Value, {
+	          children: hasSupply ? formatBtcAmount(supplyBtc, 2) : '—'
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Label, {
+	          children: "Supply"
+	        })]
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs(Statistic, {
+	        size: "mini",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Value, {
+	          children: tipOutFiat != null ? formatFiatPrice(tipOutFiat, fiatCode) : hasTipOut ? formatBtcAmount(tipOutBtc, 2) : '—'
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Label, {
+	          children: "Tip block output value"
+	        }), tipOutFiat != null && hasTipOut ? /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	          style: {
+	            marginTop: '0.2rem',
+	            fontSize: '0.74rem',
+	            fontWeight: 500,
+	            opacity: 0.58
+	          },
+	          children: [formatBtcAmount(tipOutBtc, 2), ' ', /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	            style: {
+	              fontWeight: 400
+	            },
+	            children: "\xD7 spot"
+	          })]
+	        }) : null]
+	      }), showSpot ? /*#__PURE__*/jsxRuntimeExports.jsxs(Statistic, {
+	        size: "small",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Value, {
+	          children: formatFiatPrice(spot.price, spot.fiat)
+	        }), /*#__PURE__*/jsxRuntimeExports.jsxs(Statistic.Label, {
+	          children: ["UTXOracle estimate", spot.excludedFromSpot ? ' · not in headline blend' : '']
+	        })]
+	      }) : null]
+	    }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        marginTop: '0.65rem',
+	        fontSize: '0.82rem',
+	        opacity: 0.62,
+	        lineHeight: 1.45
+	      },
+	      children: [syncLabel ? /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	        children: [syncLabel, " \xB7 "]
+	      }) : null, utxoExcludedFromHeadline ? /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	        children: ["UTXOracle is ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	          children: "excluded"
+	        }), " from the headline weighted price until the node is fully synced and verified.", ' ']
+	      }) : null, pruned ? /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	        children: "Pruned node \xB7 "
+	      }) : null, /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	          children: "Supply"
+	        }), " is circulating BTC from the node\u2019s UTXO set (refreshed at most once per hour). ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	          children: "Tip block output value"
+	        }), " is the sum of all outputs in the tip block; fiat uses the UTXOracle estimate when available, otherwise the headline spot.", ' ']
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	        children: ["UTXOracle quotes use the header time of the ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	          children: "highest block included"
+	        }), " in each estimate (tip ", /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	          children: "\u2212 1"
+	        }), " for a synced node)."]
+	      })]
+	    })]
+	  });
+	}
+
+	function DeltaReadout({
+	  rangeOpt,
+	  delta,
+	  leadUsd
+	}) {
+	  return /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	    style: {
+	      width: '100%'
+	    },
+	    children: delta.state === 'nodata' && typeof leadUsd === 'number' && Number.isFinite(leadUsd) ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	      info: true,
+	      size: "tiny",
+	      style: {
+	        marginTop: '0.85rem'
+	      },
+	      children: ["Not enough history in this session for ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: rangeOpt.label
+	      }), ' ', "\u2014 keep the feed running or rely on server", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	        children: "priceHistory"
+	      }), "."]
+	    }) : null
+	  });
+	}
+
+	function DeltaInline({
+	  delta,
+	  fiat
+	}) {
+	  if (delta.state === 'ok') {
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        flexDirection: 'column',
+	        justifyContent: 'center',
+	        gap: '0.1rem',
+	        lineHeight: 1.2,
+	        minWidth: 0
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	        style: {
+	          display: 'flex',
+	          alignItems: 'center',
+	          gap: '0.35rem',
+	          flexWrap: 'wrap',
+	          fontSize: '1.15rem',
+	          fontWeight: 600
+	        },
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          "aria-hidden": true,
+	          style: {
+	            fontSize: '1.05em',
+	            lineHeight: 1,
+	            color: delta.direction === 'up' ? '#21ba45' : delta.direction === 'down' ? '#db2828' : 'rgba(0,0,0,.45)'
+	          },
+	          children: delta.direction === 'up' ? '\u25B2' : delta.direction === 'down' ? '\u25BC' : '\u2014'
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          style: {
+	            color: delta.direction === 'up' ? '#1a8752' : delta.direction === 'down' ? '#b21e1e' : 'rgba(0,0,0,.65)'
+	          },
+	          children: delta.pct != null && Number.isFinite(delta.pct) ? `${delta.pct > 0 ? '+' : ''}${delta.pct.toFixed(2)}%` : '—'
+	        }), delta.abs != null && Number.isFinite(delta.abs) ? /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	          style: {
+	            fontWeight: 400,
+	            opacity: 0.88,
+	            fontSize: '0.95rem'
+	          },
+	          children: ["(", delta.abs > 0 ? '+' : '', formatFiatPrice(delta.abs, fiat), ")"]
+	        }) : null]
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	        style: {
+	          fontSize: '0.82rem',
+	          fontWeight: 400,
+	          opacity: 0.58
+	        },
+	        children: ["vs ", delta.baselineLabel]
+	      })]
+	    });
+	  }
+	  return null;
+	}
+
+	var quoteTime;
+	var hasRequiredQuoteTime;
+
+	function requireQuoteTime () {
+		if (hasRequiredQuoteTime) return quoteTime;
+		hasRequiredQuoteTime = 1;
+
+		/**
+		 * Quote timestamp in Unix ms for inverse-age weighting (server and UI use the same rule).
+		 * Order: `asOfMs`, then `created` (Date or parseable string).
+		 */
+		function quoteAsOfMs(q) {
+		  if (!q || typeof q !== 'object') return NaN;
+		  const direct = Number(/** @type {{ asOfMs?: unknown }} */q.asOfMs);
+		  if (Number.isFinite(direct) && direct > 0) return Math.round(direct);
+		  const created = /** @type {{ created?: unknown }} */q.created;
+		  if (created instanceof Date) {
+		    const t = created.getTime();
+		    return Number.isFinite(t) ? Math.round(t) : NaN;
+		  }
+		  if (created != null) {
+		    const t = Date.parse(String(created));
+		    return Number.isFinite(t) ? Math.round(t) : NaN;
+		  }
+		  return NaN;
+		}
+		quoteTime = {
+		  quoteAsOfMs
+		};
+		return quoteTime;
+	}
+
+	var quoteTimeExports = requireQuoteTime();
+
+	const QUOTE_SYMBOL = 'BTC';
+	const MAX_QUOTE_ROWS = 24;
+	const MAX_QUOTE_HISTORY = 2048;
+
+	/**
+	 * @param {string} [feedApiBase]
+	 * @returns {string}
+	 */
+	function resolveFeedReportUrl(feedApiBase) {
+	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+	  if (base) {
+	    return `${base}/feed/report`;
+	  }
+	  if (typeof window !== 'undefined' && window.location?.origin) {
+	    try {
+	      return new URL('/feed/report', window.location.origin).href;
+	    } catch {
+	      /* fall through */
+	    }
+	  }
+	  return '/feed/report';
+	}
+
+	/** Same origin path as {@link resolveFeedReportUrl} for the plain-JSON report stream (not Fabric Bridge). */
+	const FEED_REPORT_STREAM_PATH = '/feed/stream';
+
+	/**
+	 * WebSocket URL for {@link FEED_REPORT_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
+	 * @param {string} [feedApiBase]
+	 * @returns {string}
+	 */
+	function resolveFeedStreamUrl(feedApiBase) {
+	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+	  if (base) {
+	    if (/^https:\/\//i.test(base)) {
+	      return `wss://${base.slice('https://'.length)}${FEED_REPORT_STREAM_PATH}`;
+	    }
+	    if (/^http:\/\//i.test(base)) {
+	      return `ws://${base.slice('http://'.length)}${FEED_REPORT_STREAM_PATH}`;
+	    }
+	    try {
+	      const u = new URL(base, 'http://localhost');
+	      const proto = u.protocol === 'https:' ? 'wss:' : 'ws:';
+	      return `${proto}//${u.host}${FEED_REPORT_STREAM_PATH}`;
+	    } catch {
+	      /* fall through */
+	    }
+	  }
+	  if (typeof window !== 'undefined' && window.location?.host) {
+	    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+	    return `${proto}//${window.location.host}${FEED_REPORT_STREAM_PATH}`;
+	  }
+	  return `ws://127.0.0.1:3000${FEED_REPORT_STREAM_PATH}`;
+	}
+
+	/**
+	 * @param {string} [feedApiBase]
+	 * @returns {string}
+	 */
+	function resolveUtxOracleEstimateUrl(feedApiBase) {
+	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+	  if (base) {
+	    return `${base}/feed/utxoracle/estimate`;
+	  }
+	  if (typeof window !== 'undefined' && window.location?.origin) {
+	    try {
+	      return new URL('/feed/utxoracle/estimate', window.location.origin).href;
+	    } catch {
+	      /* fall through */
+	    }
+	  }
+	  return '/feed/utxoracle/estimate';
+	}
+
+	/**
+	 * @param {string} [feedApiBase]
+	 * @returns {string}
+	 */
+	function resolveUtxOracleEstimateSeriesUrl(feedApiBase) {
+	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+	  if (base) {
+	    return `${base}/feed/utxoracle/estimate-series`;
+	  }
+	  if (typeof window !== 'undefined' && window.location?.origin) {
+	    try {
+	      return new URL('/feed/utxoracle/estimate-series', window.location.origin).href;
+	    } catch {
+	      /* fall through */
+	    }
+	  }
+	  return '/feed/utxoracle/estimate-series';
+	}
+
+	/**
+	 * @param {Array<{ price?: unknown, age?: unknown, asOfMs?: unknown, created?: unknown }>} sources
+	 * @param {number} [nowMs]
+	 * @returns {number|null}
+	 */
+	function weightedPriceFromSerializedSources(sources, nowMs = Date.now()) {
+	  if (!Array.isArray(sources) || !sources.length) return null;
+	  let mass = 0;
+	  let sum = 0;
+	  for (let i = 0; i < sources.length; i++) {
+	    const quote = sources[i];
+	    if (quote?.excludedFromSpot === true) continue;
+	    const price = Number(quote?.price);
+	    if (!Number.isFinite(price)) continue;
+	    const asOf = quoteTimeExports.quoteAsOfMs(quote);
+	    let age;
+	    if (Number.isFinite(asOf)) {
+	      age = Math.log(Math.max(1, nowMs - asOf));
+	    } else {
+	      const ageRaw = Number(quote?.age);
+	      age = Number.isFinite(ageRaw) && ageRaw > 0 ? ageRaw : 1;
+	    }
+	    const weight = 1 / Math.max(age, 1e-9);
+	    mass += weight;
+	    sum += weight * price;
+	  }
+	  if (mass <= 0 || !Number.isFinite(sum)) return null;
+	  return sum / mass;
+	}
+
+	/**
+	 * @param {string|undefined|null} providerId
+	 * @param {Record<string, boolean>} visibility
+	 */
+	function isSourceVisible(providerId, visibility) {
+	  if (providerId == null || String(providerId).trim() === '') return false;
+	  return visibility[String(providerId)] !== false;
+	}
+
+	/**
+	 * @param {object} row
+	 * @param {Record<string, boolean>} sourceVisibility
+	 */
+	function filterQuoteRowBySourceVisibility(row, sourceVisibility) {
+	  if (!row || typeof row !== 'object') return null;
+	  if (!Array.isArray(row.sources) || row.sources.length === 0) {
+	    return row;
+	  }
+	  const filtered = row.sources.filter(s => isSourceVisible(/** @type {{ provider?: string }} */s?.provider, sourceVisibility));
+	  if (filtered.length === 0) return null;
+	  const price = weightedPriceFromSerializedSources(filtered);
+	  if (price == null || !Number.isFinite(price)) return null;
+	  const blendCount = filtered.filter(s => /** @type {{ excludedFromSpot?: boolean }} */s.excludedFromSpot !== true).length;
+	  return {
+	    ...row,
+	    rate: price,
+	    sourceCount: blendCount,
+	    sources: filtered
+	  };
+	}
+
+	/**
+	 * @param {unknown[]} quotes
+	 * @param {Record<string, boolean>} sourceVisibility
+	 */
+	function filterQuotesBySourceVisibility(quotes, sourceVisibility) {
+	  if (!Array.isArray(quotes)) return [];
+	  const vis = sourceVisibility && typeof sourceVisibility === 'object' ? sourceVisibility : {};
+	  return quotes.map(row => filterQuoteRowBySourceVisibility(row, vis)).filter(Boolean);
+	}
+
+	/**
+	 * @param {unknown[]} quoteProviders
+	 * @param {unknown[]} quotes
+	 * @returns {string[]}
+	 */
+	function providerIdsForFilter(quoteProviders, quotes) {
+	  const list = Array.isArray(quoteProviders) ? quoteProviders : [];
+	  if (list.length) {
+	    return list.map(p => p && p.id != null ? String(p.id) : '').filter(id => id !== '');
+	  }
+	  const set = new Set();
+	  const q = Array.isArray(quotes) ? quotes : [];
+	  for (let i = 0; i < q.length; i++) {
+	    const src = /** @type {{ sources?: unknown[] }} */q[i]?.sources;
+	    if (!Array.isArray(src)) continue;
+	    for (let j = 0; j < src.length; j++) {
+	      const id = /** @type {{ provider?: string }} */src[j]?.provider;
+	      if (id != null && String(id).trim() !== '') set.add(String(id));
+	    }
+	  }
+	  return [...set].sort();
+	}
+
+	/**
+	 * @param {unknown[]} priceHistory
+	 * @param {string} symbol
+	 * @param {string} currency
+	 */
+	function chartQuotesFromPriceHistory(priceHistory, symbol, currency) {
+	  if (!Array.isArray(priceHistory) || !symbol) return [];
+	  const out = [];
+	  for (let i = 0; i < priceHistory.length; i++) {
+	    const row = priceHistory[i];
+	    if (!row || typeof row !== 'object') continue;
+	    const values = row.values && typeof row.values === 'object' ? row.values : null;
+	    if (!values) continue;
+	    const raw = values[symbol];
+	    if (!raw || raw.price == null) continue;
+	    const price = Number(raw.price);
+	    if (!Number.isFinite(price) || price <= 0) continue;
+	    const tsRaw = /** @type {{ ts?: number }} */row.ts;
+	    const ts = typeof tsRaw === 'number' ? tsRaw : Date.parse(String(tsRaw));
+	    if (!Number.isFinite(ts)) continue;
+	    const scRaw = raw.sourceCount;
+	    const sc = scRaw != null && Number.isFinite(Number(scRaw)) ? Number(scRaw) : undefined;
+	    const contrib = Array.isArray(raw.sources) ? raw.sources.slice() : undefined;
+	    out.push({
+	      created: new Date(ts).toISOString(),
+	      rate: price,
+	      currency: currency || 'USD',
+	      symbol,
+	      source: 'Feed',
+	      ...(sc !== undefined ? {
+	        sourceCount: sc
+	      } : {}),
+	      ...(contrib && contrib.length ? {
+	        sources: contrib
+	      } : {})
+	    });
+	  }
+	  return out;
+	}
+
+	/**
+	 * @param {Record<string, unknown>|null|undefined} quotesBySymbol
+	 * @param {Intl.NumberFormat} nf
+	 */
+	/**
+	 * @param {unknown} quotesBySymbol
+	 */
+	function formatProviderQuotesLine(quotesBySymbol) {
+	  if (!quotesBySymbol || typeof quotesBySymbol !== 'object') return '—';
+	  const keys = Object.keys(quotesBySymbol).sort();
+	  if (!keys.length) return '—';
+	  const parts = [];
+	  for (let i = 0; i < keys.length; i++) {
+	    const sym = keys[i];
+	    const q = /** @type {{ price?: unknown, currency?: unknown, fromCache?: boolean }} */
+	    quotesBySymbol[sym];
+	    if (!q || typeof q !== 'object') continue;
+	    const p = Number(q.price);
+	    const cur = q.currency != null ? String(q.currency) : 'USD';
+	    const frag = Number.isFinite(p) ? `${sym} ${formatFiatPrice(p, cur)}` : `${sym} (n/a)`;
+	    let line = q.fromCache ? `${frag} (cache)` : frag;
+	    if (q.excludedFromSpot === true) {
+	      line += ' · not in spot';
+	    }
+	    parts.push(line);
+	  }
+	  return parts.length ? parts.join(' · ') : '—';
+	}
+
+	/**
+	 * Human-readable TLS certificate issuer ("signer") from Node/OpenSSL-style fields.
+	 * @param {unknown} issuer
+	 * @returns {string|null}
+	 */
+	function formatCertificateIssuer(issuer) {
+	  if (issuer == null) return null;
+	  if (typeof issuer === 'string') {
+	    const t = issuer.trim();
+	    return t || null;
+	  }
+	  if (typeof issuer !== 'object') return null;
+	  const o = /** @type {Record<string, unknown>} */issuer;
+	  const one = k => {
+	    const v = o[k];
+	    if (v == null) return '';
+	    if (Array.isArray(v)) {
+	      return v.map(x => String(x).trim()).filter(Boolean).join(', ');
+	    }
+	    return String(v).trim();
+	  };
+	  const cn = one('CN');
+	  const ou = one('OU');
+	  const oOrg = one('O');
+	  if (cn && oOrg) return `${cn} · ${oOrg}`;
+	  if (oOrg && ou) return `${oOrg} · ${ou}`;
+	  if (oOrg) return oOrg;
+	  if (cn) return cn;
+	  const fallback = Object.values(o).flatMap(v => Array.isArray(v) ? v : [v]).map(x => String(x).trim()).filter(Boolean);
+	  return fallback.length ? fallback.join(' · ') : null;
+	}
+
+	/**
+	 * @param {unknown} tls
+	 * @returns {boolean}
+	 */
+	function tlsChainTrusted(tls) {
+	  if (!tls || typeof tls !== 'object') return false;
+	  const t = /** @type {{ authorized?: unknown, rejected?: unknown }} */tls;
+	  if (t.rejected === true) return false;
+	  return t.authorized === true;
+	}
+
+	/**
+	 * @param {unknown} tlsByProvider
+	 * @param {unknown} providerId
+	 * @returns {Record<string, unknown>|null}
+	 */
+	function lookupProviderTls(tlsByProvider, providerId) {
+	  if (!tlsByProvider || providerId == null) return null;
+	  const id = String(providerId);
+	  if (tlsByProvider instanceof Map) {
+	    const v = tlsByProvider.get(id);
+	    return v && typeof v === 'object' ? (/** @type {Record<string, unknown>} */v) : null;
+	  }
+	  if (typeof tlsByProvider === 'object' && id in tlsByProvider) {
+	    const v = /** @type {Record<string, unknown>} */tlsByProvider[id];
+	    return v && typeof v === 'object' ? (/** @type {Record<string, unknown>} */v) : null;
+	  }
+	  return null;
+	}
+
+	/**
+	 * @param {unknown} ts
+	 */
+	function formatProviderTs(ts) {
+	  if (typeof ts !== 'number' || !Number.isFinite(ts)) return '—';
+	  try {
+	    return new Date(ts).toLocaleString();
+	  } catch {
+	    return '—';
 	  }
 	}
 
 	/**
-	 * Live price feed component.
+	 * @param {unknown} nextFetchAt
+	 * @param {boolean} enabled
+	 */
+	function formatNextFetch(nextFetchAt, enabled) {
+	  if (!enabled) return '—';
+	  if (typeof nextFetchAt !== 'number' || !Number.isFinite(nextFetchAt)) {
+	    return 'Due';
+	  }
+	  const now = Date.now();
+	  if (nextFetchAt <= now) return 'Due';
+	  const sec = Math.ceil((nextFetchAt - now) / 1000);
+	  if (sec < 120) return `in ${sec}s`;
+	  const min = Math.ceil(sec / 60);
+	  return `in ${min}m`;
+	}
+
+	function TlsQuoteTrust({
+	  tls,
+	  compact
+	}) {
+	  const peer = tls && typeof tls === 'object' && tls.peer && typeof tls.peer === 'object' ? (/** @type {{ issuer?: unknown }} */tls.peer) : null;
+	  const signer = formatCertificateIssuer(peer?.issuer ?? null);
+	  const trusted = tlsChainTrusted(tls);
+	  const hasData = tls && typeof tls === 'object';
+	  const proto = hasData && tls.protocol != null ? String(tls.protocol) : '';
+	  if (!hasData) {
+	    return /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	      style: {
+	        fontSize: compact ? '0.7rem' : '0.78rem',
+	        opacity: 0.42,
+	        lineHeight: 1.35
+	      },
+	      title: "No TLS metadata yet for this provider",
+	      children: "\u2014"
+	    });
+	  }
+	  if (!trusted) {
+	    const why = tls.authorizationError != null && String(tls.authorizationError).trim() !== '' ? String(tls.authorizationError) : 'TLS not verified';
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        alignItems: 'flex-start',
+	        gap: '0.35rem',
+	        lineHeight: 1.35,
+	        maxWidth: compact ? '14rem' : 'none'
+	      },
+	      title: why,
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	        name: "warning circle",
+	        color: "orange",
+	        size: compact ? 'small' : 'small',
+	        style: {
+	          flexShrink: 0,
+	          margin: compact ? '0.1em 0 0 0' : '0.15em 0 0 0'
+	        }
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	        style: {
+	          fontSize: compact ? '0.7rem' : '0.8rem',
+	          opacity: 0.88
+	        },
+	        children: ["TLS: ", why]
+	      })]
+	    });
+	  }
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	    style: {
+	      display: 'flex',
+	      alignItems: 'flex-start',
+	      gap: '0.4rem',
+	      lineHeight: 1.35,
+	      maxWidth: compact ? '15rem' : 'none'
+	    },
+	    title: "TLS certificate chain verified (Node.js trust store and hostname verification)",
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	      name: "check circle",
+	      color: "green",
+	      size: compact ? 'small' : 'large',
+	      style: {
+	        flexShrink: 0,
+	        margin: compact ? '0.05em 0 0 0' : '0.05em 0 0 0'
+	      }
+	    }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        minWidth: 0
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	        style: {
+	          fontSize: compact ? '0.72rem' : '0.84rem',
+	          fontWeight: 600,
+	          color: 'rgba(0,0,0,.82)',
+	          wordBreak: 'break-word'
+	        },
+	        children: signer ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	          children: ["Signer: ", /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	            style: {
+	              fontWeight: 650
+	            },
+	            children: signer
+	          })]
+	        }) : /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          style: {
+	            fontWeight: 500,
+	            opacity: 0.72
+	          },
+	          children: "Certificate OK"
+	        })
+	      }), !compact && proto ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	        style: {
+	          fontSize: '0.72rem',
+	          opacity: 0.52,
+	          marginTop: '0.1rem'
+	        },
+	        children: proto
+	      }) : null]
+	    })]
+	  });
+	}
+
+	function HeadlineSourceQuotes({
+	  quote,
+	  sourceVisibility,
+	  labelById,
+	  fiat,
+	  onOpenInspect,
+	  tlsByProvider
+	}) {
+	  const src = Array.isArray(quote?.sources) ? quote.sources : [];
+	  const rows = src.map((s, i) => {
+	    const provider = s && s.provider != null ? String(s.provider) : `idx:${i}`;
+	    if (!isSourceVisible(provider, sourceVisibility)) return null;
+	    const price = Number(s?.price);
+	    if (!Number.isFinite(price)) return null;
+	    const name = s && String(s.label || '').trim() || labelById.get(provider) || provider;
+	    const excluded = /** @type {{ excludedFromSpot?: boolean }} */s.excludedFromSpot === true;
+	    return {
+	      providerId: provider,
+	      key: provider + ':' + String(price) + ':' + String(excluded),
+	      name,
+	      price,
+	      nameLower: name.toLowerCase(),
+	      excluded
+	    };
+	  }).filter(Boolean).sort((a, b) => a.nameLower.localeCompare(b.nameLower));
+	  if (!rows.length) return null;
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	    style: {
+	      width: '100%'
+	    },
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        fontSize: '0.72rem',
+	        fontWeight: 600,
+	        letterSpacing: '0.03em',
+	        textTransform: 'uppercase',
+	        opacity: 0.5,
+	        marginBottom: '0.45rem'
+	      },
+	      children: ["By source \xB7 ", fiat]
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx(List, {
+	      selection: true,
+	      verticalAlign: "middle",
+	      style: {
+	        margin: 0
+	      },
+	      children: rows.map(row => /*#__PURE__*/jsxRuntimeExports.jsxs(List.Item, {
+	        role: "button",
+	        tabIndex: 0,
+	        style: {
+	          borderRadius: '4px',
+	          padding: '0.45rem 0.5rem !important',
+	          margin: '0 0 0.25rem 0 !important',
+	          border: '1px solid rgba(0,0,0,.08)'
+	        },
+	        onClick: () => onOpenInspect(quote),
+	        onKeyDown: e => {
+	          if (e.key !== 'Enter' && e.key !== ' ') return;
+	          e.preventDefault();
+	          onOpenInspect(quote);
+	        },
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsxs(List.Content, {
+	          style: {
+	            display: 'flex',
+	            alignItems: 'baseline',
+	            justifyContent: 'space-between',
+	            gap: '0.65rem',
+	            flexWrap: 'wrap'
+	          },
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(List.Header, {
+	            as: "span",
+	            style: {
+	              fontWeight: 600,
+	              fontSize: '0.92rem',
+	              margin: 0
+	            },
+	            children: row.name
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	            style: {
+	              fontSize: '0.95rem',
+	              fontWeight: 600,
+	              fontVariantNumeric: 'tabular-nums',
+	              opacity: 0.92
+	            },
+	            children: formatFiatPrice(row.price, fiat)
+	          })]
+	        }), tlsByProvider ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	          style: {
+	            marginTop: '0.28rem',
+	            maxWidth: '100%',
+	            overflow: 'hidden'
+	          },
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(TlsQuoteTrust, {
+	            tls: lookupProviderTls(tlsByProvider, row.providerId),
+	            compact: true
+	          })
+	        }) : null, row.excluded ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	          style: {
+	            marginTop: '0.2rem',
+	            fontSize: '0.72rem',
+	            opacity: 0.52,
+	            lineHeight: 1.35
+	          },
+	          children: "Not included in headline weighted blend (sync / verification)"
+	        }) : null]
+	      }, row.key))
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	      style: {
+	        marginTop: '0.35rem',
+	        fontSize: '0.72rem',
+	        opacity: 0.5
+	      },
+	      children: "Tap a row for contributor detail"
+	    })]
+	  });
+	}
+
+	/**
+	 * Single-quote detail (table + optional source breakdown).
 	 */
 
-	const label = {
-	  textAlign: 'right'
-	};
+	const AGE_TICK_MS = 32;
 	class Quote extends reactExports.Component {
 	  constructor(props = {}) {
 	    super(props);
 	    this.state = {
-	      ...props
+	      age: 0
 	    };
-	    this.settings = Object.assign({
-	      frequency: 0.007
-	    }, this.state);
-	    this._state = {
-	      content: Object.assign({
-	        age: 0,
-	        created: new Date().toISOString(),
-	        currency: 'USD',
-	        rate: 29349.54,
-	        symbol: 'BTC'
-	      }, this.state)
-	    };
-	  }
-	  get locale() {
-	    return Intl.NumberFormat().resolvedOptions().locale;
-	  }
-	  get rate() {
-	    return this.state.value;
 	  }
 	  componentDidMount() {
-	    const self = this;
-	    self._timekeeper = setInterval(() => {
-	      self._state.content.age = Date.now() - Date.parse(this.state.created ?? self._state.content.created);
-	      self.setState(self._state.content);
-	    }, self.settings.frequency);
+	    const tick = () => {
+	      const created = this.props.created;
+	      const t = typeof created === 'string' ? Date.parse(created) : NaN;
+	      this.setState({
+	        age: Number.isFinite(t) ? Math.max(0, Date.now() - t) : 0
+	      });
+	    };
+	    tick();
+	    this._timekeeper = setInterval(tick, AGE_TICK_MS);
 	  }
-	  withLocale(value) {
-	    let n = value;
-	    if (typeof n !== 'number') n = parseFloat(String(value));
-	    return typeof n === 'number' && !Number.isNaN(n) ? n.toLocaleString(this.locale) : '';
+	  componentWillUnmount() {
+	    if (this._timekeeper) clearInterval(this._timekeeper);
+	  }
+	  _formatLogAge(ln) {
+	    if (typeof ln !== 'number' || !Number.isFinite(ln)) return '—';
+	    return ln.toLocaleString(locale(), {
+	      maximumFractionDigits: 4
+	    });
+	  }
+	  _abbrSources(sources) {
+	    if (!Array.isArray(sources) || !sources.length) return '';
+	    const parts = sources.map(s => s.label || s.provider).filter(Boolean);
+	    return parts.join(' · ') || '';
 	  }
 	  render() {
-	    return /*#__PURE__*/React.createElement("portal-feed-quote", null, /*#__PURE__*/React.createElement(Segment, {
-	      compact: true
-	    }, /*#__PURE__*/React.createElement(Table, null, /*#__PURE__*/React.createElement(Table.Header, null), /*#__PURE__*/React.createElement(Table.Body, null, /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
-	      style: label
-	    }, /*#__PURE__*/React.createElement("label", {
-	      htmlFor: "quote-symbol-id"
-	    }, /*#__PURE__*/React.createElement("strong", null, "Symbol:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
-	      id: "quote-symbol-id",
-	      "data-bind": "symbol"
-	    }, this.state.symbol))), /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
-	      style: label
-	    }, /*#__PURE__*/React.createElement("label", {
-	      htmlFor: "quote-currency-id"
-	    }, /*#__PURE__*/React.createElement("strong", null, "Currency:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
-	      id: "quote-currency-id",
-	      "data-bind": "currency"
-	    }, this.state.currency))), /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
-	      style: label
-	    }, /*#__PURE__*/React.createElement("label", {
-	      htmlFor: "quote-rate-id"
-	    }, /*#__PURE__*/React.createElement("strong", null, "Rate:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("code", {
-	      id: "quote-rate-id",
-	      "data-bind": "rate"
-	    }, this.state.rate.toFixed(2)))), /*#__PURE__*/React.createElement(Table.Row, null, /*#__PURE__*/React.createElement(Table.Cell, {
-	      style: label
-	    }, /*#__PURE__*/React.createElement("label", {
-	      htmlFor: "quote-age-id"
-	    }, /*#__PURE__*/React.createElement("strong", null, "Age:"))), /*#__PURE__*/React.createElement(Table.Cell, null, /*#__PURE__*/React.createElement("abbr", {
-	      id: "quote-age-id",
-	      "data-bind": "age",
-	      title: this.state.created
-	    }, this.state.age, " ms")))))));
+	    const symbol = this.props.symbol ?? '';
+	    const currency = this.props.currency ?? '';
+	    const rate = typeof this.props.rate === 'number' ? this.props.rate : 0;
+	    const src = this.props.sourceCount;
+	    /** @type {{ label?: string, provider?: string }[]|undefined} */
+	    const sources = Array.isArray(this.props.sources) ? this.props.sources : undefined;
+	    const compact = !!this.props.compactSourceList;
+	    const expanded = !!this.props.showAllSources;
+	    const tlsByProvider = this.props.tlsByProvider;
+	    return /*#__PURE__*/jsxRuntimeExports.jsx(Table, {
+	      definition: true,
+	      unstackable: true,
+	      children: /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Body, {
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: "Symbol"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	              children: symbol
+	            })
+	          })]
+	        }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: "Currency"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: currency
+	          })]
+	        }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: "Rate"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	              children: formatFiatPrice(rate, currency)
+	            })
+	          })]
+	        }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: "Sources"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: typeof src === 'number' && Number.isFinite(src) ? String(src) : '—'
+	          })]
+	        }), compact && sources && sources.length ? /*#__PURE__*/jsxRuntimeExports.jsx(Table.Row, {
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            colSpan: 2,
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	              style: {
+	                fontSize: '0.92em',
+	                color: 'rgba(0,0,0,.6)',
+	                lineHeight: 1.45,
+	                wordBreak: 'break-word'
+	              },
+	              children: this._abbrSources(sources)
+	            })
+	          })
+	        }) : null, /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	            children: "Age"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Cell, {
+	            children: [this.state.age, " ms"]
+	          })]
+	        }), expanded && sources && sources.length ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Row, {
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              colSpan: 2,
+	              children: /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                style: {
+	                  fontSize: '0.92em'
+	                },
+	                children: "Contributors"
+	              })
+	            })
+	          }), sources.map(s => {
+	            const lbl = String(s.label || s.provider || '—');
+	            const key = lbl + ':' + String(s.price) + ':' + String(s.age);
+	            const cacheLbl = s.fromCache ? typeof s.cacheAgeMs === 'number' ? `cache · ${Math.round(s.cacheAgeMs)} ms ago` : 'cache' : 'live';
+	            return /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	              children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	                children: lbl
+	              }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Cell, {
+	                children: [/*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                  children: formatFiatPrice(Number(s.price), currency)
+	                }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	                  style: {
+	                    fontSize: '0.82em',
+	                    color: 'rgba(0,0,0,.6)'
+	                  },
+	                  children: ["ln-age ", this._formatLogAge(Number(s.age)), " \xB7", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	                    children: cacheLbl
+	                  })]
+	                }), tlsByProvider ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	                  style: {
+	                    marginTop: '0.4rem'
+	                  },
+	                  children: /*#__PURE__*/jsxRuntimeExports.jsx(TlsQuoteTrust, {
+	                    tls: lookupProviderTls(tlsByProvider, s.provider),
+	                    compact: false
+	                  })
+	                }) : null]
+	              })]
+	            }, key);
+	          })]
+	        }) : null]
+	      })
+	    });
 	  }
+	}
+
+	function QuoteInspectModal({
+	  open,
+	  quote,
+	  onClose,
+	  tlsByProvider
+	}) {
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs(Modal, {
+	    open: open,
+	    onClose: onClose,
+	    size: "small",
+	    closeIcon: false,
+	    closeOnDimmerClick: true,
+	    closeOnEscape: true,
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsx(Modal.Header, {
+	      children: quote ? `Sources — ${quote.symbol}` : ''
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx(Modal.Content, {
+	      scrolling: true,
+	      children: quote ? /*#__PURE__*/jsxRuntimeExports.jsx(Quote, {
+	        rate: quote.rate,
+	        sources: quote.sources,
+	        sourceCount: quote.sourceCount,
+	        symbol: quote.symbol,
+	        currency: quote.currency,
+	        created: quote.created,
+	        showAllSources: true,
+	        tlsByProvider: tlsByProvider
+	      }) : null
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx(Modal.Actions, {
+	      children: /*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	        type: "button",
+	        primary: true,
+	        onClick: onClose,
+	        children: "Close"
+	      })
+	    })]
+	  });
+	}
+
+	function QuoteProvidersTable({
+	  providers
+	}) {
+	  if (!providers.length) {
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	      info: true,
+	      size: "small",
+	      children: ["Provider status will appear here once the feed report includes", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	        children: "quoteProviders"
+	      }), "."]
+	    });
+	  }
+	  return /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	    style: {
+	      width: '100%',
+	      overflowX: 'auto',
+	      WebkitOverflowScrolling: 'touch'
+	    },
+	    children: /*#__PURE__*/jsxRuntimeExports.jsxs(Table, {
+	      celled: true,
+	      compact: true,
+	      unstackable: true,
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Header, {
+	        children: /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Provider"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Active"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Fabric service"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Last success"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Next update"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "BTC quote"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "TLS (last request)"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Last error"
+	          })]
+	        })
+	      }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Body, {
+	        children: providers.map(p => {
+	          const row =
+	          /** @type {{
+	          id?: string,
+	          label?: string,
+	          enabled?: boolean,
+	          service?: Record<string, unknown> | null,
+	          resource?: { key?: string },
+	          lastSuccessAt?: number,
+	          nextFetchAt?: number,
+	          quotesBySymbol?: Record<string, unknown>,
+	          lastError?: unknown,
+	          lastTls?: Record<string, unknown> | null
+	          }} */
+	          p;
+	          const svc = row.service && typeof row.service === 'object' ? row.service : null;
+	          const svcTxt = svc && svc.status != null ? `${String(svc.status)}${svc.id ? ` · ${String(svc.id).slice(0, 8)}…` : ''}` : '—';
+	          const err = row.lastError != null && String(row.lastError).trim() !== '' ? String(row.lastError) : '—';
+	          return /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
+	            children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Table.Cell, {
+	              children: [/*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                children: String(row.label || row.id || '')
+	              }), /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	                style: {
+	                  fontSize: '0.78em',
+	                  color: 'rgba(0,0,0,.52)',
+	                  marginTop: '0.25rem'
+	                },
+	                children: row.resource && row.resource.key ? `resource: ${String(row.resource.key)}` : ''
+	              })]
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              children: row.enabled ? 'yes' : 'no'
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              style: {
+	                fontSize: '0.9em',
+	                wordBreak: 'break-word'
+	              },
+	              children: svcTxt
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              children: formatProviderTs(row.lastSuccessAt)
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              title: typeof row.nextFetchAt === 'number' && Number.isFinite(row.nextFetchAt) && row.nextFetchAt > Date.now() ? new Date(row.nextFetchAt).toISOString() : undefined,
+	              children: formatNextFetch(row.nextFetchAt, !!row.enabled)
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              style: {
+	                fontSize: '0.88em',
+	                wordBreak: 'break-word'
+	              },
+	              children: formatProviderQuotesLine(row.quotesBySymbol)
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              style: {
+	                fontSize: '0.82em',
+	                wordBreak: 'break-word'
+	              },
+	              children: /*#__PURE__*/jsxRuntimeExports.jsx(TlsQuoteTrust, {
+	                tls: row.lastTls
+	              })
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              style: {
+	                fontSize: '0.88em',
+	                color: err !== '—' ? '#9f3a38' : undefined,
+	                wordBreak: 'break-word'
+	              },
+	              children: err
+	            })]
+	          }, String(row.id || row.label));
+	        })
+	      })]
+	    })
+	  });
+	}
+
+	function RecentQuotesList({
+	  quoteView,
+	  totalQuotes,
+	  onOpenInspect
+	}) {
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	      dividing: true,
+	      size: "small",
+	      children: "Recent quotes"
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx(Segment.Group, {
+	      style: {
+	        width: '100%'
+	      },
+	      children: quoteView.map((quote, i) => {
+	        const q =
+	        /** @type {{
+	        created?: string,
+	        rate?: number,
+	        sources?: unknown[],
+	        sourceCount?: number,
+	        symbol?: string,
+	        currency?: string
+	        }} */
+	        quote;
+	        const id = totalQuotes - i;
+	        const hasProv = Array.isArray(q.sources) && q.sources.length > 0;
+	        return /*#__PURE__*/jsxRuntimeExports.jsxs(Segment, {
+	          style: {
+	            width: '100%',
+	            ...(hasProv ? {
+	              cursor: 'pointer',
+	              outline: 'none'
+	            } : {})
+	          },
+	          ...(hasProv ? {
+	            tabIndex: 0,
+	            role: 'button',
+	            onClick: () => onOpenInspect(q),
+	            onKeyDown: e => {
+	              if (e.key !== 'Enter' && e.key !== ' ') return;
+	              e.preventDefault();
+	              onOpenInspect(q);
+	            }
+	          } : {}),
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	            as: "h5",
+	            style: {
+	              marginBottom: '0.35rem'
+	            },
+	            children: `Quote #${id}`
+	          }), hasProv ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	            style: {
+	              fontSize: '0.82em',
+	              color: 'rgba(0,0,0,.55)',
+	              marginBottom: '0.5rem'
+	            },
+	            children: "Tap to explore sources"
+	          }) : null, /*#__PURE__*/jsxRuntimeExports.jsx(Quote, {
+	            rate: q.rate,
+	            sources: q.sources,
+	            sourceCount: q.sourceCount,
+	            symbol: q.symbol,
+	            currency: q.currency,
+	            created: q.created,
+	            compactSourceList: true
+	          })]
+	        }, `${q.created}-${id}`);
+	      })
+	    }), totalQuotes > quoteView.length ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	      size: "small",
+	      style: {
+	        marginTop: '0.75rem'
+	      },
+	      children: ["Showing ", quoteView.length, " of ", totalQuotes, " quotes (newest first)."]
+	    }) : null]
+	  });
+	}
+
+	function SourceFilterPopoverBody({
+	  providerIds,
+	  labelById,
+	  sourceVisibility,
+	  onToggle,
+	  onSelectAll,
+	  onSelectNone
+	}) {
+	  if (!providerIds.length) return null;
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	    style: {
+	      minWidth: '260px',
+	      maxWidth: 'min(400px, 92vw)'
+	    },
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	      as: "h5",
+	      style: {
+	        margin: '0 0 0.55rem'
+	      },
+	      children: "Filter by source"
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	      style: {
+	        display: 'flex',
+	        flexWrap: 'wrap',
+	        gap: '0.4rem',
+	        marginBottom: '0.55rem'
+	      },
+	      children: /*#__PURE__*/jsxRuntimeExports.jsxs(Button.Group, {
+	        size: "small",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          onClick: onSelectAll,
+	          children: "All"
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          onClick: onSelectNone,
+	          children: "None"
+	        })]
+	      })
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx(Form, {
+	      children: /*#__PURE__*/jsxRuntimeExports.jsx(Form.Group, {
+	        grouped: true,
+	        style: {
+	          marginBottom: 0
+	        },
+	        children: providerIds.map(id => /*#__PURE__*/jsxRuntimeExports.jsx(Form.Field, {
+	          control: Checkbox,
+	          label: labelById.get(id) || id,
+	          checked: sourceVisibility[id] !== false,
+	          onChange: () => onToggle(id)
+	        }, id))
+	      })
+	    }), /*#__PURE__*/jsxRuntimeExports.jsx("p", {
+	      style: {
+	        margin: '0.65rem 0 0',
+	        fontSize: '0.78rem',
+	        opacity: 0.55
+	      },
+	      children: "Headline, chart, delta, and recent rows use only checked sources (same inverse-age weights as the server)."
+	    })]
+	  });
+	}
+
+	function TimeSliceToolbar({
+	  deltaRangeKey,
+	  onSetRange,
+	  rangeOpt,
+	  sourceFilter
+	}) {
+	  const quickOptions = DELTA_RANGE_OPTIONS.filter(o => DELTA_RANGE_QUICK_KEYS.has(o.key));
+	  const moreOptions = DELTA_RANGE_OPTIONS.filter(o => !DELTA_RANGE_QUICK_KEYS.has(o.key));
+	  const selectionIsExtended = !DELTA_RANGE_QUICK_KEYS.has(deltaRangeKey);
+	  const sourceTrigger = sourceFilter && sourceFilter.providerIds.length > 0 ? /*#__PURE__*/jsxRuntimeExports.jsxs(Button, {
+	    type: "button",
+	    size: "small",
+	    icon: true,
+	    labelPosition: "left",
+	    "aria-label": "Filter contributing sources",
+	    "aria-haspopup": "true",
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	      name: "filter"
+	    }), "Sources"]
+	  }) : null;
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	    style: {
+	      width: '100%'
+	    },
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        flexWrap: 'wrap',
+	        alignItems: 'center',
+	        justifyContent: 'center',
+	        gap: '0.45rem',
+	        width: '100%'
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsx(Button.Group, {
+	        size: "small",
+	        style: {
+	          flexWrap: 'wrap'
+	        },
+	        role: "presentation",
+	        children: quickOptions.map(opt => /*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          toggle: true,
+	          active: deltaRangeKey === opt.key,
+	          "aria-pressed": deltaRangeKey === opt.key,
+	          "aria-label": `Chart and delta range ${opt.label}`,
+	          onClick: () => onSetRange(opt.key),
+	          children: opt.label
+	        }, opt.key))
+	      }), /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown, {
+	        button: true,
+	        size: "small",
+	        className: "icon",
+	        floating: true,
+	        icon: "clock outline",
+	        text: selectionIsExtended ? rangeOpt.label : 'More ranges',
+	        direction: "left",
+	        children: /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown.Menu, {
+	          style: {
+	            maxHeight: 'min(260px, 50vh)',
+	            overflowY: 'auto'
+	          },
+	          children: moreOptions.map(opt => /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown.Item, {
+	            active: deltaRangeKey === opt.key,
+	            onClick: () => onSetRange(opt.key),
+	            text: opt.label
+	          }, opt.key))
+	        })
+	      }), sourceTrigger ? /*#__PURE__*/jsxRuntimeExports.jsx(Popup, {
+	        wide: "very",
+	        on: "click",
+	        pinned: true,
+	        position: "bottom center",
+	        closeOnDocumentClick: true,
+	        trigger: sourceTrigger,
+	        children: /*#__PURE__*/jsxRuntimeExports.jsx(SourceFilterPopoverBody, {
+	          ...sourceFilter
+	        })
+	      }) : null]
+	    }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        marginTop: '0.35rem',
+	        fontSize: '0.78rem',
+	        opacity: 0.55,
+	        textAlign: 'center',
+	        width: '100%'
+	      },
+	      children: ["Chart window matches ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: rangeOpt.label
+	      }), rangeOpt.ms == null ? ' — all available feed & history (UTC)' : ' (UTC)', "."]
+	    })]
+	  });
+	}
+
+	const BTC_TARGET_BLOCK_MS = 600_000;
+
+	/** Lowest block height included in the slice for the current chart window (approx.). */
+	function utxoSliceMinHeight(tip, rangeMs) {
+	  if (tip == null || !Number.isFinite(tip)) return 0;
+	  if (rangeMs == null) return 0;
+	  const span = Math.max(1, Math.ceil(Number(rangeMs) / BTC_TARGET_BLOCK_MS));
+	  return Math.max(0, Math.floor(tip) - span);
+	}
+	function utxoDefaultStep(rangeMs) {
+	  if (rangeMs == null) {
+	    return 144;
+	  }
+	  const span = Math.max(1, Math.ceil(Number(rangeMs) / BTC_TARGET_BLOCK_MS));
+	  return Math.max(1, Math.floor(span / 12));
+	}
+	function positionCount(tip, sliceMin, step) {
+	  const st = Math.max(1, step);
+	  return Math.floor((tip - sliceMin) / st) + 1;
+	}
+	function positionIndex(tip, focus, step) {
+	  const st = Math.max(1, step);
+	  return Math.floor((tip - focus) / st) + 1;
+	}
+	const STEP_OPTIONS = [1, 6, 24, 144];
+
+	/**
+	 * Paginate UTXOracle replay along the chain backward from tip, bounded by the active chart time slice.
+	 *
+	 * @param {{
+	 *   feedApiBase: string,
+	 *   enabled: boolean,
+	 *   rangeOpt: { key: string, label: string, ms: number|null },
+	 *   utxoracleChain: null | { tip: number, tipAsOfMs: number }
+	 * }} props
+	 */
+	function UtxOracleBlockNavigator({
+	  feedApiBase,
+	  enabled,
+	  rangeOpt,
+	  utxoracleChain
+	}) {
+	  const rangeKeyRef = reactExports.useRef(rangeOpt.key);
+	  const [focusHeight, setFocusHeight] = reactExports.useState(/** @type {number|null} */null);
+	  const [step, setStep] = reactExports.useState(() => utxoDefaultStep(rangeOpt.ms));
+	  const [loading, setLoading] = reactExports.useState(false);
+	  const [result, setResult] = reactExports.useState(/** @type {Record<string, unknown>|null} */null);
+	  const [error, setError] = reactExports.useState(/** @type {string|null} */null);
+	  const tip = utxoracleChain != null && Number.isFinite(utxoracleChain.tip) ? Math.floor(utxoracleChain.tip) : null;
+	  const sliceMin = tip != null ? utxoSliceMinHeight(tip, rangeOpt.ms) : 0;
+	  const spanBlocks = tip != null ? Math.max(1, tip - sliceMin + 1) : 0;
+	  reactExports.useEffect(() => {
+	    if (tip == null) return;
+	    const keyChanged = rangeKeyRef.current !== rangeOpt.key;
+	    rangeKeyRef.current = rangeOpt.key;
+	    if (keyChanged) {
+	      setStep(utxoDefaultStep(rangeOpt.ms));
+	      setFocusHeight(tip);
+	      return;
+	    }
+	    setFocusHeight(h => {
+	      const lo = utxoSliceMinHeight(tip, rangeOpt.ms);
+	      if (h == null) return tip;
+	      return Math.min(tip, Math.max(lo, h));
+	    });
+	  }, [tip, rangeOpt.ms, rangeOpt.key]);
+	  reactExports.useEffect(() => {
+	    if (!enabled || focusHeight == null || !Number.isFinite(focusHeight)) {
+	      return;
+	    }
+	    const ac = new AbortController();
+	    (async () => {
+	      setLoading(true);
+	      setError(null);
+	      setResult(null);
+	      try {
+	        const url = new URL(resolveUtxOracleEstimateUrl(feedApiBase));
+	        url.searchParams.set('height', String(Math.floor(focusHeight)));
+	        const res = await fetch(url.href, {
+	          signal: ac.signal,
+	          credentials: 'same-origin',
+	          headers: {
+	            Accept: 'application/json'
+	          },
+	          referrerPolicy: 'no-referrer-when-downgrade'
+	        });
+	        const body = /** @type {Record<string, unknown>} */
+	        await res.json().catch(() => ({}));
+	        if (!res.ok) {
+	          const msg = typeof body.error === 'string' && body.error ? body.error : `${res.status} ${res.statusText}`;
+	          setError(msg);
+	          setResult(null);
+	          return;
+	        }
+	        const price = Number(body.price);
+	        if (!Number.isFinite(price)) {
+	          setError('Unexpected response from feed.');
+	          setResult(null);
+	          return;
+	        }
+	        setResult(body);
+	      } catch (e) {
+	        if (/** @type {{ name?: string }} */e.name === 'AbortError') return;
+	        setError(e && e.message ? String(e.message) : String(e));
+	        setResult(null);
+	      } finally {
+	        if (!ac.signal.aborted) {
+	          setLoading(false);
+	        }
+	      }
+	    })();
+	    return () => ac.abort();
+	  }, [focusHeight, feedApiBase, enabled]);
+	  if (!enabled) {
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	      size: "small",
+	      info: true,
+	      style: {
+	        marginTop: '0.75rem',
+	        textAlign: 'left',
+	        width: '100%'
+	      },
+	      children: ["Enable UTXOracle on the feed to step through on-chain estimates along the same block span as the chart's ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: rangeOpt.label
+	      }), " window (tip backward)."]
+	    });
+	  }
+	  if (tip == null) {
+	    return /*#__PURE__*/jsxRuntimeExports.jsx(Message, {
+	      size: "small",
+	      warning: true,
+	      style: {
+	        marginTop: '0.75rem',
+	        width: '100%',
+	        textAlign: 'left'
+	      },
+	      children: "Chain tip not available yet \u2014 wait for the next feed report with a synced node."
+	    });
+	  }
+	  const st = Math.max(1, step);
+	  const pages = positionCount(tip, sliceMin, st);
+	  const pageIx = focusHeight != null ? positionIndex(tip, focusHeight, st) : 1;
+	  const canOlder = focusHeight != null && Number.isFinite(focusHeight) && focusHeight > sliceMin;
+	  const canNewer = focusHeight != null && Number.isFinite(focusHeight) && focusHeight < tip;
+	  const navDisabled = focusHeight == null || !Number.isFinite(focusHeight) || loading;
+	  const r = result;
+	  const stepDropdown = /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown, {
+	    selection: true,
+	    compact: true,
+	    size: "small",
+	    value: st,
+	    options: STEP_OPTIONS.map(n => ({
+	      key: n,
+	      text: `±${n} blk`,
+	      value: n
+	    })),
+	    onChange: (e, {
+	      value
+	    }) => setStep(Math.max(1, Number(value))),
+	    "aria-label": "Blocks per navigation step"
+	  });
+	  return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	    style: {
+	      marginTop: '0.75rem',
+	      display: 'flex',
+	      flexDirection: 'column',
+	      alignItems: 'stretch',
+	      gap: '0.55rem',
+	      width: '100%'
+	    },
+	    children: [/*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        fontSize: '0.78rem',
+	        opacity: 0.6,
+	        textAlign: 'center',
+	        lineHeight: 1.4
+	      },
+	      children: ["UTXOracle replay tied to ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: rangeOpt.label
+	      }), " slice \xB7 blocks", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: sliceMin
+	      }), "\u2013", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: tip
+	      }), " (~", spanBlocks, " high)", ' ', "\xB7 page ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: pageIx
+	      }), " / ", /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	        children: pages
+	      })]
+	    }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        flexWrap: 'wrap',
+	        alignItems: 'center',
+	        justifyContent: 'space-between',
+	        gap: '0.4rem',
+	        width: '100%'
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Button.Group, {
+	        size: "small",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          icon: true,
+	          title: "Oldest block in this slice",
+	          disabled: navDisabled || !canOlder,
+	          onClick: () => setFocusHeight(sliceMin),
+	          "aria-label": "Jump to oldest block in time slice",
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	            name: "angle double left"
+	          })
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          icon: true,
+	          title: `Older by ${st} blocks`,
+	          disabled: navDisabled || !canOlder,
+	          onClick: () => setFocusHeight(h => h == null ? sliceMin : Math.max(sliceMin, h - st)),
+	          "aria-label": "Older blocks",
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	            name: "chevron left"
+	          })
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          icon: true,
+	          title: `Newer by ${st} blocks`,
+	          disabled: navDisabled || !canNewer,
+	          onClick: () => setFocusHeight(h => h == null ? tip : Math.min(tip, h + st)),
+	          "aria-label": "Newer blocks",
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	            name: "chevron right"
+	          })
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Button, {
+	          type: "button",
+	          icon: true,
+	          title: "Current chain tip",
+	          disabled: navDisabled || !canNewer,
+	          onClick: () => setFocusHeight(tip),
+	          "aria-label": "Jump to chain tip",
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(Icon, {
+	            name: "angle double right"
+	          })
+	        })]
+	      }), stepDropdown]
+	    }), error ? /*#__PURE__*/jsxRuntimeExports.jsx(Message, {
+	      size: "small",
+	      warning: true,
+	      style: {
+	        width: '100%',
+	        textAlign: 'left'
+	      },
+	      children: error
+	    }) : null, loading && !r ? /*#__PURE__*/jsxRuntimeExports.jsx(Message, {
+	      size: "small",
+	      info: true,
+	      style: {
+	        width: '100%'
+	      },
+	      children: "Computing estimate for block\u2026"
+	    }) : null, r && typeof r.height === 'number' && typeof r.asOfMs === 'number' && !error ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	      size: "small",
+	      positive: true,
+	      style: {
+	        width: '100%',
+	        textAlign: 'left'
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Message.Header, {
+	        style: {
+	          marginBottom: '0.35rem'
+	        },
+	        children: ["End height ", r.height, " (synthetic tip) \xB7", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	          children: formatFiatPrice(Number(r.price), String(r.currency || 'USD'))
+	        }), loading ? ' · …' : null]
+	      }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	        style: {
+	          fontSize: '0.88rem',
+	          opacity: 0.9
+	        },
+	        children: [typeof r.analyzedThroughHeight === 'number' ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	          children: ["Last block in estimate ", /*#__PURE__*/jsxRuntimeExports.jsxs("strong", {
+	            children: ["#", r.analyzedThroughHeight]
+	          }), ' — ']
+	        }) : null, "Header time", ' ', new Date(Number(r.asOfMs)).toLocaleString(undefined, {
+	          dateStyle: 'medium',
+	          timeStyle: 'short'
+	        }), ' · ', "window ", String(r.windowBlocks ?? '—'), " blocks (UTXOracle)"]
+	      })]
+	    }) : null]
+	  });
 	}
 
 	/**
-	 * Live price feed component.
+	 * Headline BTC spot (aggregated).
 	 */
 
-	class Rate extends reactExports.Component {
-	  state = {
-	    value: 29349.54,
-	    currency: 'USD',
-	    symbol: 'BTC'
-	  };
-	  constructor(props = {}) {
-	    super(props);
-	    this.settings = Object.assign({}, this.state, props);
-	    this._state = {
-	      content: this.state
-	    };
-	  }
-	  get locale() {
-	    return Intl.NumberFormat().resolvedOptions().locale;
-	  }
-	  get price() {
-	    return this.state.value;
-	  }
-	  withLocale(value) {
-	    let n = value;
-	    if (typeof n !== 'number') n = parseFloat(String(value));
-	    return typeof n === 'number' && !Number.isNaN(n) ? n.toLocaleString(this.locale) : '';
-	  }
+	class Feed extends reactExports.Component {
 	  render() {
-	    return /*#__PURE__*/React.createElement("portal-feed-rate", null, /*#__PURE__*/React.createElement(Segment, {
-	      compact: true
-	    }, /*#__PURE__*/React.createElement(Label, {
-	      htmlFor: "rate-price-label"
-	    }, this.state.currency), /*#__PURE__*/React.createElement("code", {
-	      id: "rate-price-label",
-	      "data-bind": "price",
+	    const v = this.props.spotUsd;
+	    const label = typeof this.props.label === 'string' && this.props.label.trim() !== '' ? this.props.label.trim() : 'BTC → USD';
+	    const trailing = this.props.trailing;
+	    const aside = this.props.aside;
+	    const spotCurrency = typeof this.props.spotCurrency === 'string' && this.props.spotCurrency.trim() !== '' ? this.props.spotCurrency.trim().toUpperCase() : 'USD';
+	    const statisticOrLoader = typeof v === 'number' && Number.isFinite(v) ? /*#__PURE__*/jsxRuntimeExports.jsxs(Statistic, {
 	      style: {
-	        display: 'inline-block',
-	        marginLeft: '1em'
-	      }
-	    }, this.withLocale(this.state.value))));
+	        marginBottom: 0
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Value, {
+	        children: formatFiatPrice(v, spotCurrency)
+	      }), /*#__PURE__*/jsxRuntimeExports.jsx(Statistic.Label, {
+	        children: label
+	      })]
+	    }) : /*#__PURE__*/jsxRuntimeExports.jsx(Loader, {
+	      active: true,
+	      inline: "centered",
+	      size: "small",
+	      children: "Loading feed\u2026"
+	    });
+	    const hasAside = aside != null;
+	    if (!trailing && !hasAside) {
+	      return /*#__PURE__*/jsxRuntimeExports.jsx(Segment, {
+	        children: statisticOrLoader
+	      });
+	    }
+	    if (typeof v !== 'number' || !Number.isFinite(v)) {
+	      return /*#__PURE__*/jsxRuntimeExports.jsx(Segment, {
+	        children: statisticOrLoader
+	      });
+	    }
+	    const leftBlock = /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        flexWrap: 'wrap',
+	        alignItems: 'flex-start',
+	        gap: '0.85rem 1.25rem'
+	      },
+	      children: [statisticOrLoader, trailing || null]
+	    });
+	    if (!hasAside) {
+	      return /*#__PURE__*/jsxRuntimeExports.jsx(Segment, {
+	        basic: true,
+	        children: leftBlock
+	      });
+	    }
+	    return /*#__PURE__*/jsxRuntimeExports.jsx(Segment, {
+	      basic: true,
+	      children: /*#__PURE__*/jsxRuntimeExports.jsxs(Grid, {
+	        stackable: true,
+	        verticalAlign: "top",
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Grid.Column, {
+	          computer: 10,
+	          tablet: 16,
+	          mobile: 16,
+	          children: leftBlock
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Grid.Column, {
+	          computer: 6,
+	          tablet: 16,
+	          mobile: 16,
+	          children: aside
+	        })]
+	      })
+	    });
 	  }
 	}
 
-	const LIMIT_PER_PAGE = 3;
-	function cryptoRandomSignedUnit() {
-	  const buf = new Uint32Array(2);
-	  globalThis.crypto.getRandomValues(buf);
-	  const sign = (buf[0] & 1) === 0 ? -1 : 1;
-	  const magnitude = buf[1] / 0xffffffff;
-	  return sign * magnitude;
-	}
-	class FeedMonitor extends React.Component {
-	  state = {
+	class FeedMonitor extends reactExports.Component {
+	  static defaultProps = {
 	    currency: 'USD',
-	    symbols: ['BTC', 'NMC', 'LTC'],
-	    quotes: [{
-	      created: new Date().toISOString(),
-	      rate: 29349.54,
-	      currency: 'USD',
-	      symbol: 'BTC'
-	    }]
+	    pollIntervalMs: 1050,
+	    /**
+	     * When the WebSocket stream is stable, HTTP `/feed/report` is still used on this interval
+	     * as a safety net (server aggregation may outpace UI-only pushes).
+	     */
+	    pollFallbackIntervalMs: 30_000,
+	    /** Set false to use HTTP only (e.g. broken WS proxies). */
+	    webSocketEnabled: true,
+	    /** Base URL of the running Feed HTTP service (no trailing slash). Same origin when empty. */
+	    feedApiBase: '',
+	    /**
+	     * Optional JSON from `scripts/backfill-history.js` (served next to `index.html`, e.g. `data/btc-usd-daily-ohlc.json`).
+	     * Empty string disables the fetch.
+	     */
+	    historicalOhlcUrl: 'data/btc-usd-daily-ohlc.json'
+	  };
+	  state = {
+	    quotes: [],
+	    spotsBySymbol: {},
+	    /** Cleared after the first poll attempt finishes (success or handled error). */
+	    reportLoading: true,
+	    pollError: null,
+	    /** From `/feed/report` quoteCurrency when present. */
+	    reportQuoteCurrency: undefined,
+	    /** Successful quote provider count for BTC (from aggregator). */
+	    sourceCountBySymbol: {},
+	    /** From GET /feed/report `quoteProviders` when present. */
+	    quoteProviders: [],
+	    inspectQuote: null,
+	    /** Selected window for overview price delta (`DELTA_RANGE_OPTIONS`). */
+	    deltaRangeKey: '1h',
+	    /** From GET /feed/report `utxoracleChain` when UTXOracle is on (tip, stats from bitcoind). */
+	    utxoracleChain: null,
+	    /**
+	     * Per-provider inclusion for headline / chart / history (`false` = excluded).
+	     * Omitted keys default to included.
+	     */
+	    sourceVisibility: {},
+	    /** Rows from GET /feed/utxoracle/estimate-series (chart violet dots). */
+	    utxoEstimateSeries: [],
+	    utxoEstimateSeriesLoading: false
 	  };
 	  constructor(props = {}) {
 	    super(props);
-	    this._state = {
-	      assets: {},
-	      content: this.state
-	    };
-	    this.ref = /*#__PURE__*/React.createRef();
-	    this.chartOuterRef = /*#__PURE__*/React.createRef();
+
+	    /** @type {AbortController|null} */
+	    this._pollAbort = null;
+	    /**
+	     * When true, a `/feed/report` round-trip is in progress. Overlapping ticks are skipped so we
+	     * never abort an in-flight report just because the poll interval fired again.
+	     */
+	    this._pollInFlight = false;
+	    this._unmounted = false;
+	    /** While true, {@link #_poll} skips HTTP when the report WebSocket is open. */
+	    this._wsStreamStable = false;
+	    this._reportWs = null;
+	    this._streamStableTimer = null;
+	    this._wsReconnectTimer = null;
+	    this._openInspectQuote = this._openInspectQuote.bind(this);
+	    this._closeInspectQuote = this._closeInspectQuote.bind(this);
+	    this._setDeltaRange = this._setDeltaRange.bind(this);
+	    this._toggleSourceFilter = this._toggleSourceFilter.bind(this);
+	    this._sourceFilterSelectAll = this._sourceFilterSelectAll.bind(this);
+	    /** @type {AbortController|null} */
+	    this._utxoSeriesAbort = null;
+	  }
+	  _toggleSourceFilter(providerId) {
+	    if (this._unmounted || providerId == null) return;
+	    const id = String(providerId);
+	    this.setState(prev => {
+	      const vis = {
+	        ...(prev.sourceVisibility || {})
+	      };
+	      const on = vis[id] !== false;
+	      if (on) vis[id] = false;else delete vis[id];
+	      return {
+	        sourceVisibility: vis
+	      };
+	    });
+	  }
+	  _sourceFilterSelectAll() {
+	    if (this._unmounted) return;
+	    this.setState({
+	      sourceVisibility: {}
+	    });
+	  }
+	  _sourceFilterSelectNone() {
+	    if (this._unmounted) return;
+	    const ids = providerIdsForFilter(this.state.quoteProviders, this.state.quotes);
+	    const vis = {};
+	    for (let i = 0; i < ids.length; i++) vis[ids[i]] = false;
+	    this.setState({
+	      sourceVisibility: vis
+	    });
+	  }
+	  _setDeltaRange(key) {
+	    if (this._unmounted) return;
+	    this.setState({
+	      deltaRangeKey: key
+	    });
 	  }
 	  componentDidMount() {
-	    const self = this;
-	    self._monitor = setInterval(async () => {
-	      const _GET = async function _GET(path) {
-	        const delta = cryptoRandomSignedUnit();
-	        switch (path) {
-	          case '/quotes':
-	            return self.state.quotes.concat({
-	              created: new Date().toISOString(),
-	              delta,
-	              rate: self.state.quotes[self.state.quotes.length - 1].rate + delta,
-	              currency: 'USD',
-	              symbol: 'BTC'
-	            });
-	          default:
-	            return {
-	              quotes: self.state.quotes
-	            };
-	        }
-	      };
-	      const simulator = {
-	        _GET
-	      };
-	      const remote = simulator;
-	      const result = await remote._GET('/quotes');
-	      self._state.content.quotes = result;
-	      self.setState(self._state.content, () => self._syncChartIntoDom());
-	    }, 2500);
-	    self._syncChartIntoDom();
+	    this._unmounted = false;
+	    this._poll();
+	    this._restartPollTimer();
+	    this._connectReportStream();
 	  }
-	  componentDidUpdate(_, prevState) {
-	    if (prevState.quotes !== this.state.quotes) {
-	      this._syncChartIntoDom();
+	  componentWillUnmount() {
+	    this._disconnectReportStream(true);
+	    if (this._pollAbort) {
+	      this._pollAbort.abort();
+	      this._pollAbort = null;
+	    }
+	    if (this._utxoSeriesAbort) {
+	      this._utxoSeriesAbort.abort();
+	      this._utxoSeriesAbort = null;
+	    }
+	    if (this._pollTimer) {
+	      clearInterval(this._pollTimer);
+	      this._pollTimer = null;
+	    }
+	    this._unmounted = true;
+	  }
+	  componentDidUpdate(prevProps, prevState) {
+	    const tip = this.state.utxoracleChain && Number.isFinite(Number(this.state.utxoracleChain.tip)) ? Math.floor(Number(this.state.utxoracleChain.tip)) : null;
+	    const prevTip = prevState.utxoracleChain && Number.isFinite(Number(prevState.utxoracleChain.tip)) ? Math.floor(Number(prevState.utxoracleChain.tip)) : null;
+	    if (prevProps.feedApiBase !== this.props.feedApiBase || prevState.deltaRangeKey !== this.state.deltaRangeKey || tip !== prevTip || prevState.quoteProviders !== this.state.quoteProviders) {
+	      this._loadUtxoEstimateSeries();
 	    }
 	  }
-	  trust(source) {
-	    source.on('log', this._handleSourceLog.bind(this));
-	  }
-	  _handleBridgeReady(info) {
-	    console.log('[FEED] Bridge Reported Ready:', info);
-	  }
-	  _handleSourceLog(log) {
-	    this.emit('log', `Source log: ${log}`);
-	  }
-	  _syncChartIntoDom() {
-	    const mount = this.chartOuterRef?.current;
-	    if (!mount) return;
-	    while (mount.firstChild) {
-	      mount.removeChild(mount.firstChild);
+	  _loadUtxoEstimateSeries() {
+	    if (this._unmounted) return;
+	    if (this._utxoSeriesAbort) {
+	      this._utxoSeriesAbort.abort();
+	      this._utxoSeriesAbort = null;
 	    }
-	    const svg = this._buildChartSvgEl();
-	    if (svg) {
-	      mount.appendChild(svg);
+	    const providers = Array.isArray(this.state.quoteProviders) ? this.state.quoteProviders : [];
+	    const utxoOn = providers.some(p => String(p.id || '') === 'utxoracle' && p.enabled === true);
+	    if (!utxoOn) {
+	      if (this.state.utxoEstimateSeries.length > 0 || this.state.utxoEstimateSeriesLoading) {
+	        this.setState({
+	          utxoEstimateSeries: [],
+	          utxoEstimateSeriesLoading: false
+	        });
+	      }
+	      return;
 	    }
-	  }
-	  _buildChartSvgEl() {
-	    const quotes = [].concat(this.state.quotes).sort((a, b) => {
-	      return Date.parse(a.created) > Date.parse(b.created) ? -1 : 1;
+	    const tip = this.state.utxoracleChain && Number.isFinite(Number(this.state.utxoracleChain.tip)) ? Math.floor(Number(this.state.utxoracleChain.tip)) : null;
+	    if (tip == null) {
+	      if (this.state.utxoEstimateSeriesLoading) {
+	        this.setState({
+	          utxoEstimateSeriesLoading: false
+	        });
+	      }
+	      return;
+	    }
+	    const rangeOpt = resolveDeltaRangeOption(this.state.deltaRangeKey);
+	    const sliceMin = utxoSliceMinHeight(tip, rangeOpt.ms);
+	    const span = tip - sliceMin + 1;
+	    const maxPoints = Math.max(1, span);
+	    const baseUrl = resolveUtxOracleEstimateSeriesUrl(this.props.feedApiBase);
+	    let url;
+	    try {
+	      url = new URL(baseUrl);
+	      url.searchParams.set('minHeight', String(sliceMin));
+	      url.searchParams.set('maxHeight', String(tip));
+	      url.searchParams.set('maxPoints', String(maxPoints));
+	    } catch {
+	      return;
+	    }
+	    const ac = new AbortController();
+	    this._utxoSeriesAbort = ac;
+	    this.setState({
+	      utxoEstimateSeriesLoading: true
 	    });
-	    const width = this.chartOuterRef?.current?.offsetWidth ? this.chartOuterRef.current.offsetWidth : 600;
-	    return line(quotes.map(x => {
-	      return {
-	        ...x,
-	        created: new Date(x.created)
-	      };
-	    }), {
-	      x: 'created',
-	      y: 'rate'
-	    }).plot({
-	      marginBottom: 50,
-	      marginLeft: 75,
-	      width,
-	      x: {
-	        tickRotate: 45
+	    fetch(String(url), {
+	      signal: ac.signal,
+	      credentials: 'same-origin',
+	      headers: {
+	        Accept: 'application/json'
+	      },
+	      referrerPolicy: 'no-referrer-when-downgrade'
+	    }).then(async res => {
+	      if (!res.ok) {
+	        const j = await res.json().catch(() => ({}));
+	        const err = j && typeof j.error === 'string' ? j.error : `${res.status} ${res.statusText}`;
+	        throw new Error(err);
+	      }
+	      return res.json();
+	    }).then(body => {
+	      if (this._unmounted || this._utxoSeriesAbort !== ac) return;
+	      const pts = body && typeof body === 'object' && Array.isArray(body.points) ? body.points : [];
+	      this.setState({
+	        utxoEstimateSeries: pts,
+	        utxoEstimateSeriesLoading: false
+	      });
+	    }).catch(err => {
+	      if (err?.name === 'AbortError' || this._unmounted) return;
+	      if (this._utxoSeriesAbort !== ac) return;
+	      this.setState({
+	        utxoEstimateSeries: [],
+	        utxoEstimateSeriesLoading: false
+	      });
+	    }).finally(() => {
+	      if (this._utxoSeriesAbort === ac) {
+	        this._utxoSeriesAbort = null;
 	      }
 	    });
 	  }
-	  render() {
-	    const quotes = [].concat(this.state.quotes).sort((a, b) => {
-	      return Date.parse(a.created) > Date.parse(b.created) ? -1 : 1;
+	  _restartPollTimer() {
+	    if (this._pollTimer) {
+	      clearInterval(this._pollTimer);
+	      this._pollTimer = null;
+	    }
+	    if (this._unmounted) return;
+	    const stable = this.props.webSocketEnabled !== false && this._wsStreamStable && this._reportWs && this._reportWs.readyState === WebSocket.OPEN;
+	    const ms = stable ? this.props.pollFallbackIntervalMs : this.props.pollIntervalMs;
+	    this._pollTimer = setInterval(() => {
+	      this._poll({
+	        forceHttp: stable
+	      });
+	    }, ms);
+	  }
+	  _disconnectReportStream(clearReconnect) {
+	    if (clearReconnect) {
+	      clearTimeout(this._wsReconnectTimer);
+	      this._wsReconnectTimer = null;
+	    }
+	    clearTimeout(this._streamStableTimer);
+	    this._streamStableTimer = null;
+	    this._wsStreamStable = false;
+	    if (this._reportWs) {
+	      const ws = this._reportWs;
+	      this._reportWs = null;
+	      ws.onopen = null;
+	      ws.onmessage = null;
+	      ws.onclose = null;
+	      ws.onerror = null;
+	      try {
+	        ws.close();
+	      } catch {
+	        /* noop */
+	      }
+	    }
+	  }
+	  _connectReportStream() {
+	    if (this._unmounted || this.props.webSocketEnabled === false || typeof WebSocket === 'undefined') {
+	      return;
+	    }
+	    this._disconnectReportStream(false);
+	    let ws;
+	    try {
+	      ws = new WebSocket(resolveFeedStreamUrl(this.props.feedApiBase));
+	    } catch {
+	      return;
+	    }
+	    this._reportWs = ws;
+	    this._wsStreamStable = false;
+	    ws.onmessage = ev => {
+	      if (this._unmounted || this._reportWs !== ws) return;
+	      let body;
+	      try {
+	        body = JSON.parse(ev.data);
+	      } catch {
+	        return;
+	      }
+	      if (!body || typeof body !== 'object') return;
+	      if (body.feedStream === true) {
+	        this._handleFeedStreamSideMessage(body);
+	        this._bumpStreamStability(ws);
+	        return;
+	      }
+	      this._applyReportBody(body);
+	      this._bumpStreamStability(ws);
+	    };
+	    ws.onclose = () => {
+	      if (this._reportWs !== ws) return;
+	      this._disconnectReportStream(false);
+	      this._restartPollTimer();
+	      if (!this._unmounted && this.props.webSocketEnabled !== false) {
+	        clearTimeout(this._wsReconnectTimer);
+	        this._wsReconnectTimer = setTimeout(() => this._connectReportStream(), 2500);
+	      }
+	    };
+	    ws.onerror = () => {
+	      /* onclose runs next */
+	    };
+	  }
+	  _bumpStreamStability(ws) {
+	    clearTimeout(this._streamStableTimer);
+	    this._streamStableTimer = setTimeout(() => {
+	      this._streamStableTimer = null;
+	      if (this._unmounted || this._reportWs !== ws || ws.readyState !== WebSocket.OPEN) {
+	        return;
+	      }
+	      if (!this._wsStreamStable) {
+	        this._wsStreamStable = true;
+	        this._restartPollTimer();
+	      }
+	    }, 1500);
+	  }
+
+	  /**
+	   * Fabric-shaped ZMQ fanout from {@code /feed/stream} (not a full `/feed/report` snapshot).
+	   * @param {object} msg
+	   */
+	  _handleFeedStreamSideMessage(msg) {
+	    if (this._unmounted || !msg || typeof msg !== 'object') return;
+	    const t = msg['@type'];
+	    if (t === 'BitcoinBlockHash' && msg['@data'] && typeof msg['@data'] === 'object') {
+	      const d = msg['@data'];
+	      const h = typeof d.height === 'number' ? d.height : Number(d.height);
+	      if (!Number.isFinite(h)) return;
+	      this.setState(prev => ({
+	        utxoracleChain: {
+	          ...(prev.utxoracleChain && typeof prev.utxoracleChain === 'object' ? prev.utxoracleChain : {}),
+	          tip: Math.floor(h)
+	        }
+	      }));
+	    }
+	  }
+	  _openInspectQuote(quote) {
+	    if (this._unmounted || !quote?.sources?.length) return;
+	    this.setState({
+	      inspectQuote: quote
 	    });
-	    const quoteView = quotes.slice(0, LIMIT_PER_PAGE);
-	    const outOfBounds = quotes.length - quoteView.length;
-	    return /*#__PURE__*/React.createElement("fabric-content-page", {
-	      className: "ui page",
-	      ref: this.ref
-	    }, /*#__PURE__*/React.createElement(Segment, null, /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h1", null, "Price")), /*#__PURE__*/React.createElement(Feed, null), /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h2", null, "Symbols")), /*#__PURE__*/React.createElement("div", {
-	      className: "ui cards"
-	    }, this.state.symbols.map(symbol => /*#__PURE__*/React.createElement(Card, {
-	      key: symbol
-	    }, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Header, null, symbol), /*#__PURE__*/React.createElement(Rate, {
-	      currency: this.state.currency,
-	      symbol: symbol
-	    }))))), /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("h2", null, "Quotes")), /*#__PURE__*/React.createElement(Segment, {
-	      ref: this.chartOuterRef,
-	      className: "chart ui segment"
-	    }), /*#__PURE__*/React.createElement("div", {
-	      className: "ui cards"
-	    }, quoteView.map((quote, i) => {
-	      const id = quotes.length - i;
-	      return /*#__PURE__*/React.createElement(Card, {
-	        key: id
-	      }, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("strong", null, "Quote #", id)), /*#__PURE__*/React.createElement(Quote, {
-	        symbol: quote.symbol,
-	        currency: quote.currency,
-	        rate: quote.rate
-	      })));
-	    }), outOfBounds ? /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(Card.Content, null, /*#__PURE__*/React.createElement(Button, null, outOfBounds, " more"))) : undefined)));
+	  }
+	  _closeInspectQuote() {
+	    if (this._unmounted) return;
+	    this.setState({
+	      inspectQuote: null
+	    });
+	  }
+
+	  /**
+	   * @param {object} body Parsed `/feed/report` or WebSocket JSON
+	   */
+	  _applyReportBody(body) {
+	    if (this._unmounted || !body || typeof body !== 'object') return;
+	    const quoteSym = QUOTE_SYMBOL;
+	    const values = body.values && typeof body.values === 'object' ? body.values : {};
+	    const spotsBySymbol = {};
+	    const sourceCountBySymbol = {};
+	    const failures = [];
+	    const btcRow = values[quoteSym];
+	    const price = btcRow && btcRow.price != null ? Number(btcRow.price) : NaN;
+	    if (Number.isFinite(price)) {
+	      spotsBySymbol[quoteSym] = price;
+	      const sc = btcRow && btcRow.sourceCount != null ? Number(btcRow.sourceCount) : undefined;
+	      if (Number.isFinite(sc)) {
+	        sourceCountBySymbol[quoteSym] = sc;
+	      }
+	    } else {
+	      failures.push(`${quoteSym}: no price`);
+	    }
+	    let nextQuotes = this.state.quotes;
+	    const leadPrice = price;
+	    const fiatEarly = body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '' ? String(body.quoteCurrency).trim().toUpperCase() : this.props.currency;
+	    const priceHist = body.priceHistory;
+	    const hasServerHistory = Array.isArray(priceHist) && priceHist.length > 0;
+	    if (hasServerHistory && quoteSym) {
+	      nextQuotes = chartQuotesFromPriceHistory(priceHist, quoteSym, fiatEarly);
+	      if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+	        nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	      }
+	    } else if (Number.isFinite(leadPrice) && quoteSym) {
+	      const scAgg = btcRow && typeof btcRow.sourceCount === 'number' ? btcRow.sourceCount : undefined;
+
+	      /** @type {unknown[] | undefined} */
+	      const contrib = Array.isArray(btcRow.sources) ? [].concat(btcRow.sources) : undefined;
+	      const row = {
+	        created: new Date().toISOString(),
+	        rate: leadPrice,
+	        currency: body.quoteCurrency || this.props.currency,
+	        symbol: quoteSym,
+	        source: 'Feed',
+	        sourceCount: scAgg,
+	        ...(contrib && contrib.length ? {
+	          sources: contrib
+	        } : {})
+	      };
+	      nextQuotes = this.state.quotes.concat(row);
+	      if (nextQuotes.length > MAX_QUOTE_HISTORY) {
+	        nextQuotes = nextQuotes.slice(-MAX_QUOTE_HISTORY);
+	      }
+	    }
+	    const patch = {
+	      spotsBySymbol,
+	      sourceCountBySymbol,
+	      quotes: nextQuotes,
+	      pollError: failures.length ? failures.join(' · ') : null
+	    };
+	    if (body.quoteCurrency != null && String(body.quoteCurrency).trim() !== '') {
+	      patch.reportQuoteCurrency = String(body.quoteCurrency).trim().toUpperCase();
+	    }
+	    if (Array.isArray(body.quoteProviders)) {
+	      patch.quoteProviders = [].concat(body.quoteProviders);
+	    }
+	    const ucx = body.utxoracleChain;
+	    if (ucx && typeof ucx === 'object' && Number.isFinite(Number(ucx.tip))) {
+	      const tip = Math.floor(Number(ucx.tip));
+	      patch.utxoracleChain = {
+	        tip,
+	        tipAsOfMs: Math.round(Number(ucx.tipAsOfMs)),
+	        difficulty: ucx.difficulty != null && Number.isFinite(Number(ucx.difficulty)) ? Number(ucx.difficulty) : null,
+	        chain: typeof ucx.chain === 'string' ? ucx.chain : '',
+	        headers: ucx.headers != null && Number.isFinite(Number(ucx.headers)) ? Math.floor(Number(ucx.headers)) : tip,
+	        verificationProgress: ucx.verificationProgress != null && Number.isFinite(Number(ucx.verificationProgress)) ? Number(ucx.verificationProgress) : null,
+	        initialBlockDownload: ucx.initialBlockDownload === true,
+	        pruned: ucx.pruned === true,
+	        circulatingSupplyBtc: ucx.circulatingSupplyBtc != null && Number.isFinite(Number(ucx.circulatingSupplyBtc)) ? Number(ucx.circulatingSupplyBtc) : null,
+	        tipBlockOutputBtc: ucx.tipBlockOutputBtc != null && Number.isFinite(Number(ucx.tipBlockOutputBtc)) ? Number(ucx.tipBlockOutputBtc) : null
+	      };
+	    } else {
+	      patch.utxoracleChain = null;
+	    }
+	    if (!this._unmounted) {
+	      this.setState(patch);
+	    }
+	  }
+
+	  /**
+	   * @param {{ forceHttp?: boolean }} [opts] When {@code forceHttp} and the stream is stable,
+	   * still perform HTTP (slow safety poll).
+	   */
+	  async _poll(opts = {}) {
+	    if (this._unmounted) return;
+	    const stableWs = this.props.webSocketEnabled !== false && this._wsStreamStable && this._reportWs && this._reportWs.readyState === WebSocket.OPEN;
+	    if (stableWs && !opts.forceHttp) {
+	      return;
+	    }
+	    if (this._pollInFlight) return;
+	    this._pollInFlight = true;
+	    const ac = new AbortController();
+	    this._pollAbort = ac;
+	    try {
+	      const url = resolveFeedReportUrl(this.props.feedApiBase);
+	      let body;
+	      try {
+	        const res = await fetch(url, {
+	          signal: ac.signal,
+	          credentials: 'same-origin',
+	          headers: {
+	            Accept: 'application/json'
+	          },
+	          referrerPolicy: 'no-referrer-when-downgrade'
+	        });
+	        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+	        body = await res.json();
+	      } catch (err) {
+	        if (err?.name === 'AbortError') return;
+	        const msg = err?.message || String(err);
+	        if (!this._unmounted) {
+	          this.setState({
+	            pollError: msg
+	          });
+	        }
+	        return;
+	      }
+	      if (this._unmounted) return;
+	      this._applyReportBody(body);
+	    } finally {
+	      this._pollInFlight = false;
+	      if (this._pollAbort === ac) {
+	        this._pollAbort = null;
+	      }
+	      if (!this._unmounted) {
+	        this.setState(prev => prev.reportLoading ? {
+	          reportLoading: false
+	        } : null);
+	      }
+	    }
+	  }
+	  render() {
+	    const sourceVisibility = this.state.sourceVisibility || {};
+	    const quotesFiltered = filterQuotesBySourceVisibility(this.state.quotes, sourceVisibility);
+	    const quotesNewestFirst = [].concat(quotesFiltered).sort((a, b) => Date.parse(b.created) - Date.parse(a.created));
+	    const quoteView = quotesNewestFirst.slice(0, MAX_QUOTE_ROWS);
+	    const serverLead = this.state.spotsBySymbol[QUOTE_SYMBOL];
+	    const serverSrcCount = this.state.sourceCountBySymbol[QUOTE_SYMBOL];
+	    let leadUsd = serverLead;
+	    /** @type {number|undefined} */
+	    let btcSourceCount = serverSrcCount;
+	    if (this.state.quotes.length > 0) {
+	      if (quotesNewestFirst.length > 0) {
+	        const newest = quotesNewestFirst[0];
+	        const r = Number(newest.rate);
+	        if (Number.isFinite(r) && r > 0) {
+	          leadUsd = r;
+	          const sc = newest.sourceCount;
+	          btcSourceCount = typeof sc === 'number' && Number.isFinite(sc) ? sc : Array.isArray(newest.sources) ? newest.sources.length : undefined;
+	        } else {
+	          leadUsd = undefined;
+	          btcSourceCount = 0;
+	        }
+	      } else {
+	        leadUsd = undefined;
+	        btcSourceCount = 0;
+	      }
+	    }
+	    const fiat = this.state.reportQuoteCurrency !== undefined && this.state.reportQuoteCurrency !== null ? this.state.reportQuoteCurrency : this.props.currency;
+	    const inspectQuote = this.state.inspectQuote;
+	    const quoteProviders = Array.isArray(this.state.quoteProviders) ? this.state.quoteProviders : [];
+	    const utxoOracleEnabled = quoteProviders.some(p => String(p.id || '') === 'utxoracle' && p.enabled === true);
+	    const providerIds = providerIdsForFilter(quoteProviders, this.state.quotes);
+	    const labelById = new Map(quoteProviders.map(p => [String(p.id || ''), String(p.label || p.id || '')]));
+	    const tlsByProvider = new Map();
+	    for (let ti = 0; ti < quoteProviders.length; ti++) {
+	      const p = quoteProviders[ti];
+	      const pid = p && p.id != null ? String(p.id) : '';
+	      if (pid && p.lastTls && typeof p.lastTls === 'object') {
+	        tlsByProvider.set(pid, p.lastTls);
+	      }
+	    }
+	    const rangeOpt = resolveDeltaRangeOption(this.state.deltaRangeKey);
+	    const delta = deltaForRange(typeof leadUsd === 'number' ? leadUsd : NaN, quotesFiltered, rangeOpt);
+	    const headlineQuote = quotesNewestFirst[0];
+	    const utxoSrc = headlineQuote && Array.isArray(headlineQuote.sources) ? headlineQuote.sources.find(s => s && String(s.provider || '') === 'utxoracle' && Number.isFinite(Number(s.price))) : null;
+	    const utxoSpotForCard = utxoSrc && Number.isFinite(Number(utxoSrc.price)) ? {
+	      price: Number(utxoSrc.price),
+	      fiat,
+	      excludedFromSpot: /** @type {{ excludedFromSpot?: boolean }} */utxoSrc.excludedFromSpot === true
+	    } : null;
+	    const showHeadlineSourceColumn = headlineQuote && Array.isArray(headlineQuote.sources) && headlineQuote.sources.some(s => isSourceVisible(/** @type {{ provider?: string }} */s?.provider, sourceVisibility) && Number.isFinite(Number(s?.price)));
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs(Container, {
+	      text: true,
+	      style: {
+	        paddingTop: '1rem',
+	        paddingBottom: '2rem'
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Segment, {
+	        raised: true,
+	        padded: true,
+	        clearing: true,
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	            children: "fiat.fabric.pub"
+	          })
+	        }), this.state.reportLoading && !this.state.pollError ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	          info: true,
+	          size: "small",
+	          children: ["Fetching feed report from ", /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	            children: resolveFeedReportUrl(this.props.feedApiBase)
+	          }), "\u2026"]
+	        }) : null, this.state.pollError ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	          warning: true,
+	          size: "small",
+	          children: ["Feed data incomplete: ", this.state.pollError]
+	        }) : null, /*#__PURE__*/jsxRuntimeExports.jsx(Feed, {
+	          spotUsd: leadUsd,
+	          spotCurrency: fiat,
+	          label: typeof btcSourceCount === 'number' ? `BTC → ${fiat} · weighted (${btcSourceCount} source${btcSourceCount === 1 ? '' : 's'})` : `BTC → ${fiat}`,
+	          trailing: typeof leadUsd === 'number' && Number.isFinite(leadUsd) ? /*#__PURE__*/jsxRuntimeExports.jsx(DeltaInline, {
+	            delta: delta,
+	            fiat: fiat
+	          }) : null,
+	          aside: showHeadlineSourceColumn ? /*#__PURE__*/jsxRuntimeExports.jsx(HeadlineSourceQuotes, {
+	            quote: headlineQuote,
+	            sourceVisibility: sourceVisibility,
+	            labelById: labelById,
+	            fiat: fiat,
+	            tlsByProvider: tlsByProvider,
+	            onOpenInspect: this._openInspectQuote
+	          }) : null
+	        }), utxoOracleEnabled ? /*#__PURE__*/jsxRuntimeExports.jsx(BitcoinTipCard, {
+	          chain: this.state.utxoracleChain,
+	          utxoSpot: utxoSpotForCard,
+	          headlineSpotUsd: typeof leadUsd === 'number' && Number.isFinite(leadUsd) ? leadUsd : null,
+	          fiat: fiat
+	        }) : null, utxoOracleEnabled ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	          style: {
+	            width: '100%',
+	            marginTop: '1rem'
+	          },
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx(UtxOracleBlockNavigator, {
+	            feedApiBase: this.props.feedApiBase,
+	            enabled: utxoOracleEnabled,
+	            rangeOpt: rangeOpt,
+	            utxoracleChain: this.state.utxoracleChain
+	          })
+	        }) : null, /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	          style: {
+	            width: '100%',
+	            marginTop: '1rem'
+	          },
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(TimeSliceToolbar, {
+	            deltaRangeKey: this.state.deltaRangeKey,
+	            onSetRange: this._setDeltaRange,
+	            rangeOpt: rangeOpt,
+	            sourceFilter: providerIds.length ? {
+	              providerIds,
+	              labelById,
+	              sourceVisibility,
+	              onToggle: this._toggleSourceFilter,
+	              onSelectAll: this._sourceFilterSelectAll,
+	              onSelectNone: this._sourceFilterSelectNone
+	            } : null
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(DeltaReadout, {
+	            rangeOpt: rangeOpt,
+	            delta: delta,
+	            leadUsd: leadUsd
+	          })]
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Chart, {
+	          quotes: quotesFiltered,
+	          deltaRangeKey: this.state.deltaRangeKey,
+	          reportQuoteCurrency: this.state.reportQuoteCurrency,
+	          currency: this.props.currency,
+	          pollError: this.state.pollError,
+	          historicalOhlcUrl: this.props.historicalOhlcUrl,
+	          utxoEstimateSeries: utxoOracleEnabled ? this.state.utxoEstimateSeries : null,
+	          utxoEstimateSeriesLoading: utxoOracleEnabled && this.state.utxoEstimateSeriesLoading
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	          dividing: true,
+	          children: "Sources"
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(QuoteProvidersTable, {
+	          providers: quoteProviders
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(Divider, {
+	          section: true
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(RecentQuotesList, {
+	          quoteView: quoteView,
+	          totalQuotes: quotesNewestFirst.length,
+	          onOpenInspect: this._openInspectQuote
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx(QuoteInspectModal, {
+	          open: inspectQuote != null,
+	          quote: inspectQuote,
+	          tlsByProvider: tlsByProvider,
+	          onClose: this._closeInspectQuote
+	        })]
+	      }), /*#__PURE__*/jsxRuntimeExports.jsx(Segment, {
+	        children: /*#__PURE__*/jsxRuntimeExports.jsx("p", {
+	          children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx("a", {
+	              href: "https://github.com/FabricLabs/price-feed.git",
+	              children: "git://"
+	            })
+	          })
+	        })
+	      })]
+	    });
 	  }
 	}
 
-	// Dependencies
-
-	// Settings
 	const settings = {
 	  currency: 'USD',
-	  symbols: ['BTC', 'LTC', 'NMC']
+	  pollIntervalMs: 1050,
+	  pollFallbackIntervalMs: 30_000,
+	  webSocketEnabled: true,
+	  feedApiBase: '',
+	  historicalOhlcUrl: 'data/btc-usd-daily-ohlc.json'
 	};
-
-	// Main Process Definition
 	async function main(input = {}) {
 	  const container = document.getElementById('feed');
+	  if (!container) {
+	    console.error('[PORTAL:FEED] No element with id="feed" — UI will not render. Check index.html.');
+	    return;
+	  }
 	  const root = clientExports.createRoot(container);
-	  root.render(/*#__PURE__*/reactExports.createElement(FeedMonitor, {
-	    state: input
+	  root.render(/*#__PURE__*/jsxRuntimeExports.jsx(FeedMonitor, {
+	    currency: input.currency,
+	    feedApiBase: input.feedApiBase,
+	    pollIntervalMs: input.pollIntervalMs,
+	    pollFallbackIntervalMs: input.pollFallbackIntervalMs,
+	    webSocketEnabled: input.webSocketEnabled,
+	    historicalOhlcUrl: input.historicalOhlcUrl
 	  }));
 	  return {
 	    react: {
@@ -57609,12 +70917,8 @@
 	    }
 	  };
 	}
-
-	// Run Main Process
 	main(settings).catch(exception => {
 	  console.error('[PORTAL:FEED] Main Process Exception:', exception);
-	}).then(output => {
-	  console.log('[PORTAL:FEED] Main Process Output:', output);
 	});
 
 })();

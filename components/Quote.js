@@ -1,108 +1,153 @@
 /**
- * Live price feed component.
+ * Single-quote detail (table + optional source breakdown).
  */
 
-import React, {
-  Component
-} from 'react';
+'use strict';
 
-import {
-  Segment,
-  Table
-} from 'semantic-ui-react';
+import { Component } from 'react';
 
-const label = {
-  textAlign: 'right'
-};
+import { Table } from 'semantic-ui-react';
+
+import { formatFiatPrice, formatLocaleNumber, locale } from './localeNumber';
+import TlsQuoteTrust from './feedMonitor/TlsQuoteTrust';
+import { lookupProviderTls } from './feedMonitor/utils';
+
+const AGE_TICK_MS = 32;
 
 export default class Quote extends Component {
   constructor (props = {}) {
     super(props);
 
-    this.state = { ...props };
-
-    this.settings = Object.assign({
-      frequency: 0.007
-    }, this.state);
-
-    this._state = {
-      content: Object.assign({
-        age: 0,
-        created: (new Date()).toISOString(),
-        currency: 'USD',
-        rate: 29349.54,
-        symbol: 'BTC'
-      }, this.state)
+    this.state = {
+      age: 0
     };
   }
 
-  get locale () {
-    return Intl.NumberFormat().resolvedOptions().locale;
-  }
-
-  get rate () {
-    return this.state.value;
-  }
-
   componentDidMount () {
-    const self = this;
-    self._timekeeper = setInterval(() => {
-      self._state.content.age = Date.now() - Date.parse(this.state.created ?? self._state.content.created);
-      self.setState(self._state.content);
-    }, self.settings.frequency);
+    const tick = () => {
+      const created = this.props.created;
+      const t = typeof created === 'string' ? Date.parse(created) : NaN;
+      this.setState({
+        age: Number.isFinite(t) ? Math.max(0, Date.now() - t) : 0
+      });
+    };
+    tick();
+    this._timekeeper = setInterval(tick, AGE_TICK_MS);
   }
 
-  withLocale (value) {
-    let n = value;
-    if (typeof n !== 'number') n = parseFloat(String(value));
-    return typeof n === 'number' && !Number.isNaN(n)
-      ? n.toLocaleString(this.locale)
-      : '';
+  componentWillUnmount () {
+    if (this._timekeeper) clearInterval(this._timekeeper);
+  }
+
+  _formatLogAge (ln) {
+    if (typeof ln !== 'number' || !Number.isFinite(ln)) return '—';
+    return ln.toLocaleString(locale(), { maximumFractionDigits: 4 });
+  }
+
+  _abbrSources (sources) {
+    if (!Array.isArray(sources) || !sources.length) return '';
+    const parts = sources.map((s) => (s.label || s.provider)).filter(Boolean);
+    return parts.join(' · ') || '';
   }
 
   render () {
+    const symbol = this.props.symbol ?? '';
+    const currency = this.props.currency ?? '';
+    const rate = typeof this.props.rate === 'number' ? this.props.rate : 0;
+    const src = this.props.sourceCount;
+    /** @type {{ label?: string, provider?: string }[]|undefined} */
+    const sources = Array.isArray(this.props.sources) ? this.props.sources : undefined;
+    const compact = !!this.props.compactSourceList;
+    const expanded = !!this.props.showAllSources;
+    const tlsByProvider = this.props.tlsByProvider;
+
     return (
-      <portal-feed-quote>
-        <Segment compact>
-          <Table>
-            <Table.Header />
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell style={label}>
-                  <label htmlFor="quote-symbol-id"><strong>Symbol:</strong></label>
-                </Table.Cell>
-                <Table.Cell>
-                  <code id="quote-symbol-id" data-bind="symbol">{this.state.symbol}</code>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell style={label}>
-                  <label htmlFor="quote-currency-id"><strong>Currency:</strong></label>
-                </Table.Cell>
-                <Table.Cell>
-                  <code id="quote-currency-id" data-bind="currency">{this.state.currency}</code>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell style={label}>
-                  <label htmlFor="quote-rate-id"><strong>Rate:</strong></label>
-                </Table.Cell>
-                <Table.Cell>
-                  <code id="quote-rate-id" data-bind="rate">{this.state.rate.toFixed(2)}</code>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell style={label}>
-                  <label htmlFor="quote-age-id"><strong>Age:</strong></label>
-                </Table.Cell>
-                <Table.Cell>
-                  <abbr id="quote-age-id" data-bind="age" title={this.state.created}>{this.state.age} ms</abbr>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </Segment>
-      </portal-feed-quote>
+      <Table
+        definition
+        unstackable
+      >
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Symbol</Table.Cell>
+            <Table.Cell><code>{symbol}</code></Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Currency</Table.Cell>
+            <Table.Cell>{currency}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Rate</Table.Cell>
+            <Table.Cell><strong>{formatFiatPrice(rate, currency)}</strong></Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Sources</Table.Cell>
+            <Table.Cell>
+              {(typeof src === 'number' && Number.isFinite(src)) ? String(src) : '—'}
+            </Table.Cell>
+          </Table.Row>
+          {compact && sources && sources.length ? (
+            <Table.Row>
+              <Table.Cell colSpan={2}>
+                <span
+                  style={{
+                    fontSize: '0.92em',
+                    color: 'rgba(0,0,0,.6)',
+                    lineHeight: 1.45,
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {this._abbrSources(sources)}
+                </span>
+              </Table.Cell>
+            </Table.Row>
+          ) : null}
+          <Table.Row>
+            <Table.Cell>Age</Table.Cell>
+            <Table.Cell>{this.state.age} ms</Table.Cell>
+          </Table.Row>
+          {expanded && sources && sources.length ? (
+              <>
+                <Table.Row>
+                  <Table.Cell colSpan={2}>
+                    <strong style={{ fontSize: '0.92em' }}>Contributors</strong>
+                  </Table.Cell>
+                </Table.Row>
+                {sources.map((s) => {
+                  const lbl = String(s.label || s.provider || '—');
+                  const key =
+                    lbl + ':' + String(s.price) + ':' + String((s.age));
+                  const cacheLbl =
+                    s.fromCache
+                      ? (typeof s.cacheAgeMs === 'number'
+                        ? `cache · ${Math.round(s.cacheAgeMs)} ms ago`
+                        : 'cache')
+                      : 'live';
+
+                  return (
+                    <Table.Row key={key}>
+                      <Table.Cell>{lbl}</Table.Cell>
+                      <Table.Cell>
+                        <strong>{formatFiatPrice(Number(s.price), currency)}</strong>
+                        <div style={{ fontSize: '0.82em', color: 'rgba(0,0,0,.6)' }}>
+                          ln-age {this._formatLogAge(Number(s.age))} ·{' '}
+                          <span>{cacheLbl}</span>
+                        </div>
+                        {tlsByProvider ? (
+                          <div style={{ marginTop: '0.4rem' }}>
+                            <TlsQuoteTrust
+                              tls={lookupProviderTls(tlsByProvider, s.provider)}
+                              compact={false}
+                            />
+                          </div>
+                        ) : null}
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </>
+            ) : null}
+        </Table.Body>
+      </Table>
     );
   }
 }

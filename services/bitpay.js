@@ -1,51 +1,47 @@
 'use strict';
 
-const Service = require('@fabric/core/types/service');
-const Remote = require('@fabric/http/types/remote');
+const QuoteProvider = require('../types/quoteProvider');
+const Worker = require('../types/worker');
+const { throwIfFabricHttpError } = require('../types/remoteResponse');
+const { normalizeSpotQuote, ageLogFromAsOfMs } = require('../types/spotQuote');
 
-class BitPay extends Service {
+class BitPay extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
-    this.settings = Object.assign({
-      currency: 'USD',
-      symbols: [
-        'BTC'
-      ]
-    }, this.settings, settings);
+    this.settings = Object.assign(
+      {
+        quoteCurrency: 'USD',
+        symbols: ['BTC']
+      },
+      this.settings,
+      settings
+    );
 
-    this.remote = new Remote({
-      authority: 'bitpay.com'
+    this.http = new Worker({
+      serviceId: 'bitpay',
+      label: 'BitPay',
+      authority: 'bitpay.com',
+      timeoutMs: this.settings.timeoutMs
     });
-
-    this._state = {
-      content: {
-        prices: {}
-      }
-    }
-
-    return this;
-  }
-
-  get currency () {
-    return this.settings.currency;
+    this.remote = this.http.remote;
   }
 
   async getAllQuotesForSymbol (symbol) {
-    if (symbol !== 'BTC') throw new Error('Only the "BTC" symbol is supported.');
+    this.assertBtc(symbol);
 
-    const start = new Date();
-    const result = await this.remote._GET(`/rates`);
-    const age = Math.log(new Date() - start);
+    const asOfMs = Math.round(Date.now());
+    const result = await this.http.get('/rates');
+    throwIfFabricHttpError(result, 'BitPay');
 
-    return result.data.map(price => {
-      return {
-        age: age,
-        created: start,
-        currency: price.code,
-        price: price.rate
-      }
-    });
+    const age = ageLogFromAsOfMs(asOfMs);
+
+    return result.data.map((price) => ({
+      age,
+      created: new Date(asOfMs),
+      currency: price.code,
+      price: price.rate
+    }));
   }
 
   async syncAllQuotesForSymbol (symbol) {
@@ -57,46 +53,41 @@ class BitPay extends Service {
     }
 
     this.commit();
-
     return this;
   }
 
-  async getPriceForSymbol (symbol) {
-    const asset = await this.getQuoteForSymbol(symbol);
-    return asset.price;
-  }
-
   async getQuoteForSymbol (symbol) {
-    if (symbol !== 'BTC') throw new Error('Only the "BTC" symbol is supported.');
+    this.assertBtc(symbol);
 
-    const currency = this.currency;
+    const fiatCode = this.settings.quoteCurrency ?? 'USD';
+    const result = await this.http.get(`/rates/${symbol}`);
+    throwIfFabricHttpError(result, 'BitPay');
 
-    // Request from BitPay
-    const start = new Date();
-    const result = await this.remote._GET(`/rates/${this.currency}`);
-    const age = Math.log(new Date() - start);
-    const quote = (result.data instanceof Array) ?
-      result.data.find(candidate => (candidate.code === currency)) :
-      result.data;
+    const quoteRow =
+      result.data instanceof Array
+        ? result.data.find((candidate) => candidate.code === fiatCode)
+        : result.data;
 
-    // Return valid Quote
-    return {
-      age: age,
-      created: start,
-      currency: this.currency,
-      price: quote.rate
-    };
-  }
+    if (
+      !quoteRow ||
+      typeof quoteRow !== 'object' ||
+      quoteRow.rate == null
+    ) {
+      throw new Error(`BitPay: no ${fiatCode} rate in response.`);
+    }
 
-  async getAssetForSymbol (symbol) {
-    const quote = await this.getQuoteForSymbol(symbol);
+    const rate = Number(quoteRow.rate);
+    if (!Number.isFinite(rate)) {
+      throw new Error('BitPay: invalid numeric rate.');
+    }
 
-    // Return valid asset, with quote
-    return {
-      quote: quote,
-      name: 'Bitcoin',
-      symbol: symbol
-    };
+    const asOfMs = Math.round(Date.now());
+    return normalizeSpotQuote({
+      price: rate,
+      currency: fiatCode,
+      asOfMs,
+      asOfSource: 'fetch'
+    });
   }
 }
 

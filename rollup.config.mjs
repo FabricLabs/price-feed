@@ -5,7 +5,6 @@ import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import replace from "@rollup/plugin-replace";
-import css from "rollup-plugin-import-css";
 import json from "@rollup/plugin-json";
 import url from "@rollup/plugin-url";
 
@@ -18,17 +17,21 @@ const plugins = [
     preventAssignment: true,
     "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
   }),
-  css(),
   json(),
   url(),
   babel({
     babelHelpers: "bundled",
     babelrc: false,
-    presets: ["@babel/preset-react"],
+    presets: [
+      [
+        "@babel/preset-react",
+        { runtime: "automatic", importSource: "react" },
+      ],
+    ],
     exclude: "node_modules/**",
   }),
   commonjs({
-    include: "node_modules/**",
+    include: [/node_modules/, /types[/]quoteTime\.js$/]
   }),
 ];
 
