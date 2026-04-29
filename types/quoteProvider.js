@@ -3,7 +3,7 @@
 /**
  * Base class for spot quote providers. {@link ../services/feed} calls
  * `getQuoteForSymbol`, merges with inverse-age weighting ({@link ./quoteTime}),
- * and exposes `GET /feed/report`.
+ * and exposes aggregated JSON under **`GET /quotes/snapshot`** (legacy `/feed/report`).
  */
 
 const Service = require('@fabric/core/types/service');

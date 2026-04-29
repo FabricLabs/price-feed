@@ -8,93 +8,132 @@ export const QUOTE_SYMBOL = 'BTC';
 export const MAX_QUOTE_ROWS = 24;
 export const MAX_QUOTE_HISTORY = 2048;
 
+/** Canonical path for aggregated report JSON (Fabric-style). */
+export const QUOTES_SNAPSHOT_PATH = '/quotes/snapshot';
+export const QUOTES_SPOT_PATH = '/quotes/spot';
+export const QUOTES_PROVIDERS_PATH = '/quotes/providers';
+export const QUOTES_HISTORY_PATH = '/quotes/history';
+export const QUOTES_CHAIN_PATH = '/quotes/chain';
+
+/** WebSocket JSON stream matching {@link QUOTES_SNAPSHOT_PATH} payloads. */
+export const QUOTES_STREAM_PATH = '/quotes/stream';
+
 /**
  * @param {string} [feedApiBase]
  * @returns {string}
  */
-export function resolveFeedReportUrl (feedApiBase) {
+export function resolveQuotesSnapshotUrl (feedApiBase) {
   const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
   if (base) {
-    return `${base}/feed/report`;
+    return `${base}${QUOTES_SNAPSHOT_PATH}`;
   }
   if (typeof window !== 'undefined' && window.location?.origin) {
     try {
-      return new URL('/feed/report', window.location.origin).href;
+      return new URL(QUOTES_SNAPSHOT_PATH, window.location.origin).href;
     } catch {
       /* fall through */
     }
   }
-  return '/feed/report';
+  return QUOTES_SNAPSHOT_PATH;
 }
 
-/** Same origin path as {@link resolveFeedReportUrl} for the plain-JSON report stream (not Fabric Bridge). */
-export const FEED_REPORT_STREAM_PATH = '/feed/stream';
+function resolveFeedPathUrl (feedApiBase, path) {
+  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+  if (base) return `${base}${path}`;
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    try {
+      return new URL(path, window.location.origin).href;
+    } catch {
+      /* fall through */
+    }
+  }
+  return path;
+}
+
+export function resolveQuotesSpotUrl (feedApiBase) {
+  return resolveFeedPathUrl(feedApiBase, QUOTES_SPOT_PATH);
+}
+
+export function resolveQuotesProvidersUrl (feedApiBase) {
+  return resolveFeedPathUrl(feedApiBase, QUOTES_PROVIDERS_PATH);
+}
+
+export function resolveQuotesHistoryUrl (feedApiBase) {
+  return resolveFeedPathUrl(feedApiBase, QUOTES_HISTORY_PATH);
+}
+
+export function resolveQuotesChainUrl (feedApiBase) {
+  return resolveFeedPathUrl(feedApiBase, QUOTES_CHAIN_PATH);
+}
 
 /**
- * WebSocket URL for {@link FEED_REPORT_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
+ * WebSocket URL for {@link QUOTES_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
  * @param {string} [feedApiBase]
  * @returns {string}
  */
-export function resolveFeedStreamUrl (feedApiBase) {
+export function resolveQuotesStreamUrl (feedApiBase) {
   const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
   if (base) {
     if (/^https:\/\//i.test(base)) {
-      return `wss://${base.slice('https://'.length)}${FEED_REPORT_STREAM_PATH}`;
+      return `wss://${base.slice('https://'.length)}${QUOTES_STREAM_PATH}`;
     }
     if (/^http:\/\//i.test(base)) {
-      return `ws://${base.slice('http://'.length)}${FEED_REPORT_STREAM_PATH}`;
+      return `ws://${base.slice('http://'.length)}${QUOTES_STREAM_PATH}`;
     }
     try {
       const u = new URL(base, 'http://localhost');
       const proto = u.protocol === 'https:' ? 'wss:' : 'ws:';
-      return `${proto}//${u.host}${FEED_REPORT_STREAM_PATH}`;
+      return `${proto}//${u.host}${QUOTES_STREAM_PATH}`;
     } catch {
       /* fall through */
     }
   }
   if (typeof window !== 'undefined' && window.location?.host) {
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return `${proto}//${window.location.host}${FEED_REPORT_STREAM_PATH}`;
+    return `${proto}//${window.location.host}${QUOTES_STREAM_PATH}`;
   }
-  return `ws://127.0.0.1:3000${FEED_REPORT_STREAM_PATH}`;
+  return `ws://127.0.0.1:3000${QUOTES_STREAM_PATH}`;
+}
+
+/**
+ * Canonical UTXOracle single-height estimate via **`GET /blocks?height=`** (redirects to **`/blocks/:hash`**).
+ * @param {string} [feedApiBase]
+ * @returns {string}
+ */
+export function resolveBitcoinOracleEstimateUrl (feedApiBase) {
+  const path = '/blocks';
+  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+  if (base) {
+    return `${base}${path}`;
+  }
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    try {
+      return new URL(path, window.location.origin).href;
+    } catch {
+      /* fall through */
+    }
+  }
+  return path;
 }
 
 /**
  * @param {string} [feedApiBase]
  * @returns {string}
  */
-export function resolveUtxOracleEstimateUrl (feedApiBase) {
+export function resolveBitcoinOracleEstimateSeriesUrl (feedApiBase) {
+  const path = '/blocks';
   const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
   if (base) {
-    return `${base}/feed/utxoracle/estimate`;
+    return `${base}${path}`;
   }
   if (typeof window !== 'undefined' && window.location?.origin) {
     try {
-      return new URL('/feed/utxoracle/estimate', window.location.origin).href;
+      return new URL(path, window.location.origin).href;
     } catch {
       /* fall through */
     }
   }
-  return '/feed/utxoracle/estimate';
-}
-
-/**
- * @param {string} [feedApiBase]
- * @returns {string}
- */
-export function resolveUtxOracleEstimateSeriesUrl (feedApiBase) {
-  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
-  if (base) {
-    return `${base}/feed/utxoracle/estimate-series`;
-  }
-  if (typeof window !== 'undefined' && window.location?.origin) {
-    try {
-      return new URL('/feed/utxoracle/estimate-series', window.location.origin).href;
-    } catch {
-      /* fall through */
-    }
-  }
-  return '/feed/utxoracle/estimate-series';
+  return path;
 }
 
 /**

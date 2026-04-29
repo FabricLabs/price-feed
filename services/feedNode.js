@@ -82,7 +82,7 @@ class FeedNode extends Node {
     });
 
     source.on('commit', function () {
-      /* Feed commits frequently (_sync, HTTP /feed/report); use _flushPricingReport instead. */
+      /* Feed commits frequently (_sync, HTTP /quotes/snapshot); use _flushPricingReport instead. */
     });
 
     source.on('ready', function () {

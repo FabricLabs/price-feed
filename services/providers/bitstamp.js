@@ -4,10 +4,10 @@
  * Bitstamp public v2 ticker — `last`, venue `timestamp` (Unix seconds).
  * @see https://www.bitstamp.net/api/
  */
-const QuoteProvider = require('../types/quoteProvider');
-const Worker = require('../types/worker');
-const { throwIfFabricHttpError } = require('../types/remoteResponse');
-const { normalizeSpotQuote } = require('../types/spotQuote');
+const QuoteProvider = require('../../types/quoteProvider');
+const Worker = require('../../types/worker');
+const { throwIfFabricHttpError } = require('../../types/remoteResponse');
+const { normalizeSpotQuote } = require('../../types/spotQuote');
 
 class Bitstamp extends QuoteProvider {
   constructor (settings = {}) {

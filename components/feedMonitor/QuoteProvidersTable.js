@@ -29,7 +29,6 @@ export default function QuoteProvidersTable ({ providers }) {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Provider</Table.HeaderCell>
-            <Table.HeaderCell>Active</Table.HeaderCell>
             <Table.HeaderCell>Fabric service</Table.HeaderCell>
             <Table.HeaderCell>Last success</Table.HeaderCell>
             <Table.HeaderCell>Next update</Table.HeaderCell>
@@ -76,9 +75,6 @@ export default function QuoteProvidersTable ({ providers }) {
                       ? `resource: ${String(row.resource.key)}`
                       : ''}
                   </div>
-                </Table.Cell>
-                <Table.Cell>
-                  {row.enabled ? 'yes' : 'no'}
                 </Table.Cell>
                 <Table.Cell
                   style={{

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Dropdown, Icon, Message } from 'semantic-ui-react';
 
 import { formatFiatPrice } from '../localeNumber';
-import { resolveUtxOracleEstimateUrl } from './utils';
+import { resolveBitcoinOracleEstimateUrl } from './utils';
 
 /** Target inter-block time for mapping chart range → block span (mainnet ~10 min). */
 export const BTC_TARGET_BLOCK_MS = 600_000;
@@ -90,13 +90,21 @@ export default function UtxOracleBlockNavigator ({
       return;
     }
     const ac = new AbortController();
+    const requestedHeight = Math.floor(focusHeight);
     (async () => {
       setLoading(true);
       setError(null);
-      setResult(null);
+      setResult((prev) => {
+        const ph =
+          prev != null && typeof prev.height === 'number'
+            ? Math.floor(Number(prev.height))
+            : null;
+        if (ph === requestedHeight) return prev;
+        return null;
+      });
       try {
-        const url = new URL(resolveUtxOracleEstimateUrl(feedApiBase));
-        url.searchParams.set('height', String(Math.floor(focusHeight)));
+        const url = new URL(resolveBitcoinOracleEstimateUrl(feedApiBase));
+        url.searchParams.set('height', String(requestedHeight));
         const res = await fetch(url.href, {
           signal: ac.signal,
           credentials: 'same-origin',
@@ -115,13 +123,32 @@ export default function UtxOracleBlockNavigator ({
           setResult(null);
           return;
         }
-        const price = Number(body.price);
+        const utxo = body.utxoracle;
+        if (
+          utxo != null &&
+          typeof utxo === 'object' &&
+          /** @type {{ error?: unknown }} */ (utxo).error != null &&
+          /** @type {{ error?: unknown }} */ (utxo).error !== ''
+        ) {
+          const err =
+            typeof /** @type {{ error?: unknown }} */ (utxo).error === 'string'
+              ? /** @type {{ error: string }} */ (utxo).error
+              : String(/** @type {{ error?: unknown }} */ (utxo).error);
+          setError(err);
+          setResult(null);
+          return;
+        }
+        const row =
+          utxo != null && typeof utxo === 'object' && 'price' in utxo
+            ? /** @type {Record<string, unknown>} */ (utxo)
+            : body;
+        const price = Number(row.price);
         if (!Number.isFinite(price)) {
           setError('Unexpected response from feed.');
           setResult(null);
           return;
         }
-        setResult(body);
+        setResult(row);
       } catch (e) {
         if (/** @type {{ name?: string }} */ (e).name === 'AbortError') return;
         setError(e && e.message ? String(e.message) : String(e));

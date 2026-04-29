@@ -11,7 +11,7 @@
  */
 const assert = require('node:assert');
 
-const BitPay = require('../../services/bitpay');
+const BitPay = require('../../services/providers/bitpay');
 
 describe('BitPay live rates (bitpay.com)', function () {
   this.timeout(60_000);

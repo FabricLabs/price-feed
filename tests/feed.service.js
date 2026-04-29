@@ -17,7 +17,7 @@ function getFreeListenPort () {
   });
 }
 
-describe('@portal/feed', function () {
+describe('@fabric/fiat', function () {
   describe('Feed', function () {
     this.timeout(15000);
 

@@ -5,20 +5,30 @@
  * implementations, persists snapshots, and serves JSON + static UI via {@link HTTPServer}.
  *
  * **Learn the path:** {@link ../types/quoteProvider} → exchange services ({@link ../types/worker}
- * for HTTP) → `_fetchProviderQuotes` / `syncAllPrices` → `GET /feed/report` →
+ * for HTTP) → `_fetchProviderQuotes` / `syncAllPrices` → **`GET /quotes/snapshot`** →
  * {@link ../components/FeedMonitor}.
  *
+ * **Bitcoin blocks:** canonical **`GET /blocks/:hash`** returns **`getBlockInfo`** fields plus optional **`utxoracle`** (USD estimate for that height). **`GET /blocks/:num`** (decimal height) **302** → **`/blocks/:hash`**. **`GET /blocks?height=`** resolves the block hash and **302** the same way. **UTXOracle series:** **`GET /blocks?minHeight=&maxHeight=&maxPoints=`**. **`GET /transactions/:txid`** mirrors **`getTransactionInfo`**.
+ *
  * **Hub / advanced RPC:** the same HTTP stack supports JSON-RPC and Bridge-friendly patterns
- * (Fabric {@code Message} frames on the default WebSocket upgrade). The feed UI additionally
- * uses a **plain JSON** stream at {@code GET ws…/feed/stream} so browsers can subscribe without
- * the Hub Bridge wire format; HTTP {@code GET /feed/report} remains the compatibility surface.
+ * (Fabric {@code Message} frames on the default WebSocket upgrade). The dashboard uses a plain JSON
+ * WebSocket at **`GET ws…/quotes/stream`** without the Hub Bridge wire format.
  * When UTXOracle is on, a single {@link Bitcoin} client on the Feed owns RPC + ZMQ and forwards
  * Fabric `BitcoinBlock` / `BitcoinBlockHash` messages on that stream for live tip updates.
+ *
+ * Full JSON snapshots ({@link #_buildReportPayload}) are pushed to subscribers on **`/quotes/stream`**
+ * after each {@link #commit} (debounced via {@code settings.aggregation.streamBroadcastDebounceMs}).
  */
 
 // Constants
 const ESTIMATE_MODE = 'weighted';
-const FEED_REPORT_STREAM_PATH = '/feed/stream';
+const FEED_QUOTE_TICK_MS = 1000;
+const MAX_QUOTE_HISTORY_DEFAULT = 2048;
+
+/** Canonical WebSocket path for aggregated JSON snapshots. */
+const QUOTES_STREAM_PATH = '/quotes/stream';
+/** Canonical SSE endpoint for aggregated JSON snapshots. */
+const QUOTES_SSE_PATH = '/quotes/sse';
 
 // Dependencies
 const { generate: generateObserverPatches } = require('fast-json-patch');
@@ -36,13 +46,17 @@ const Key = require('@fabric/core/types/key');
 const HTTPServer = require('@fabric/http/types/server');
 
 // Services
-const BitPay = require('./bitpay');
-const Coinbase = require('./coinbase');
-const CoinGecko = require('./coingecko');
-const Kraken = require('./kraken');
-const Bitstamp = require('./bitstamp');
-const CoinMarketCap = require('./coinmarketcap');
+const BitPay = require('./providers/bitpay');
+const Coinbase = require('./providers/coinbase');
+const CoinGecko = require('./providers/coingecko');
+const Kraken = require('./providers/kraken');
+const Bitstamp = require('./providers/bitstamp');
+const Gemini = require('./providers/gemini');
+const Bitfinex = require('./providers/bitfinex');
+const BinanceUS = require('./providers/binanceus');
+const CoinMarketCap = require('./providers/coinmarketcap');
 const UTXOracle = require('./utxoracle');
+const SSEService = require('./sse');
 const UTXO_HEIGHT_SERIES_MAX =
   typeof UTXOracle.ESTIMATE_HEIGHT_SERIES_MAX_POINTS === 'number'
     ? UTXOracle.ESTIMATE_HEIGHT_SERIES_MAX_POINTS
@@ -58,6 +72,9 @@ const PROVIDER_LABELS = {
   coingecko: 'CoinGecko',
   kraken: 'Kraken',
   bitstamp: 'Bitstamp',
+  gemini: 'Gemini',
+  bitfinex: 'Bitfinex',
+  binanceus: 'Binance.US',
   coinmarketcap: 'CoinMarketCap',
   utxoracle: 'UTXOracle (on-chain)'
 };
@@ -80,7 +97,7 @@ function isConfiguredCoinmarketcapKey (key) {
 
 /**
  * Bitcoin Core ZMQ publisher port must match {@link Bitcoin#createLocalNode} (default 29500).
- * When `zmq` is omitted and `managed` is true, subscribe so ZMQ `hashblock` / `rawblock` reach `/feed/stream`.
+ * When `zmq` is omitted and `managed` is true, subscribe so ZMQ `hashblock` / `rawblock` reach **`/quotes/stream`**.
  */
 const FEED_BITCOIN_DEFAULT_ZMQ_PORT = 29500;
 
@@ -122,6 +139,9 @@ function normalizeFeedSources (input) {
     coingecko: {},
     kraken: {},
     bitstamp: {},
+    gemini: {},
+    bitfinex: {},
+    binanceus: {},
     coinmarketcap: {},
     utxoracle: { enabled: false }
   };
@@ -134,6 +154,9 @@ function normalizeFeedSources (input) {
     coingecko: { ...base.coingecko, ...(typeof o.coingecko === 'object' && o.coingecko ? o.coingecko : {}) },
     kraken: { ...base.kraken, ...(typeof o.kraken === 'object' && o.kraken ? o.kraken : {}) },
     bitstamp: { ...base.bitstamp, ...(typeof o.bitstamp === 'object' && o.bitstamp ? o.bitstamp : {}) },
+    gemini: { ...base.gemini, ...(typeof o.gemini === 'object' && o.gemini ? o.gemini : {}) },
+    bitfinex: { ...base.bitfinex, ...(typeof o.bitfinex === 'object' && o.bitfinex ? o.bitfinex : {}) },
+    binanceus: { ...base.binanceus, ...(typeof o.binanceus === 'object' && o.binanceus ? o.binanceus : {}) },
     coinmarketcap: {
       ...base.coinmarketcap,
       ...(typeof o.coinmarketcap === 'object' && o.coinmarketcap ? o.coinmarketcap : {})
@@ -197,6 +220,9 @@ class Feed extends Service {
         coingecko: {},
         kraken: {},
         bitstamp: {},
+        gemini: {},
+        bitfinex: {},
+        binanceus: {},
         coinmarketcap: {},
         utxoracle: {
           enabled: false
@@ -207,12 +233,17 @@ class Feed extends Service {
       sync: true,
       aggregation: {
         debounceMs: 12_000,
+        /** Coalesce {@link Feed#commit} bursts before **`/quotes/stream`** snapshots (milliseconds). Set to {@code 0} for immediate fan-out. */
+        streamBroadcastDebounceMs: 250,
         concurrency: {
           bitpay: 2,
           coinbase: 2,
           coingecko: 1,
           kraken: 1,
           bitstamp: 1,
+          gemini: 1,
+          bitfinex: 1,
+          binanceus: 1,
           coinmarketcap: 1,
           utxoracle: 1
         }
@@ -221,7 +252,7 @@ class Feed extends Service {
         path: './stores/feed-price',
         maxHistoryRows: 2048,
         meta: {},
-        /** When true, GET `/feed/report` includes `priceHistory` (not part of signed attestation). */
+        /** When true, **GET `/quotes/snapshot`** includes `priceHistory`. */
         exposePriceHistoryInReport: true
       },
       /**
@@ -231,7 +262,7 @@ class Feed extends Service {
       bitcoin: {},
       /**
        * When local `getblockchaininfo` fails, {@link UTXOracle#chainTipStatsForReport} can use Fabric Hub
-       * Bitcoin REST (`/services/bitcoin/blocks/height/:n`). Set to `false` to disable.
+       * Fabric Hub Bitcoin REST (`GET /blocks/:n` or `GET /blocks/height/:n` → hash). Set to `false` to disable.
        */
       chainHubFallback: {
         enabled: true,
@@ -291,17 +322,48 @@ class Feed extends Service {
       debug: this.settings.debug
     });
 
+    this.gemini = new Gemini({
+      ...this.settings.sources.gemini,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bitfinex = new Bitfinex({
+      ...this.settings.sources.bitfinex,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.binanceus = new BinanceUS({
+      ...this.settings.sources.binanceus,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
     const concurrency = Object.assign({
       bitpay: 2,
       coinbase: 2,
       coingecko: 1,
       kraken: 1,
       bitstamp: 1,
+      gemini: 1,
+      bitfinex: 1,
+      binanceus: 1,
       coinmarketcap: 1,
       utxoracle: 1
     }, this.settings.aggregation?.concurrency ?? {});
 
     this.bitcoin = new Bitcoin(mergeFeedBitcoinSettings(this.settings));
+    this.bitcoin.on('error', (error) => {
+      const msg = (error && error.message) ? error.message : String(error);
+      this.emit('warning', `[FEED:BITCOIN] ${msg}`);
+    });
 
     this.utxoracle = new UTXOracle({
       ...this.settings.sources.utxoracle,
@@ -311,113 +373,390 @@ class Feed extends Service {
 
     this._registerQuoteProvidersFabric();
 
-    // Internals — browser UI polls GET /feed/report (Fabric HTTPServer routes); no BitPay bundle in SPA.
+    // HTTP: Fabric-style resources (`/quotes`, `/sources`, `/blocks`, `/transactions`).
     const self = this;
+    /** @returns {Promise<void>} */
+    const json = (req, res, fn) => self.http.jsonOnly(req, res, fn);
+
+    const handleQuotesSnapshot = (req, res) =>
+      json(req, res, async () => {
+        const snapshot = await self._latestData();
+        res.json(snapshot);
+      });
+
+    const handleQuotesSpot = (req, res) =>
+      json(req, res, async () => {
+        res.json(await self._latestSpotPayload());
+      });
+
+    const handleQuotesProviders = (req, res) =>
+      json(req, res, async () => {
+        res.json({
+          quoteProviders: self._quoteProvidersReport()
+        });
+      });
+
+    const handleQuotesHistory = (req, res) =>
+      json(req, res, async () => {
+        const q = req.query || {};
+        const raw = q.limit != null && String(q.limit).trim() !== ''
+          ? Number(q.limit)
+          : NaN;
+        const parsed = Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : MAX_QUOTE_HISTORY_DEFAULT;
+        const limit = Math.max(1, Math.min(MAX_QUOTE_HISTORY_DEFAULT, parsed));
+        const rows = this._historyRows.length > limit
+          ? this._historyRows.slice(this._historyRows.length - limit)
+          : this._historyRows.slice();
+        res.json({ priceHistory: rows });
+      });
+
+    const handleQuotesChain = (req, res) =>
+      json(req, res, async () => {
+        const chain = await self._utxoracleChainPayload();
+        res.json({ utxoracleChain: chain });
+      });
+
+    const handleQuotesSse = (req, res) => this.sse.handleHttp(req, res);
+
+
+    /**
+     * Resolve non-negative height → block hash via {@link Bitcoin#getBlockInfo}, then **302** Location.
+     */
+    const redirectBlockHeightToHash = (req, res, height) => {
+      void (async () => {
+        const num = typeof height === 'number' ? height : Number(height);
+        if (!Number.isFinite(num) || num < 0 || num > Number.MAX_SAFE_INTEGER) {
+          res.status(400).json({
+            error: 'Invalid block height (non-negative integer required)'
+          });
+          return;
+        }
+        const h = Math.floor(num);
+        try {
+          const info = await self.bitcoin.getBlockInfo(h);
+          const hash =
+            info && info.hash != null ? String(info.hash).trim() : '';
+          if (!/^[0-9a-fA-F]{64}$/.test(hash)) {
+            throw new Error('Bitcoin getBlockInfo returned no block hash');
+          }
+          res.redirect(302, `/blocks/${hash}`);
+        } catch (e) {
+          const msg =
+            e && typeof e.message === 'string' ? e.message : String(e);
+          res.status(404).json({ error: msg });
+        }
+      })();
+    };
+
+    const utxoracleEnabledForHttp = () =>
+      self.settings.sources.utxoracle?.enabled === true ||
+      self.utxoracle?.settings?.enabled === true;
+
+    /** @param {import('http').IncomingMessage} req */
+    const wantsBlocksEstimateSeriesQuery = (req) => {
+      const q = req.query || {};
+      return (
+        Object.prototype.hasOwnProperty.call(q, 'minHeight') ||
+        Object.prototype.hasOwnProperty.call(q, 'maxHeight') ||
+        Object.prototype.hasOwnProperty.call(q, 'maxPoints')
+      );
+    };
+
+    const handleBitcoinOracleEstimateSeriesInner = async (req, res) => {
+      const enabled = utxoracleEnabledForHttp();
+      if (!enabled) {
+        res.status(503).json({
+          error: 'UTXOracle is disabled for this feed'
+        });
+        return;
+      }
+      const q = req.query || {};
+      const tip = await self.utxoracle._currentTipHeight();
+      let minH =
+        q.minHeight != null && String(q.minHeight).trim() !== ''
+          ? Math.floor(Number(q.minHeight))
+          : 0;
+      let maxH =
+        q.maxHeight != null && String(q.maxHeight).trim() !== ''
+          ? Math.floor(Number(q.maxHeight))
+          : tip != null && Number.isFinite(tip)
+            ? tip
+            : NaN;
+      if (!Number.isFinite(maxH)) {
+        res.status(400).json({
+          error: 'Could not resolve chain tip; pass ?maxHeight=<block height>'
+        });
+        return;
+      }
+      if (!Number.isFinite(minH) || minH < 0) minH = 0;
+      const maxPtsRaw =
+        q.maxPoints != null && String(q.maxPoints).trim() !== ''
+          ? Number(q.maxPoints)
+          : 200;
+      const parsedPts = Math.floor(Number(maxPtsRaw));
+      const maxPoints = Math.max(
+        1,
+        Math.min(
+          UTXO_HEIGHT_SERIES_MAX,
+          Number.isFinite(parsedPts) && parsedPts > 0 ? parsedPts : 200
+        )
+      );
+      try {
+        const points = await self.utxoracle.estimateUsdHeightSeries(
+          minH,
+          maxH,
+          maxPoints
+        );
+        res.json({ points });
+      } catch (e) {
+        const msg =
+          typeof e?.message === 'string' ? e.message : String(e);
+        res.status(400).json({ error: msg });
+      }
+    };
+
+    const handleBitcoinOracleEstimateSeries = (req, res) =>
+      json(req, res, () => handleBitcoinOracleEstimateSeriesInner(req, res));
+
+    /**
+     * Handle `GET /blocks?height=`:
+     * - canonical path: resolve height -> hash then redirect to `/blocks/:hash`
+     * - fallback path: when hash lookup is unavailable, return direct UTXOracle estimate payload
+     *   so UI block replay remains usable in reduced local environments.
+     */
+    const handleBlocksHeightQuery = (req, res, rawHeight) =>
+      json(req, res, async () => {
+        const num =
+          rawHeight != null && String(rawHeight).trim() !== ''
+            ? Number(rawHeight)
+            : NaN;
+        if (!Number.isFinite(num) || num < 0) {
+          res.status(400).json({
+            error: 'Query ?height=<non-negative number> (block height) is required'
+          });
+          return;
+        }
+        const height = Math.floor(num);
+
+        try {
+          const info = await self.bitcoin.getBlockInfo(height);
+          const hash =
+            info && info.hash != null ? String(info.hash).trim() : '';
+          if (!/^[0-9a-fA-F]{64}$/.test(hash)) {
+            throw new Error('Bitcoin getBlockInfo returned no block hash');
+          }
+          res.redirect(302, `/blocks/${hash}`);
+          return;
+        } catch (_) {
+          // Fallback below.
+        }
+
+        if (!utxoracleEnabledForHttp()) {
+          res.status(503).json({
+            error:
+              'Block hash lookup unavailable and UTXOracle is disabled for this feed'
+          });
+          return;
+        }
+        try {
+          const out = await self.utxoracle.estimateUsdAtHeight(height);
+          res.status(200).json(out);
+        } catch (e) {
+          const msg =
+            typeof e?.message === 'string' ? e.message : String(e);
+          res.status(400).json({ error: msg });
+        }
+      });
+
+    /**
+     * `GET /blocks` discovery, height → hash redirect (**302**), or UTXOracle height series (**query**
+     * `minHeight`, `maxHeight`, `maxPoints`).
+     */
+    const handleBlocksRoot = (req, res) => {
+      if (wantsBlocksEstimateSeriesQuery(req)) {
+        return handleBitcoinOracleEstimateSeries(req, res);
+      }
+      const qh = req.query && req.query.height;
+      const qblock = req.query && req.query.block;
+      const raw = qh ?? qblock;
+      if (raw != null && String(raw).trim() !== '') {
+        handleBlocksHeightQuery(req, res, raw);
+        return;
+      }
+      json(req, res, async () => {
+        const host =
+          typeof req.headers?.host === 'string' ? req.headers.host.trim() : '';
+        const proto =
+          req.socket && /** @type {{ encrypted?: boolean }} */ (req.socket).encrypted === true
+            ? 'https'
+            : 'http';
+        res.status(200).json({
+          '@type': 'BitcoinBlocksResource',
+          description:
+            'Block metadata and UTXOracle USD/BTC estimates. Use GET /blocks/{hash} ' +
+            '(canonical), GET /blocks/{height} redirects to GET /blocks/{hash}, or estimate ' +
+            'series via ?minHeight=&maxHeight=&maxPoints=.',
+          ...(host !== '' ? { endpoint: `${proto}://${host}/blocks` } : {}),
+          canonicalBlockPattern: '/blocks/{block-hash-hex}',
+          heightRedirectsToCanonicalHash: '/blocks/{decimal-height}',
+          oracleEstimateSeriesQuery:
+            '?minHeight={n}&maxHeight={n}&maxPoints={n}'
+        });
+      });
+    };
+
+    /** `GET /blocks/:id` — decimal **height** redirects; **64-hex hash** JSON with optional `utxoracle`. */
+    const handleBlockByPathId = (req, res) => {
+      const seg =
+        req.params && req.params.id !== undefined
+          ? String(req.params.id).trim()
+          : '';
+      if (!seg) {
+        res.status(400).json({ error: 'Missing block id' });
+        return;
+      }
+      if (/^[0-9]+$/.test(seg)) {
+        redirectBlockHeightToHash(req, res, Number(seg));
+        return;
+      }
+      if (!/^[0-9a-fA-F]{64}$/.test(seg)) {
+        res.status(400).json({
+          error: 'Expected block hash (64 hex characters) or decimal block height'
+        });
+        return;
+      }
+      const hash = seg.toLowerCase();
+      json(req, res, async () => {
+        let blockCore;
+        try {
+          blockCore = await self.bitcoin.getBlockInfo(hash);
+        } catch (e) {
+          const msg =
+            e && typeof e.message === 'string' ? e.message : String(e);
+          res.status(404).json({ error: msg });
+          return;
+        }
+        /** @type {Record<string, unknown>} */
+        const out = {
+          ...blockCore
+        };
+        if (utxoracleEnabledForHttp()) {
+          const h =
+            blockCore && blockCore.height != null
+              ? Math.floor(Number(blockCore.height))
+              : NaN;
+          if (Number.isFinite(h) && h >= 0) {
+            try {
+              out.utxoracle = await self.utxoracle.estimateUsdAtHeight(h);
+            } catch (e) {
+              out.utxoracle = {
+                error:
+                  typeof e?.message === 'string' ? e.message : String(e)
+              };
+            }
+          } else {
+            out.utxoracle = null;
+          }
+        } else {
+          out.utxoracle = null;
+        }
+        res.json(out);
+      });
+    };
+
+    /** `GET /blocks/height/:height` redirects to canonical **`/blocks/:hash`**. */
+    const handleBitcoinBlockLegacyHeightSegment = (req, res) => {
+      const raw =
+        req.params && req.params.height !== undefined
+          ? String(req.params.height).trim()
+          : '';
+      if (!raw) {
+        res.status(400).json({ error: 'Missing block height' });
+        return;
+      }
+      redirectBlockHeightToHash(req, res, Number(raw));
+    };
+
+    const handleBitcoinTransaction = (req, res) =>
+      json(req, res, async () => {
+        const raw =
+          req.params && req.params.txid !== undefined ? String(req.params.txid) : '';
+        const txid = raw.trim();
+        if (!/^[0-9a-fA-F]{64}$/.test(txid)) {
+          res.status(400).json({
+            error: 'Invalid transaction id (64-character hex txid required)'
+          });
+          return;
+        }
+        try {
+          const tx = await self.bitcoin.getTransactionInfo(txid.toLowerCase());
+          res.status(200).json(tx);
+        } catch (e) {
+          const msg =
+            e && typeof e.message === 'string' ? e.message : String(e);
+          res.status(404).json({ error: msg });
+        }
+      });
+
+    const handleSourcesCollection = (req, res) =>
+      json(req, res, async () => {
+        res.json({
+          '@type': 'Collection',
+          currency: self.currency,
+          quoteCurrency: self.settings.quoteCurrency,
+          quoteProviders: self._quoteProvidersReport()
+        });
+      });
+
+    const handleSourcesItem = (req, res) =>
+      json(req, res, async () => {
+        const id =
+          req.params && req.params.id != null ? String(req.params.id) : '';
+        if (!id) {
+          res.status(400).json({ error: 'Missing source id' });
+          return;
+        }
+        const rows = self._quoteProvidersReport();
+        const row = rows.find((p) => p && String(p.id) === id);
+        if (!row) {
+          res.status(404).json({ error: `Unknown source: ${id}` });
+          return;
+        }
+        res.json(row);
+      });
+
+    /**
+     * Canonical HTTP routes.
+     * @type {Array<{ method: string, path: string, handler: Function }>}
+     */
+    const feedHttpRoutes = [
+      { method: 'get', path: '/quotes/snapshot', handler: handleQuotesSnapshot },
+      { method: 'get', path: '/quotes/spot', handler: handleQuotesSpot },
+      { method: 'get', path: '/quotes/providers', handler: handleQuotesProviders },
+      { method: 'get', path: '/quotes/history', handler: handleQuotesHistory },
+      { method: 'get', path: '/quotes/chain', handler: handleQuotesChain },
+      { method: 'get', path: QUOTES_SSE_PATH, handler: handleQuotesSse },
+
+      { method: 'get', path: '/blocks', handler: handleBlocksRoot },
+      {
+        method: 'get',
+        path: '/blocks/height/:height',
+        handler: handleBitcoinBlockLegacyHeightSegment
+      },
+      { method: 'get', path: '/blocks/:id', handler: handleBlockByPathId },
+
+      {
+        method: 'get',
+        path: '/transactions/:txid',
+        handler: handleBitcoinTransaction
+      },
+
+      { method: 'get', path: '/sources', handler: handleSourcesCollection },
+      { method: 'get', path: '/sources/:id', handler: handleSourcesItem }
+    ];
+
     const httpSettings = Object.assign({}, this.settings.http);
-    httpSettings.routes = [].concat(httpSettings.routes || [], [{
-      method: 'get',
-      path: '/feed/report',
-      handler (req, res) {
-        return self.http.jsonOnly(req, res, async () => {
-          const snapshot = await self._latestData();
-          res.json(snapshot);
-        });
-      }
-    }, {
-      method: 'get',
-      path: '/feed/utxoracle/estimate',
-      handler (req, res) {
-        return self.http.jsonOnly(req, res, async () => {
-          const enabled =
-            self.settings.sources.utxoracle?.enabled === true ||
-            self.utxoracle?.settings?.enabled === true;
-          if (!enabled) {
-            res.status(503).json({
-              error: 'UTXOracle is disabled for this feed'
-            });
-            return;
-          }
-          const raw =
-            req.query && (req.query.height ?? req.query.block);
-          const num = raw != null && String(raw).trim() !== '' ? Number(raw) : NaN;
-          if (!Number.isFinite(num) || num < 0) {
-            res.status(400).json({
-              error: 'Query ?height=<non-negative number> (block height) is required'
-            });
-            return;
-          }
-          const height = Math.floor(num);
-          try {
-            const out = await self.utxoracle.estimateUsdAtHeight(height);
-            res.json(out);
-          } catch (e) {
-            const msg =
-              typeof e?.message === 'string' ? e.message : String(e);
-            res.status(400).json({ error: msg });
-          }
-        });
-      }
-    }, {
-      method: 'get',
-      path: '/feed/utxoracle/estimate-series',
-      handler (req, res) {
-        return self.http.jsonOnly(req, res, async () => {
-          const enabled =
-            self.settings.sources.utxoracle?.enabled === true ||
-            self.utxoracle?.settings?.enabled === true;
-          if (!enabled) {
-            res.status(503).json({
-              error: 'UTXOracle is disabled for this feed'
-            });
-            return;
-          }
-          const q = req.query || {};
-          const tip = await self.utxoracle._currentTipHeight();
-          let minH =
-            q.minHeight != null && String(q.minHeight).trim() !== ''
-              ? Math.floor(Number(q.minHeight))
-              : 0;
-          let maxH =
-            q.maxHeight != null && String(q.maxHeight).trim() !== ''
-              ? Math.floor(Number(q.maxHeight))
-              : tip != null && Number.isFinite(tip)
-                ? tip
-                : NaN;
-          if (!Number.isFinite(maxH)) {
-            res.status(400).json({
-              error:
-                'Could not resolve chain tip; pass ?maxHeight=<block height>'
-            });
-            return;
-          }
-          if (!Number.isFinite(minH) || minH < 0) minH = 0;
-          const maxPtsRaw =
-            q.maxPoints != null && String(q.maxPoints).trim() !== ''
-              ? Number(q.maxPoints)
-              : 200;
-          const parsedPts = Math.floor(Number(maxPtsRaw));
-          const maxPoints = Math.max(
-            1,
-            Math.min(
-              UTXO_HEIGHT_SERIES_MAX,
-              Number.isFinite(parsedPts) && parsedPts > 0 ? parsedPts : 200
-            )
-          );
-          try {
-            const points = await self.utxoracle.estimateUsdHeightSeries(
-              minH,
-              maxH,
-              maxPoints
-            );
-            res.json({ points });
-          } catch (e) {
-            const msg =
-              typeof e?.message === 'string' ? e.message : String(e);
-            res.status(400).json({ error: msg });
-          }
-        });
-      }
-    }]);
+    httpSettings.routes = [].concat(httpSettings.routes || [], feedHttpRoutes);
 
     this.http = new HTTPServer(httpSettings);
 
@@ -429,6 +768,9 @@ class Feed extends Service {
       coingecko: 1,
       kraken: 1,
       bitstamp: 1,
+      gemini: 1,
+      bitfinex: 1,
+      binanceus: 1,
       coinmarketcap: 1,
       utxoracle: 1
     };
@@ -458,6 +800,19 @@ class Feed extends Service {
     this._feedReportWss = null;
     /** @type {Set<import('ws').WebSocket>} */
     this._feedStreamClients = new Set();
+    this.sse = new SSEService({
+      eventName: 'quotes',
+      heartbeatMs: 15_000,
+      retryMs: 10_000,
+      snapshotProvider: async () => {
+        try {
+          await this.syncAllPrices();
+        } catch (_) {
+          /* tolerate partial provider failure; snapshot still useful */
+        }
+        return this._buildReportPayload();
+      }
+    });
     /** @type {Array<(...args: unknown[]) => void>|null} */
     this._feedStreamUpgradePrevious = null;
     this._onFeedStreamHttpUpgrade = this._onFeedStreamHttpUpgrade.bind(this);
@@ -468,6 +823,8 @@ class Feed extends Service {
 
     // Timer
     this._syncService = null;
+    /** @type {ReturnType<typeof setTimeout>|null} */
+    this._commitBroadcastTimer = null;
 
     // Internal State
     this._state = {
@@ -499,6 +856,9 @@ class Feed extends Service {
     this.services.coingecko = this.coingecko;
     this.services.kraken = this.kraken;
     this.services.bitstamp = this.bitstamp;
+    this.services.gemini = this.gemini;
+    this.services.bitfinex = this.bitfinex;
+    this.services.binanceus = this.binanceus;
     this.services.coinmarketcap = this.cmc;
     this.services.utxoracle = this.utxoracle;
 
@@ -569,7 +929,14 @@ class Feed extends Service {
         this.utxoracle?.settings?.enabled === true
       );
     }
-    if (id === 'coingecko' || id === 'kraken' || id === 'bitstamp') {
+    if (
+      id === 'coingecko' ||
+      id === 'kraken' ||
+      id === 'bitstamp' ||
+      id === 'gemini' ||
+      id === 'bitfinex' ||
+      id === 'binanceus'
+    ) {
       return this.settings.sources[id]?.enabled !== false;
     }
     return true;
@@ -702,13 +1069,46 @@ class Feed extends Service {
 
     this.emit('commit', { ...commit.toObject(), id: commit.id });
 
+    this._scheduleBroadcastAfterCommit();
+
     return commit.id;
   }
 
   /**
-   * Inverse-age–weighted mean over **all** quotes with finite `price` (and usable `age`).
+   * Schedule a snapshot of {@link #_buildReportPayload} for every subscriber on `/quotes/stream`.
+   * so WebSocket observers stay aligned with Fabric {@link #commit} snapshots (debounced).
+   */
+  _scheduleBroadcastAfterCommit () {
+    if (
+      this._feedStreamClients.size === 0 &&
+      !this.sse.hasClients()
+    ) {
+      return;
+    }
+    const raw = this.settings.aggregation?.streamBroadcastDebounceMs;
+    const ms =
+      typeof raw === 'number' && Number.isFinite(raw) && raw >= 0
+        ? Math.floor(raw)
+        : 250;
+    if (this._commitBroadcastTimer) {
+      clearTimeout(this._commitBroadcastTimer);
+      this._commitBroadcastTimer = null;
+    }
+    if (ms === 0) {
+      void this._broadcastFeedReportToSubscribers();
+      return;
+    }
+    this._commitBroadcastTimer = setTimeout(() => {
+      this._commitBroadcastTimer = null;
+      void this._broadcastFeedReportToSubscribers();
+    }, ms);
+  }
+
+  /**
+   * Time-weighted average over latest per-provider quotes.
+   * Newer quotes receive higher weight via inverse quote age in milliseconds.
    * Invalid numeric entries are skipped so one bad provider does not poison the aggregate.
-   * @param {Array<{ price?: unknown, age?: unknown }>} quotes
+   * @param {Array<{ price?: unknown, age?: unknown, asOfMs?: unknown }>} quotes
    */
   estimateFromQuotes (quotes) {
     if (!quotes?.length) throw new Error('No quotes provided.');
@@ -725,16 +1125,15 @@ class Feed extends Service {
           if (!Number.isFinite(price)) continue;
 
           const asOf = quoteAsOfMs(quote);
-          let age;
+          let ageMs;
           if (Number.isFinite(asOf)) {
-            age = Math.log(Math.max(1, Date.now() - asOf));
+            ageMs = Math.max(1, Date.now() - asOf);
           } else {
             const ageRaw = Number(quote?.age);
-            age =
+            ageMs =
               Number.isFinite(ageRaw) && ageRaw > 0 ? ageRaw : 1;
           }
-          // Latency-derived ages can be ~0 — avoid ∞ / ∞ in the weighted mean.
-          const weight = 1 / Math.max(age, 1e-9);
+          const weight = 1 / Math.max(ageMs, 1e-9);
           const value = weight * price;
 
           mass += weight;
@@ -835,8 +1234,7 @@ class Feed extends Service {
       if (!Number.isFinite(price)) continue;
       const asOf = quoteAsOfMs(entry.quote);
       if (!Number.isFinite(asOf)) continue;
-      const ageLog = Math.log(Math.max(1, Date.now() - asOf));
-      quotesForWeight.push({ price, age: ageLog });
+      quotesForWeight.push({ price, asOfMs: asOf });
     }
 
     if (!quotesForWeight.length) {
@@ -1030,6 +1428,16 @@ class Feed extends Service {
         this._touchProviderSuccess(provider, symbol, quote, false, utxMeta);
         return { provider, quote, fromCache: false };
       } catch (err) {
+        const staleRow = this._quoteStaleCacheRow(provider, symbol);
+        const stale = staleRow?.quote ?? null;
+        if (stale) {
+          const fetchedAt = staleRow.fetchedAt;
+          if (typeof fetchedAt === 'number' && Number.isFinite(fetchedAt)) {
+            cacheAgeMs[this._quoteCacheKey(provider, symbol)] = Date.now() - fetchedAt;
+          }
+          this._touchProviderSuccess(provider, symbol, stale, true, utxMeta);
+          return { provider, quote: stale, fromCache: true };
+        }
         this._touchProviderError(provider, err);
         return null;
       }
@@ -1054,6 +1462,21 @@ class Feed extends Service {
     if (this._providerEnabled('bitstamp')) {
       tasks.push(
         single('bitstamp', () => this.bitstamp.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('gemini')) {
+      tasks.push(
+        single('gemini', () => this.gemini.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bitfinex')) {
+      tasks.push(
+        single('bitfinex', () => this.bitfinex.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('binanceus')) {
+      tasks.push(
+        single('binanceus', () => this.binanceus.getQuoteForSymbol(symbol))
       );
     }
 
@@ -1111,6 +1534,30 @@ class Feed extends Service {
   }
 
   _captureHistorySlice (aggregateValues, maxHist) {
+    /** Skip duplicate snapshots (e.g. interval {@link #_sync} + debounced WS broadcast). */
+    const btc = aggregateValues && aggregateValues.BTC;
+    const lastRow = this._historyRows.length ? this._historyRows[this._historyRows.length - 1] : null;
+    if (
+      lastRow &&
+      btc &&
+      typeof btc.price === 'number' &&
+      Number.isFinite(btc.price) &&
+      lastRow.values &&
+      lastRow.values.BTC &&
+      typeof lastRow.values.BTC.price === 'number'
+    ) {
+      const lp = Number(lastRow.values.BTC.price);
+      const np = Number(btc.price);
+      if (
+        Number.isFinite(lp) &&
+        Number.isFinite(np) &&
+        Math.abs(lp - np) < 1e-12 &&
+        Date.now() - lastRow.ts < 1500
+      ) {
+        return;
+      }
+    }
+
     const row = {
       id: randomUUID(),
       ts: Date.now(),
@@ -1187,6 +1634,15 @@ class Feed extends Service {
     if (this._providerEnabled('bitstamp')) {
       this.trust(this.bitstamp, 'bitstamp');
     }
+    if (this._providerEnabled('gemini')) {
+      this.trust(this.gemini, 'gemini');
+    }
+    if (this._providerEnabled('bitfinex')) {
+      this.trust(this.bitfinex, 'bitfinex');
+    }
+    if (this._providerEnabled('binanceus')) {
+      this.trust(this.binanceus, 'binanceus');
+    }
     this.trust(this.cmc, 'coinmarketcap');
     if (this.utxoracle.settings?.enabled === true) {
       this.trust(this.utxoracle, 'utxoracle');
@@ -1221,9 +1677,15 @@ class Feed extends Service {
       this.settings.sources.utxoracle?.enabled === true ||
       this.utxoracle?.settings?.enabled === true;
     if (utxoOracleOn) {
-      await this.bitcoin.start();
-      this._feedBitcoinStarted = true;
-      this._attachBitcoinStreamEvents();
+      try {
+        await this.bitcoin.start();
+        this._feedBitcoinStarted = true;
+        this._attachBitcoinStreamEvents();
+      } catch (error) {
+        const msg = (error && error.message) ? error.message : String(error);
+        this.emit('warning', `[FEED:BITCOIN] start() unavailable: ${msg}`);
+        this._feedBitcoinStarted = false;
+      }
     }
 
     // If Fabric enabled, start
@@ -1234,11 +1696,9 @@ class Feed extends Service {
     // If sync enabled, start
     if (this.settings.sync) {
       await this._sync();
-      await this._broadcastFeedReportToStream();
       this._syncService = setInterval(async () => {
         await this._sync();
-        await this._broadcastFeedReportToStream();
-      }, this.settings.interval);
+      }, FEED_QUOTE_TICK_MS);
     }
 
     this._state.status = 'STARTED';
@@ -1313,26 +1773,42 @@ class Feed extends Service {
     return this._buildReportPayload();
   }
 
+  async _latestSpotPayload () {
+    await this._sync();
+    return {
+      currency: this.currency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: ['BTC'],
+      values: this.values,
+      service: {
+        id: this.id,
+        status: this.status
+      }
+    };
+  }
+
+  async _utxoracleChainPayload () {
+    const oracleOn =
+      this.settings.sources.utxoracle?.enabled === true ||
+      this.utxoracle?.settings?.enabled === true;
+    if (!oracleOn) return null;
+    try {
+      return await this.utxoracle.chainTipStatsForReport();
+    } catch (_) {
+      return null;
+    }
+  }
+
   /**
-   * Same JSON shape as {@link #_latestData} without running {@link #_sync}; for WebSocket push
-   * after the server has already aggregated.
+   * Same JSON shape as {@link #_latestData} without running {@link #_sync}.
+   * Callers MUST run {@link #syncAllPrices} first when the snapshot must reflect the current
+   * aggregate headline and persisted price history (same as **{@code GET /quotes/snapshot}**).
    */
   async _buildReportPayload () {
     const persist = this.settings.persist || {};
     const exposeHistory = persist.exposePriceHistoryInReport !== false;
 
-    const oracleOn =
-      this.settings.sources.utxoracle?.enabled === true ||
-      this.utxoracle?.settings?.enabled === true;
-
-    let utxoracleChain = null;
-    if (oracleOn) {
-      try {
-        utxoracleChain = await this.utxoracle.chainTipStatsForReport();
-      } catch (_) {
-        /* RPC unavailable — UI shows without chain bounds */
-      }
-    }
+    const utxoracleChain = await this._utxoracleChainPayload();
 
     return {
       currency: this.currency,
@@ -1387,7 +1863,7 @@ class Feed extends Service {
     try {
       const host = req.headers.host || '127.0.0.1';
       const u = new URL(req.url, `http://${host}`);
-      if (u.pathname === FEED_REPORT_STREAM_PATH && this._feedReportWss) {
+      if (u.pathname === QUOTES_STREAM_PATH && this._feedReportWss) {
         this._feedReportWss.handleUpgrade(req, socket, head, (ws) => {
           this._feedReportWss.emit('connection', ws, req);
         });
@@ -1406,8 +1882,17 @@ class Feed extends Service {
   }
 
   async _sendReportPayloadToSocket (ws) {
-    const WebSocket = require('ws');
-    const payload = await this._buildReportPayload();
+    try {
+      await this.syncAllPrices();
+    } catch (_) {
+      /* tolerate partial RPC / provider failure; snapshot still aids first paint */
+    }
+    let payload;
+    try {
+      payload = await this._buildReportPayload();
+    } catch (_) {
+      return;
+    }
     const raw = JSON.stringify(payload);
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(raw);
@@ -1418,7 +1903,11 @@ class Feed extends Service {
     if (!this._feedReportWss || this._feedStreamClients.size === 0) {
       return;
     }
-    const WebSocket = require('ws');
+    try {
+      await this.syncAllPrices();
+    } catch (_) {
+      /* tolerate; broadcast best-effort */
+    }
     let payload;
     try {
       payload = await this._buildReportPayload();
@@ -1437,8 +1926,19 @@ class Feed extends Service {
     }
   }
 
+  async _broadcastFeedReportToSse () {
+    await this.sse.broadcast();
+  }
+
+  async _broadcastFeedReportToSubscribers () {
+    await Promise.all([
+      this._broadcastFeedReportToStream(),
+      this._broadcastFeedReportToSse()
+    ]);
+  }
+
   /**
-   * Push an auxiliary Fabric-shaped message to `/feed/stream` clients (ZMQ-derived block events).
+   * Push an auxiliary Fabric-shaped message to **`/quotes/stream`** clients (ZMQ-derived block events).
    * Distinct from full report snapshots so the UI can discriminate via {@code feedStream}.
    */
   _broadcastFeedStreamEvent (envelope) {
@@ -1522,6 +2022,11 @@ class Feed extends Service {
   }
 
   async _stopFeedReportStream () {
+    this.sse.stop();
+    if (this._commitBroadcastTimer) {
+      clearTimeout(this._commitBroadcastTimer);
+      this._commitBroadcastTimer = null;
+    }
     if (this._feedReportWss) {
       for (const ws of this._feedStreamClients) {
         try {

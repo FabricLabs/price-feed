@@ -1,10 +1,9 @@
 'use strict';
 
 /**
- * Loads the feed via `GET …/feed/report` and, when stable, a plain JSON WebSocket at
- * `…/feed/stream` (Fabric HTTP’s default WS remains Hub/Bridge-style on `/`).
- * Fast HTTP polling continues until the stream has stayed healthy; then HTTP falls back
- * to a slower interval for safety.
+ * Primary path: plain JSON WebSocket `…/quotes/stream` (initial snapshot + server push).
+ * Fallback: `GET …/quotes/snapshot` only when WebSockets are disabled, unavailable, stalled,
+ * or after an unexpected disconnect (one-shot). Fabric Hub upgrade on `/` is unchanged.
  */
 
 import { Component } from 'react';
@@ -36,22 +35,27 @@ import {
   filterQuotesBySourceVisibility,
   isSourceVisible,
   providerIdsForFilter,
-  resolveFeedReportUrl,
-  resolveFeedStreamUrl,
-  resolveUtxOracleEstimateSeriesUrl
+  resolveBitcoinOracleEstimateSeriesUrl,
+  resolveQuotesChainUrl,
+  resolveQuotesHistoryUrl,
+  resolveQuotesProvidersUrl,
+  resolveQuotesSnapshotUrl,
+  resolveQuotesSpotUrl,
+  resolveQuotesStreamUrl
 } from './feedMonitor/utils';
 import { utxoSliceMinHeight } from './feedMonitor/UtxOracleBlockNavigator';
 
 export default class FeedMonitor extends Component {
   static defaultProps = {
     currency: 'USD',
+    /** Interval for HTTP-only periodic refresh ({@link #webSocketEnabled} false). */
     pollIntervalMs: 1050,
     /**
-     * When the WebSocket stream is stable, HTTP `/feed/report` is still used on this interval
-     * as a safety net (server aggregation may outpace UI-only pushes).
+     * If the stream does not deliver a report snapshot within this time (milliseconds),
+     * perform a one-shot {@code GET /quotes/snapshot}.
      */
-    pollFallbackIntervalMs: 30_000,
-    /** Set false to use HTTP only (e.g. broken WS proxies). */
+    webSocketStallFallbackMs: 8000,
+    /** Set false to use HTTP polling only ({@link #pollIntervalMs}). */
     webSocketEnabled: true,
     /** Base URL of the running Feed HTTP service (no trailing slash). Same origin when empty. */
     feedApiBase: '',
@@ -68,23 +72,23 @@ export default class FeedMonitor extends Component {
     /** Cleared after the first poll attempt finishes (success or handled error). */
     reportLoading: true,
     pollError: null,
-    /** From `/feed/report` quoteCurrency when present. */
+    /** From `/quotes/snapshot` quoteCurrency when present. */
     reportQuoteCurrency: undefined,
     /** Successful quote provider count for BTC (from aggregator). */
     sourceCountBySymbol: {},
-    /** From GET /feed/report `quoteProviders` when present. */
+    /** From GET /quotes/snapshot `quoteProviders` when present. */
     quoteProviders: [],
     inspectQuote: null,
     /** Selected window for overview price delta (`DELTA_RANGE_OPTIONS`). */
     deltaRangeKey: '1h',
-    /** From GET /feed/report `utxoracleChain` when UTXOracle is on (tip, stats from bitcoind). */
+    /** From GET /quotes/snapshot `utxoracleChain` when UTXOracle is on (tip, stats from bitcoind). */
     utxoracleChain: null,
     /**
      * Per-provider inclusion for headline / chart / history (`false` = excluded).
      * Omitted keys default to included.
      */
     sourceVisibility: {},
-    /** Rows from GET /feed/utxoracle/estimate-series (chart violet dots). */
+    /** Rows from GET /blocks?minHeight=&maxHeight=&maxPoints= (series, chart violet dots). */
     utxoEstimateSeries: [],
     utxoEstimateSeriesLoading: false
   };
@@ -94,17 +98,13 @@ export default class FeedMonitor extends Component {
 
     /** @type {AbortController|null} */
     this._pollAbort = null;
-    /**
-     * When true, a `/feed/report` round-trip is in progress. Overlapping ticks are skipped so we
-     * never abort an in-flight report just because the poll interval fired again.
-     */
+    /** When true, a `/quotes/snapshot` round-trip is in progress. */
     this._pollInFlight = false;
     this._unmounted = false;
-    /** While true, {@link #_poll} skips HTTP when the report WebSocket is open. */
-    this._wsStreamStable = false;
     this._reportWs = null;
-    this._streamStableTimer = null;
     this._wsReconnectTimer = null;
+    /** @type {ReturnType<typeof setTimeout>|null} */
+    this._wsStallFallbackTimer = null;
 
     this._openInspectQuote = this._openInspectQuote.bind(this);
     this._closeInspectQuote = this._closeInspectQuote.bind(this);
@@ -147,9 +147,14 @@ export default class FeedMonitor extends Component {
 
   componentDidMount () {
     this._unmounted = false;
-    this._poll();
-    this._restartPollTimer();
-    this._connectReportStream();
+    const useWs =
+      this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
+    if (useWs) {
+      this._connectReportStream();
+    } else {
+      void this._poll();
+      this._restartHttpPollTimer();
+    }
   }
 
   componentWillUnmount () {
@@ -166,10 +171,29 @@ export default class FeedMonitor extends Component {
       clearInterval(this._pollTimer);
       this._pollTimer = null;
     }
+    if (this._wsStallFallbackTimer) {
+      clearTimeout(this._wsStallFallbackTimer);
+      this._wsStallFallbackTimer = null;
+    }
     this._unmounted = true;
   }
 
   componentDidUpdate (prevProps, prevState) {
+    if (prevProps.feedApiBase !== this.props.feedApiBase) {
+      const useWs =
+        this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
+      if (useWs) {
+        this._disconnectReportStream(true);
+        this._clearWsStallFallback();
+        if (!this._unmounted) {
+          this.setState({ reportLoading: true, pollError: null });
+        }
+        this._connectReportStream();
+      } else {
+        void this._poll();
+        this._restartHttpPollTimer();
+      }
+    }
     const tip =
       this.state.utxoracleChain &&
       Number.isFinite(Number(this.state.utxoracleChain.tip))
@@ -229,7 +253,7 @@ export default class FeedMonitor extends Component {
     const sliceMin = utxoSliceMinHeight(tip, rangeOpt.ms);
     const span = tip - sliceMin + 1;
     const maxPoints = Math.max(1, span);
-    const baseUrl = resolveUtxOracleEstimateSeriesUrl(this.props.feedApiBase);
+    const baseUrl = resolveBitcoinOracleEstimateSeriesUrl(this.props.feedApiBase);
     let url;
     try {
       url = new URL(baseUrl);
@@ -289,22 +313,48 @@ export default class FeedMonitor extends Component {
       });
   }
 
-  _restartPollTimer () {
+  _restartHttpPollTimer () {
     if (this._pollTimer) {
       clearInterval(this._pollTimer);
       this._pollTimer = null;
     }
     if (this._unmounted) return;
-    const stable =
+    if (
       this.props.webSocketEnabled !== false &&
-      this._wsStreamStable &&
-      this._reportWs &&
-      this._reportWs.readyState === WebSocket.OPEN;
-    const ms = stable
-      ? this.props.pollFallbackIntervalMs
-      : this.props.pollIntervalMs;
+      typeof WebSocket !== 'undefined'
+    ) {
+      return;
+    }
+    const ms = Math.max(200, Number(this.props.pollIntervalMs) || 1050);
     this._pollTimer = setInterval(() => {
-      this._poll({ forceHttp: stable });
+      void this._poll();
+    }, ms);
+  }
+
+  _clearWsStallFallback () {
+    if (this._wsStallFallbackTimer) {
+      clearTimeout(this._wsStallFallbackTimer);
+      this._wsStallFallbackTimer = null;
+    }
+  }
+
+  _scheduleWsStallFallback () {
+    this._clearWsStallFallback();
+    if (
+      this._unmounted ||
+      this.props.webSocketEnabled === false ||
+      typeof WebSocket === 'undefined'
+    ) {
+      return;
+    }
+    const raw = this.props.webSocketStallFallbackMs;
+    const ms =
+      typeof raw === 'number' && Number.isFinite(raw) && raw > 0 ? raw : 8000;
+    this._wsStallFallbackTimer = setTimeout(() => {
+      this._wsStallFallbackTimer = null;
+      if (this._unmounted) return;
+      if (!this.state.reportLoading) return;
+      void this._poll();
     }, ms);
   }
 
@@ -313,9 +363,7 @@ export default class FeedMonitor extends Component {
       clearTimeout(this._wsReconnectTimer);
       this._wsReconnectTimer = null;
     }
-    clearTimeout(this._streamStableTimer);
-    this._streamStableTimer = null;
-    this._wsStreamStable = false;
+    this._clearWsStallFallback();
     if (this._reportWs) {
       const ws = this._reportWs;
       this._reportWs = null;
@@ -342,12 +390,11 @@ export default class FeedMonitor extends Component {
     this._disconnectReportStream(false);
     let ws;
     try {
-      ws = new WebSocket(resolveFeedStreamUrl(this.props.feedApiBase));
+      ws = new WebSocket(resolveQuotesStreamUrl(this.props.feedApiBase));
     } catch {
       return;
     }
     this._reportWs = ws;
-    this._wsStreamStable = false;
 
     ws.onmessage = (ev) => {
       if (this._unmounted || this._reportWs !== ws) return;
@@ -360,17 +407,21 @@ export default class FeedMonitor extends Component {
       if (!body || typeof body !== 'object') return;
       if (body.feedStream === true) {
         this._handleFeedStreamSideMessage(body);
-        this._bumpStreamStability(ws);
         return;
       }
       this._applyReportBody(body);
-      this._bumpStreamStability(ws);
     };
 
     ws.onclose = () => {
       if (this._reportWs !== ws) return;
       this._disconnectReportStream(false);
-      this._restartPollTimer();
+      if (
+        !this._unmounted &&
+        this.props.webSocketEnabled !== false &&
+        typeof WebSocket !== 'undefined'
+      ) {
+        void this._poll();
+      }
       if (!this._unmounted && this.props.webSocketEnabled !== false) {
         clearTimeout(this._wsReconnectTimer);
         this._wsReconnectTimer = setTimeout(
@@ -383,28 +434,12 @@ export default class FeedMonitor extends Component {
     ws.onerror = () => {
       /* onclose runs next */
     };
-  }
 
-  _bumpStreamStability (ws) {
-    clearTimeout(this._streamStableTimer);
-    this._streamStableTimer = setTimeout(() => {
-      this._streamStableTimer = null;
-      if (
-        this._unmounted ||
-        this._reportWs !== ws ||
-        ws.readyState !== WebSocket.OPEN
-      ) {
-        return;
-      }
-      if (!this._wsStreamStable) {
-        this._wsStreamStable = true;
-        this._restartPollTimer();
-      }
-    }, 1500);
+    this._scheduleWsStallFallback();
   }
 
   /**
-   * Fabric-shaped ZMQ fanout from {@code /feed/stream} (not a full `/feed/report` snapshot).
+   * Fabric-shaped ZMQ fanout from {@code /quotes/stream} (not a full snapshot).
    * @param {object} msg
    */
   _handleFeedStreamSideMessage (msg) {
@@ -436,7 +471,7 @@ export default class FeedMonitor extends Component {
   }
 
   /**
-   * @param {object} body Parsed `/feed/report` or WebSocket JSON
+   * @param {object} body Parsed `/quotes/snapshot` or WebSocket JSON
    */
   _applyReportBody (body) {
     if (this._unmounted || !body || typeof body !== 'object') return;
@@ -570,25 +605,20 @@ export default class FeedMonitor extends Component {
       patch.utxoracleChain = null;
     }
 
+    this._clearWsStallFallback();
+
     if (!this._unmounted) {
-      this.setState(patch);
+      this.setState({
+        ...patch,
+        reportLoading: false
+      });
     }
   }
 
   /**
-   * @param {{ forceHttp?: boolean }} [opts] When {@code forceHttp} and the stream is stable,
-   * still perform HTTP (slow safety poll).
+   * One-shot or interval {@code GET /quotes/snapshot}; not used when push updates are sufficient.
    */
-  async _poll (opts = {}) {
-    if (this._unmounted) return;
-    const stableWs =
-      this.props.webSocketEnabled !== false &&
-      this._wsStreamStable &&
-      this._reportWs &&
-      this._reportWs.readyState === WebSocket.OPEN;
-    if (stableWs && !opts.forceHttp) {
-      return;
-    }
+  async _poll () {
     if (this._pollInFlight) return;
     this._pollInFlight = true;
 
@@ -596,25 +626,59 @@ export default class FeedMonitor extends Component {
     this._pollAbort = ac;
 
     try {
-      const url = resolveFeedReportUrl(this.props.feedApiBase);
-
-      let body;
-      try {
+      const fetchJson = async (url, required = false) => {
         const res = await fetch(url, {
           signal: ac.signal,
           credentials: 'same-origin',
           headers: { Accept: 'application/json' },
           referrerPolicy: 'no-referrer-when-downgrade'
         });
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-        body = await res.json();
+        if (!res.ok) {
+          if (required) {
+            throw new Error(`${res.status} ${res.statusText}`);
+          }
+          return null;
+        }
+        return res.json();
+      };
+
+      let body;
+      try {
+        const [spot, providers, history, chain] = await Promise.all([
+          fetchJson(resolveQuotesSpotUrl(this.props.feedApiBase), true),
+          fetchJson(resolveQuotesProvidersUrl(this.props.feedApiBase), false),
+          fetchJson(
+            `${resolveQuotesHistoryUrl(this.props.feedApiBase)}?limit=${MAX_QUOTE_HISTORY}`,
+            false
+          ),
+          fetchJson(resolveQuotesChainUrl(this.props.feedApiBase), false)
+        ]);
+        body = {
+          ...(spot && typeof spot === 'object' ? spot : {}),
+          ...(providers && typeof providers === 'object' ? providers : {}),
+          ...(history && typeof history === 'object' ? history : {}),
+          ...(chain && typeof chain === 'object' ? chain : {})
+        };
       } catch (err) {
         if (err?.name === 'AbortError') return;
-        const msg = err?.message || String(err);
-        if (!this._unmounted) {
-          this.setState({ pollError: msg });
+        // compatibility fallback while instances roll out split endpoints
+        try {
+          const res = await fetch(resolveQuotesSnapshotUrl(this.props.feedApiBase), {
+            signal: ac.signal,
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json' },
+            referrerPolicy: 'no-referrer-when-downgrade'
+          });
+          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          body = await res.json();
+        } catch (fallbackErr) {
+          if (fallbackErr?.name === 'AbortError') return;
+          const msg = fallbackErr?.message || String(fallbackErr);
+          if (!this._unmounted) {
+            this.setState({ pollError: msg });
+          }
+          return;
         }
-        return;
       }
 
       if (this._unmounted) return;
@@ -711,6 +775,9 @@ export default class FeedMonitor extends Component {
     );
 
     const headlineQuote = quotesNewestFirst[0];
+    const wsPrimary =
+      this.props.webSocketEnabled !== false &&
+      typeof WebSocket !== 'undefined';
     const utxoSrc =
       headlineQuote &&
       Array.isArray(headlineQuote.sources)
@@ -748,8 +815,17 @@ export default class FeedMonitor extends Component {
           <Header><code>fiat.fabric.pub</code></Header>
           {this.state.reportLoading && !this.state.pollError ? (
             <Message info size="small">
-              Fetching feed report from <code>{resolveFeedReportUrl(this.props.feedApiBase)}</code>
-              …
+              {wsPrimary ? (
+                <>
+                  Connecting to{' '}
+                  <code>{resolveQuotesStreamUrl(this.props.feedApiBase)}</code>…
+                </>
+              ) : (
+                <>
+                  Fetching spot/providers/history from{' '}
+                  <code>{resolveQuotesSpotUrl(this.props.feedApiBase)}</code>…
+                </>
+              )}
             </Message>
           ) : null}
           {this.state.pollError ? (

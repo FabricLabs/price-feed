@@ -68,14 +68,6 @@ export default class Quote extends Component {
       >
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Symbol</Table.Cell>
-            <Table.Cell><code>{symbol}</code></Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Currency</Table.Cell>
-            <Table.Cell>{currency}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
             <Table.Cell>Rate</Table.Cell>
             <Table.Cell><strong>{formatFiatPrice(rate, currency)}</strong></Table.Cell>
           </Table.Row>

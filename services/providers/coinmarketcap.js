@@ -1,9 +1,9 @@
 'use strict';
 
-const QuoteProvider = require('../types/quoteProvider');
-const Worker = require('../types/worker');
-const { throwIfFabricHttpError } = require('../types/remoteResponse');
-const { normalizeSpotQuote } = require('../types/spotQuote');
+const QuoteProvider = require('../../types/quoteProvider');
+const Worker = require('../../types/worker');
+const { throwIfFabricHttpError } = require('../../types/remoteResponse');
+const { normalizeSpotQuote } = require('../../types/spotQuote');
 
 class CoinMarketCap extends QuoteProvider {
   constructor (settings = {}) {

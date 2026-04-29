@@ -68787,93 +68787,127 @@
 	const MAX_QUOTE_ROWS = 24;
 	const MAX_QUOTE_HISTORY = 2048;
 
+	/** Canonical path for aggregated report JSON (Fabric-style). */
+	const QUOTES_SNAPSHOT_PATH = '/quotes/snapshot';
+	const QUOTES_SPOT_PATH = '/quotes/spot';
+	const QUOTES_PROVIDERS_PATH = '/quotes/providers';
+	const QUOTES_HISTORY_PATH = '/quotes/history';
+	const QUOTES_CHAIN_PATH = '/quotes/chain';
+
+	/** WebSocket JSON stream matching {@link QUOTES_SNAPSHOT_PATH} payloads. */
+	const QUOTES_STREAM_PATH = '/quotes/stream';
+
 	/**
 	 * @param {string} [feedApiBase]
 	 * @returns {string}
 	 */
-	function resolveFeedReportUrl(feedApiBase) {
+	function resolveQuotesSnapshotUrl(feedApiBase) {
 	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
 	  if (base) {
-	    return `${base}/feed/report`;
+	    return `${base}${QUOTES_SNAPSHOT_PATH}`;
 	  }
 	  if (typeof window !== 'undefined' && window.location?.origin) {
 	    try {
-	      return new URL('/feed/report', window.location.origin).href;
+	      return new URL(QUOTES_SNAPSHOT_PATH, window.location.origin).href;
 	    } catch {
 	      /* fall through */
 	    }
 	  }
-	  return '/feed/report';
+	  return QUOTES_SNAPSHOT_PATH;
+	}
+	function resolveFeedPathUrl(feedApiBase, path) {
+	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+	  if (base) return `${base}${path}`;
+	  if (typeof window !== 'undefined' && window.location?.origin) {
+	    try {
+	      return new URL(path, window.location.origin).href;
+	    } catch {
+	      /* fall through */
+	    }
+	  }
+	  return path;
+	}
+	function resolveQuotesSpotUrl(feedApiBase) {
+	  return resolveFeedPathUrl(feedApiBase, QUOTES_SPOT_PATH);
+	}
+	function resolveQuotesProvidersUrl(feedApiBase) {
+	  return resolveFeedPathUrl(feedApiBase, QUOTES_PROVIDERS_PATH);
+	}
+	function resolveQuotesHistoryUrl(feedApiBase) {
+	  return resolveFeedPathUrl(feedApiBase, QUOTES_HISTORY_PATH);
+	}
+	function resolveQuotesChainUrl(feedApiBase) {
+	  return resolveFeedPathUrl(feedApiBase, QUOTES_CHAIN_PATH);
 	}
 
-	/** Same origin path as {@link resolveFeedReportUrl} for the plain-JSON report stream (not Fabric Bridge). */
-	const FEED_REPORT_STREAM_PATH = '/feed/stream';
-
 	/**
-	 * WebSocket URL for {@link FEED_REPORT_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
+	 * WebSocket URL for {@link QUOTES_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
 	 * @param {string} [feedApiBase]
 	 * @returns {string}
 	 */
-	function resolveFeedStreamUrl(feedApiBase) {
+	function resolveQuotesStreamUrl(feedApiBase) {
 	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
 	  if (base) {
 	    if (/^https:\/\//i.test(base)) {
-	      return `wss://${base.slice('https://'.length)}${FEED_REPORT_STREAM_PATH}`;
+	      return `wss://${base.slice('https://'.length)}${QUOTES_STREAM_PATH}`;
 	    }
 	    if (/^http:\/\//i.test(base)) {
-	      return `ws://${base.slice('http://'.length)}${FEED_REPORT_STREAM_PATH}`;
+	      return `ws://${base.slice('http://'.length)}${QUOTES_STREAM_PATH}`;
 	    }
 	    try {
 	      const u = new URL(base, 'http://localhost');
 	      const proto = u.protocol === 'https:' ? 'wss:' : 'ws:';
-	      return `${proto}//${u.host}${FEED_REPORT_STREAM_PATH}`;
+	      return `${proto}//${u.host}${QUOTES_STREAM_PATH}`;
 	    } catch {
 	      /* fall through */
 	    }
 	  }
 	  if (typeof window !== 'undefined' && window.location?.host) {
 	    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-	    return `${proto}//${window.location.host}${FEED_REPORT_STREAM_PATH}`;
+	    return `${proto}//${window.location.host}${QUOTES_STREAM_PATH}`;
 	  }
-	  return `ws://127.0.0.1:3000${FEED_REPORT_STREAM_PATH}`;
+	  return `ws://127.0.0.1:3000${QUOTES_STREAM_PATH}`;
+	}
+
+	/**
+	 * Canonical UTXOracle single-height estimate via **`GET /blocks?height=`** (redirects to **`/blocks/:hash`**).
+	 * @param {string} [feedApiBase]
+	 * @returns {string}
+	 */
+	function resolveBitcoinOracleEstimateUrl(feedApiBase) {
+	  const path = '/blocks';
+	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
+	  if (base) {
+	    return `${base}${path}`;
+	  }
+	  if (typeof window !== 'undefined' && window.location?.origin) {
+	    try {
+	      return new URL(path, window.location.origin).href;
+	    } catch {
+	      /* fall through */
+	    }
+	  }
+	  return path;
 	}
 
 	/**
 	 * @param {string} [feedApiBase]
 	 * @returns {string}
 	 */
-	function resolveUtxOracleEstimateUrl(feedApiBase) {
+	function resolveBitcoinOracleEstimateSeriesUrl(feedApiBase) {
+	  const path = '/blocks';
 	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
 	  if (base) {
-	    return `${base}/feed/utxoracle/estimate`;
+	    return `${base}${path}`;
 	  }
 	  if (typeof window !== 'undefined' && window.location?.origin) {
 	    try {
-	      return new URL('/feed/utxoracle/estimate', window.location.origin).href;
+	      return new URL(path, window.location.origin).href;
 	    } catch {
 	      /* fall through */
 	    }
 	  }
-	  return '/feed/utxoracle/estimate';
-	}
-
-	/**
-	 * @param {string} [feedApiBase]
-	 * @returns {string}
-	 */
-	function resolveUtxOracleEstimateSeriesUrl(feedApiBase) {
-	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
-	  if (base) {
-	    return `${base}/feed/utxoracle/estimate-series`;
-	  }
-	  if (typeof window !== 'undefined' && window.location?.origin) {
-	    try {
-	      return new URL('/feed/utxoracle/estimate-series', window.location.origin).href;
-	    } catch {
-	      /* fall through */
-	    }
-	  }
-	  return '/feed/utxoracle/estimate-series';
+	  return path;
 	}
 
 	/**
@@ -69387,7 +69421,7 @@
 	    return parts.join(' · ') || '';
 	  }
 	  render() {
-	    const symbol = this.props.symbol ?? '';
+	    this.props.symbol ?? '';
 	    const currency = this.props.currency ?? '';
 	    const rate = typeof this.props.rate === 'number' ? this.props.rate : 0;
 	    const src = this.props.sourceCount;
@@ -69401,20 +69435,6 @@
 	      unstackable: true,
 	      children: /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Body, {
 	        children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
-	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
-	            children: "Symbol"
-	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
-	            children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
-	              children: symbol
-	            })
-	          })]
-	        }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
-	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
-	            children: "Currency"
-	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
-	            children: currency
-	          })]
-	        }), /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
 	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
 	            children: "Rate"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
@@ -69559,8 +69579,6 @@
 	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Provider"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
-	            children: "Active"
-	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Fabric service"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Last success"
@@ -69605,8 +69623,6 @@
 	                },
 	                children: row.resource && row.resource.key ? `resource: ${String(row.resource.key)}` : ''
 	              })]
-	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
-	              children: row.enabled ? 'yes' : 'no'
 	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
 	              style: {
 	                fontSize: '0.9em',
@@ -69953,13 +69969,18 @@
 	      return;
 	    }
 	    const ac = new AbortController();
+	    const requestedHeight = Math.floor(focusHeight);
 	    (async () => {
 	      setLoading(true);
 	      setError(null);
-	      setResult(null);
+	      setResult(prev => {
+	        const ph = prev != null && typeof prev.height === 'number' ? Math.floor(Number(prev.height)) : null;
+	        if (ph === requestedHeight) return prev;
+	        return null;
+	      });
 	      try {
-	        const url = new URL(resolveUtxOracleEstimateUrl(feedApiBase));
-	        url.searchParams.set('height', String(Math.floor(focusHeight)));
+	        const url = new URL(resolveBitcoinOracleEstimateUrl(feedApiBase));
+	        url.searchParams.set('height', String(requestedHeight));
 	        const res = await fetch(url.href, {
 	          signal: ac.signal,
 	          credentials: 'same-origin',
@@ -69976,13 +69997,21 @@
 	          setResult(null);
 	          return;
 	        }
-	        const price = Number(body.price);
+	        const utxo = body.utxoracle;
+	        if (utxo != null && typeof utxo === 'object' && /** @type {{ error?: unknown }} */utxo.error != null && /** @type {{ error?: unknown }} */utxo.error !== '') {
+	          const err = typeof /** @type {{ error?: unknown }} */utxo.error === 'string' ? /** @type {{ error: string }} */utxo.error : String(/** @type {{ error?: unknown }} */utxo.error);
+	          setError(err);
+	          setResult(null);
+	          return;
+	        }
+	        const row = utxo != null && typeof utxo === 'object' && 'price' in utxo ? (/** @type {Record<string, unknown>} */utxo) : body;
+	        const price = Number(row.price);
 	        if (!Number.isFinite(price)) {
 	          setError('Unexpected response from feed.');
 	          setResult(null);
 	          return;
 	        }
-	        setResult(body);
+	        setResult(row);
 	      } catch (e) {
 	        if (/** @type {{ name?: string }} */e.name === 'AbortError') return;
 	        setError(e && e.message ? String(e.message) : String(e));
@@ -70246,13 +70275,14 @@
 	class FeedMonitor extends reactExports.Component {
 	  static defaultProps = {
 	    currency: 'USD',
+	    /** Interval for HTTP-only periodic refresh ({@link #webSocketEnabled} false). */
 	    pollIntervalMs: 1050,
 	    /**
-	     * When the WebSocket stream is stable, HTTP `/feed/report` is still used on this interval
-	     * as a safety net (server aggregation may outpace UI-only pushes).
+	     * If the stream does not deliver a report snapshot within this time (milliseconds),
+	     * perform a one-shot {@code GET /quotes/snapshot}.
 	     */
-	    pollFallbackIntervalMs: 30_000,
-	    /** Set false to use HTTP only (e.g. broken WS proxies). */
+	    webSocketStallFallbackMs: 8000,
+	    /** Set false to use HTTP polling only ({@link #pollIntervalMs}). */
 	    webSocketEnabled: true,
 	    /** Base URL of the running Feed HTTP service (no trailing slash). Same origin when empty. */
 	    feedApiBase: '',
@@ -70268,23 +70298,23 @@
 	    /** Cleared after the first poll attempt finishes (success or handled error). */
 	    reportLoading: true,
 	    pollError: null,
-	    /** From `/feed/report` quoteCurrency when present. */
+	    /** From `/quotes/snapshot` quoteCurrency when present. */
 	    reportQuoteCurrency: undefined,
 	    /** Successful quote provider count for BTC (from aggregator). */
 	    sourceCountBySymbol: {},
-	    /** From GET /feed/report `quoteProviders` when present. */
+	    /** From GET /quotes/snapshot `quoteProviders` when present. */
 	    quoteProviders: [],
 	    inspectQuote: null,
 	    /** Selected window for overview price delta (`DELTA_RANGE_OPTIONS`). */
 	    deltaRangeKey: '1h',
-	    /** From GET /feed/report `utxoracleChain` when UTXOracle is on (tip, stats from bitcoind). */
+	    /** From GET /quotes/snapshot `utxoracleChain` when UTXOracle is on (tip, stats from bitcoind). */
 	    utxoracleChain: null,
 	    /**
 	     * Per-provider inclusion for headline / chart / history (`false` = excluded).
 	     * Omitted keys default to included.
 	     */
 	    sourceVisibility: {},
-	    /** Rows from GET /feed/utxoracle/estimate-series (chart violet dots). */
+	    /** Rows from GET /blocks?minHeight=&maxHeight=&maxPoints= (series, chart violet dots). */
 	    utxoEstimateSeries: [],
 	    utxoEstimateSeriesLoading: false
 	  };
@@ -70293,17 +70323,13 @@
 
 	    /** @type {AbortController|null} */
 	    this._pollAbort = null;
-	    /**
-	     * When true, a `/feed/report` round-trip is in progress. Overlapping ticks are skipped so we
-	     * never abort an in-flight report just because the poll interval fired again.
-	     */
+	    /** When true, a `/quotes/snapshot` round-trip is in progress. */
 	    this._pollInFlight = false;
 	    this._unmounted = false;
-	    /** While true, {@link #_poll} skips HTTP when the report WebSocket is open. */
-	    this._wsStreamStable = false;
 	    this._reportWs = null;
-	    this._streamStableTimer = null;
 	    this._wsReconnectTimer = null;
+	    /** @type {ReturnType<typeof setTimeout>|null} */
+	    this._wsStallFallbackTimer = null;
 	    this._openInspectQuote = this._openInspectQuote.bind(this);
 	    this._closeInspectQuote = this._closeInspectQuote.bind(this);
 	    this._setDeltaRange = this._setDeltaRange.bind(this);
@@ -70349,9 +70375,13 @@
 	  }
 	  componentDidMount() {
 	    this._unmounted = false;
-	    this._poll();
-	    this._restartPollTimer();
-	    this._connectReportStream();
+	    const useWs = this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
+	    if (useWs) {
+	      this._connectReportStream();
+	    } else {
+	      void this._poll();
+	      this._restartHttpPollTimer();
+	    }
 	  }
 	  componentWillUnmount() {
 	    this._disconnectReportStream(true);
@@ -70367,9 +70397,30 @@
 	      clearInterval(this._pollTimer);
 	      this._pollTimer = null;
 	    }
+	    if (this._wsStallFallbackTimer) {
+	      clearTimeout(this._wsStallFallbackTimer);
+	      this._wsStallFallbackTimer = null;
+	    }
 	    this._unmounted = true;
 	  }
 	  componentDidUpdate(prevProps, prevState) {
+	    if (prevProps.feedApiBase !== this.props.feedApiBase) {
+	      const useWs = this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
+	      if (useWs) {
+	        this._disconnectReportStream(true);
+	        this._clearWsStallFallback();
+	        if (!this._unmounted) {
+	          this.setState({
+	            reportLoading: true,
+	            pollError: null
+	          });
+	        }
+	        this._connectReportStream();
+	      } else {
+	        void this._poll();
+	        this._restartHttpPollTimer();
+	      }
+	    }
 	    const tip = this.state.utxoracleChain && Number.isFinite(Number(this.state.utxoracleChain.tip)) ? Math.floor(Number(this.state.utxoracleChain.tip)) : null;
 	    const prevTip = prevState.utxoracleChain && Number.isFinite(Number(prevState.utxoracleChain.tip)) ? Math.floor(Number(prevState.utxoracleChain.tip)) : null;
 	    if (prevProps.feedApiBase !== this.props.feedApiBase || prevState.deltaRangeKey !== this.state.deltaRangeKey || tip !== prevTip || prevState.quoteProviders !== this.state.quoteProviders) {
@@ -70406,7 +70457,7 @@
 	    const sliceMin = utxoSliceMinHeight(tip, rangeOpt.ms);
 	    const span = tip - sliceMin + 1;
 	    const maxPoints = Math.max(1, span);
-	    const baseUrl = resolveUtxOracleEstimateSeriesUrl(this.props.feedApiBase);
+	    const baseUrl = resolveBitcoinOracleEstimateSeriesUrl(this.props.feedApiBase);
 	    let url;
 	    try {
 	      url = new URL(baseUrl);
@@ -70455,18 +70506,38 @@
 	      }
 	    });
 	  }
-	  _restartPollTimer() {
+	  _restartHttpPollTimer() {
 	    if (this._pollTimer) {
 	      clearInterval(this._pollTimer);
 	      this._pollTimer = null;
 	    }
 	    if (this._unmounted) return;
-	    const stable = this.props.webSocketEnabled !== false && this._wsStreamStable && this._reportWs && this._reportWs.readyState === WebSocket.OPEN;
-	    const ms = stable ? this.props.pollFallbackIntervalMs : this.props.pollIntervalMs;
+	    if (this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined') {
+	      return;
+	    }
+	    const ms = Math.max(200, Number(this.props.pollIntervalMs) || 1050);
 	    this._pollTimer = setInterval(() => {
-	      this._poll({
-	        forceHttp: stable
-	      });
+	      void this._poll();
+	    }, ms);
+	  }
+	  _clearWsStallFallback() {
+	    if (this._wsStallFallbackTimer) {
+	      clearTimeout(this._wsStallFallbackTimer);
+	      this._wsStallFallbackTimer = null;
+	    }
+	  }
+	  _scheduleWsStallFallback() {
+	    this._clearWsStallFallback();
+	    if (this._unmounted || this.props.webSocketEnabled === false || typeof WebSocket === 'undefined') {
+	      return;
+	    }
+	    const raw = this.props.webSocketStallFallbackMs;
+	    const ms = typeof raw === 'number' && Number.isFinite(raw) && raw > 0 ? raw : 8000;
+	    this._wsStallFallbackTimer = setTimeout(() => {
+	      this._wsStallFallbackTimer = null;
+	      if (this._unmounted) return;
+	      if (!this.state.reportLoading) return;
+	      void this._poll();
 	    }, ms);
 	  }
 	  _disconnectReportStream(clearReconnect) {
@@ -70474,9 +70545,7 @@
 	      clearTimeout(this._wsReconnectTimer);
 	      this._wsReconnectTimer = null;
 	    }
-	    clearTimeout(this._streamStableTimer);
-	    this._streamStableTimer = null;
-	    this._wsStreamStable = false;
+	    this._clearWsStallFallback();
 	    if (this._reportWs) {
 	      const ws = this._reportWs;
 	      this._reportWs = null;
@@ -70498,12 +70567,11 @@
 	    this._disconnectReportStream(false);
 	    let ws;
 	    try {
-	      ws = new WebSocket(resolveFeedStreamUrl(this.props.feedApiBase));
+	      ws = new WebSocket(resolveQuotesStreamUrl(this.props.feedApiBase));
 	    } catch {
 	      return;
 	    }
 	    this._reportWs = ws;
-	    this._wsStreamStable = false;
 	    ws.onmessage = ev => {
 	      if (this._unmounted || this._reportWs !== ws) return;
 	      let body;
@@ -70515,16 +70583,16 @@
 	      if (!body || typeof body !== 'object') return;
 	      if (body.feedStream === true) {
 	        this._handleFeedStreamSideMessage(body);
-	        this._bumpStreamStability(ws);
 	        return;
 	      }
 	      this._applyReportBody(body);
-	      this._bumpStreamStability(ws);
 	    };
 	    ws.onclose = () => {
 	      if (this._reportWs !== ws) return;
 	      this._disconnectReportStream(false);
-	      this._restartPollTimer();
+	      if (!this._unmounted && this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined') {
+	        void this._poll();
+	      }
 	      if (!this._unmounted && this.props.webSocketEnabled !== false) {
 	        clearTimeout(this._wsReconnectTimer);
 	        this._wsReconnectTimer = setTimeout(() => this._connectReportStream(), 2500);
@@ -70533,23 +70601,11 @@
 	    ws.onerror = () => {
 	      /* onclose runs next */
 	    };
-	  }
-	  _bumpStreamStability(ws) {
-	    clearTimeout(this._streamStableTimer);
-	    this._streamStableTimer = setTimeout(() => {
-	      this._streamStableTimer = null;
-	      if (this._unmounted || this._reportWs !== ws || ws.readyState !== WebSocket.OPEN) {
-	        return;
-	      }
-	      if (!this._wsStreamStable) {
-	        this._wsStreamStable = true;
-	        this._restartPollTimer();
-	      }
-	    }, 1500);
+	    this._scheduleWsStallFallback();
 	  }
 
 	  /**
-	   * Fabric-shaped ZMQ fanout from {@code /feed/stream} (not a full `/feed/report` snapshot).
+	   * Fabric-shaped ZMQ fanout from {@code /quotes/stream} (not a full snapshot).
 	   * @param {object} msg
 	   */
 	  _handleFeedStreamSideMessage(msg) {
@@ -70581,7 +70637,7 @@
 	  }
 
 	  /**
-	   * @param {object} body Parsed `/feed/report` or WebSocket JSON
+	   * @param {object} body Parsed `/quotes/snapshot` or WebSocket JSON
 	   */
 	  _applyReportBody(body) {
 	    if (this._unmounted || !body || typeof body !== 'object') return;
@@ -70662,29 +70718,25 @@
 	    } else {
 	      patch.utxoracleChain = null;
 	    }
+	    this._clearWsStallFallback();
 	    if (!this._unmounted) {
-	      this.setState(patch);
+	      this.setState({
+	        ...patch,
+	        reportLoading: false
+	      });
 	    }
 	  }
 
 	  /**
-	   * @param {{ forceHttp?: boolean }} [opts] When {@code forceHttp} and the stream is stable,
-	   * still perform HTTP (slow safety poll).
+	   * One-shot or interval {@code GET /quotes/snapshot}; not used when push updates are sufficient.
 	   */
-	  async _poll(opts = {}) {
-	    if (this._unmounted) return;
-	    const stableWs = this.props.webSocketEnabled !== false && this._wsStreamStable && this._reportWs && this._reportWs.readyState === WebSocket.OPEN;
-	    if (stableWs && !opts.forceHttp) {
-	      return;
-	    }
+	  async _poll() {
 	    if (this._pollInFlight) return;
 	    this._pollInFlight = true;
 	    const ac = new AbortController();
 	    this._pollAbort = ac;
 	    try {
-	      const url = resolveFeedReportUrl(this.props.feedApiBase);
-	      let body;
-	      try {
+	      const fetchJson = async (url, required = false) => {
 	        const res = await fetch(url, {
 	          signal: ac.signal,
 	          credentials: 'same-origin',
@@ -70693,17 +70745,47 @@
 	          },
 	          referrerPolicy: 'no-referrer-when-downgrade'
 	        });
-	        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-	        body = await res.json();
+	        if (!res.ok) {
+	          if (required) {
+	            throw new Error(`${res.status} ${res.statusText}`);
+	          }
+	          return null;
+	        }
+	        return res.json();
+	      };
+	      let body;
+	      try {
+	        const [spot, providers, history, chain] = await Promise.all([fetchJson(resolveQuotesSpotUrl(this.props.feedApiBase), true), fetchJson(resolveQuotesProvidersUrl(this.props.feedApiBase), false), fetchJson(`${resolveQuotesHistoryUrl(this.props.feedApiBase)}?limit=${MAX_QUOTE_HISTORY}`, false), fetchJson(resolveQuotesChainUrl(this.props.feedApiBase), false)]);
+	        body = {
+	          ...(spot && typeof spot === 'object' ? spot : {}),
+	          ...(providers && typeof providers === 'object' ? providers : {}),
+	          ...(history && typeof history === 'object' ? history : {}),
+	          ...(chain && typeof chain === 'object' ? chain : {})
+	        };
 	      } catch (err) {
 	        if (err?.name === 'AbortError') return;
-	        const msg = err?.message || String(err);
-	        if (!this._unmounted) {
-	          this.setState({
-	            pollError: msg
+	        // compatibility fallback while instances roll out split endpoints
+	        try {
+	          const res = await fetch(resolveQuotesSnapshotUrl(this.props.feedApiBase), {
+	            signal: ac.signal,
+	            credentials: 'same-origin',
+	            headers: {
+	              Accept: 'application/json'
+	            },
+	            referrerPolicy: 'no-referrer-when-downgrade'
 	          });
+	          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+	          body = await res.json();
+	        } catch (fallbackErr) {
+	          if (fallbackErr?.name === 'AbortError') return;
+	          const msg = fallbackErr?.message || String(fallbackErr);
+	          if (!this._unmounted) {
+	            this.setState({
+	              pollError: msg
+	            });
+	          }
+	          return;
 	        }
-	        return;
 	      }
 	      if (this._unmounted) return;
 	      this._applyReportBody(body);
@@ -70763,6 +70845,7 @@
 	    const rangeOpt = resolveDeltaRangeOption(this.state.deltaRangeKey);
 	    const delta = deltaForRange(typeof leadUsd === 'number' ? leadUsd : NaN, quotesFiltered, rangeOpt);
 	    const headlineQuote = quotesNewestFirst[0];
+	    const wsPrimary = this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
 	    const utxoSrc = headlineQuote && Array.isArray(headlineQuote.sources) ? headlineQuote.sources.find(s => s && String(s.provider || '') === 'utxoracle' && Number.isFinite(Number(s.price))) : null;
 	    const utxoSpotForCard = utxoSrc && Number.isFinite(Number(utxoSrc.price)) ? {
 	      price: Number(utxoSrc.price),
@@ -70784,12 +70867,18 @@
 	          children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
 	            children: "fiat.fabric.pub"
 	          })
-	        }), this.state.reportLoading && !this.state.pollError ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
+	        }), this.state.reportLoading && !this.state.pollError ? /*#__PURE__*/jsxRuntimeExports.jsx(Message, {
 	          info: true,
 	          size: "small",
-	          children: ["Fetching feed report from ", /*#__PURE__*/jsxRuntimeExports.jsx("code", {
-	            children: resolveFeedReportUrl(this.props.feedApiBase)
-	          }), "\u2026"]
+	          children: wsPrimary ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	            children: ["Connecting to", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	              children: resolveQuotesStreamUrl(this.props.feedApiBase)
+	            }), "\u2026"]
+	          }) : /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+	            children: ["Fetching spot/providers/history from", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	              children: resolveQuotesSpotUrl(this.props.feedApiBase)
+	            }), "\u2026"]
+	          })
 	        }) : null, this.state.pollError ? /*#__PURE__*/jsxRuntimeExports.jsxs(Message, {
 	          warning: true,
 	          size: "small",
@@ -70891,7 +70980,7 @@
 	const settings = {
 	  currency: 'USD',
 	  pollIntervalMs: 1050,
-	  pollFallbackIntervalMs: 30_000,
+	  webSocketStallFallbackMs: 8000,
 	  webSocketEnabled: true,
 	  feedApiBase: '',
 	  historicalOhlcUrl: 'data/btc-usd-daily-ohlc.json'
@@ -70907,7 +70996,7 @@
 	    currency: input.currency,
 	    feedApiBase: input.feedApiBase,
 	    pollIntervalMs: input.pollIntervalMs,
-	    pollFallbackIntervalMs: input.pollFallbackIntervalMs,
+	    webSocketStallFallbackMs: input.webSocketStallFallbackMs,
 	    webSocketEnabled: input.webSocketEnabled,
 	    historicalOhlcUrl: input.historicalOhlcUrl
 	  }));

@@ -5,10 +5,10 @@
  * Falls back to integer fetch time when the field is absent (rate limits / older responses).
  * @see https://www.coingecko.com/en/api/documentation
  */
-const QuoteProvider = require('../types/quoteProvider');
-const Worker = require('../types/worker');
-const { throwIfCoingeckoError } = require('../types/remoteResponse');
-const { normalizeSpotQuote } = require('../types/spotQuote');
+const QuoteProvider = require('../../types/quoteProvider');
+const Worker = require('../../types/worker');
+const { throwIfCoingeckoError } = require('../../types/remoteResponse');
+const { normalizeSpotQuote } = require('../../types/spotQuote');
 
 class CoinGecko extends QuoteProvider {
   constructor (settings = {}) {

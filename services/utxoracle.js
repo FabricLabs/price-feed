@@ -546,40 +546,49 @@ async function estimateUsdFromRecentBlocks (rpc, opts = {}) {
 const HUB_FABRIC_CHAIN_REST_DEFAULT = 'https://hub.fabric.pub';
 
 /**
+ * Try Hub block JSON: **`GET /blocks/:height`** (**302** → canonical **`/blocks/:hash`**), **`GET /blocks/height/:n`**,
  * @param {string} hubBase
  * @param {number} height
  * @returns {Promise<Record<string, unknown>|null>}
  */
 async function fetchHubBlockAtHeight (hubBase, height) {
   const base = String(hubBase || '').replace(/\/+$/, '');
-  const url = `${base}/services/bitcoin/blocks/height/${Math.floor(height)}`;
-  /** @type {Awaited<ReturnType<typeof httpsRequestCaptured>>|null} */
-  let captured = null;
-  try {
-    captured = await httpsRequestCaptured({
-      url,
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-      tlsServiceId: 'utxoracle'
-    });
-  } catch {
-    return null;
+  const h = Math.floor(height);
+  const urls = [
+    `${base}/blocks/${h}`,
+    `${base}/blocks/height/${h}`,
+    `${base}/services/bitcoin/blocks/height/${h}`
+  ];
+  for (let u = 0; u < urls.length; u++) {
+    /** @type {Awaited<ReturnType<typeof httpsRequestCaptured>>|null} */
+    let captured = null;
+    try {
+      captured = await httpsRequestCaptured({
+        url: urls[u],
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        tlsServiceId: 'utxoracle'
+      });
+    } catch {
+      continue;
+    }
+    const ok = captured.statusCode >= 200 && captured.statusCode < 300;
+    if (!ok) continue;
+    /** @type {Record<string, unknown>} */
+    let data;
+    try {
+      data = JSON.parse(captured.bodyBuf.toString('utf8'));
+    } catch {
+      continue;
+    }
+    if (!data || data.status === 'error' || data.height == null) continue;
+    return data;
   }
-  const ok = captured.statusCode >= 200 && captured.statusCode < 300;
-  if (!ok) return null;
-  /** @type {Record<string, unknown>} */
-  let data;
-  try {
-    data = JSON.parse(captured.bodyBuf.toString('utf8'));
-  } catch {
-    return null;
-  }
-  if (!data || data.status === 'error' || data.height == null) return null;
-  return data;
+  return null;
 }
 
 /**
- * Discover chain tip via Hub `/services/bitcoin/blocks/height/:n` (binary search).
+ * Discover chain tip via Hub **`GET /blocks/height/:n`** (or legacy **`/services/bitcoin/...`**) binary search.
  * @param {string} hubBase
  * @returns {Promise<Record<string, unknown>>}
  */

@@ -4,10 +4,10 @@
  * Coinbase **Exchange** public ticker — venue `time` + `price` (exact UTC instant).
  * @see https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getproductticker
  */
-const QuoteProvider = require('../types/quoteProvider');
-const Worker = require('../types/worker');
-const { throwIfFabricHttpError } = require('../types/remoteResponse');
-const { normalizeSpotQuote } = require('../types/spotQuote');
+const QuoteProvider = require('../../types/quoteProvider');
+const Worker = require('../../types/worker');
+const { throwIfFabricHttpError } = require('../../types/remoteResponse');
+const { normalizeSpotQuote } = require('../../types/spotQuote');
 
 class Coinbase extends QuoteProvider {
   constructor (settings = {}) {

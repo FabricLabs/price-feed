@@ -1,9 +1,9 @@
 'use strict';
 
-const QuoteProvider = require('../types/quoteProvider');
-const Worker = require('../types/worker');
-const { throwIfFabricHttpError } = require('../types/remoteResponse');
-const { normalizeSpotQuote, ageLogFromAsOfMs } = require('../types/spotQuote');
+const QuoteProvider = require('../../types/quoteProvider');
+const Worker = require('../../types/worker');
+const { throwIfFabricHttpError } = require('../../types/remoteResponse');
+const { normalizeSpotQuote, ageLogFromAsOfMs } = require('../../types/spotQuote');
 
 class BitPay extends QuoteProvider {
   constructor (settings = {}) {

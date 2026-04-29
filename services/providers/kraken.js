@@ -4,10 +4,10 @@
  * Kraken public **Trades** (latest fill) — price + sub-second trade time (UTC).
  * @see https://docs.kraken.com/rest/#tag/Market-Data/operation/getRecentTrades
  */
-const QuoteProvider = require('../types/quoteProvider');
-const Worker = require('../types/worker');
-const { throwIfFabricHttpError } = require('../types/remoteResponse');
-const { normalizeSpotQuote } = require('../types/spotQuote');
+const QuoteProvider = require('../../types/quoteProvider');
+const Worker = require('../../types/worker');
+const { throwIfFabricHttpError } = require('../../types/remoteResponse');
+const { normalizeSpotQuote } = require('../../types/spotQuote');
 
 class Kraken extends QuoteProvider {
   constructor (settings = {}) {

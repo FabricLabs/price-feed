@@ -2,12 +2,15 @@
 
 const assert = require('node:assert');
 
-const BitPay = require('../services/bitpay');
-const Coinbase = require('../services/coinbase');
-const CoinGecko = require('../services/coingecko');
-const Kraken = require('../services/kraken');
-const Bitstamp = require('../services/bitstamp');
-const CoinMarketCap = require('../services/coinmarketcap');
+const BitPay = require('../services/providers/bitpay');
+const Coinbase = require('../services/providers/coinbase');
+const CoinGecko = require('../services/providers/coingecko');
+const Kraken = require('../services/providers/kraken');
+const Bitstamp = require('../services/providers/bitstamp');
+const Gemini = require('../services/providers/gemini');
+const Bitfinex = require('../services/providers/bitfinex');
+const BinanceUS = require('../services/providers/binanceus');
+const CoinMarketCap = require('../services/providers/coinmarketcap');
 
 describe('quote providers', function () {
   this.timeout(8000);
@@ -126,6 +129,57 @@ describe('quote providers', function () {
       assert.strictEqual(quote.price, 59999.01);
       assert.strictEqual(quote.asOfSource, 'venue');
       assert.strictEqual(quote.asOfMs, 1_700_000_000_000);
+    });
+  });
+
+  describe('Gemini', function () {
+    it('parses pubticker last + timestampms', async function () {
+      const g = new Gemini({});
+      g.http.get = async function (path) {
+        assert.strictEqual(path, '/v1/pubticker/BTCUSD');
+        return {
+          last: '63456.12',
+          volume: { timestampms: '1700000000123' }
+        };
+      };
+      const quote = await g.getQuoteForSymbol('BTC');
+      assert.strictEqual(quote.currency, 'USD');
+      assert.strictEqual(quote.price, 63456.12);
+      assert.strictEqual(quote.asOfSource, 'venue');
+      assert.strictEqual(quote.asOfMs, 1_700_000_000_123);
+    });
+  });
+
+  describe('Bitfinex', function () {
+    it('parses ticker array last price', async function () {
+      const bfx = new Bitfinex({});
+      bfx.http.get = async function (path) {
+        assert.strictEqual(path, '/v2/ticker/tBTCUSD');
+        return [63000, 1, 63010, 1, 10, 0.001, 63005.5, 100, 64000, 62000, 1700000000456];
+      };
+      const quote = await bfx.getQuoteForSymbol('BTC');
+      assert.strictEqual(quote.currency, 'USD');
+      assert.strictEqual(quote.price, 63005.5);
+      assert.strictEqual(quote.asOfSource, 'venue');
+      assert.strictEqual(quote.asOfMs, 1_700_000_000_456);
+    });
+  });
+
+  describe('Binance.US', function () {
+    it('parses 24h ticker lastPrice + closeTime', async function () {
+      const bus = new BinanceUS({});
+      bus.http.get = async function (path) {
+        assert.strictEqual(path, '/api/v3/ticker/24hr?symbol=BTCUSD');
+        return {
+          lastPrice: '64123.45',
+          closeTime: 1_700_000_000_789
+        };
+      };
+      const quote = await bus.getQuoteForSymbol('BTC');
+      assert.strictEqual(quote.currency, 'USD');
+      assert.strictEqual(quote.price, 64123.45);
+      assert.strictEqual(quote.asOfSource, 'venue');
+      assert.strictEqual(quote.asOfMs, 1_700_000_000_789);
     });
   });
 

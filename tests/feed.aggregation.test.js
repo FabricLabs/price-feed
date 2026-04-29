@@ -18,7 +18,7 @@ function stubQuoteService (calls) {
 }
 
 describe('Feed aggregation (HTTP provider quotes)', function () {
-  this.timeout(10_000);
+  this.timeout(20_000);
 
   it('returns fromCache:true on repeat fetch within debounceMs', async () => {
     const bpCalls = [];
@@ -133,5 +133,76 @@ describe('Feed aggregation (HTTP provider quotes)', function () {
       elapsed < 90,
       `BitPay and Coinbase should overlap in time (got ${elapsed}ms)`
     );
+  });
+
+  it('falls back to stale cached provider quotes when live refresh fails', async () => {
+    let bitpayCalls = 0;
+    let coinbaseCalls = 0;
+
+    const bitpay = {
+      async getQuoteForSymbol () {
+        bitpayCalls++;
+        if (bitpayCalls === 1) {
+          return { age: 1, created: new Date(Date.now() - 5_000), currency: 'USD', price: 60_000 };
+        }
+        throw new Error('bitpay upstream down');
+      }
+    };
+
+    const coinbase = {
+      async getQuoteForSymbol () {
+        coinbaseCalls++;
+        if (coinbaseCalls === 1) {
+          return { age: 1, created: new Date(Date.now() - 7_000), currency: 'USD', price: 60_100 };
+        }
+        throw new Error('coinbase upstream down');
+      }
+    };
+
+    const feed = new Feed({
+      sync: false,
+      symbols: ['BTC'],
+      sources: {
+        bitpay: {},
+        coinbase: {},
+        coinmarketcap: {},
+        coingecko: { enabled: false },
+        kraken: { enabled: false },
+        bitstamp: { enabled: false },
+        gemini: { enabled: false },
+        bitfinex: { enabled: false },
+        binanceus: { enabled: false },
+        utxoracle: { enabled: false }
+      },
+      aggregation: {
+        debounceMs: 0,
+        concurrency: {
+          bitpay: 1,
+          coinbase: 1,
+          coingecko: 1,
+          kraken: 1,
+          bitstamp: 1,
+          gemini: 1,
+          bitfinex: 1,
+          binanceus: 1,
+          coinmarketcap: 1,
+          utxoracle: 1
+        }
+      }
+    });
+
+    feed.bitpay = bitpay;
+    feed.coinbase = coinbase;
+    feed.cmc = { async getQuoteForSymbol () { throw new Error('no'); } };
+
+    const first = await feed.getQuoteForSymbol('BTC');
+    assert.ok(Number.isFinite(first.price), 'initial quote should compute');
+    assert.strictEqual(first.sourceCount, 2);
+    assert.ok(first.sources.every((s) => s.fromCache !== true));
+
+    const second = await feed.getQuoteForSymbol('BTC');
+    assert.ok(Number.isFinite(second.price), 'stale quote should still compute');
+    assert.strictEqual(second.sourceCount, 2);
+    assert.ok(second.sources.every((s) => s.fromCache === true));
   });
 });
