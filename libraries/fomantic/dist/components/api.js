@@ -1,5 +1,5 @@
 /*!
- * # Fomantic-UI 2.8.8 - API
+ * # Fomantic-UI 2.9.4 - API
  * http://github.com/fomantic/Fomantic-UI/
  *
  *

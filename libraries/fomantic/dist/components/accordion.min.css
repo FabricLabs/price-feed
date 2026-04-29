@@ -1,5 +1,5 @@
 /*!
- * # Fomantic-UI 2.8.8 - Accordion
+ * # Fomantic-UI 2.9.4 - Accordion
  * http://github.com/fomantic/Fomantic-UI/
  *
  *

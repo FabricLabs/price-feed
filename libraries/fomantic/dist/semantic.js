@@ -1,5 +1,5 @@
 /*
- * # Fomantic UI - 2.8.8
+ * # Fomantic UI - 2.9.4
  * https://github.com/fomantic/Fomantic-UI
  * http://fomantic-ui.com/
  *
@@ -9,7 +9,7 @@
  *
  */
 /*!
- * # Fomantic-UI 2.8.8 - Accordion
+ * # Fomantic-UI 2.9.4 - Accordion
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -628,7 +628,7 @@ $.extend( $.easing, {
 
 
 /*!
- * # Fomantic-UI 2.8.8 - API
+ * # Fomantic-UI 2.9.4 - API
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -1806,7 +1806,7 @@ $.api.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Calendar
+ * # Fomantic-UI 2.9.4 - Calendar
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -3579,7 +3579,7 @@ $.fn.calendar.settings = {
 })(jQuery, window, document);
 
 /*!
- * # Fomantic-UI 2.8.8 - Checkbox
+ * # Fomantic-UI 2.9.4 - Checkbox
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -4456,7 +4456,7 @@ $.fn.checkbox.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Dimmer
+ * # Fomantic-UI 2.9.4 - Dimmer
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -5207,7 +5207,7 @@ $.fn.dimmer.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Dropdown
+ * # Fomantic-UI 2.9.4 - Dropdown
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -9538,7 +9538,7 @@ $.fn.dropdown.settings.templates = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Embed
+ * # Fomantic-UI 2.9.4 - Embed
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -10248,7 +10248,7 @@ $.fn.embed.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Form Validation
+ * # Fomantic-UI 2.9.4 - Form Validation
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -12320,7 +12320,7 @@ $.fn.form.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Modal
+ * # Fomantic-UI 2.9.4 - Modal
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -13773,7 +13773,7 @@ $.fn.modal.settings.templates = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Nag
+ * # Fomantic-UI 2.9.4 - Nag
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -14332,7 +14332,7 @@ $.extend( $.easing, {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Popup
+ * # Fomantic-UI 2.9.4 - Popup
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -15874,7 +15874,7 @@ $.fn.popup.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Progress
+ * # Fomantic-UI 2.9.4 - Progress
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -16908,7 +16908,7 @@ $.fn.progress.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Rating
+ * # Fomantic-UI 2.9.4 - Rating
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -17463,7 +17463,7 @@ $.fn.rating.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Search
+ * # Fomantic-UI 2.9.4 - Search
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -19031,7 +19031,7 @@ $.fn.search.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Shape
+ * # Fomantic-UI 2.9.4 - Shape
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -19880,7 +19880,7 @@ $.fn.shape.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Sidebar
+ * # Fomantic-UI 2.9.4 - Sidebar
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -20917,7 +20917,7 @@ $.fn.sidebar.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Site
+ * # Fomantic-UI 2.9.4 - Site
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -21411,7 +21411,7 @@ $.extend($.expr[ ":" ], {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Slider
+ * # Fomantic-UI 2.9.4 - Slider
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -22750,7 +22750,7 @@ $.fn.slider.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - State
+ * # Fomantic-UI 2.9.4 - State
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -23462,7 +23462,7 @@ $.fn.state.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Sticky
+ * # Fomantic-UI 2.9.4 - Sticky
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -24420,7 +24420,7 @@ $.fn.sticky.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Tab
+ * # Fomantic-UI 2.9.4 - Tab
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -25422,7 +25422,7 @@ $.fn.tab.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Toast
+ * # Fomantic-UI 2.9.4 - Toast
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -26315,7 +26315,7 @@ $.extend( $.easing, {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Transition
+ * # Fomantic-UI 2.9.4 - Transition
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -27425,7 +27425,7 @@ $.fn.transition.settings = {
 })( jQuery, window, document );
 
 /*!
- * # Fomantic-UI 2.8.8 - Visibility
+ * # Fomantic-UI 2.9.4 - Visibility
  * http://github.com/fomantic/Fomantic-UI/
  *
  *

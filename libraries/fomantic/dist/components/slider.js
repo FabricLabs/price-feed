@@ -1,5 +1,5 @@
 /*!
- * # Fomantic-UI 2.8.8 - Slider
+ * # Fomantic-UI 2.9.4 - Slider
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
