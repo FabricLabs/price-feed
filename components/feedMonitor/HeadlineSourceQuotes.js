@@ -6,6 +6,40 @@ import { formatFiatPrice } from '../localeNumber';
 import TlsQuoteTrust from './TlsQuoteTrust';
 import { isSourceVisible, lookupProviderTls } from './utils';
 
+const PROVIDER_BUY_URLS = Object.freeze({
+  coinbase: 'https://www.coinbase.com/join',
+  kraken: 'https://www.kraken.com/features/affiliate-program',
+  bitstamp: 'https://www.bitstamp.net/referral-program/',
+  gemini: 'https://www.gemini.com/refer-a-friend',
+  bitfinex: 'https://www.bitfinex.com/referral',
+  binance: 'https://accounts.binance.com/en/register',
+  binanceus: 'https://www.binance.us/register',
+  okx: 'https://www.okx.com/join',
+  bybit: 'https://www.bybit.com/invite',
+  kucoin: 'https://www.kucoin.com/r/af',
+  gateio: 'https://www.gate.io/signup',
+  mexc: 'https://www.mexc.com/register',
+  bitget: 'https://www.bitget.com/en/referral/register',
+  htx: 'https://www.htx.com/invite/en-us/',
+  coinex: 'https://www.coinex.com/register',
+  cexio: 'https://cex.io/r/0/up100',
+  upbit: 'https://id.upbit.com/signup',
+  bitso: 'https://bitso.com/register',
+  phemex: 'https://phemex.com/register',
+  bitvavo: 'https://bitvavo.com/en/register',
+  cryptocom: 'https://crypto.com/exchange/register',
+  whitebit: 'https://whitebit.com/auth/register',
+  lbank: 'https://www.lbank.com/login',
+  digifinex: 'https://www.digifinex.com/en-ww/register',
+  ascendex: 'https://ascendex.com/en/register',
+  btse: 'https://www.btse.com/en/referral',
+  bitmart: 'https://www.bitmart.com/register',
+  bingx: 'https://bingx.com/en-us/invite',
+  bitrue: 'https://www.bitrue.com/user/register',
+  poloniex: 'https://poloniex.com/signup',
+  deribit: 'https://www.deribit.com/accounts/signup'
+});
+
 /**
  * Right column beside headline: each contributor’s price from the latest quote (opens full breakdown).
  *
@@ -22,7 +56,9 @@ import { isSourceVisible, lookupProviderTls } from './utils';
  *   labelById: Map<string, string>,
  *   fiat: string,
  *   onOpenInspect: (q: object) => void,
- *   tlsByProvider?: Map<string, Record<string, unknown>> | Record<string, Record<string, unknown>>
+ *   tlsByProvider?: Map<string, Record<string, unknown>> | Record<string, Record<string, unknown>>,
+ *   aggregationMode?: string,
+ *   compact?: boolean
  * }} props
  */
 export default function HeadlineSourceQuotes ({
@@ -31,7 +67,9 @@ export default function HeadlineSourceQuotes ({
   labelById,
   fiat,
   onOpenInspect,
-  tlsByProvider
+  tlsByProvider,
+  aggregationMode = 'weighted',
+  compact = false
 }) {
   const src = Array.isArray(quote?.sources) ? quote.sources : [];
   const rows = src
@@ -48,19 +86,114 @@ export default function HeadlineSourceQuotes ({
       const excluded =
         /** @type {{ excludedFromSpot?: boolean }} */ (s).excludedFromSpot ===
         true;
+      const depthCapable = Number.isFinite(Number(s?.depth)) && Number(s.depth) > 0;
       return {
         providerId: provider,
         key: provider + ':' + String(price) + ':' + String(excluded),
         name,
         price,
         nameLower: name.toLowerCase(),
-        excluded
+        buyUrl: PROVIDER_BUY_URLS[provider] || null,
+        excluded,
+        depthCapable
       };
     })
     .filter(Boolean)
-    .sort((a, b) => a.nameLower.localeCompare(b.nameLower));
+    .sort((a, b) => {
+      const byPrice = a.price - b.price;
+      if (byPrice !== 0) return byPrice;
+      return a.nameLower.localeCompare(b.nameLower);
+    });
 
   if (!rows.length) return null;
+
+  if (compact) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '0.35rem 0.5rem'
+        }}
+      >
+        <span
+          style={{
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            letterSpacing: '0.03em',
+            textTransform: 'uppercase',
+            opacity: 0.52
+          }}
+        >
+          By source · {fiat}
+        </span>
+        {rows.map((row) => (
+          <button
+            key={row.key}
+            type="button"
+            style={{
+              border: '1px solid rgba(0,0,0,.12)',
+              background: '#fff',
+              borderRadius: '999px',
+              padding: '0.18rem 0.55rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              cursor: 'pointer'
+            }}
+            onClick={() => onOpenInspect(quote)}
+          >
+            <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>
+              {row.name}
+            </span>
+            <span
+              style={{
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+                opacity: 0.92
+              }}
+            >
+              {formatFiatPrice(row.price, fiat)}
+            </span>
+            {row.depthCapable ? (
+              <span
+                title="Depth-capable source"
+                style={{
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.03em',
+                  textTransform: 'uppercase',
+                  opacity: 0.64
+                }}
+              >
+                Depth
+              </span>
+            ) : null}
+            {row.buyUrl ? (
+              <a
+                href={row.buyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                style={{
+                  fontSize: '0.68rem',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                Buy
+              </a>
+            ) : null}
+          </button>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div style={{ width: '100%' }}>
@@ -120,13 +253,47 @@ export default function HeadlineSourceQuotes ({
               </List.Header>
               <span
                 style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
                   fontSize: '0.95rem',
                   fontWeight: 600,
                   fontVariantNumeric: 'tabular-nums',
                   opacity: 0.92
                 }}
               >
-                {formatFiatPrice(row.price, fiat)}
+                <span>{formatFiatPrice(row.price, fiat)}</span>
+                {row.depthCapable ? (
+                  <span
+                    title="Depth-capable source"
+                    style={{
+                      fontSize: '0.62rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.03em',
+                      textTransform: 'uppercase',
+                      opacity: 0.64
+                    }}
+                  >
+                    Depth
+                  </span>
+                ) : null}
+                {row.buyUrl ? (
+                  <a
+                    href={row.buyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.stopPropagation()}
+                    style={{
+                      fontSize: '0.74rem',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.02em'
+                    }}
+                  >
+                    Buy
+                  </a>
+                ) : null}
               </span>
             </List.Content>
             {tlsByProvider ? (
@@ -152,7 +319,7 @@ export default function HeadlineSourceQuotes ({
                   lineHeight: 1.35
                 }}
               >
-                Not included in headline weighted blend (sync / verification)
+                Not included in headline {aggregationMode} blend (sync / verification)
               </div>
             ) : null}
           </List.Item>

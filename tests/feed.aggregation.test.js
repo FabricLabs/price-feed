@@ -54,6 +54,8 @@ describe('Feed aggregation (HTTP provider quotes)', function () {
 
     feed.bitpay = bitpay;
     feed.coinbase = coinbase;
+    feed.services.bitpay = bitpay;
+    feed.services.coinbase = coinbase;
     feed.cmc = { async getQuoteForSymbol () { throw new Error('no'); } };
 
     const r1 = await feed._fetchProviderQuotes('BTC');
@@ -118,6 +120,8 @@ describe('Feed aggregation (HTTP provider quotes)', function () {
     });
     feed.bitpay = bitpay;
     feed.coinbase = coinbase;
+    feed.services.bitpay = bitpay;
+    feed.services.coinbase = coinbase;
     feed.cmc = { async getQuoteForSymbol () { throw new Error('no'); } };
 
     const t0 = Date.now();
@@ -143,9 +147,13 @@ describe('Feed aggregation (HTTP provider quotes)', function () {
       async getQuoteForSymbol () {
         bitpayCalls++;
         if (bitpayCalls === 1) {
-          return { age: 1, created: new Date(Date.now() - 5_000), currency: 'USD', price: 60_000 };
+          const asOfMs = Date.now() - 5_000;
+          return { age: 1, asOfMs, created: new Date(asOfMs), currency: 'USD', price: 60_000 };
         }
         throw new Error('bitpay upstream down');
+      },
+      async getDepthForSymbol () {
+        return { depth: 1_000_000, bidDepth: 500_000, askDepth: 500_000, asOfMs: Date.now() };
       }
     };
 
@@ -153,9 +161,13 @@ describe('Feed aggregation (HTTP provider quotes)', function () {
       async getQuoteForSymbol () {
         coinbaseCalls++;
         if (coinbaseCalls === 1) {
-          return { age: 1, created: new Date(Date.now() - 7_000), currency: 'USD', price: 60_100 };
+          const asOfMs = Date.now() - 7_000;
+          return { age: 1, asOfMs, created: new Date(asOfMs), currency: 'USD', price: 60_100 };
         }
         throw new Error('coinbase upstream down');
+      },
+      async getDepthForSymbol () {
+        return { depth: 2_000_000, bidDepth: 1_000_000, askDepth: 1_000_000, asOfMs: Date.now() };
       }
     };
 
@@ -193,6 +205,8 @@ describe('Feed aggregation (HTTP provider quotes)', function () {
 
     feed.bitpay = bitpay;
     feed.coinbase = coinbase;
+    feed.services.bitpay = bitpay;
+    feed.services.coinbase = coinbase;
     feed.cmc = { async getQuoteForSymbol () { throw new Error('no'); } };
 
     const first = await feed.getQuoteForSymbol('BTC');

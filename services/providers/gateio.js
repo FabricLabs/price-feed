@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * Gemini public ticker (`/v1/pubticker/BTCUSD`) with optional venue timestamp.
- * @see https://docs.gemini.com/rest/market-data#get-ticker
+ * Gate.io spot ticker (`/api/v4/spot/tickers?currency_pair=BTC_USDT`) array with `last`.
+ * @see https://www.gate.io/docs/developers/apiv4/en/
  */
 const QuoteProvider = require('../../types/quoteProvider');
 const Worker = require('../../types/worker');
 const { throwIfFabricHttpError } = require('../../types/remoteResponse');
 const { normalizeSpotQuote } = require('../../types/spotQuote');
 
-class Gemini extends QuoteProvider {
+class GateIO extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
@@ -22,9 +22,9 @@ class Gemini extends QuoteProvider {
     );
 
     this.http = new Worker({
-      serviceId: 'gemini',
-      label: 'Gemini',
-      authority: 'api.gemini.com',
+      serviceId: 'gateio',
+      label: 'Gate.io',
+      authority: 'api.gateio.ws',
       secure: true,
       port: 443,
       timeoutMs: this.settings.timeoutMs
@@ -35,41 +35,35 @@ class Gemini extends QuoteProvider {
   async getQuoteForSymbol (symbol) {
     this.assertBtc(symbol);
 
-    const data = await this.http.get('/v1/pubticker/BTCUSD');
-    throwIfFabricHttpError(data, 'Gemini');
+    const data = await this.http.get('/api/v4/spot/tickers?currency_pair=BTC_USDT');
+    throwIfFabricHttpError(data, 'Gate.io');
 
-    const price = Number(data?.last);
+    const row = Array.isArray(data) ? data[0] : null;
+    const price = Number(row?.last);
     if (!Number.isFinite(price)) {
-      throw new Error('Gemini: missing or invalid last price.');
+      throw new Error('Gate.io: missing or invalid last price.');
     }
-
-    const venueMs = Number(data?.volume?.timestampms);
-    const asOfMs = Number.isFinite(venueMs) && venueMs > 0
-      ? Math.round(venueMs)
-      : Math.round(Date.now());
-    const asOfSource = Number.isFinite(venueMs) && venueMs > 0
-      ? 'venue'
-      : 'fetch';
 
     return normalizeSpotQuote({
       price,
       currency: 'USD',
-      asOfMs,
-      asOfSource
+      asOfMs: Math.round(Date.now()),
+      asOfSource: 'fetch'
     });
   }
 
   async getOrderBookForSymbol (symbol) {
     this.assertBtc(symbol);
-    const data = await this.http.get('/v1/book/BTCUSD');
-    throwIfFabricHttpError(data, 'Gemini');
+    const data = await this.http.get('/api/v4/spot/order_book?currency_pair=BTC_USDT&limit=20');
+    throwIfFabricHttpError(data, 'Gate.io');
     const norm = this.normalizeOrderBookLevels(data?.bids, data?.asks);
+    const ts = Number(data?.current);
     return {
       bids: norm.bids,
       asks: norm.asks,
-      asOfMs: Date.now()
+      asOfMs: Number.isFinite(ts) && ts > 0 ? Math.round(ts * 1000) : Date.now()
     };
   }
 }
 
-module.exports = Gemini;
+module.exports = GateIO;

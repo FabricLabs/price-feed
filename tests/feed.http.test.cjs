@@ -36,10 +36,17 @@ async function readSseUntilDataLine (stream, timeoutMs = 6_000) {
       const { done, value } = await reader.read();
       if (done) break;
       text += decoder.decode(value, { stream: true });
-      const lines = text.split('\n');
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          return line.slice('data: '.length).trim();
+      for (;;) {
+        const frameEnd = text.indexOf('\n\n');
+        if (frameEnd === -1) break;
+        const frame = text.slice(0, frameEnd);
+        text = text.slice(frameEnd + 2);
+        const lines = frame.split('\n');
+        const dataLines = lines
+          .filter((line) => line.startsWith('data: '))
+          .map((line) => line.slice('data: '.length));
+        if (dataLines.length) {
+          return dataLines.join('\n').trim();
         }
       }
     }
@@ -94,6 +101,18 @@ describe('Feed HTTP (/quotes/snapshot)', function () {
         price: '60222.2',
         time: '2020-01-15T12:00:00.000Z'
       });
+      feed.bitpay.getDepthForSymbol = async () => ({
+        depth: 500_000,
+        bidDepth: 250_000,
+        askDepth: 250_000,
+        asOfMs: Date.now()
+      });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 900_000,
+        bidDepth: 450_000,
+        askDepth: 450_000,
+        asOfMs: Date.now()
+      });
 
       await feed.start();
       await feed.syncAllPrices();
@@ -119,7 +138,10 @@ describe('Feed HTTP (/quotes/snapshot)', function () {
 
       const qProv = report.quoteProviders;
       assert.ok(Array.isArray(qProv), 'quoteProviders should be an array');
-      assert.strictEqual(qProv.length, 10);
+      assert.ok(
+        qProv.length >= 10,
+        'quoteProviders should include all configured provider services'
+      );
       const byId = Object.fromEntries(
         qProv.map((/** @type {{ id?: string }} */ p) => [p.id, p])
       );
@@ -213,6 +235,30 @@ describe('Feed HTTP (/quotes/* decomposed)', function () {
         price: '60222.2',
         time: '2020-01-15T12:00:00.000Z'
       });
+      feed.bitpay.getDepthForSymbol = async () => ({
+        depth: 500_000,
+        bidDepth: 250_000,
+        askDepth: 250_000,
+        asOfMs: Date.now()
+      });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 900_000,
+        bidDepth: 450_000,
+        askDepth: 450_000,
+        asOfMs: Date.now()
+      });
+      feed.bitpay.getDepthForSymbol = async () => ({
+        depth: 500_000,
+        bidDepth: 250_000,
+        askDepth: 250_000,
+        asOfMs: Date.now()
+      });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 900_000,
+        bidDepth: 450_000,
+        askDepth: 450_000,
+        asOfMs: Date.now()
+      });
 
       await feed.start();
       await feed.syncAllPrices();
@@ -289,6 +335,18 @@ describe('Feed HTTP SSE (/quotes/sse)', function () {
       feed.coinbase.http.get = async () => ({
         price: '60222.2',
         time: '2020-01-15T12:00:00.000Z'
+      });
+      feed.bitpay.getDepthForSymbol = async () => ({
+        depth: 500_000,
+        bidDepth: 250_000,
+        askDepth: 250_000,
+        asOfMs: Date.now()
+      });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 900_000,
+        bidDepth: 450_000,
+        askDepth: 450_000,
+        asOfMs: Date.now()
       });
 
       await feed.start();

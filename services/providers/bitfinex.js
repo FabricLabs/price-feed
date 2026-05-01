@@ -61,6 +61,31 @@ class Bitfinex extends QuoteProvider {
       asOfSource
     });
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    const data = await this.http.get('/v2/book/tBTCUSD/P0?len=25');
+    throwIfFabricHttpError(data, 'Bitfinex');
+    if (!Array.isArray(data)) {
+      return { bids: [], asks: [], asOfMs: Date.now() };
+    }
+    const bids = [];
+    const asks = [];
+    for (let i = 0; i < data.length; i++) {
+      const row = data[i];
+      if (!Array.isArray(row) || row.length < 3) continue;
+      const price = Number(row[0]);
+      const amount = Number(row[2]);
+      if (!Number.isFinite(price) || !Number.isFinite(amount) || amount === 0) continue;
+      if (amount > 0) bids.push([price, amount]);
+      else asks.push([price, Math.abs(amount)]);
+    }
+    return {
+      bids,
+      asks,
+      asOfMs: Date.now()
+    };
+  }
 }
 
 module.exports = Bitfinex;

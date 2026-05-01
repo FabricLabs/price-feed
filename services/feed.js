@@ -11,22 +11,22 @@
  * **Bitcoin blocks:** canonical **`GET /blocks/:hash`** returns **`getBlockInfo`** fields plus optional **`utxoracle`** (USD estimate for that height). **`GET /blocks/:num`** (decimal height) **302** → **`/blocks/:hash`**. **`GET /blocks?height=`** resolves the block hash and **302** the same way. **UTXOracle series:** **`GET /blocks?minHeight=&maxHeight=&maxPoints=`**. **`GET /transactions/:txid`** mirrors **`getTransactionInfo`**.
  *
  * **Hub / advanced RPC:** the same HTTP stack supports JSON-RPC and Bridge-friendly patterns
- * (Fabric {@code Message} frames on the default WebSocket upgrade). The dashboard uses a plain JSON
- * WebSocket at **`GET ws…/quotes/stream`** without the Hub Bridge wire format.
+ * (Fabric {@code Message} frames on the default WebSocket upgrade). The dashboard subscribes to
+ * **`ws…/quotes`** and receives small **JSONPatch**-shaped Fabric messages (`path` + `value`) from
+ * {@link HTTPServer#_notifySubscribers}, not multi-megabyte report JSON. Initial chart state comes from
+ * one-shot HTTP split/snapshot fetches; commits fan out incremental patches only.
  * When UTXOracle is on, a single {@link Bitcoin} client on the Feed owns RPC + ZMQ and forwards
- * Fabric `BitcoinBlock` / `BitcoinBlockHash` messages on that stream for live tip updates.
+ * block events as **`/quotes/feedStream`** patch values for live tip updates.
  *
- * Full JSON snapshots ({@link #_buildReportPayload}) are pushed to subscribers on **`/quotes/stream`**
- * after each {@link #commit} (debounced via {@code settings.aggregation.streamBroadcastDebounceMs}).
+ * {@link #_buildReportPayload} remains for **`GET /quotes/snapshot`**, SSE, and HTTP clients; it is
+ * not sent over the Fabric quotes WebSocket.
  */
 
 // Constants
-const ESTIMATE_MODE = 'weighted';
+const ESTIMATE_MODE = 'depth-weighted';
 const FEED_QUOTE_TICK_MS = 1000;
 const MAX_QUOTE_HISTORY_DEFAULT = 2048;
 
-/** Canonical WebSocket path for aggregated JSON snapshots. */
-const QUOTES_STREAM_PATH = '/quotes/stream';
 /** Canonical SSE endpoint for aggregated JSON snapshots. */
 const QUOTES_SSE_PATH = '/quotes/sse';
 
@@ -53,7 +53,32 @@ const Kraken = require('./providers/kraken');
 const Bitstamp = require('./providers/bitstamp');
 const Gemini = require('./providers/gemini');
 const Bitfinex = require('./providers/bitfinex');
+const Binance = require('./providers/binance');
 const BinanceUS = require('./providers/binanceus');
+const OKX = require('./providers/okx');
+const Bybit = require('./providers/bybit');
+const KuCoin = require('./providers/kucoin');
+const GateIO = require('./providers/gateio');
+const MEXC = require('./providers/mexc');
+const Bitget = require('./providers/bitget');
+const HTX = require('./providers/htx');
+const CoinEx = require('./providers/coinex');
+const CEXIO = require('./providers/cexio');
+const Upbit = require('./providers/upbit');
+const Bitso = require('./providers/bitso');
+const Phemex = require('./providers/phemex');
+const Bitvavo = require('./providers/bitvavo');
+const CryptoCom = require('./providers/cryptocom');
+const WhiteBIT = require('./providers/whitebit');
+const LBank = require('./providers/lbank');
+const DigiFinex = require('./providers/digifinex');
+const AscendEX = require('./providers/ascendex');
+const BTSE = require('./providers/btse');
+const BitMart = require('./providers/bitmart');
+const BingX = require('./providers/bingx');
+const Bitrue = require('./providers/bitrue');
+const Poloniex = require('./providers/poloniex');
+const Deribit = require('./providers/deribit');
 const CoinMarketCap = require('./providers/coinmarketcap');
 const UTXOracle = require('./utxoracle');
 const SSEService = require('./sse');
@@ -74,7 +99,32 @@ const PROVIDER_LABELS = {
   bitstamp: 'Bitstamp',
   gemini: 'Gemini',
   bitfinex: 'Bitfinex',
+  binance: 'Binance',
   binanceus: 'Binance.US',
+  okx: 'OKX',
+  bybit: 'Bybit',
+  kucoin: 'KuCoin',
+  gateio: 'Gate.io',
+  mexc: 'MEXC',
+  bitget: 'Bitget',
+  htx: 'HTX',
+  coinex: 'CoinEx',
+  cexio: 'CEX.IO',
+  upbit: 'Upbit',
+  bitso: 'Bitso',
+  phemex: 'Phemex',
+  bitvavo: 'Bitvavo',
+  cryptocom: 'Crypto.com',
+  whitebit: 'WhiteBIT',
+  lbank: 'LBank',
+  digifinex: 'DigiFinex',
+  ascendex: 'AscendEX',
+  btse: 'BTSE',
+  bitmart: 'BitMart',
+  bingx: 'BingX',
+  bitrue: 'Bitrue',
+  poloniex: 'Poloniex',
+  deribit: 'Deribit',
   coinmarketcap: 'CoinMarketCap',
   utxoracle: 'UTXOracle (on-chain)'
 };
@@ -97,7 +147,7 @@ function isConfiguredCoinmarketcapKey (key) {
 
 /**
  * Bitcoin Core ZMQ publisher port must match {@link Bitcoin#createLocalNode} (default 29500).
- * When `zmq` is omitted and `managed` is true, subscribe so ZMQ `hashblock` / `rawblock` reach **`/quotes/stream`**.
+ * When `zmq` is omitted and `managed` is true, subscribe so ZMQ `hashblock` / `rawblock` reach **`/quotes/feedStream`** subscribers.
  */
 const FEED_BITCOIN_DEFAULT_ZMQ_PORT = 29500;
 
@@ -141,7 +191,32 @@ function normalizeFeedSources (input) {
     bitstamp: {},
     gemini: {},
     bitfinex: {},
+    binance: {},
     binanceus: {},
+    okx: {},
+    bybit: {},
+    kucoin: {},
+    gateio: {},
+    mexc: {},
+    bitget: {},
+    htx: {},
+    coinex: {},
+    cexio: {},
+    upbit: {},
+    bitso: {},
+    phemex: {},
+    bitvavo: {},
+    cryptocom: {},
+    whitebit: {},
+    lbank: {},
+    digifinex: {},
+    ascendex: {},
+    btse: {},
+    bitmart: {},
+    bingx: {},
+    bitrue: {},
+    poloniex: {},
+    deribit: {},
     coinmarketcap: {},
     utxoracle: { enabled: false }
   };
@@ -156,7 +231,38 @@ function normalizeFeedSources (input) {
     bitstamp: { ...base.bitstamp, ...(typeof o.bitstamp === 'object' && o.bitstamp ? o.bitstamp : {}) },
     gemini: { ...base.gemini, ...(typeof o.gemini === 'object' && o.gemini ? o.gemini : {}) },
     bitfinex: { ...base.bitfinex, ...(typeof o.bitfinex === 'object' && o.bitfinex ? o.bitfinex : {}) },
+    binance: { ...base.binance, ...(typeof o.binance === 'object' && o.binance ? o.binance : {}) },
     binanceus: { ...base.binanceus, ...(typeof o.binanceus === 'object' && o.binanceus ? o.binanceus : {}) },
+    okx: { ...base.okx, ...(typeof o.okx === 'object' && o.okx ? o.okx : {}) },
+    bybit: { ...base.bybit, ...(typeof o.bybit === 'object' && o.bybit ? o.bybit : {}) },
+    kucoin: { ...base.kucoin, ...(typeof o.kucoin === 'object' && o.kucoin ? o.kucoin : {}) },
+    gateio: { ...base.gateio, ...(typeof o.gateio === 'object' && o.gateio ? o.gateio : {}) },
+    mexc: { ...base.mexc, ...(typeof o.mexc === 'object' && o.mexc ? o.mexc : {}) },
+    bitget: { ...base.bitget, ...(typeof o.bitget === 'object' && o.bitget ? o.bitget : {}) },
+    htx: { ...base.htx, ...(typeof o.htx === 'object' && o.htx ? o.htx : {}) },
+    coinex: { ...base.coinex, ...(typeof o.coinex === 'object' && o.coinex ? o.coinex : {}) },
+    cexio: { ...base.cexio, ...(typeof o.cexio === 'object' && o.cexio ? o.cexio : {}) },
+    upbit: { ...base.upbit, ...(typeof o.upbit === 'object' && o.upbit ? o.upbit : {}) },
+    bitso: { ...base.bitso, ...(typeof o.bitso === 'object' && o.bitso ? o.bitso : {}) },
+    phemex: { ...base.phemex, ...(typeof o.phemex === 'object' && o.phemex ? o.phemex : {}) },
+    bitvavo: { ...base.bitvavo, ...(typeof o.bitvavo === 'object' && o.bitvavo ? o.bitvavo : {}) },
+    cryptocom: {
+      ...base.cryptocom,
+      ...(typeof o.cryptocom === 'object' && o.cryptocom ? o.cryptocom : {})
+    },
+    whitebit: { ...base.whitebit, ...(typeof o.whitebit === 'object' && o.whitebit ? o.whitebit : {}) },
+    lbank: { ...base.lbank, ...(typeof o.lbank === 'object' && o.lbank ? o.lbank : {}) },
+    digifinex: {
+      ...base.digifinex,
+      ...(typeof o.digifinex === 'object' && o.digifinex ? o.digifinex : {})
+    },
+    ascendex: { ...base.ascendex, ...(typeof o.ascendex === 'object' && o.ascendex ? o.ascendex : {}) },
+    btse: { ...base.btse, ...(typeof o.btse === 'object' && o.btse ? o.btse : {}) },
+    bitmart: { ...base.bitmart, ...(typeof o.bitmart === 'object' && o.bitmart ? o.bitmart : {}) },
+    bingx: { ...base.bingx, ...(typeof o.bingx === 'object' && o.bingx ? o.bingx : {}) },
+    bitrue: { ...base.bitrue, ...(typeof o.bitrue === 'object' && o.bitrue ? o.bitrue : {}) },
+    poloniex: { ...base.poloniex, ...(typeof o.poloniex === 'object' && o.poloniex ? o.poloniex : {}) },
+    deribit: { ...base.deribit, ...(typeof o.deribit === 'object' && o.deribit ? o.deribit : {}) },
     coinmarketcap: {
       ...base.coinmarketcap,
       ...(typeof o.coinmarketcap === 'object' && o.coinmarketcap ? o.coinmarketcap : {})
@@ -222,7 +328,32 @@ class Feed extends Service {
         bitstamp: {},
         gemini: {},
         bitfinex: {},
+        binance: {},
         binanceus: {},
+        okx: {},
+        bybit: {},
+        kucoin: {},
+        gateio: {},
+        mexc: {},
+        bitget: {},
+        htx: {},
+        coinex: {},
+        cexio: {},
+        upbit: {},
+        bitso: {},
+        phemex: {},
+        bitvavo: {},
+        cryptocom: {},
+        whitebit: {},
+        lbank: {},
+        digifinex: {},
+        ascendex: {},
+        btse: {},
+        bitmart: {},
+        bingx: {},
+        bitrue: {},
+        poloniex: {},
+        deribit: {},
         coinmarketcap: {},
         utxoracle: {
           enabled: false
@@ -233,7 +364,7 @@ class Feed extends Service {
       sync: true,
       aggregation: {
         debounceMs: 12_000,
-        /** Coalesce {@link Feed#commit} bursts before **`/quotes/stream`** snapshots (milliseconds). Set to {@code 0} for immediate fan-out. */
+        /** Coalesce {@link Feed#commit} bursts before SSE + Fabric `/quotes` patch fan-out (milliseconds). Set to {@code 0} for immediate send. */
         streamBroadcastDebounceMs: 250,
         concurrency: {
           bitpay: 2,
@@ -243,7 +374,32 @@ class Feed extends Service {
           bitstamp: 1,
           gemini: 1,
           bitfinex: 1,
+          binance: 1,
           binanceus: 1,
+          okx: 1,
+          bybit: 1,
+          kucoin: 1,
+          gateio: 1,
+          mexc: 1,
+          bitget: 1,
+          htx: 1,
+          coinex: 1,
+          cexio: 1,
+          upbit: 1,
+          bitso: 1,
+          phemex: 1,
+          bitvavo: 1,
+          cryptocom: 1,
+          whitebit: 1,
+          lbank: 1,
+          digifinex: 1,
+          ascendex: 1,
+          btse: 1,
+          bitmart: 1,
+          bingx: 1,
+          bitrue: 1,
+          poloniex: 1,
+          deribit: 1,
           coinmarketcap: 1,
           utxoracle: 1
         }
@@ -338,8 +494,206 @@ class Feed extends Service {
       debug: this.settings.debug
     });
 
+    this.binance = new Binance({
+      ...this.settings.sources.binance,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
     this.binanceus = new BinanceUS({
       ...this.settings.sources.binanceus,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.okx = new OKX({
+      ...this.settings.sources.okx,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bybit = new Bybit({
+      ...this.settings.sources.bybit,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.kucoin = new KuCoin({
+      ...this.settings.sources.kucoin,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.gateio = new GateIO({
+      ...this.settings.sources.gateio,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.mexc = new MEXC({
+      ...this.settings.sources.mexc,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bitget = new Bitget({
+      ...this.settings.sources.bitget,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.htx = new HTX({
+      ...this.settings.sources.htx,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.coinex = new CoinEx({
+      ...this.settings.sources.coinex,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.cexio = new CEXIO({
+      ...this.settings.sources.cexio,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.upbit = new Upbit({
+      ...this.settings.sources.upbit,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bitso = new Bitso({
+      ...this.settings.sources.bitso,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.phemex = new Phemex({
+      ...this.settings.sources.phemex,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bitvavo = new Bitvavo({
+      ...this.settings.sources.bitvavo,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.cryptocom = new CryptoCom({
+      ...this.settings.sources.cryptocom,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.whitebit = new WhiteBIT({
+      ...this.settings.sources.whitebit,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.lbank = new LBank({
+      ...this.settings.sources.lbank,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.digifinex = new DigiFinex({
+      ...this.settings.sources.digifinex,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.ascendex = new AscendEX({
+      ...this.settings.sources.ascendex,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.btse = new BTSE({
+      ...this.settings.sources.btse,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bitmart = new BitMart({
+      ...this.settings.sources.bitmart,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bingx = new BingX({
+      ...this.settings.sources.bingx,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.bitrue = new Bitrue({
+      ...this.settings.sources.bitrue,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.poloniex = new Poloniex({
+      ...this.settings.sources.poloniex,
+      currency: this.settings.quoteCurrency,
+      quoteCurrency: this.settings.quoteCurrency,
+      symbols: this.settings.symbols,
+      debug: this.settings.debug
+    });
+
+    this.deribit = new Deribit({
+      ...this.settings.sources.deribit,
       currency: this.settings.quoteCurrency,
       quoteCurrency: this.settings.quoteCurrency,
       symbols: this.settings.symbols,
@@ -354,7 +708,32 @@ class Feed extends Service {
       bitstamp: 1,
       gemini: 1,
       bitfinex: 1,
+      binance: 1,
       binanceus: 1,
+      okx: 1,
+      bybit: 1,
+      kucoin: 1,
+      gateio: 1,
+      mexc: 1,
+      bitget: 1,
+      htx: 1,
+      coinex: 1,
+      cexio: 1,
+      upbit: 1,
+      bitso: 1,
+      phemex: 1,
+      bitvavo: 1,
+      cryptocom: 1,
+      whitebit: 1,
+      lbank: 1,
+      digifinex: 1,
+      ascendex: 1,
+      btse: 1,
+      bitmart: 1,
+      bingx: 1,
+      bitrue: 1,
+      poloniex: 1,
+      deribit: 1,
       coinmarketcap: 1,
       utxoracle: 1
     }, this.settings.aggregation?.concurrency ?? {});
@@ -769,7 +1148,32 @@ class Feed extends Service {
       bitstamp: 1,
       gemini: 1,
       bitfinex: 1,
+      binance: 1,
       binanceus: 1,
+      okx: 1,
+      bybit: 1,
+      kucoin: 1,
+      gateio: 1,
+      mexc: 1,
+      bitget: 1,
+      htx: 1,
+      coinex: 1,
+      cexio: 1,
+      upbit: 1,
+      bitso: 1,
+      phemex: 1,
+      bitvavo: 1,
+      cryptocom: 1,
+      whitebit: 1,
+      lbank: 1,
+      digifinex: 1,
+      ascendex: 1,
+      btse: 1,
+      bitmart: 1,
+      bingx: 1,
+      bitrue: 1,
+      poloniex: 1,
+      deribit: 1,
       coinmarketcap: 1,
       utxoracle: 1
     };
@@ -795,10 +1199,8 @@ class Feed extends Service {
     /** @type {Array<{ ts: number, values: Record<string, unknown> }>} */
     this._historyRows = [];
 
-    /** @type {import('ws').WebSocketServer|null} */
-    this._feedReportWss = null;
-    /** @type {Set<import('ws').WebSocket>} */
-    this._feedStreamClients = new Set();
+    /** Index into {@link #_historyRows} for Fabric `/quotes` append patches (do not replay persisted rows). */
+    this._quotesPatchHistorySent = 0;
     this.sse = new SSEService({
       eventName: 'quotes',
       heartbeatMs: 15_000,
@@ -807,9 +1209,6 @@ class Feed extends Service {
         return this._buildReportPayload();
       }
     });
-    /** @type {Array<(...args: unknown[]) => void>|null} */
-    this._feedStreamUpgradePrevious = null;
-    this._onFeedStreamHttpUpgrade = this._onFeedStreamHttpUpgrade.bind(this);
     this._feedBitcoinStarted = false;
     this._bitcoinStreamAttached = false;
     this._onBitcoinBlockForStream = this._onBitcoinBlockForStream.bind(this);
@@ -852,7 +1251,32 @@ class Feed extends Service {
     this.services.bitstamp = this.bitstamp;
     this.services.gemini = this.gemini;
     this.services.bitfinex = this.bitfinex;
+    this.services.binance = this.binance;
     this.services.binanceus = this.binanceus;
+    this.services.okx = this.okx;
+    this.services.bybit = this.bybit;
+    this.services.kucoin = this.kucoin;
+    this.services.gateio = this.gateio;
+    this.services.mexc = this.mexc;
+    this.services.bitget = this.bitget;
+    this.services.htx = this.htx;
+    this.services.coinex = this.coinex;
+    this.services.cexio = this.cexio;
+    this.services.upbit = this.upbit;
+    this.services.bitso = this.bitso;
+    this.services.phemex = this.phemex;
+    this.services.bitvavo = this.bitvavo;
+    this.services.cryptocom = this.cryptocom;
+    this.services.whitebit = this.whitebit;
+    this.services.lbank = this.lbank;
+    this.services.digifinex = this.digifinex;
+    this.services.ascendex = this.ascendex;
+    this.services.btse = this.btse;
+    this.services.bitmart = this.bitmart;
+    this.services.bingx = this.bingx;
+    this.services.bitrue = this.bitrue;
+    this.services.poloniex = this.poloniex;
+    this.services.deribit = this.deribit;
     this.services.coinmarketcap = this.cmc;
     this.services.utxoracle = this.utxoracle;
 
@@ -929,6 +1353,31 @@ class Feed extends Service {
       id === 'bitstamp' ||
       id === 'gemini' ||
       id === 'bitfinex' ||
+      id === 'binance' ||
+      id === 'okx' ||
+      id === 'bybit' ||
+      id === 'kucoin' ||
+      id === 'gateio' ||
+      id === 'mexc' ||
+      id === 'bitget' ||
+      id === 'htx' ||
+      id === 'coinex' ||
+      id === 'cexio' ||
+      id === 'upbit' ||
+      id === 'bitso' ||
+      id === 'phemex' ||
+      id === 'bitvavo' ||
+      id === 'cryptocom' ||
+      id === 'whitebit' ||
+      id === 'lbank' ||
+      id === 'digifinex' ||
+      id === 'ascendex' ||
+      id === 'btse' ||
+      id === 'bitmart' ||
+      id === 'bingx' ||
+      id === 'bitrue' ||
+      id === 'poloniex' ||
+      id === 'deribit' ||
       id === 'binanceus'
     ) {
       return this.settings.sources[id]?.enabled !== false;
@@ -1024,6 +1473,14 @@ class Feed extends Service {
       ...(quote.asOfSource != null
         ? { asOfSource: String(quote.asOfSource) }
         : {}),
+      ...(quote.depth && typeof quote.depth === 'object'
+        ? {
+            depth: Number(quote.depth.depth),
+            bidDepth: Number(quote.depth.bidDepth),
+            askDepth: Number(quote.depth.askDepth),
+            depthAsOfMs: Number(quote.depth.asOfMs)
+          }
+        : {}),
       ...(meta.excludedFromSpot === true ? { excludedFromSpot: true } : {})
     };
   }
@@ -1069,14 +1526,10 @@ class Feed extends Service {
   }
 
   /**
-   * Schedule a snapshot of {@link #_buildReportPayload} for every subscriber on `/quotes/stream`.
-   * so WebSocket observers stay aligned with Fabric {@link #commit} snapshots (debounced).
+   * Debounced fan-out: SSE full snapshots + Fabric `/quotes` JSONPatch-style messages (no custom JSON stream).
    */
   _scheduleBroadcastAfterCommit () {
-    if (
-      this._feedStreamClients.size === 0 &&
-      !this.sse.hasClients()
-    ) {
+    if (!this.sse.hasClients() && !this._hasFabricQuotesWebSocketSubscribers()) {
       return;
     }
     const raw = this.settings.aggregation?.streamBroadcastDebounceMs;
@@ -1099,10 +1552,102 @@ class Feed extends Service {
   }
 
   /**
-   * Time-weighted average over latest per-provider quotes.
-   * Newer quotes receive higher weight via inverse quote age in milliseconds.
-   * Invalid numeric entries are skipped so one bad provider does not poison the aggregate.
-   * @param {Array<{ price?: unknown, age?: unknown, asOfMs?: unknown }>} quotes
+   * @returns {boolean}
+   */
+  _hasFabricQuotesWebSocketSubscribers () {
+    const conns = this.http && this.http.connections;
+    if (!conns || typeof conns !== 'object') return false;
+    for (const socket of Object.values(conns)) {
+      const subs = socket && socket.subscriptions;
+      if (!subs || typeof subs[Symbol.iterator] !== 'function') continue;
+      for (const p of subs) {
+        if (typeof p !== 'string' || !p) continue;
+        if (p === '/quotes' || p.startsWith('/quotes/')) return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Push incremental report fields to Fabric WebSocket clients subscribed under `/quotes`.
+   */
+  async _publishQuotesFabricPatches () {
+    const http = this.http;
+    if (!http || typeof http._notifySubscribers !== 'function') return;
+
+    const persist = this.settings.persist || {};
+    const exposeHistory = persist.exposePriceHistoryInReport !== false;
+
+    try {
+      http._notifySubscribers('/quotes/values', { ...this.values });
+    } catch (_) {
+      /* noop */
+    }
+
+    try {
+      http._notifySubscribers(
+        '/quotes/quoteProviders',
+        this._quoteProvidersReport()
+      );
+    } catch (_) {
+      /* noop */
+    }
+
+    try {
+      const qc =
+        this.settings.quoteCurrency != null
+          ? String(this.settings.quoteCurrency).trim()
+          : '';
+      if (qc) {
+        http._notifySubscribers('/quotes/quoteCurrency', qc.toUpperCase());
+      }
+    } catch (_) {
+      /* noop */
+    }
+
+    if (exposeHistory) {
+      const from = Math.max(0, this._quotesPatchHistorySent | 0);
+      const rows = this._historyRows.slice(from);
+      this._quotesPatchHistorySent = this._historyRows.length;
+      if (rows.length) {
+        try {
+          http._notifySubscribers('/quotes/priceHistoryAppend', { rows });
+        } catch (_) {
+          /* noop */
+        }
+      }
+    } else {
+      this._quotesPatchHistorySent = this._historyRows.length;
+    }
+
+    try {
+      const chain = await this._utxoracleChainPayload();
+      if (chain) {
+        http._notifySubscribers('/quotes/utxoracleChain', chain);
+      }
+    } catch (_) {
+      /* noop */
+    }
+
+    try {
+      http._notifySubscribers('/quotes/persistedMeta', {
+        historyRows:
+          typeof this._historyRows?.length === 'number'
+            ? this._historyRows.length
+            : 0,
+        envelopeSchema: FeedPriceStore.SNAPSHOT_SCHEMA_VERSION,
+        snapshotDocumentKey:
+          this.persistence.settings.snapshotKey || 'fabric.feed.snapshot.v2'
+      });
+    } catch (_) {
+      /* noop */
+    }
+  }
+
+  /**
+   * Spot estimate over latest per-provider quotes.
+   * Supports arithmetic average, inverse-age weighted average, and depth-weighted average.
+   * @param {Array<{ price?: unknown, age?: unknown, asOfMs?: unknown, depth?: unknown }>} quotes
    */
   estimateFromQuotes (quotes) {
     if (!quotes?.length) throw new Error('No quotes provided.');
@@ -1148,6 +1693,23 @@ class Feed extends Service {
         if (!prices.length) throw new Error('No valid quotes for average estimate.');
         estimate =
           prices.reduce((s, value) => s + value, 0) / prices.length;
+        break;
+      }
+      case 'depth-weighted': {
+        let mass = 0;
+        let sum = 0;
+        for (const quote of quotes) {
+          const price = Number(quote?.price);
+          const depth = Number(quote?.depth);
+          if (!Number.isFinite(price)) continue;
+          if (!Number.isFinite(depth) || depth <= 0) continue;
+          mass += depth;
+          sum += price * depth;
+        }
+        if (mass <= 0 || !Number.isFinite(sum)) {
+          throw new Error('No valid quotes for depth-weighted estimate.');
+        }
+        estimate = sum / mass;
         break;
       }
       default:
@@ -1228,6 +1790,12 @@ class Feed extends Service {
       if (!Number.isFinite(price)) continue;
       const asOf = quoteAsOfMs(entry.quote);
       if (!Number.isFinite(asOf)) continue;
+      const depth = Number(entry?.depth?.depth ?? entry?.quote?.depth);
+      if (ESTIMATE_MODE === 'depth-weighted') {
+        if (!Number.isFinite(depth) || depth <= 0) continue;
+        quotesForWeight.push({ price, asOfMs: asOf, depth });
+        continue;
+      }
       quotesForWeight.push({ price, asOfMs: asOf });
     }
 
@@ -1282,7 +1850,11 @@ class Feed extends Service {
      *   created?: string|null,
      *   asOfMs?: number,
      *   asOfSource?: string,
-     *   cacheAgeMs?: number
+     *   cacheAgeMs?: number,
+     *   depth?: number,
+     *   bidDepth?: number,
+     *   askDepth?: number,
+     *   depthAsOfMs?: number
      * }} */
     const fromBrokerCache = !!entry.fromCache;
     const fromOracleHeight =
@@ -1316,6 +1888,22 @@ class Feed extends Service {
 
     if (entry.excludedFromSpot === true) {
       row.excludedFromSpot = true;
+    }
+
+    const d = entry && entry.depth && typeof entry.depth === 'object'
+      ? entry.depth
+      : null;
+    if (d) {
+      const depth = Number(d.depth);
+      const bidDepth = Number(d.bidDepth);
+      const askDepth = Number(d.askDepth);
+      const depthAsOfMs = Number(d.asOfMs);
+      if (Number.isFinite(depth) && depth > 0) row.depth = depth;
+      if (Number.isFinite(bidDepth) && bidDepth > 0) row.bidDepth = bidDepth;
+      if (Number.isFinite(askDepth) && askDepth > 0) row.askDepth = askDepth;
+      if (Number.isFinite(depthAsOfMs) && depthAsOfMs > 0) {
+        row.depthAsOfMs = Math.round(depthAsOfMs);
+      }
     }
 
     return row;
@@ -1400,7 +1988,11 @@ class Feed extends Service {
             Date.now() - row.fetchedAt;
         }
         this._touchProviderSuccess(provider, symbol, hit, true, utxMeta);
-        return { provider, quote: hit, fromCache: true };
+        const cachedDepth =
+          hit && typeof hit === 'object' && hit.depth && typeof hit.depth === 'object'
+            ? hit.depth
+            : null;
+        return { provider, quote: hit, fromCache: true, depth: cachedDepth };
       }
 
       if (nextAt != null && nowMs < nextAt) {
@@ -1412,15 +2004,31 @@ class Feed extends Service {
             cacheAgeMs[this._quoteCacheKey(provider, symbol)] = nowMs - fetchedAt;
           }
           this._touchProviderSuccess(provider, symbol, stale, true, utxMeta);
-          return { provider, quote: stale, fromCache: true };
+          const staleDepth =
+            stale && typeof stale === 'object' && stale.depth && typeof stale.depth === 'object'
+              ? stale.depth
+              : null;
+          return { provider, quote: stale, fromCache: true, depth: staleDepth };
         }
         return null;
       }
 
       try {
         const quote = await this._quoteRefreshCache(provider, symbol, supplier);
+        let depth = null;
+        const svc = this.services[provider];
+        if (svc && typeof svc.getDepthForSymbol === 'function') {
+          try {
+            depth = await svc.getDepthForSymbol(symbol);
+          } catch {
+            depth = null;
+          }
+        }
+        if (quote && typeof quote === 'object') {
+          quote.depth = depth;
+        }
         this._touchProviderSuccess(provider, symbol, quote, false, utxMeta);
-        return { provider, quote, fromCache: false };
+        return { provider, quote, fromCache: false, depth };
       } catch (err) {
         const staleRow = this._quoteStaleCacheRow(provider, symbol);
         const stale = staleRow?.quote ?? null;
@@ -1430,7 +2038,11 @@ class Feed extends Service {
             cacheAgeMs[this._quoteCacheKey(provider, symbol)] = Date.now() - fetchedAt;
           }
           this._touchProviderSuccess(provider, symbol, stale, true, utxMeta);
-          return { provider, quote: stale, fromCache: true };
+          const staleDepth =
+            stale && typeof stale === 'object' && stale.depth && typeof stale.depth === 'object'
+              ? stale.depth
+              : null;
+          return { provider, quote: stale, fromCache: true, depth: staleDepth };
         }
         this._touchProviderError(provider, err);
         return null;
@@ -1468,9 +2080,134 @@ class Feed extends Service {
         single('bitfinex', () => this.bitfinex.getQuoteForSymbol(symbol))
       );
     }
+    if (this._providerEnabled('binance')) {
+      tasks.push(
+        single('binance', () => this.binance.getQuoteForSymbol(symbol))
+      );
+    }
     if (this._providerEnabled('binanceus')) {
       tasks.push(
         single('binanceus', () => this.binanceus.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('okx')) {
+      tasks.push(
+        single('okx', () => this.okx.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bybit')) {
+      tasks.push(
+        single('bybit', () => this.bybit.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('kucoin')) {
+      tasks.push(
+        single('kucoin', () => this.kucoin.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('gateio')) {
+      tasks.push(
+        single('gateio', () => this.gateio.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('mexc')) {
+      tasks.push(
+        single('mexc', () => this.mexc.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bitget')) {
+      tasks.push(
+        single('bitget', () => this.bitget.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('htx')) {
+      tasks.push(
+        single('htx', () => this.htx.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('coinex')) {
+      tasks.push(
+        single('coinex', () => this.coinex.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('cexio')) {
+      tasks.push(
+        single('cexio', () => this.cexio.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('upbit')) {
+      tasks.push(
+        single('upbit', () => this.upbit.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bitso')) {
+      tasks.push(
+        single('bitso', () => this.bitso.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('phemex')) {
+      tasks.push(
+        single('phemex', () => this.phemex.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bitvavo')) {
+      tasks.push(
+        single('bitvavo', () => this.bitvavo.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('cryptocom')) {
+      tasks.push(
+        single('cryptocom', () => this.cryptocom.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('whitebit')) {
+      tasks.push(
+        single('whitebit', () => this.whitebit.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('lbank')) {
+      tasks.push(
+        single('lbank', () => this.lbank.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('digifinex')) {
+      tasks.push(
+        single('digifinex', () => this.digifinex.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('ascendex')) {
+      tasks.push(
+        single('ascendex', () => this.ascendex.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('btse')) {
+      tasks.push(
+        single('btse', () => this.btse.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bitmart')) {
+      tasks.push(
+        single('bitmart', () => this.bitmart.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bingx')) {
+      tasks.push(
+        single('bingx', () => this.bingx.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('bitrue')) {
+      tasks.push(
+        single('bitrue', () => this.bitrue.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('poloniex')) {
+      tasks.push(
+        single('poloniex', () => this.poloniex.getQuoteForSymbol(symbol))
+      );
+    }
+    if (this._providerEnabled('deribit')) {
+      tasks.push(
+        single('deribit', () => this.deribit.getQuoteForSymbol(symbol))
       );
     }
 
@@ -1634,8 +2371,83 @@ class Feed extends Service {
     if (this._providerEnabled('bitfinex')) {
       this.trust(this.bitfinex, 'bitfinex');
     }
+    if (this._providerEnabled('binance')) {
+      this.trust(this.binance, 'binance');
+    }
     if (this._providerEnabled('binanceus')) {
       this.trust(this.binanceus, 'binanceus');
+    }
+    if (this._providerEnabled('okx')) {
+      this.trust(this.okx, 'okx');
+    }
+    if (this._providerEnabled('bybit')) {
+      this.trust(this.bybit, 'bybit');
+    }
+    if (this._providerEnabled('kucoin')) {
+      this.trust(this.kucoin, 'kucoin');
+    }
+    if (this._providerEnabled('gateio')) {
+      this.trust(this.gateio, 'gateio');
+    }
+    if (this._providerEnabled('mexc')) {
+      this.trust(this.mexc, 'mexc');
+    }
+    if (this._providerEnabled('bitget')) {
+      this.trust(this.bitget, 'bitget');
+    }
+    if (this._providerEnabled('htx')) {
+      this.trust(this.htx, 'htx');
+    }
+    if (this._providerEnabled('coinex')) {
+      this.trust(this.coinex, 'coinex');
+    }
+    if (this._providerEnabled('cexio')) {
+      this.trust(this.cexio, 'cexio');
+    }
+    if (this._providerEnabled('upbit')) {
+      this.trust(this.upbit, 'upbit');
+    }
+    if (this._providerEnabled('bitso')) {
+      this.trust(this.bitso, 'bitso');
+    }
+    if (this._providerEnabled('phemex')) {
+      this.trust(this.phemex, 'phemex');
+    }
+    if (this._providerEnabled('bitvavo')) {
+      this.trust(this.bitvavo, 'bitvavo');
+    }
+    if (this._providerEnabled('cryptocom')) {
+      this.trust(this.cryptocom, 'cryptocom');
+    }
+    if (this._providerEnabled('whitebit')) {
+      this.trust(this.whitebit, 'whitebit');
+    }
+    if (this._providerEnabled('lbank')) {
+      this.trust(this.lbank, 'lbank');
+    }
+    if (this._providerEnabled('digifinex')) {
+      this.trust(this.digifinex, 'digifinex');
+    }
+    if (this._providerEnabled('ascendex')) {
+      this.trust(this.ascendex, 'ascendex');
+    }
+    if (this._providerEnabled('btse')) {
+      this.trust(this.btse, 'btse');
+    }
+    if (this._providerEnabled('bitmart')) {
+      this.trust(this.bitmart, 'bitmart');
+    }
+    if (this._providerEnabled('bingx')) {
+      this.trust(this.bingx, 'bingx');
+    }
+    if (this._providerEnabled('bitrue')) {
+      this.trust(this.bitrue, 'bitrue');
+    }
+    if (this._providerEnabled('poloniex')) {
+      this.trust(this.poloniex, 'poloniex');
+    }
+    if (this._providerEnabled('deribit')) {
+      this.trust(this.deribit, 'deribit');
     }
     this.trust(this.cmc, 'coinmarketcap');
     if (this.utxoracle.settings?.enabled === true) {
@@ -1662,10 +2474,10 @@ class Feed extends Service {
       const offset = rows.length <= maxHist ? 0 : rows.length - maxHist;
       this._historyRows = rows.slice(offset);
     }
+    this._quotesPatchHistorySent = this._historyRows.length;
 
     // Start HTTP Service
     await this.http.start();
-    this._installFeedReportWebSocket();
 
     const utxoOracleOn =
       this.settings.sources.utxoracle?.enabled === true ||
@@ -1830,118 +2642,31 @@ class Feed extends Service {
     };
   }
 
-  _installFeedReportWebSocket () {
-    if (this._feedReportWss || !this.http?.http) return;
-    const WebSocket = require('ws');
-    const httpServer = this.http.http;
-    const previous = httpServer.listeners('upgrade').slice();
-    this._feedStreamUpgradePrevious = previous;
-    httpServer.removeAllListeners('upgrade');
-    httpServer.on('upgrade', this._onFeedStreamHttpUpgrade);
-
-    this._feedReportWss = new WebSocket.Server({ noServer: true });
-    this._feedReportWss.on('connection', (ws) => {
-      this._feedStreamClients.add(ws);
-      const detach = () => {
-        this._feedStreamClients.delete(ws);
-      };
-      ws.on('close', detach);
-      ws.on('error', detach);
-      this._sendReportPayloadToSocket(ws).catch(() => {});
-    });
-  }
-
-  _onFeedStreamHttpUpgrade (req, socket, head) {
-    try {
-      const host = req.headers.host || '127.0.0.1';
-      const u = new URL(req.url, `http://${host}`);
-      if (u.pathname === QUOTES_STREAM_PATH && this._feedReportWss) {
-        this._feedReportWss.handleUpgrade(req, socket, head, (ws) => {
-          this._feedReportWss.emit('connection', ws, req);
-        });
-        return;
-      }
-    } catch (_) {
-      /* fall through to Fabric handler */
-    }
-    const prev = this._feedStreamUpgradePrevious;
-    const ctx = this.http && this.http.http;
-    if (prev && ctx) {
-      for (let i = 0; i < prev.length; i++) {
-        prev[i].call(ctx, req, socket, head);
-      }
-    }
-  }
-
-  async _sendReportPayloadToSocket (ws) {
-    let payload;
-    try {
-      payload = await this._buildReportPayload();
-    } catch (_) {
-      return;
-    }
-    const raw = JSON.stringify(payload);
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.send(raw);
-    }
-  }
-
-  async _broadcastFeedReportToStream () {
-    if (!this._feedReportWss || this._feedStreamClients.size === 0) {
-      return;
-    }
-    let payload;
-    try {
-      payload = await this._buildReportPayload();
-    } catch (_) {
-      return;
-    }
-    const raw = JSON.stringify(payload);
-    for (const ws of this._feedStreamClients) {
-      if (ws.readyState === WebSocket.OPEN) {
-        try {
-          ws.send(raw);
-        } catch (_) {
-          /* dropped client */
-        }
-      }
-    }
-  }
-
   async _broadcastFeedReportToSse () {
     await this.sse.broadcast();
   }
 
   async _broadcastFeedReportToSubscribers () {
-    await Promise.all([
-      this._broadcastFeedReportToStream(),
-      this._broadcastFeedReportToSse()
-    ]);
+    const tasks = [];
+    if (this.sse.hasClients()) {
+      tasks.push(this._broadcastFeedReportToSse());
+    }
+    if (this._hasFabricQuotesWebSocketSubscribers()) {
+      tasks.push(this._publishQuotesFabricPatches());
+    }
+    await Promise.all(tasks);
   }
 
   /**
-   * Push an auxiliary Fabric-shaped message to **`/quotes/stream`** clients (ZMQ-derived block events).
-   * Distinct from full report snapshots so the UI can discriminate via {@code feedStream}.
+   * ZMQ / RPC tip events as a **`/quotes/feedStream`** patch (Fabric JSONPatch wire).
    */
   _broadcastFeedStreamEvent (envelope) {
-    if (!this._feedReportWss || this._feedStreamClients.size === 0) {
-      return;
-    }
-    const WebSocket = require('ws');
-    let raw;
     try {
-      raw = JSON.stringify(envelope);
-    } catch (_) {
-      return;
-    }
-    for (const ws of this._feedStreamClients) {
-      if (ws.readyState === WebSocket.OPEN) {
-        try {
-          ws.send(raw);
-        } catch (_) {
-          /* dropped client */
-        }
+      if (this.http && typeof this.http._notifySubscribers === 'function') {
+        this.http._notifySubscribers('/quotes/feedStream', envelope);
       }
+    } catch (_) {
+      /* noop */
     }
   }
 
@@ -2008,32 +2733,6 @@ class Feed extends Service {
     if (this._commitBroadcastTimer) {
       clearTimeout(this._commitBroadcastTimer);
       this._commitBroadcastTimer = null;
-    }
-    if (this._feedReportWss) {
-      for (const ws of this._feedStreamClients) {
-        try {
-          ws.terminate();
-        } catch (_) {
-          /* noop */
-        }
-      }
-      this._feedStreamClients.clear();
-      await new Promise((resolve) => {
-        try {
-          this._feedReportWss.close(resolve);
-        } catch (_) {
-          resolve();
-        }
-      });
-      this._feedReportWss = null;
-    }
-    if (this._feedStreamUpgradePrevious && this.http?.http) {
-      const srv = this.http.http;
-      srv.removeAllListeners('upgrade');
-      for (let i = 0; i < this._feedStreamUpgradePrevious.length; i++) {
-        srv.on('upgrade', this._feedStreamUpgradePrevious[i]);
-      }
-      this._feedStreamUpgradePrevious = null;
     }
   }
 

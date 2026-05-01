@@ -89,6 +89,11 @@ class CoinMarketCap extends QuoteProvider {
       original: asset
     };
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    throw new Error('CoinMarketCap: orderbook not available from quotes endpoint.');
+  }
 }
 
 module.exports = CoinMarketCap;

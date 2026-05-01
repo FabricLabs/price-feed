@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * Binance.US 24h ticker (`/api/v3/ticker/24hr?symbol=BTCUSD`) includes `lastPrice` and `closeTime`.
- * @see https://docs.binance.us/developer-guides/rest-api
+ * OKX spot ticker (`/api/v5/market/ticker?instId=BTC-USDT`) with `last` + `ts`.
+ * @see https://www.okx.com/docs-v5/en/#rest-api-market-data-get-ticker
  */
 const QuoteProvider = require('../../types/quoteProvider');
 const Worker = require('../../types/worker');
 const { throwIfFabricHttpError } = require('../../types/remoteResponse');
 const { normalizeSpotQuote } = require('../../types/spotQuote');
 
-class BinanceUS extends QuoteProvider {
+class OKX extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
@@ -22,9 +22,9 @@ class BinanceUS extends QuoteProvider {
     );
 
     this.http = new Worker({
-      serviceId: 'binanceus',
-      label: 'Binance.US',
-      authority: 'api.binance.us',
+      serviceId: 'okx',
+      label: 'OKX',
+      authority: 'www.okx.com',
       secure: true,
       port: 443,
       timeoutMs: this.settings.timeoutMs
@@ -35,36 +35,35 @@ class BinanceUS extends QuoteProvider {
   async getQuoteForSymbol (symbol) {
     this.assertBtc(symbol);
 
-    const data = await this.http.get('/api/v3/ticker/24hr?symbol=BTCUSD');
-    throwIfFabricHttpError(data, 'Binance.US');
+    const data = await this.http.get('/api/v5/market/ticker?instId=BTC-USDT');
+    throwIfFabricHttpError(data, 'OKX');
 
-    const price = Number(data?.lastPrice);
+    const row = Array.isArray(data?.data) ? data.data[0] : null;
+    const price = Number(row?.last);
     if (!Number.isFinite(price)) {
-      throw new Error('Binance.US: missing or invalid lastPrice.');
+      throw new Error('OKX: missing or invalid last price.');
     }
 
-    const closeTimeMs = Number(data?.closeTime);
-    const asOfMs = Number.isFinite(closeTimeMs) && closeTimeMs > 0
-      ? Math.round(closeTimeMs)
+    const tsMs = Number(row?.ts);
+    const asOfMs = Number.isFinite(tsMs) && tsMs > 0
+      ? Math.round(tsMs)
       : Math.round(Date.now());
-    const asOfSource = Number.isFinite(closeTimeMs) && closeTimeMs > 0
-      ? 'venue'
-      : 'fetch';
 
     return normalizeSpotQuote({
       price,
       currency: 'USD',
       asOfMs,
-      asOfSource
+      asOfSource: Number.isFinite(tsMs) && tsMs > 0 ? 'venue' : 'fetch'
     });
   }
 
   async getOrderBookForSymbol (symbol) {
     this.assertBtc(symbol);
-    const data = await this.http.get('/api/v3/depth?symbol=BTCUSD&limit=20');
-    throwIfFabricHttpError(data, 'Binance.US');
-    const norm = this.normalizeOrderBookLevels(data?.bids, data?.asks);
-    const ts = Number(data?.E);
+    const data = await this.http.get('/api/v5/market/books?instId=BTC-USDT&sz=20');
+    throwIfFabricHttpError(data, 'OKX');
+    const row = Array.isArray(data?.data) ? data.data[0] : null;
+    const norm = this.normalizeOrderBookLevels(row?.bids, row?.asks);
+    const ts = Number(row?.ts);
     return {
       bids: norm.bids,
       asks: norm.asks,
@@ -73,4 +72,4 @@ class BinanceUS extends QuoteProvider {
   }
 }
 
-module.exports = BinanceUS;
+module.exports = OKX;

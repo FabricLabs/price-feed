@@ -1,11 +1,9 @@
 'use strict';
 
 /**
- * Primary path: plain JSON WebSocket `…/quotes/stream` — initial snapshot on connect plus
- * debounced full-report broadcasts after each feed commit (same JSON as HTTP snapshot).
- * Fabric-shaped side frames (`feedStream: true`, ZMQ tip, etc.) merge without replacing the report.
- * HTTP `GET` split endpoints run **only** when {@link #webSocketEnabled} is false (no WebSocket).
- * Fabric Hub upgrade on `/` is unchanged.
+ * WebSocket path: Fabric routable `…/quotes` — binary {@code Message} frames with JSONPatch-style
+ * `{ path, value }` after one-shot HTTP bootstrap (`_poll`). HTTP split endpoints run **only** when
+ * {@link #webSocketEnabled} is false. Fabric Hub upgrade on `/` is unchanged.
  */
 
 import { Component } from 'react';
@@ -43,7 +41,8 @@ import {
   resolveQuotesProvidersUrl,
   resolveQuotesSnapshotUrl,
   resolveQuotesSpotUrl,
-  resolveQuotesStreamUrl
+  resolveQuotesFabricWsUrl,
+  tryParseFabricJsonPatchMessageData
 } from './feedMonitor/utils';
 import { utxoSliceMinHeight } from './feedMonitor/UtxOracleBlockNavigator';
 
@@ -87,7 +86,8 @@ export default class FeedMonitor extends Component {
     sourceVisibility: {},
     /** Rows from GET /blocks?minHeight=&maxHeight=&maxPoints= (series, chart violet dots). */
     utxoEstimateSeries: [],
-    utxoEstimateSeriesLoading: false
+    utxoEstimateSeriesLoading: false,
+    aggregationMode: 'depth-weighted'
   };
 
   constructor (props = {}) {
@@ -104,6 +104,7 @@ export default class FeedMonitor extends Component {
     this._openInspectQuote = this._openInspectQuote.bind(this);
     this._closeInspectQuote = this._closeInspectQuote.bind(this);
     this._setDeltaRange = this._setDeltaRange.bind(this);
+    this._setAggregationMode = this._setAggregationMode.bind(this);
     this._toggleSourceFilter = this._toggleSourceFilter.bind(this);
     this._sourceFilterSelectAll = this._sourceFilterSelectAll.bind(this);
     /** @type {AbortController|null} */
@@ -140,12 +141,27 @@ export default class FeedMonitor extends Component {
     this.setState({ deltaRangeKey: key });
   }
 
+  _setAggregationMode (mode) {
+    if (this._unmounted) return;
+    if (mode !== 'depth-weighted' && mode !== 'weighted' && mode !== 'average') {
+      return;
+    }
+    this.setState({ aggregationMode: mode });
+  }
+
   componentDidMount () {
     this._unmounted = false;
     const useWs =
       this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
     if (useWs) {
-      this._connectReportStream();
+      void (async () => {
+        try {
+          await this._poll();
+        } catch {
+          /* first paint may still open WS */
+        }
+        if (!this._unmounted) this._connectQuotesWebSocket();
+      })();
     } else {
       void this._poll();
       this._restartHttpPollTimer();
@@ -153,7 +169,7 @@ export default class FeedMonitor extends Component {
   }
 
   componentWillUnmount () {
-    this._disconnectReportStream(true);
+    this._disconnectQuotesWebSocket(true);
     if (this._pollAbort) {
       this._pollAbort.abort();
       this._pollAbort = null;
@@ -174,11 +190,18 @@ export default class FeedMonitor extends Component {
       const useWs =
         this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
       if (useWs) {
-        this._disconnectReportStream(true);
+        this._disconnectQuotesWebSocket(true);
         if (!this._unmounted) {
           this.setState({ reportLoading: true, pollError: null });
         }
-        this._connectReportStream();
+        void (async () => {
+          try {
+            await this._poll();
+          } catch {
+            /* continue to WS */
+          }
+          if (!this._unmounted) this._connectQuotesWebSocket();
+        })();
       } else {
         void this._poll();
         this._restartHttpPollTimer();
@@ -324,7 +347,7 @@ export default class FeedMonitor extends Component {
     }, ms);
   }
 
-  _disconnectReportStream (clearReconnect) {
+  _disconnectQuotesWebSocket (clearReconnect) {
     if (clearReconnect) {
       clearTimeout(this._wsReconnectTimer);
       this._wsReconnectTimer = null;
@@ -344,7 +367,7 @@ export default class FeedMonitor extends Component {
     }
   }
 
-  _connectReportStream () {
+  _connectQuotesWebSocket () {
     if (
       this._unmounted ||
       this.props.webSocketEnabled === false ||
@@ -352,38 +375,42 @@ export default class FeedMonitor extends Component {
     ) {
       return;
     }
-    this._disconnectReportStream(false);
+    this._disconnectQuotesWebSocket(false);
     let ws;
     try {
-      ws = new WebSocket(resolveQuotesStreamUrl(this.props.feedApiBase));
+      ws = new WebSocket(resolveQuotesFabricWsUrl(this.props.feedApiBase));
     } catch {
       return;
     }
     this._reportWs = ws;
+    ws.binaryType = 'arraybuffer';
 
     ws.onmessage = (ev) => {
       if (this._unmounted || this._reportWs !== ws) return;
-      let body;
-      try {
-        body = JSON.parse(ev.data);
-      } catch {
-        return;
+      const data = ev.data;
+      let ab = null;
+      if (data instanceof ArrayBuffer) ab = data;
+      else if (data && data.buffer instanceof ArrayBuffer) {
+        const u = new Uint8Array(
+          data.buffer,
+          data.byteOffset | 0,
+          data.byteLength | 0
+        );
+        ab = u.slice().buffer;
       }
-      if (!body || typeof body !== 'object') return;
-      if (body.feedStream === true) {
-        this._handleFeedStreamSideMessage(body);
-        return;
-      }
-      this._applyStreamSnapshot(body);
+      if (!ab) return;
+      const patch = tryParseFabricJsonPatchMessageData(ab);
+      if (!patch) return;
+      this._applyFabricQuotesPatch(patch.path, patch.value);
     };
 
     ws.onclose = () => {
       if (this._reportWs !== ws) return;
-      this._disconnectReportStream(false);
+      this._disconnectQuotesWebSocket(false);
       if (!this._unmounted && this.props.webSocketEnabled !== false) {
         clearTimeout(this._wsReconnectTimer);
         this._wsReconnectTimer = setTimeout(
-          () => this._connectReportStream(),
+          () => this._connectQuotesWebSocket(),
           2500
         );
       }
@@ -395,16 +422,115 @@ export default class FeedMonitor extends Component {
   }
 
   /**
-   * Full report JSON from {@code /quotes/stream} (connect snapshot + each commit broadcast).
-   * Not used for {@code feedStream} side-channels — those use {@link #_handleFeedStreamSideMessage}.
-   * @param {object} body
+   * Apply spot / aggregate counts from a `/quotes/values` patch without duplicating chart rows
+   * (history uses {@link #_applyFabricQuotesPatch} for `/quotes/priceHistoryAppend`).
+   * @param {Record<string, unknown>} values
    */
-  _applyStreamSnapshot (body) {
-    this._applyReportBody(body);
+  _applyFabricValuesOnly (values) {
+    if (this._unmounted || !values || typeof values !== 'object') return;
+    const quoteSym = QUOTE_SYMBOL;
+    const btcRow = values[quoteSym];
+    const price =
+      btcRow && btcRow.price != null ? Number(btcRow.price) : NaN;
+    const spotsBySymbol = {};
+    const sourceCountBySymbol = {};
+    if (Number.isFinite(price)) {
+      spotsBySymbol[quoteSym] = price;
+    }
+    const sc =
+      btcRow && btcRow.sourceCount != null
+        ? Number(btcRow.sourceCount)
+        : undefined;
+    if (Number.isFinite(sc)) {
+      sourceCountBySymbol[quoteSym] = sc;
+    }
+    this.setState((prev) => ({
+      spotsBySymbol: { ...prev.spotsBySymbol, ...spotsBySymbol },
+      sourceCountBySymbol: {
+        ...prev.sourceCountBySymbol,
+        ...sourceCountBySymbol
+      },
+      reportLoading: false
+    }));
   }
 
   /**
-   * Fabric-shaped ZMQ fanout from {@code /quotes/stream} (not a full snapshot).
+   * @param {string} path Normalized Fabric path (e.g. `/quotes/values`).
+   * @param {unknown} value
+   */
+  _applyFabricQuotesPatch (path, value) {
+    if (this._unmounted) return;
+    const p = String(path || '').replace(/\/+$/, '') || '';
+
+    if (p === '/quotes/values' || p.startsWith('/quotes/values/')) {
+      this._applyFabricValuesOnly(
+        /** @type {Record<string, unknown>} */ (value)
+      );
+      return;
+    }
+    if (p === '/quotes/quoteProviders') {
+      this._applyReportBody(
+        { quoteProviders: value },
+        { partial: true }
+      );
+      return;
+    }
+    if (p === '/quotes/quoteCurrency') {
+      this._applyReportBody(
+        { quoteCurrency: value },
+        { partial: true }
+      );
+      return;
+    }
+    if (p === '/quotes/utxoracleChain') {
+      this._applyReportBody(
+        { utxoracleChain: value },
+        { partial: true }
+      );
+      return;
+    }
+    if (p === '/quotes/priceHistoryAppend') {
+      const rows =
+        value &&
+        typeof value === 'object' &&
+        Array.isArray(
+          /** @type {{ rows?: unknown }} */ (value).rows
+        )
+          ? /** @type {{ rows: unknown[] }} */ (value).rows
+          : [];
+      if (!rows.length) return;
+      const fiat =
+        this.state.reportQuoteCurrency || this.props.currency;
+      const appended = chartQuotesFromPriceHistory(
+        rows,
+        QUOTE_SYMBOL,
+        fiat
+      );
+      this.setState((prev) => {
+        let next = prev.quotes.concat(appended);
+        if (next.length > MAX_QUOTE_HISTORY) {
+          next = next.slice(-MAX_QUOTE_HISTORY);
+        }
+        return { quotes: next, reportLoading: false };
+      });
+      return;
+    }
+    if (p === '/quotes/feedStream') {
+      if (
+        value &&
+        typeof value === 'object' &&
+        /** @type {{ feedStream?: boolean }} */ (value).feedStream === true
+      ) {
+        this._handleFeedStreamSideMessage(
+          /** @type {object} */ (value)
+        );
+      }
+      return;
+    }
+  }
+
+  /**
+   * ZMQ / RPC tip events delivered as `/quotes/feedStream` patch values.
    * @param {object} msg
    */
   _handleFeedStreamSideMessage (msg) {
@@ -731,9 +857,9 @@ export default class FeedMonitor extends Component {
   }
 
   /**
-   * HTTP-only refresh: split {@code GET} endpoints plus optional snapshot fallback.
-   * When {@link #webSocketEnabled} is true, quote updates come only from {@code /quotes/stream}
-   * ({@link #_applyStreamSnapshot}); this method is not called on that path.
+   * HTTP refresh: split {@code GET} endpoints plus optional snapshot fallback.
+   * When {@link #webSocketEnabled} is true, this runs once at mount (bootstrap) then incremental
+   * updates use Fabric `…/quotes` patches ({@link #_connectQuotesWebSocket}).
    */
   async _poll () {
     if (this._pollInFlight) return;
@@ -874,7 +1000,8 @@ export default class FeedMonitor extends Component {
     const sourceVisibility = this.state.sourceVisibility || {};
     const quotesFiltered = filterQuotesBySourceVisibility(
       this.state.quotes,
-      sourceVisibility
+      sourceVisibility,
+      this.state.aggregationMode
     );
 
     const quotesNewestFirst = [].concat(quotesFiltered).sort((a, b) =>
@@ -986,13 +1113,39 @@ export default class FeedMonitor extends Component {
     return (
       <Container text style={{ paddingTop: '1rem', paddingBottom: '2rem' }}>
         <Segment raised padded clearing>
-          <Header><code>fiat.fabric.pub</code></Header>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              gap: '0.75rem',
+              flexWrap: 'wrap'
+            }}
+          >
+            <Header style={{ marginBottom: 0 }}>
+              <code>fiat.fabric.pub</code>
+            </Header>
+            {showHeadlineSourceColumn ? (
+              <div style={{ flex: '1 1 360px' }}>
+                <HeadlineSourceQuotes
+                  quote={headlineQuote}
+                  sourceVisibility={sourceVisibility}
+                  labelById={labelById}
+                  fiat={fiat}
+                  tlsByProvider={tlsByProvider}
+                  onOpenInspect={this._openInspectQuote}
+                  aggregationMode={this.state.aggregationMode}
+                  compact
+                />
+              </div>
+            ) : null}
+          </div>
           {this.state.reportLoading && !this.state.pollError ? (
             <Message info size="small">
               {wsPrimary ? (
                 <>
                   Connecting to{' '}
-                  <code>{resolveQuotesStreamUrl(this.props.feedApiBase)}</code>…
+                  <code>{resolveQuotesFabricWsUrl(this.props.feedApiBase)}</code>…
                 </>
               ) : (
                 <>
@@ -1012,7 +1165,7 @@ export default class FeedMonitor extends Component {
             spotCurrency={fiat}
             label={
               typeof btcSourceCount === 'number'
-                ? `BTC → ${fiat} · weighted (${btcSourceCount} source${btcSourceCount === 1 ? '' : 's'})`
+                ? `BTC → ${fiat} · ${this.state.aggregationMode} (${btcSourceCount} source${btcSourceCount === 1 ? '' : 's'})`
                 : `BTC → ${fiat}`
             }
             trailing={
@@ -1021,16 +1174,7 @@ export default class FeedMonitor extends Component {
               ) : null
             }
             aside={
-              showHeadlineSourceColumn ? (
-                <HeadlineSourceQuotes
-                  quote={headlineQuote}
-                  sourceVisibility={sourceVisibility}
-                  labelById={labelById}
-                  fiat={fiat}
-                  tlsByProvider={tlsByProvider}
-                  onOpenInspect={this._openInspectQuote}
-                />
-              ) : null
+              null
             }
           />
 
@@ -1063,6 +1207,8 @@ export default class FeedMonitor extends Component {
               deltaRangeKey={this.state.deltaRangeKey}
               onSetRange={this._setDeltaRange}
               rangeOpt={rangeOpt}
+              aggregationMode={this.state.aggregationMode}
+              onSetAggregationMode={this._setAggregationMode}
               sourceFilter={
                 providerIds.length
                   ? {

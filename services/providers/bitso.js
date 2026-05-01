@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * Gemini public ticker (`/v1/pubticker/BTCUSD`) with optional venue timestamp.
- * @see https://docs.gemini.com/rest/market-data#get-ticker
+ * Bitso ticker (`/v3/ticker/?book=btc_usd`) with `payload.last` + `payload.created_at`.
+ * @see https://docs.bitso.com/bitso-api/docs/ticker
  */
 const QuoteProvider = require('../../types/quoteProvider');
 const Worker = require('../../types/worker');
 const { throwIfFabricHttpError } = require('../../types/remoteResponse');
 const { normalizeSpotQuote } = require('../../types/spotQuote');
 
-class Gemini extends QuoteProvider {
+class Bitso extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
@@ -22,9 +22,9 @@ class Gemini extends QuoteProvider {
     );
 
     this.http = new Worker({
-      serviceId: 'gemini',
-      label: 'Gemini',
-      authority: 'api.gemini.com',
+      serviceId: 'bitso',
+      label: 'Bitso',
+      authority: 'api.bitso.com',
       secure: true,
       port: 443,
       timeoutMs: this.settings.timeoutMs
@@ -35,35 +35,34 @@ class Gemini extends QuoteProvider {
   async getQuoteForSymbol (symbol) {
     this.assertBtc(symbol);
 
-    const data = await this.http.get('/v1/pubticker/BTCUSD');
-    throwIfFabricHttpError(data, 'Gemini');
+    const data = await this.http.get('/v3/ticker/?book=btc_usd');
+    throwIfFabricHttpError(data, 'Bitso');
 
-    const price = Number(data?.last);
+    const payload = data?.payload;
+    const price = Number(payload?.last);
     if (!Number.isFinite(price)) {
-      throw new Error('Gemini: missing or invalid last price.');
+      throw new Error('Bitso: missing or invalid last price.');
     }
 
-    const venueMs = Number(data?.volume?.timestampms);
-    const asOfMs = Number.isFinite(venueMs) && venueMs > 0
-      ? Math.round(venueMs)
+    const createdAt = Date.parse(String(payload?.created_at || ''));
+    const asOfMs = Number.isFinite(createdAt)
+      ? Math.round(createdAt)
       : Math.round(Date.now());
-    const asOfSource = Number.isFinite(venueMs) && venueMs > 0
-      ? 'venue'
-      : 'fetch';
 
     return normalizeSpotQuote({
       price,
       currency: 'USD',
       asOfMs,
-      asOfSource
+      asOfSource: Number.isFinite(createdAt) ? 'venue' : 'fetch'
     });
   }
 
   async getOrderBookForSymbol (symbol) {
     this.assertBtc(symbol);
-    const data = await this.http.get('/v1/book/BTCUSD');
-    throwIfFabricHttpError(data, 'Gemini');
-    const norm = this.normalizeOrderBookLevels(data?.bids, data?.asks);
+    const data = await this.http.get('/v3/order_book/?book=btc_usd');
+    throwIfFabricHttpError(data, 'Bitso');
+    const row = data?.payload || data;
+    const norm = this.normalizeOrderBookLevels(row?.bids, row?.asks);
     return {
       bids: norm.bids,
       asks: norm.asks,
@@ -72,4 +71,4 @@ class Gemini extends QuoteProvider {
   }
 }
 
-module.exports = Gemini;
+module.exports = Bitso;

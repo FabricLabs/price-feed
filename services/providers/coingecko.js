@@ -65,6 +65,11 @@ class CoinGecko extends QuoteProvider {
       asOfSource
     });
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    throw new Error('CoinGecko: orderbook not available from simple price endpoint.');
+  }
 }
 
 module.exports = CoinGecko;

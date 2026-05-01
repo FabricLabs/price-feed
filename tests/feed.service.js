@@ -125,6 +125,18 @@ describe('@fabric/fiat', function () {
         price: '62000',
         time: '2020-01-15T12:00:01.000Z'
       });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 2_000_000,
+        bidDepth: 1_000_000,
+        askDepth: 1_000_000,
+        asOfMs: Date.now()
+      });
+      feed.bitpay.getDepthForSymbol = async () => ({
+        depth: 1_000_000,
+        bidDepth: 500_000,
+        askDepth: 500_000,
+        asOfMs: Date.now()
+      });
 
       feed.utxoracle.isChainReadyForAggregation = async () => true;
 
@@ -140,6 +152,12 @@ describe('@fabric/fiat', function () {
           asOfSource: 'chain'
         };
       };
+      feed.utxoracle.getDepthForSymbol = async () => ({
+        depth: 1_500_000,
+        bidDepth: 750_000,
+        askDepth: 750_000,
+        asOfMs: Date.now()
+      });
 
       const q = await feed.getQuoteForSymbol('BTC');
       assert.strictEqual(q.sourceCount, 3);
@@ -188,6 +206,18 @@ describe('@fabric/fiat', function () {
       feed.coinbase.http.get = async () => ({
         price: '62000',
         time: '2020-01-15T12:00:01.000Z'
+      });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 2_000_000,
+        bidDepth: 1_000_000,
+        askDepth: 1_000_000,
+        asOfMs: Date.now()
+      });
+      feed.bitpay.getDepthForSymbol = async () => ({
+        depth: 1_000_000,
+        bidDepth: 500_000,
+        askDepth: 500_000,
+        asOfMs: Date.now()
       });
 
       feed.utxoracle.isChainReadyForAggregation = async () => false;
@@ -369,6 +399,12 @@ describe('@fabric/fiat', function () {
       feed.coinbase.http.get = async () => ({
         price: '65432.9',
         time: '2020-01-15T12:00:00.000Z'
+      });
+      feed.coinbase.getDepthForSymbol = async () => ({
+        depth: 2_000_000,
+        bidDepth: 1_000_000,
+        askDepth: 1_000_000,
+        asOfMs: Date.now()
       });
 
       const report = await feed.generateReport();

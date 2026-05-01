@@ -21,6 +21,8 @@ import { SourceFilterPopoverBody } from './SourceFilterPanel';
  *   deltaRangeKey: string,
  *   onSetRange: (key: string) => void,
  *   rangeOpt: { key: string, label: string, ms: number|null },
+ *   aggregationMode: string,
+ *   onSetAggregationMode: (mode: string) => void,
  *   sourceFilter: null | {
  *     providerIds: string[],
  *     labelById: Map<string, string>,
@@ -35,6 +37,8 @@ export default function TimeSliceToolbar ({
   deltaRangeKey,
   onSetRange,
   rangeOpt,
+  aggregationMode,
+  onSetAggregationMode,
   sourceFilter
 }) {
   const quickOptions = DELTA_RANGE_OPTIONS.filter((o) =>
@@ -126,6 +130,34 @@ export default function TimeSliceToolbar ({
             <SourceFilterPopoverBody {...sourceFilter} />
           </Popup>
         ) : null}
+
+        <Dropdown
+          button
+          size="small"
+          className="icon"
+          floating
+          icon="options"
+          text={`Method: ${aggregationMode}`}
+          direction="left"
+        >
+          <Dropdown.Menu>
+            <Dropdown.Item
+              active={aggregationMode === 'depth-weighted'}
+              onClick={() => onSetAggregationMode('depth-weighted')}
+              text="depth-weighted"
+            />
+            <Dropdown.Item
+              active={aggregationMode === 'weighted'}
+              onClick={() => onSetAggregationMode('weighted')}
+              text="weighted"
+            />
+            <Dropdown.Item
+              active={aggregationMode === 'average'}
+              onClick={() => onSetAggregationMode('average')}
+              text="average"
+            />
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
 
       <div

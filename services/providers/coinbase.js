@@ -57,6 +57,18 @@ class Coinbase extends QuoteProvider {
       asOfSource: 'venue'
     });
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    const data = await this.http.get('/products/BTC-USD/book?level=2');
+    throwIfFabricHttpError(data, 'Coinbase Exchange');
+    const norm = this.normalizeOrderBookLevels(data?.bids, data?.asks);
+    return {
+      bids: norm.bids,
+      asks: norm.asks,
+      asOfMs: Date.now()
+    };
+  }
 }
 
 module.exports = Coinbase;

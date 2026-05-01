@@ -76,6 +76,27 @@ class Kraken extends QuoteProvider {
       asOfSource: 'venue'
     });
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    const pair = encodeURIComponent(this.settings.tickerPair || 'XBTUSD');
+    const data = await this.http.get(`/0/public/Depth?pair=${pair}&count=20`);
+    throwIfFabricHttpError(data, 'Kraken');
+    if (data?.error?.length) {
+      throw new Error(`Kraken: ${data.error.join('; ')}`);
+    }
+    const result = data?.result;
+    const pairKey = result && typeof result === 'object'
+      ? Object.keys(result)[0]
+      : '';
+    const row = pairKey ? result[pairKey] : null;
+    const norm = this.normalizeOrderBookLevels(row?.bids, row?.asks);
+    return {
+      bids: norm.bids,
+      asks: norm.asks,
+      asOfMs: Date.now()
+    };
+  }
 }
 
 module.exports = Kraken;

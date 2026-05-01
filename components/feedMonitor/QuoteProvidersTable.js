@@ -32,6 +32,7 @@ export default function QuoteProvidersTable ({ providers }) {
             <Table.HeaderCell>Last success</Table.HeaderCell>
             <Table.HeaderCell>Next update</Table.HeaderCell>
             <Table.HeaderCell>BTC quote</Table.HeaderCell>
+            <Table.HeaderCell>Depth</Table.HeaderCell>
             <Table.HeaderCell>TLS (last request)</Table.HeaderCell>
             <Table.HeaderCell>Last error</Table.HeaderCell>
           </Table.Row>
@@ -54,6 +55,13 @@ export default function QuoteProvidersTable ({ providers }) {
               row.lastError != null && String(row.lastError).trim() !== ''
                 ? String(row.lastError)
                 : '—';
+            const btcQuote = row.quotesBySymbol && typeof row.quotesBySymbol === 'object'
+              ? row.quotesBySymbol.BTC
+              : null;
+            const btcDepth = Number(
+              btcQuote && typeof btcQuote === 'object' ? btcQuote.depth : NaN
+            );
+            const depthCapable = Number.isFinite(btcDepth) && btcDepth > 0;
             return (
               <Table.Row key={String(row.id || row.label)}>
                 <Table.Cell>
@@ -91,6 +99,29 @@ export default function QuoteProvidersTable ({ providers }) {
                   }}
                 >
                   {formatProviderQuotesLine(row.quotesBySymbol)}
+                </Table.Cell>
+                <Table.Cell
+                  style={{
+                    fontSize: '0.82em',
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {depthCapable ? (
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.35rem'
+                      }}
+                    >
+                      <strong>Yes</strong>
+                      <span style={{ opacity: 0.62 }}>
+                        {Math.round(btcDepth).toLocaleString()}
+                      </span>
+                    </span>
+                  ) : (
+                    '—'
+                  )}
                 </Table.Cell>
                 <Table.Cell
                   style={{

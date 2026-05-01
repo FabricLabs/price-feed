@@ -7,6 +7,11 @@ export const QUOTE_SYMBOL = 'BTC';
 
 export const MAX_QUOTE_ROWS = 24;
 export const MAX_QUOTE_HISTORY = 2048;
+export const AGGREGATION_MODES = Object.freeze([
+  'depth-weighted',
+  'weighted',
+  'average'
+]);
 
 /** Canonical path for aggregated report JSON (Fabric-style). */
 export const QUOTES_SNAPSHOT_PATH = '/quotes/snapshot';
@@ -15,8 +20,59 @@ export const QUOTES_PROVIDERS_PATH = '/quotes/providers';
 export const QUOTES_HISTORY_PATH = '/quotes/history';
 export const QUOTES_CHAIN_PATH = '/quotes/chain';
 
-/** WebSocket JSON stream matching {@link QUOTES_SNAPSHOT_PATH} payloads. */
+/** Fabric routable WebSocket: auto-subscribes to `/quotes` and receives JSONPatch-style frames. */
+export const QUOTES_FABRIC_WS_PATH = '/quotes';
+
+/** @deprecated Use {@link QUOTES_FABRIC_WS_PATH} / {@link resolveQuotesFabricWsUrl}. */
 export const QUOTES_STREAM_PATH = '/quotes/stream';
+
+/** Fabric binary {@link Message} header length before UTF-8 JSON body (JSON_PATCH opcode). */
+export const FABRIC_MESSAGE_HEADER_SIZE = 208;
+
+/** Wire opcode for JSON_PATCH document patches ({@code Message.fromVector(['JSONPatch', …])}). */
+export const FABRIC_JSON_PATCH_OPCODE = 1024;
+
+/**
+ * Parse a Fabric binary frame carrying a JSONPatch-style `{ path, value }` body.
+ * @param {ArrayBuffer|ArrayBufferView} input
+ * @returns {{ path: string, value: unknown }|null}
+ */
+export function tryParseFabricJsonPatchMessageData (input) {
+  let buf;
+  if (input instanceof ArrayBuffer) {
+    buf = new Uint8Array(input);
+  } else if (input && input.buffer instanceof ArrayBuffer) {
+    const off = input.byteOffset | 0;
+    const len = input.byteLength | 0;
+    buf = new Uint8Array(input.buffer, off, len);
+  } else {
+    return null;
+  }
+  if (buf.byteLength < FABRIC_MESSAGE_HEADER_SIZE) return null;
+  const ab =
+    buf.byteOffset === 0 && buf.byteLength === buf.buffer.byteLength
+      ? buf.buffer
+      : buf.slice().buffer;
+  const dv = new DataView(ab);
+  const opcode = dv.getUint32(72, false);
+  if (opcode !== FABRIC_JSON_PATCH_OPCODE) return null;
+  const payload = buf.subarray(FABRIC_MESSAGE_HEADER_SIZE);
+  let text;
+  try {
+    text = new TextDecoder('utf8').decode(payload);
+  } catch {
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    return null;
+  }
+  if (!data || typeof data !== 'object') return null;
+  if (typeof data.path !== 'string') return null;
+  return { path: data.path, value: data.value };
+}
 
 /**
  * @param {string} [feedApiBase]
@@ -67,32 +123,41 @@ export function resolveQuotesChainUrl (feedApiBase) {
 }
 
 /**
- * WebSocket URL for {@link QUOTES_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
+ * WebSocket URL for Fabric quotes ({@link QUOTES_FABRIC_WS_PATH}): binary JSONPatch frames.
  * @param {string} [feedApiBase]
  * @returns {string}
  */
-export function resolveQuotesStreamUrl (feedApiBase) {
+export function resolveQuotesFabricWsUrl (feedApiBase) {
   const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
   if (base) {
     if (/^https:\/\//i.test(base)) {
-      return `wss://${base.slice('https://'.length)}${QUOTES_STREAM_PATH}`;
+      return `wss://${base.slice('https://'.length)}${QUOTES_FABRIC_WS_PATH}`;
     }
     if (/^http:\/\//i.test(base)) {
-      return `ws://${base.slice('http://'.length)}${QUOTES_STREAM_PATH}`;
+      return `ws://${base.slice('http://'.length)}${QUOTES_FABRIC_WS_PATH}`;
     }
     try {
       const u = new URL(base, 'http://localhost');
       const proto = u.protocol === 'https:' ? 'wss:' : 'ws:';
-      return `${proto}//${u.host}${QUOTES_STREAM_PATH}`;
+      return `${proto}//${u.host}${QUOTES_FABRIC_WS_PATH}`;
     } catch {
       /* fall through */
     }
   }
   if (typeof window !== 'undefined' && window.location?.host) {
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return `${proto}//${window.location.host}${QUOTES_STREAM_PATH}`;
+    return `${proto}//${window.location.host}${QUOTES_FABRIC_WS_PATH}`;
   }
-  return `ws://127.0.0.1:3000${QUOTES_STREAM_PATH}`;
+  return `ws://127.0.0.1:3000${QUOTES_FABRIC_WS_PATH}`;
+}
+
+/**
+ * @deprecated Use {@link resolveQuotesFabricWsUrl}.
+ * @param {string} [feedApiBase]
+ * @returns {string}
+ */
+export function resolveQuotesStreamUrl (feedApiBase) {
+  return resolveQuotesFabricWsUrl(feedApiBase);
 }
 
 /**
@@ -141,30 +206,70 @@ export function resolveBitcoinOracleEstimateSeriesUrl (feedApiBase) {
  * @param {number} [nowMs]
  * @returns {number|null}
  */
-export function weightedPriceFromSerializedSources (sources, nowMs = Date.now()) {
+export function estimateFromSerializedSources (
+  sources,
+  mode = 'weighted',
+  nowMs = Date.now()
+) {
   if (!Array.isArray(sources) || !sources.length) return null;
-  let mass = 0;
-  let sum = 0;
-  for (let i = 0; i < sources.length; i++) {
-    const quote = sources[i];
-    if (quote?.excludedFromSpot === true) continue;
-    const price = Number(quote?.price);
-    if (!Number.isFinite(price)) continue;
-    const asOf = quoteAsOfMs(quote);
-    let age;
-    if (Number.isFinite(asOf)) {
-      age = Math.log(Math.max(1, nowMs - asOf));
-    } else {
-      const ageRaw = Number(quote?.age);
-      age =
-        Number.isFinite(ageRaw) && ageRaw > 0 ? ageRaw : 1;
+  switch (mode) {
+    case 'average': {
+      const prices = [];
+      for (let i = 0; i < sources.length; i++) {
+        const quote = sources[i];
+        if (quote?.excludedFromSpot === true) continue;
+        const price = Number(quote?.price);
+        if (!Number.isFinite(price)) continue;
+        prices.push(price);
+      }
+      if (!prices.length) return null;
+      return prices.reduce((sum, p) => sum + p, 0) / prices.length;
     }
-    const weight = 1 / Math.max(age, 1e-9);
-    mass += weight;
-    sum += weight * price;
+    case 'depth-weighted': {
+      let mass = 0;
+      let sum = 0;
+      for (let i = 0; i < sources.length; i++) {
+        const quote = sources[i];
+        if (quote?.excludedFromSpot === true) continue;
+        const price = Number(quote?.price);
+        const depth = Number(quote?.depth);
+        if (!Number.isFinite(price)) continue;
+        if (!Number.isFinite(depth) || depth <= 0) continue;
+        mass += depth;
+        sum += price * depth;
+      }
+      if (mass <= 0 || !Number.isFinite(sum)) return null;
+      return sum / mass;
+    }
+    case 'weighted':
+    default: {
+      let mass = 0;
+      let sum = 0;
+      for (let i = 0; i < sources.length; i++) {
+        const quote = sources[i];
+        if (quote?.excludedFromSpot === true) continue;
+        const price = Number(quote?.price);
+        if (!Number.isFinite(price)) continue;
+        const asOf = quoteAsOfMs(quote);
+        let age;
+        if (Number.isFinite(asOf)) {
+          age = Math.max(1, nowMs - asOf);
+        } else {
+          const ageRaw = Number(quote?.age);
+          age = Number.isFinite(ageRaw) && ageRaw > 0 ? ageRaw : 1;
+        }
+        const weight = 1 / Math.max(age, 1e-9);
+        mass += weight;
+        sum += weight * price;
+      }
+      if (mass <= 0 || !Number.isFinite(sum)) return null;
+      return sum / mass;
+    }
   }
-  if (mass <= 0 || !Number.isFinite(sum)) return null;
-  return sum / mass;
+}
+
+export function weightedPriceFromSerializedSources (sources, nowMs = Date.now()) {
+  return estimateFromSerializedSources(sources, 'weighted', nowMs);
 }
 
 /**
@@ -180,7 +285,11 @@ export function isSourceVisible (providerId, visibility) {
  * @param {object} row
  * @param {Record<string, boolean>} sourceVisibility
  */
-export function filterQuoteRowBySourceVisibility (row, sourceVisibility) {
+export function filterQuoteRowBySourceVisibility (
+  row,
+  sourceVisibility,
+  aggregationMode = 'weighted'
+) {
   if (!row || typeof row !== 'object') return null;
   if (!Array.isArray(row.sources) || row.sources.length === 0) {
     return row;
@@ -192,11 +301,20 @@ export function filterQuoteRowBySourceVisibility (row, sourceVisibility) {
     )
   );
   if (filtered.length === 0) return null;
-  const price = weightedPriceFromSerializedSources(filtered);
+  const price = estimateFromSerializedSources(filtered, aggregationMode);
   if (price == null || !Number.isFinite(price)) return null;
-  const blendCount = filtered.filter(
-    (s) => /** @type {{ excludedFromSpot?: boolean }} */ (s).excludedFromSpot !== true
-  ).length;
+  const blendCount = filtered.filter((s) => {
+    if (/** @type {{ excludedFromSpot?: boolean }} */ (s).excludedFromSpot === true) {
+      return false;
+    }
+    const p = Number(/** @type {{ price?: unknown }} */ (s).price);
+    if (!Number.isFinite(p)) return false;
+    if (aggregationMode === 'depth-weighted') {
+      const d = Number(/** @type {{ depth?: unknown }} */ (s).depth);
+      return Number.isFinite(d) && d > 0;
+    }
+    return true;
+  }).length;
   return {
     ...row,
     rate: price,
@@ -209,11 +327,17 @@ export function filterQuoteRowBySourceVisibility (row, sourceVisibility) {
  * @param {unknown[]} quotes
  * @param {Record<string, boolean>} sourceVisibility
  */
-export function filterQuotesBySourceVisibility (quotes, sourceVisibility) {
+export function filterQuotesBySourceVisibility (
+  quotes,
+  sourceVisibility,
+  aggregationMode = 'weighted'
+) {
   if (!Array.isArray(quotes)) return [];
   const vis = sourceVisibility && typeof sourceVisibility === 'object' ? sourceVisibility : {};
   return quotes
-    .map((row) => filterQuoteRowBySourceVisibility(row, vis))
+    .map((row) =>
+      filterQuoteRowBySourceVisibility(row, vis, aggregationMode)
+    )
     .filter(Boolean);
 }
 

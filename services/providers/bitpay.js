@@ -89,6 +89,11 @@ class BitPay extends QuoteProvider {
       asOfSource: 'fetch'
     });
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    throw new Error('BitPay: orderbook is not available for rates endpoint.');
+  }
 }
 
 module.exports = BitPay;

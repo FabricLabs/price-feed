@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * Gemini public ticker (`/v1/pubticker/BTCUSD`) with optional venue timestamp.
- * @see https://docs.gemini.com/rest/market-data#get-ticker
+ * CEX.IO ticker (`/api/ticker/BTC/USD`) with `last` + `timestamp` (Unix seconds).
+ * @see https://cex.io/rest-api
  */
 const QuoteProvider = require('../../types/quoteProvider');
 const Worker = require('../../types/worker');
 const { throwIfFabricHttpError } = require('../../types/remoteResponse');
 const { normalizeSpotQuote } = require('../../types/spotQuote');
 
-class Gemini extends QuoteProvider {
+class CEXIO extends QuoteProvider {
   constructor (settings = {}) {
     super(settings);
 
@@ -22,9 +22,9 @@ class Gemini extends QuoteProvider {
     );
 
     this.http = new Worker({
-      serviceId: 'gemini',
-      label: 'Gemini',
-      authority: 'api.gemini.com',
+      serviceId: 'cexio',
+      label: 'CEX.IO',
+      authority: 'cex.io',
       secure: true,
       port: 443,
       timeoutMs: this.settings.timeoutMs
@@ -35,34 +35,31 @@ class Gemini extends QuoteProvider {
   async getQuoteForSymbol (symbol) {
     this.assertBtc(symbol);
 
-    const data = await this.http.get('/v1/pubticker/BTCUSD');
-    throwIfFabricHttpError(data, 'Gemini');
+    const data = await this.http.get('/api/ticker/BTC/USD');
+    throwIfFabricHttpError(data, 'CEX.IO');
 
     const price = Number(data?.last);
     if (!Number.isFinite(price)) {
-      throw new Error('Gemini: missing or invalid last price.');
+      throw new Error('CEX.IO: missing or invalid last price.');
     }
 
-    const venueMs = Number(data?.volume?.timestampms);
-    const asOfMs = Number.isFinite(venueMs) && venueMs > 0
-      ? Math.round(venueMs)
+    const tsSec = Number(data?.timestamp);
+    const asOfMs = Number.isFinite(tsSec) && tsSec > 0
+      ? Math.round(tsSec * 1000)
       : Math.round(Date.now());
-    const asOfSource = Number.isFinite(venueMs) && venueMs > 0
-      ? 'venue'
-      : 'fetch';
 
     return normalizeSpotQuote({
       price,
       currency: 'USD',
       asOfMs,
-      asOfSource
+      asOfSource: Number.isFinite(tsSec) && tsSec > 0 ? 'venue' : 'fetch'
     });
   }
 
   async getOrderBookForSymbol (symbol) {
     this.assertBtc(symbol);
-    const data = await this.http.get('/v1/book/BTCUSD');
-    throwIfFabricHttpError(data, 'Gemini');
+    const data = await this.http.get('/api/order_book/BTC/USD/?depth=20');
+    throwIfFabricHttpError(data, 'CEX.IO');
     const norm = this.normalizeOrderBookLevels(data?.bids, data?.asks);
     return {
       bids: norm.bids,
@@ -72,4 +69,4 @@ class Gemini extends QuoteProvider {
   }
 }
 
-module.exports = Gemini;
+module.exports = CEXIO;

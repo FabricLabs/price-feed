@@ -57,6 +57,18 @@ class Bitstamp extends QuoteProvider {
       asOfSource: 'venue'
     });
   }
+
+  async getOrderBookForSymbol (symbol) {
+    this.assertBtc(symbol);
+    const data = await this.http.get('/api/v2/order_book/btcusd/');
+    throwIfFabricHttpError(data, 'Bitstamp');
+    const norm = this.normalizeOrderBookLevels(data?.bids, data?.asks);
+    return {
+      bids: norm.bids,
+      asks: norm.asks,
+      asOfMs: Date.now()
+    };
+  }
 }
 
 module.exports = Bitstamp;

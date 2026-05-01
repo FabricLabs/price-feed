@@ -68897,8 +68897,56 @@
 	const QUOTES_HISTORY_PATH = '/quotes/history';
 	const QUOTES_CHAIN_PATH = '/quotes/chain';
 
-	/** WebSocket JSON stream matching {@link QUOTES_SNAPSHOT_PATH} payloads. */
-	const QUOTES_STREAM_PATH = '/quotes/stream';
+	/** Fabric routable WebSocket: auto-subscribes to `/quotes` and receives JSONPatch-style frames. */
+	const QUOTES_FABRIC_WS_PATH = '/quotes';
+
+	/** Fabric binary {@link Message} header length before UTF-8 JSON body (JSON_PATCH opcode). */
+	const FABRIC_MESSAGE_HEADER_SIZE = 208;
+
+	/** Wire opcode for JSON_PATCH document patches ({@code Message.fromVector(['JSONPatch', …])}). */
+	const FABRIC_JSON_PATCH_OPCODE = 1024;
+
+	/**
+	 * Parse a Fabric binary frame carrying a JSONPatch-style `{ path, value }` body.
+	 * @param {ArrayBuffer|ArrayBufferView} input
+	 * @returns {{ path: string, value: unknown }|null}
+	 */
+	function tryParseFabricJsonPatchMessageData(input) {
+	  let buf;
+	  if (input instanceof ArrayBuffer) {
+	    buf = new Uint8Array(input);
+	  } else if (input && input.buffer instanceof ArrayBuffer) {
+	    const off = input.byteOffset | 0;
+	    const len = input.byteLength | 0;
+	    buf = new Uint8Array(input.buffer, off, len);
+	  } else {
+	    return null;
+	  }
+	  if (buf.byteLength < FABRIC_MESSAGE_HEADER_SIZE) return null;
+	  const ab = buf.byteOffset === 0 && buf.byteLength === buf.buffer.byteLength ? buf.buffer : buf.slice().buffer;
+	  const dv = new DataView(ab);
+	  const opcode = dv.getUint32(72, false);
+	  if (opcode !== FABRIC_JSON_PATCH_OPCODE) return null;
+	  const payload = buf.subarray(FABRIC_MESSAGE_HEADER_SIZE);
+	  let text;
+	  try {
+	    text = new TextDecoder('utf8').decode(payload);
+	  } catch {
+	    return null;
+	  }
+	  let data;
+	  try {
+	    data = JSON.parse(text);
+	  } catch {
+	    return null;
+	  }
+	  if (!data || typeof data !== 'object') return null;
+	  if (typeof data.path !== 'string') return null;
+	  return {
+	    path: data.path,
+	    value: data.value
+	  };
+	}
 
 	/**
 	 * @param {string} [feedApiBase]
@@ -68944,32 +68992,32 @@
 	}
 
 	/**
-	 * WebSocket URL for {@link QUOTES_STREAM_PATH} (Hub Bridge stays on `/` with Fabric frames).
+	 * WebSocket URL for Fabric quotes ({@link QUOTES_FABRIC_WS_PATH}): binary JSONPatch frames.
 	 * @param {string} [feedApiBase]
 	 * @returns {string}
 	 */
-	function resolveQuotesStreamUrl(feedApiBase) {
+	function resolveQuotesFabricWsUrl(feedApiBase) {
 	  const base = String(feedApiBase ?? '').trim().replace(/\/+$/, '');
 	  if (base) {
 	    if (/^https:\/\//i.test(base)) {
-	      return `wss://${base.slice('https://'.length)}${QUOTES_STREAM_PATH}`;
+	      return `wss://${base.slice('https://'.length)}${QUOTES_FABRIC_WS_PATH}`;
 	    }
 	    if (/^http:\/\//i.test(base)) {
-	      return `ws://${base.slice('http://'.length)}${QUOTES_STREAM_PATH}`;
+	      return `ws://${base.slice('http://'.length)}${QUOTES_FABRIC_WS_PATH}`;
 	    }
 	    try {
 	      const u = new URL(base, 'http://localhost');
 	      const proto = u.protocol === 'https:' ? 'wss:' : 'ws:';
-	      return `${proto}//${u.host}${QUOTES_STREAM_PATH}`;
+	      return `${proto}//${u.host}${QUOTES_FABRIC_WS_PATH}`;
 	    } catch {
 	      /* fall through */
 	    }
 	  }
 	  if (typeof window !== 'undefined' && window.location?.host) {
 	    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-	    return `${proto}//${window.location.host}${QUOTES_STREAM_PATH}`;
+	    return `${proto}//${window.location.host}${QUOTES_FABRIC_WS_PATH}`;
 	  }
-	  return `ws://127.0.0.1:3000${QUOTES_STREAM_PATH}`;
+	  return `ws://127.0.0.1:3000${QUOTES_FABRIC_WS_PATH}`;
 	}
 
 	/**
@@ -69018,29 +69066,65 @@
 	 * @param {number} [nowMs]
 	 * @returns {number|null}
 	 */
-	function weightedPriceFromSerializedSources(sources, nowMs = Date.now()) {
+	function estimateFromSerializedSources(sources, mode = 'weighted', nowMs = Date.now()) {
 	  if (!Array.isArray(sources) || !sources.length) return null;
-	  let mass = 0;
-	  let sum = 0;
-	  for (let i = 0; i < sources.length; i++) {
-	    const quote = sources[i];
-	    if (quote?.excludedFromSpot === true) continue;
-	    const price = Number(quote?.price);
-	    if (!Number.isFinite(price)) continue;
-	    const asOf = quoteTimeExports.quoteAsOfMs(quote);
-	    let age;
-	    if (Number.isFinite(asOf)) {
-	      age = Math.log(Math.max(1, nowMs - asOf));
-	    } else {
-	      const ageRaw = Number(quote?.age);
-	      age = Number.isFinite(ageRaw) && ageRaw > 0 ? ageRaw : 1;
-	    }
-	    const weight = 1 / Math.max(age, 1e-9);
-	    mass += weight;
-	    sum += weight * price;
+	  switch (mode) {
+	    case 'average':
+	      {
+	        const prices = [];
+	        for (let i = 0; i < sources.length; i++) {
+	          const quote = sources[i];
+	          if (quote?.excludedFromSpot === true) continue;
+	          const price = Number(quote?.price);
+	          if (!Number.isFinite(price)) continue;
+	          prices.push(price);
+	        }
+	        if (!prices.length) return null;
+	        return prices.reduce((sum, p) => sum + p, 0) / prices.length;
+	      }
+	    case 'depth-weighted':
+	      {
+	        let mass = 0;
+	        let sum = 0;
+	        for (let i = 0; i < sources.length; i++) {
+	          const quote = sources[i];
+	          if (quote?.excludedFromSpot === true) continue;
+	          const price = Number(quote?.price);
+	          const depth = Number(quote?.depth);
+	          if (!Number.isFinite(price)) continue;
+	          if (!Number.isFinite(depth) || depth <= 0) continue;
+	          mass += depth;
+	          sum += price * depth;
+	        }
+	        if (mass <= 0 || !Number.isFinite(sum)) return null;
+	        return sum / mass;
+	      }
+	    case 'weighted':
+	    default:
+	      {
+	        let mass = 0;
+	        let sum = 0;
+	        for (let i = 0; i < sources.length; i++) {
+	          const quote = sources[i];
+	          if (quote?.excludedFromSpot === true) continue;
+	          const price = Number(quote?.price);
+	          if (!Number.isFinite(price)) continue;
+	          const asOf = quoteTimeExports.quoteAsOfMs(quote);
+	          let age;
+	          if (Number.isFinite(asOf)) {
+	            age = Math.max(1, nowMs - asOf);
+	          } else {
+	            const ageRaw = Number(quote?.age);
+	            age = Number.isFinite(ageRaw) && ageRaw > 0 ? ageRaw : 1;
+	          }
+	          const weight = 1 / Math.max(age, 1e-9);
+	          mass += weight;
+	          sum += weight * price;
+	        }
+	        if (mass <= 0 || !Number.isFinite(sum)) return null;
+	        return sum / mass;
+	      }
 	  }
-	  if (mass <= 0 || !Number.isFinite(sum)) return null;
-	  return sum / mass;
 	}
 
 	/**
@@ -69056,16 +69140,27 @@
 	 * @param {object} row
 	 * @param {Record<string, boolean>} sourceVisibility
 	 */
-	function filterQuoteRowBySourceVisibility(row, sourceVisibility) {
+	function filterQuoteRowBySourceVisibility(row, sourceVisibility, aggregationMode = 'weighted') {
 	  if (!row || typeof row !== 'object') return null;
 	  if (!Array.isArray(row.sources) || row.sources.length === 0) {
 	    return row;
 	  }
 	  const filtered = row.sources.filter(s => isSourceVisible(/** @type {{ provider?: string }} */s?.provider, sourceVisibility));
 	  if (filtered.length === 0) return null;
-	  const price = weightedPriceFromSerializedSources(filtered);
+	  const price = estimateFromSerializedSources(filtered, aggregationMode);
 	  if (price == null || !Number.isFinite(price)) return null;
-	  const blendCount = filtered.filter(s => /** @type {{ excludedFromSpot?: boolean }} */s.excludedFromSpot !== true).length;
+	  const blendCount = filtered.filter(s => {
+	    if (/** @type {{ excludedFromSpot?: boolean }} */s.excludedFromSpot === true) {
+	      return false;
+	    }
+	    const p = Number(/** @type {{ price?: unknown }} */s.price);
+	    if (!Number.isFinite(p)) return false;
+	    if (aggregationMode === 'depth-weighted') {
+	      const d = Number(/** @type {{ depth?: unknown }} */s.depth);
+	      return Number.isFinite(d) && d > 0;
+	    }
+	    return true;
+	  }).length;
 	  return {
 	    ...row,
 	    rate: price,
@@ -69078,10 +69173,10 @@
 	 * @param {unknown[]} quotes
 	 * @param {Record<string, boolean>} sourceVisibility
 	 */
-	function filterQuotesBySourceVisibility(quotes, sourceVisibility) {
+	function filterQuotesBySourceVisibility(quotes, sourceVisibility, aggregationMode = 'weighted') {
 	  if (!Array.isArray(quotes)) return [];
 	  const vis = sourceVisibility && typeof sourceVisibility === 'object' ? sourceVisibility : {};
-	  return quotes.map(row => filterQuoteRowBySourceVisibility(row, vis)).filter(Boolean);
+	  return quotes.map(row => filterQuoteRowBySourceVisibility(row, vis, aggregationMode)).filter(Boolean);
 	}
 
 	/**
@@ -69369,13 +69464,70 @@
 	  });
 	}
 
+	const PROVIDER_BUY_URLS = Object.freeze({
+	  coinbase: 'https://www.coinbase.com/join',
+	  kraken: 'https://www.kraken.com/features/affiliate-program',
+	  bitstamp: 'https://www.bitstamp.net/referral-program/',
+	  gemini: 'https://www.gemini.com/refer-a-friend',
+	  bitfinex: 'https://www.bitfinex.com/referral',
+	  binance: 'https://accounts.binance.com/en/register',
+	  binanceus: 'https://www.binance.us/register',
+	  okx: 'https://www.okx.com/join',
+	  bybit: 'https://www.bybit.com/invite',
+	  kucoin: 'https://www.kucoin.com/r/af',
+	  gateio: 'https://www.gate.io/signup',
+	  mexc: 'https://www.mexc.com/register',
+	  bitget: 'https://www.bitget.com/en/referral/register',
+	  htx: 'https://www.htx.com/invite/en-us/',
+	  coinex: 'https://www.coinex.com/register',
+	  cexio: 'https://cex.io/r/0/up100',
+	  upbit: 'https://id.upbit.com/signup',
+	  bitso: 'https://bitso.com/register',
+	  phemex: 'https://phemex.com/register',
+	  bitvavo: 'https://bitvavo.com/en/register',
+	  cryptocom: 'https://crypto.com/exchange/register',
+	  whitebit: 'https://whitebit.com/auth/register',
+	  lbank: 'https://www.lbank.com/login',
+	  digifinex: 'https://www.digifinex.com/en-ww/register',
+	  ascendex: 'https://ascendex.com/en/register',
+	  btse: 'https://www.btse.com/en/referral',
+	  bitmart: 'https://www.bitmart.com/register',
+	  bingx: 'https://bingx.com/en-us/invite',
+	  bitrue: 'https://www.bitrue.com/user/register',
+	  poloniex: 'https://poloniex.com/signup',
+	  deribit: 'https://www.deribit.com/accounts/signup'
+	});
+
+	/**
+	 * Right column beside headline: each contributor’s price from the latest quote (opens full breakdown).
+	 *
+	 * @param {{
+	 *   quote: {
+	 *     created?: string,
+	 *     rate?: number,
+	 *     sources?: { label?: string, provider?: string, price?: unknown }[],
+	 *     sourceCount?: number,
+	 *     symbol?: string,
+	 *     currency?: string
+	 *   },
+	 *   sourceVisibility: Record<string, boolean>,
+	 *   labelById: Map<string, string>,
+	 *   fiat: string,
+	 *   onOpenInspect: (q: object) => void,
+	 *   tlsByProvider?: Map<string, Record<string, unknown>> | Record<string, Record<string, unknown>>,
+	 *   aggregationMode?: string,
+	 *   compact?: boolean
+	 * }} props
+	 */
 	function HeadlineSourceQuotes({
 	  quote,
 	  sourceVisibility,
 	  labelById,
 	  fiat,
 	  onOpenInspect,
-	  tlsByProvider
+	  tlsByProvider,
+	  aggregationMode = 'weighted',
+	  compact = false
 	}) {
 	  const src = Array.isArray(quote?.sources) ? quote.sources : [];
 	  const rows = src.map((s, i) => {
@@ -69385,16 +69537,95 @@
 	    if (!Number.isFinite(price)) return null;
 	    const name = s && String(s.label || '').trim() || labelById.get(provider) || provider;
 	    const excluded = /** @type {{ excludedFromSpot?: boolean }} */s.excludedFromSpot === true;
+	    const depthCapable = Number.isFinite(Number(s?.depth)) && Number(s.depth) > 0;
 	    return {
 	      providerId: provider,
 	      key: provider + ':' + String(price) + ':' + String(excluded),
 	      name,
 	      price,
 	      nameLower: name.toLowerCase(),
-	      excluded
+	      buyUrl: PROVIDER_BUY_URLS[provider] || null,
+	      excluded,
+	      depthCapable
 	    };
-	  }).filter(Boolean).sort((a, b) => a.nameLower.localeCompare(b.nameLower));
+	  }).filter(Boolean).sort((a, b) => {
+	    const byPrice = a.price - b.price;
+	    if (byPrice !== 0) return byPrice;
+	    return a.nameLower.localeCompare(b.nameLower);
+	  });
 	  if (!rows.length) return null;
+	  if (compact) {
+	    return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	      style: {
+	        display: 'flex',
+	        flexWrap: 'wrap',
+	        justifyContent: 'flex-end',
+	        alignItems: 'center',
+	        gap: '0.35rem 0.5rem'
+	      },
+	      children: [/*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	        style: {
+	          fontSize: '0.72rem',
+	          fontWeight: 600,
+	          letterSpacing: '0.03em',
+	          textTransform: 'uppercase',
+	          opacity: 0.52
+	        },
+	        children: ["By source \xB7 ", fiat]
+	      }), rows.map(row => /*#__PURE__*/jsxRuntimeExports.jsxs("button", {
+	        type: "button",
+	        style: {
+	          border: '1px solid rgba(0,0,0,.12)',
+	          background: '#fff',
+	          borderRadius: '999px',
+	          padding: '0.18rem 0.55rem',
+	          display: 'inline-flex',
+	          alignItems: 'center',
+	          gap: '0.4rem',
+	          cursor: 'pointer'
+	        },
+	        onClick: () => onOpenInspect(quote),
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          style: {
+	            fontSize: '0.78rem',
+	            fontWeight: 600
+	          },
+	          children: row.name
+	        }), /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          style: {
+	            fontSize: '0.78rem',
+	            fontWeight: 600,
+	            fontVariantNumeric: 'tabular-nums',
+	            opacity: 0.92
+	          },
+	          children: formatFiatPrice(row.price, fiat)
+	        }), row.depthCapable ? /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          title: "Depth-capable source",
+	          style: {
+	            fontSize: '0.62rem',
+	            fontWeight: 700,
+	            letterSpacing: '0.03em',
+	            textTransform: 'uppercase',
+	            opacity: 0.64
+	          },
+	          children: "Depth"
+	        }) : null, row.buyUrl ? /*#__PURE__*/jsxRuntimeExports.jsx("a", {
+	          href: row.buyUrl,
+	          target: "_blank",
+	          rel: "noopener noreferrer",
+	          onClick: e => e.stopPropagation(),
+	          onKeyDown: e => e.stopPropagation(),
+	          style: {
+	            fontSize: '0.68rem',
+	            fontWeight: 600,
+	            textTransform: 'uppercase',
+	            letterSpacing: '0.02em'
+	          },
+	          children: "Buy"
+	        }) : null]
+	      }, row.key))]
+	    });
+	  }
 	  return /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
 	    style: {
 	      width: '100%'
@@ -69446,14 +69677,42 @@
 	              margin: 0
 	            },
 	            children: row.name
-	          }), /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	          }), /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
 	            style: {
+	              display: 'inline-flex',
+	              alignItems: 'center',
+	              gap: '0.45rem',
 	              fontSize: '0.95rem',
 	              fontWeight: 600,
 	              fontVariantNumeric: 'tabular-nums',
 	              opacity: 0.92
 	            },
-	            children: formatFiatPrice(row.price, fiat)
+	            children: [/*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	              children: formatFiatPrice(row.price, fiat)
+	            }), row.depthCapable ? /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	              title: "Depth-capable source",
+	              style: {
+	                fontSize: '0.62rem',
+	                fontWeight: 700,
+	                letterSpacing: '0.03em',
+	                textTransform: 'uppercase',
+	                opacity: 0.64
+	              },
+	              children: "Depth"
+	            }) : null, row.buyUrl ? /*#__PURE__*/jsxRuntimeExports.jsx("a", {
+	              href: row.buyUrl,
+	              target: "_blank",
+	              rel: "noopener noreferrer",
+	              onClick: e => e.stopPropagation(),
+	              onKeyDown: e => e.stopPropagation(),
+	              style: {
+	                fontSize: '0.74rem',
+	                fontWeight: 600,
+	                textTransform: 'uppercase',
+	                letterSpacing: '0.02em'
+	              },
+	              children: "Buy"
+	            }) : null]
 	          })]
 	        }), tlsByProvider ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
 	          style: {
@@ -69465,14 +69724,14 @@
 	            tls: lookupProviderTls(tlsByProvider, row.providerId),
 	            compact: true
 	          })
-	        }) : null, row.excluded ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	        }) : null, row.excluded ? /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
 	          style: {
 	            marginTop: '0.2rem',
 	            fontSize: '0.72rem',
 	            opacity: 0.52,
 	            lineHeight: 1.35
 	          },
-	          children: "Not included in headline weighted blend (sync / verification)"
+	          children: ["Not included in headline ", aggregationMode, " blend (sync / verification)"]
 	        }) : null]
 	      }, row.key))
 	    }), /*#__PURE__*/jsxRuntimeExports.jsx("div", {
@@ -69688,6 +69947,8 @@
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "BTC quote"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
+	            children: "Depth"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "TLS (last request)"
 	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.HeaderCell, {
 	            children: "Last error"
@@ -69710,6 +69971,9 @@
 	          }} */
 	          p;
 	          const err = row.lastError != null && String(row.lastError).trim() !== '' ? String(row.lastError) : '—';
+	          const btcQuote = row.quotesBySymbol && typeof row.quotesBySymbol === 'object' ? row.quotesBySymbol.BTC : null;
+	          const btcDepth = Number(btcQuote && typeof btcQuote === 'object' ? btcQuote.depth : NaN);
+	          const depthCapable = Number.isFinite(btcDepth) && btcDepth > 0;
 	          return /*#__PURE__*/jsxRuntimeExports.jsxs(Table.Row, {
 	            children: [/*#__PURE__*/jsxRuntimeExports.jsxs(Table.Cell, {
 	              children: [/*#__PURE__*/jsxRuntimeExports.jsx("strong", {
@@ -69733,6 +69997,26 @@
 	                wordBreak: 'break-word'
 	              },
 	              children: formatProviderQuotesLine(row.quotesBySymbol)
+	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
+	              style: {
+	                fontSize: '0.82em',
+	                wordBreak: 'break-word'
+	              },
+	              children: depthCapable ? /*#__PURE__*/jsxRuntimeExports.jsxs("span", {
+	                style: {
+	                  display: 'inline-flex',
+	                  alignItems: 'center',
+	                  gap: '0.35rem'
+	                },
+	                children: [/*#__PURE__*/jsxRuntimeExports.jsx("strong", {
+	                  children: "Yes"
+	                }), /*#__PURE__*/jsxRuntimeExports.jsx("span", {
+	                  style: {
+	                    opacity: 0.62
+	                  },
+	                  children: Math.round(btcDepth).toLocaleString()
+	                })]
+	              }) : '—'
 	            }), /*#__PURE__*/jsxRuntimeExports.jsx(Table.Cell, {
 	              style: {
 	                fontSize: '0.82em',
@@ -69902,6 +70186,8 @@
 	  deltaRangeKey,
 	  onSetRange,
 	  rangeOpt,
+	  aggregationMode,
+	  onSetAggregationMode,
 	  sourceFilter
 	}) {
 	  const quickOptions = DELTA_RANGE_OPTIONS.filter(o => DELTA_RANGE_QUICK_KEYS.has(o.key));
@@ -69975,7 +70261,30 @@
 	        children: /*#__PURE__*/jsxRuntimeExports.jsx(SourceFilterPopoverBody, {
 	          ...sourceFilter
 	        })
-	      }) : null]
+	      }) : null, /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown, {
+	        button: true,
+	        size: "small",
+	        className: "icon",
+	        floating: true,
+	        icon: "options",
+	        text: `Method: ${aggregationMode}`,
+	        direction: "left",
+	        children: /*#__PURE__*/jsxRuntimeExports.jsxs(Dropdown.Menu, {
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Dropdown.Item, {
+	            active: aggregationMode === 'depth-weighted',
+	            onClick: () => onSetAggregationMode('depth-weighted'),
+	            text: "depth-weighted"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown.Item, {
+	            active: aggregationMode === 'weighted',
+	            onClick: () => onSetAggregationMode('weighted'),
+	            text: "weighted"
+	          }), /*#__PURE__*/jsxRuntimeExports.jsx(Dropdown.Item, {
+	            active: aggregationMode === 'average',
+	            onClick: () => onSetAggregationMode('average'),
+	            text: "average"
+	          })]
+	        })
+	      })]
 	    }), /*#__PURE__*/jsxRuntimeExports.jsxs("div", {
 	      style: {
 	        marginTop: '0.35rem',
@@ -70404,7 +70713,8 @@
 	    sourceVisibility: {},
 	    /** Rows from GET /blocks?minHeight=&maxHeight=&maxPoints= (series, chart violet dots). */
 	    utxoEstimateSeries: [],
-	    utxoEstimateSeriesLoading: false
+	    utxoEstimateSeriesLoading: false,
+	    aggregationMode: 'depth-weighted'
 	  };
 	  constructor(props = {}) {
 	    super(props);
@@ -70419,6 +70729,7 @@
 	    this._openInspectQuote = this._openInspectQuote.bind(this);
 	    this._closeInspectQuote = this._closeInspectQuote.bind(this);
 	    this._setDeltaRange = this._setDeltaRange.bind(this);
+	    this._setAggregationMode = this._setAggregationMode.bind(this);
 	    this._toggleSourceFilter = this._toggleSourceFilter.bind(this);
 	    this._sourceFilterSelectAll = this._sourceFilterSelectAll.bind(this);
 	    /** @type {AbortController|null} */
@@ -70459,18 +70770,34 @@
 	      deltaRangeKey: key
 	    });
 	  }
+	  _setAggregationMode(mode) {
+	    if (this._unmounted) return;
+	    if (mode !== 'depth-weighted' && mode !== 'weighted' && mode !== 'average') {
+	      return;
+	    }
+	    this.setState({
+	      aggregationMode: mode
+	    });
+	  }
 	  componentDidMount() {
 	    this._unmounted = false;
 	    const useWs = this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
 	    if (useWs) {
-	      this._connectReportStream();
+	      void (async () => {
+	        try {
+	          await this._poll();
+	        } catch {
+	          /* first paint may still open WS */
+	        }
+	        if (!this._unmounted) this._connectQuotesWebSocket();
+	      })();
 	    } else {
 	      void this._poll();
 	      this._restartHttpPollTimer();
 	    }
 	  }
 	  componentWillUnmount() {
-	    this._disconnectReportStream(true);
+	    this._disconnectQuotesWebSocket(true);
 	    if (this._pollAbort) {
 	      this._pollAbort.abort();
 	      this._pollAbort = null;
@@ -70489,14 +70816,21 @@
 	    if (prevProps.feedApiBase !== this.props.feedApiBase) {
 	      const useWs = this.props.webSocketEnabled !== false && typeof WebSocket !== 'undefined';
 	      if (useWs) {
-	        this._disconnectReportStream(true);
+	        this._disconnectQuotesWebSocket(true);
 	        if (!this._unmounted) {
 	          this.setState({
 	            reportLoading: true,
 	            pollError: null
 	          });
 	        }
-	        this._connectReportStream();
+	        void (async () => {
+	          try {
+	            await this._poll();
+	          } catch {
+	            /* continue to WS */
+	          }
+	          if (!this._unmounted) this._connectQuotesWebSocket();
+	        })();
 	      } else {
 	        void this._poll();
 	        this._restartHttpPollTimer();
@@ -70605,7 +70939,7 @@
 	      void this._poll();
 	    }, ms);
 	  }
-	  _disconnectReportStream(clearReconnect) {
+	  _disconnectQuotesWebSocket(clearReconnect) {
 	    if (clearReconnect) {
 	      clearTimeout(this._wsReconnectTimer);
 	      this._wsReconnectTimer = null;
@@ -70624,39 +70958,38 @@
 	      }
 	    }
 	  }
-	  _connectReportStream() {
+	  _connectQuotesWebSocket() {
 	    if (this._unmounted || this.props.webSocketEnabled === false || typeof WebSocket === 'undefined') {
 	      return;
 	    }
-	    this._disconnectReportStream(false);
+	    this._disconnectQuotesWebSocket(false);
 	    let ws;
 	    try {
-	      ws = new WebSocket(resolveQuotesStreamUrl(this.props.feedApiBase));
+	      ws = new WebSocket(resolveQuotesFabricWsUrl(this.props.feedApiBase));
 	    } catch {
 	      return;
 	    }
 	    this._reportWs = ws;
+	    ws.binaryType = 'arraybuffer';
 	    ws.onmessage = ev => {
 	      if (this._unmounted || this._reportWs !== ws) return;
-	      let body;
-	      try {
-	        body = JSON.parse(ev.data);
-	      } catch {
-	        return;
+	      const data = ev.data;
+	      let ab = null;
+	      if (data instanceof ArrayBuffer) ab = data;else if (data && data.buffer instanceof ArrayBuffer) {
+	        const u = new Uint8Array(data.buffer, data.byteOffset | 0, data.byteLength | 0);
+	        ab = u.slice().buffer;
 	      }
-	      if (!body || typeof body !== 'object') return;
-	      if (body.feedStream === true) {
-	        this._handleFeedStreamSideMessage(body);
-	        return;
-	      }
-	      this._applyStreamSnapshot(body);
+	      if (!ab) return;
+	      const patch = tryParseFabricJsonPatchMessageData(ab);
+	      if (!patch) return;
+	      this._applyFabricQuotesPatch(patch.path, patch.value);
 	    };
 	    ws.onclose = () => {
 	      if (this._reportWs !== ws) return;
-	      this._disconnectReportStream(false);
+	      this._disconnectQuotesWebSocket(false);
 	      if (!this._unmounted && this.props.webSocketEnabled !== false) {
 	        clearTimeout(this._wsReconnectTimer);
-	        this._wsReconnectTimer = setTimeout(() => this._connectReportStream(), 2500);
+	        this._wsReconnectTimer = setTimeout(() => this._connectQuotesWebSocket(), 2500);
 	      }
 	    };
 	    ws.onerror = () => {
@@ -70665,16 +70998,99 @@
 	  }
 
 	  /**
-	   * Full report JSON from {@code /quotes/stream} (connect snapshot + each commit broadcast).
-	   * Not used for {@code feedStream} side-channels — those use {@link #_handleFeedStreamSideMessage}.
-	   * @param {object} body
+	   * Apply spot / aggregate counts from a `/quotes/values` patch without duplicating chart rows
+	   * (history uses {@link #_applyFabricQuotesPatch} for `/quotes/priceHistoryAppend`).
+	   * @param {Record<string, unknown>} values
 	   */
-	  _applyStreamSnapshot(body) {
-	    this._applyReportBody(body);
+	  _applyFabricValuesOnly(values) {
+	    if (this._unmounted || !values || typeof values !== 'object') return;
+	    const quoteSym = QUOTE_SYMBOL;
+	    const btcRow = values[quoteSym];
+	    const price = btcRow && btcRow.price != null ? Number(btcRow.price) : NaN;
+	    const spotsBySymbol = {};
+	    const sourceCountBySymbol = {};
+	    if (Number.isFinite(price)) {
+	      spotsBySymbol[quoteSym] = price;
+	    }
+	    const sc = btcRow && btcRow.sourceCount != null ? Number(btcRow.sourceCount) : undefined;
+	    if (Number.isFinite(sc)) {
+	      sourceCountBySymbol[quoteSym] = sc;
+	    }
+	    this.setState(prev => ({
+	      spotsBySymbol: {
+	        ...prev.spotsBySymbol,
+	        ...spotsBySymbol
+	      },
+	      sourceCountBySymbol: {
+	        ...prev.sourceCountBySymbol,
+	        ...sourceCountBySymbol
+	      },
+	      reportLoading: false
+	    }));
 	  }
 
 	  /**
-	   * Fabric-shaped ZMQ fanout from {@code /quotes/stream} (not a full snapshot).
+	   * @param {string} path Normalized Fabric path (e.g. `/quotes/values`).
+	   * @param {unknown} value
+	   */
+	  _applyFabricQuotesPatch(path, value) {
+	    if (this._unmounted) return;
+	    const p = String(path || '').replace(/\/+$/, '') || '';
+	    if (p === '/quotes/values' || p.startsWith('/quotes/values/')) {
+	      this._applyFabricValuesOnly(/** @type {Record<string, unknown>} */value);
+	      return;
+	    }
+	    if (p === '/quotes/quoteProviders') {
+	      this._applyReportBody({
+	        quoteProviders: value
+	      }, {
+	        partial: true
+	      });
+	      return;
+	    }
+	    if (p === '/quotes/quoteCurrency') {
+	      this._applyReportBody({
+	        quoteCurrency: value
+	      }, {
+	        partial: true
+	      });
+	      return;
+	    }
+	    if (p === '/quotes/utxoracleChain') {
+	      this._applyReportBody({
+	        utxoracleChain: value
+	      }, {
+	        partial: true
+	      });
+	      return;
+	    }
+	    if (p === '/quotes/priceHistoryAppend') {
+	      const rows = value && typeof value === 'object' && Array.isArray(/** @type {{ rows?: unknown }} */value.rows) ? /** @type {{ rows: unknown[] }} */value.rows : [];
+	      if (!rows.length) return;
+	      const fiat = this.state.reportQuoteCurrency || this.props.currency;
+	      const appended = chartQuotesFromPriceHistory(rows, QUOTE_SYMBOL, fiat);
+	      this.setState(prev => {
+	        let next = prev.quotes.concat(appended);
+	        if (next.length > MAX_QUOTE_HISTORY) {
+	          next = next.slice(-MAX_QUOTE_HISTORY);
+	        }
+	        return {
+	          quotes: next,
+	          reportLoading: false
+	        };
+	      });
+	      return;
+	    }
+	    if (p === '/quotes/feedStream') {
+	      if (value && typeof value === 'object' && /** @type {{ feedStream?: boolean }} */value.feedStream === true) {
+	        this._handleFeedStreamSideMessage(/** @type {object} */value);
+	      }
+	      return;
+	    }
+	  }
+
+	  /**
+	   * ZMQ / RPC tip events delivered as `/quotes/feedStream` patch values.
 	   * @param {object} msg
 	   */
 	  _handleFeedStreamSideMessage(msg) {
@@ -70892,9 +71308,9 @@
 	  }
 
 	  /**
-	   * HTTP-only refresh: split {@code GET} endpoints plus optional snapshot fallback.
-	   * When {@link #webSocketEnabled} is true, quote updates come only from {@code /quotes/stream}
-	   * ({@link #_applyStreamSnapshot}); this method is not called on that path.
+	   * HTTP refresh: split {@code GET} endpoints plus optional snapshot fallback.
+	   * When {@link #webSocketEnabled} is true, this runs once at mount (bootstrap) then incremental
+	   * updates use Fabric `…/quotes` patches ({@link #_connectQuotesWebSocket}).
 	   */
 	  async _poll() {
 	    if (this._pollInFlight) return;
@@ -71010,7 +71426,7 @@
 	  }
 	  render() {
 	    const sourceVisibility = this.state.sourceVisibility || {};
-	    const quotesFiltered = filterQuotesBySourceVisibility(this.state.quotes, sourceVisibility);
+	    const quotesFiltered = filterQuotesBySourceVisibility(this.state.quotes, sourceVisibility, this.state.aggregationMode);
 	    const quotesNewestFirst = [].concat(quotesFiltered).sort((a, b) => Date.parse(b.created) - Date.parse(a.created));
 	    const quoteView = quotesNewestFirst.slice(0, MAX_QUOTE_ROWS);
 	    const serverLead = this.state.spotsBySymbol[QUOTE_SYMBOL];
@@ -71070,16 +71486,42 @@
 	        raised: true,
 	        padded: true,
 	        clearing: true,
-	        children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
-	          children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
-	            children: "fiat.fabric.pub"
-	          })
+	        children: [/*#__PURE__*/jsxRuntimeExports.jsxs("div", {
+	          style: {
+	            display: 'flex',
+	            alignItems: 'flex-start',
+	            justifyContent: 'space-between',
+	            gap: '0.75rem',
+	            flexWrap: 'wrap'
+	          },
+	          children: [/*#__PURE__*/jsxRuntimeExports.jsx(Header, {
+	            style: {
+	              marginBottom: 0
+	            },
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx("code", {
+	              children: "fiat.fabric.pub"
+	            })
+	          }), showHeadlineSourceColumn ? /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+	            style: {
+	              flex: '1 1 360px'
+	            },
+	            children: /*#__PURE__*/jsxRuntimeExports.jsx(HeadlineSourceQuotes, {
+	              quote: headlineQuote,
+	              sourceVisibility: sourceVisibility,
+	              labelById: labelById,
+	              fiat: fiat,
+	              tlsByProvider: tlsByProvider,
+	              onOpenInspect: this._openInspectQuote,
+	              aggregationMode: this.state.aggregationMode,
+	              compact: true
+	            })
+	          }) : null]
 	        }), this.state.reportLoading && !this.state.pollError ? /*#__PURE__*/jsxRuntimeExports.jsx(Message, {
 	          info: true,
 	          size: "small",
 	          children: wsPrimary ? /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
 	            children: ["Connecting to", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("code", {
-	              children: resolveQuotesStreamUrl(this.props.feedApiBase)
+	              children: resolveQuotesFabricWsUrl(this.props.feedApiBase)
 	            }), "\u2026"]
 	          }) : /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
 	            children: ["Fetching spot/providers/history from", ' ', /*#__PURE__*/jsxRuntimeExports.jsx("code", {
@@ -71093,19 +71535,12 @@
 	        }) : null, /*#__PURE__*/jsxRuntimeExports.jsx(Feed, {
 	          spotUsd: leadUsd,
 	          spotCurrency: fiat,
-	          label: typeof btcSourceCount === 'number' ? `BTC → ${fiat} · weighted (${btcSourceCount} source${btcSourceCount === 1 ? '' : 's'})` : `BTC → ${fiat}`,
+	          label: typeof btcSourceCount === 'number' ? `BTC → ${fiat} · ${this.state.aggregationMode} (${btcSourceCount} source${btcSourceCount === 1 ? '' : 's'})` : `BTC → ${fiat}`,
 	          trailing: typeof leadUsd === 'number' && Number.isFinite(leadUsd) ? /*#__PURE__*/jsxRuntimeExports.jsx(DeltaInline, {
 	            delta: delta,
 	            fiat: fiat
 	          }) : null,
-	          aside: showHeadlineSourceColumn ? /*#__PURE__*/jsxRuntimeExports.jsx(HeadlineSourceQuotes, {
-	            quote: headlineQuote,
-	            sourceVisibility: sourceVisibility,
-	            labelById: labelById,
-	            fiat: fiat,
-	            tlsByProvider: tlsByProvider,
-	            onOpenInspect: this._openInspectQuote
-	          }) : null
+	          aside: null
 	        }), utxoOracleEnabled ? /*#__PURE__*/jsxRuntimeExports.jsx(BitcoinTipCard, {
 	          chain: this.state.utxoracleChain,
 	          utxoSpot: utxoSpotForCard,
@@ -71131,6 +71566,8 @@
 	            deltaRangeKey: this.state.deltaRangeKey,
 	            onSetRange: this._setDeltaRange,
 	            rangeOpt: rangeOpt,
+	            aggregationMode: this.state.aggregationMode,
+	            onSetAggregationMode: this._setAggregationMode,
 	            sourceFilter: providerIds.length ? {
 	              providerIds,
 	              labelById,
