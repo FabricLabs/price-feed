@@ -1,1 +1,6 @@
 node_modules
+/stores/bitcoin-regtest/
+/stores/bitcoin-mainnet*/
+/stores/bitcoin-testnet*/
+/stores/bitcoin-signet*/
+/stores/bitcoin-testnet4*/

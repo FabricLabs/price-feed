@@ -1,5 +1,5 @@
 /*!
- * # Fomantic-UI 2.8.8 - Accordion
+ * # Fomantic-UI 2.9.4 - Accordion
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -31,7 +31,7 @@
 /* Default Styling */
 .ui.accordion .title:not(.ui) {
   padding: 0.5em 0;
-  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Arvo', 'Helvetica Neue', Arial, Helvetica, serif;
   font-size: 1em;
   color: rgba(0, 0, 0, 0.87);
 }

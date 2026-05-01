@@ -1,5 +1,5 @@
 /*!
- * # Fomantic-UI 2.8.8 - Modal
+ * # Fomantic-UI 2.9.4 - Modal
  * http://github.com/fomantic/Fomantic-UI/
  *
  *
@@ -82,7 +82,7 @@
 
 .ui.modal > .header {
   display: block;
-  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Arvo', 'Helvetica Neue', Arial, Helvetica, serif;
   background: #FFFFFF;
   margin: 0;
   padding: 1.25rem 1.5rem;
